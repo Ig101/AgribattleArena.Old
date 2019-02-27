@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public class SpecEffect: GameObject
+    public class TileObject: GameObject
     {
     }
 }

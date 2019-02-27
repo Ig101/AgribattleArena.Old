@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public class Decoration
+    public class ActiveDecoration: TileObject
     {
     }
 }
