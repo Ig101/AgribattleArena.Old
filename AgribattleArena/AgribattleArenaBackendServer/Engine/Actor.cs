@@ -66,7 +66,7 @@ namespace AgribattleArenaBackendServer.Engine
         public override void EndTurn()
         {
             this.InitiativePosition += 1f/roleModel.Initiative;
-            Parent.InitiativeScale.EndTurn();
+            Parent.EndTurn();
         }
 
         public override void StartTurn()

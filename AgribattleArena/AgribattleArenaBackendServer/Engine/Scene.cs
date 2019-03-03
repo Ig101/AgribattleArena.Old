@@ -10,30 +10,48 @@ namespace AgribattleArenaBackendServer.Engine
     public class Scene
     {
         public event SyncHandler ReturnAction;
-        
-        InitiativeScale initiativeScale;
 
         List<TileObject> actors;
         List<SpecEffect> specEffects;
+        TileObject tempTileObject;
 
-        public InitiativeScale InitiativeScale { get { return initiativeScale; } }
-        public List<TileObject> Actors { get { return actors; } }
-        public List<SpecEffect> SpecEffects { get { return specEffects; } }
 
         public Scene()
         {
-            initiativeScale = new InitiativeScale(this);
             actors = new List<TileObject>();
             specEffects = new List<SpecEffect>();
+            EndTurn();
+        }
+
+        #region Updates
+        public void EndTurn()
+        {
+            float minInitiativePosition = float.MaxValue;
+            TileObject newObject = null;
+            foreach (TileObject obj in actors)
+            {
+                if (obj.IsAlive && obj.InitiativePosition < minInitiativePosition)
+                {
+                    minInitiativePosition = obj.InitiativePosition;
+                    newObject = obj;
+                }
+            }
+            if (newObject != null)
+            {
+                this.tempTileObject = newObject;
+                Update(minInitiativePosition);
+                this.tempTileObject.StartTurn();
+                ReturnAction(this, Action.EndTurn, null, null, null, null);
+            }
         }
 
         public void Update(float time)
         {
-            foreach(TileObject obj in Actors)
+            foreach(TileObject obj in actors)
             {
                 obj.Update(time);
             }
-            foreach(SpecEffect eff in SpecEffects)
+            foreach(SpecEffect eff in specEffects)
             {
                 eff.Update(time);
             }
@@ -60,10 +78,23 @@ namespace AgribattleArenaBackendServer.Engine
             }
             //TODO WinCondition
         }
+        #endregion
+
+        #region Actions
+        public bool DecorationCast (ActiveDecoration actor)
+        {
+            if (tempTileObject == actor)
+            {
+                actor.Cast();
+                this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor), null, null, null);
+                return true;
+            }
+            return false;
+        }
 
         public bool ActorMove (Actor actor, Tile target)
         {
-            if(initiativeScale.TempTileObject == actor)
+            if(tempTileObject == actor)
             {
                 bool result = actor.Move(target);
                 if(result)
@@ -77,7 +108,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public bool ActorCast (Actor actor, int id, Tile target)
         {
-            if (initiativeScale.TempTileObject == actor)
+            if (tempTileObject == actor)
             {
                 bool result = actor.Cast(id, target);
                 if (result)
@@ -91,7 +122,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public bool ActorAttack (Actor actor, Tile target)
         {
-            if (initiativeScale.TempTileObject == actor)
+            if (tempTileObject == actor)
             {
                 bool result = actor.Attack(target);
                 if (result)
@@ -105,7 +136,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public bool ActorWait (Actor actor)
         {
-            if (initiativeScale.TempTileObject == actor)
+            if (tempTileObject == actor)
             {
                 bool result = actor.Wait();
                 if (result)
@@ -116,11 +147,7 @@ namespace AgribattleArenaBackendServer.Engine
             }
             return false;
         }
-
-        public void ReturnActionImplementation(Action action, int? id)
-        {
-            this.ReturnAction(this, action, id, null, null, null);
-        }
+        #endregion
 
         public Tile GetTile (float x, float y)
         {

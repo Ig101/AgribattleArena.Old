@@ -27,22 +27,18 @@ namespace AgribattleArenaBackendServer.Engine
 
         public void Cast()
         {
-            if (Native.Action != null)
-            {
-                Native.Action(Parent, this, mod, 1);
-                Parent.ReturnActionImplementation(Action.Decoration, Parent.Actors.FindIndex(x => x == this));
-            }
+                Native.Action?.Invoke(Parent, this, mod, 1);
         }
 
         public override void EndTurn()
         {
             this.InitiativePosition += 1;
-            Parent.InitiativeScale.EndTurn();
+            Parent.EndTurn();
         }
 
         public override void StartTurn()
         {
-            Cast();
+            Parent.DecorationCast(this);
             EndTurn();
         }
     }
