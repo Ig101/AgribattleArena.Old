@@ -13,7 +13,9 @@ namespace AgribattleArenaBackendServer.Engine
         Tile tempTile;
         DamageModel damageModel;
         float initiativePosition;
+        bool affected;
 
+        public bool Affected { get { return affected; } set { affected = value; } }
         public TaggingNative Native { get { return native; } }
         public float InitiativePosition { get { return initiativePosition; } set { initiativePosition = value; } }
         public DamageModel DamageModel { get { return damageModel; } }
@@ -30,6 +32,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public bool Damage (float amount, string[] tags)
         {
+            this.Affected = true;
             this.IsAlive = this.IsAlive && !damageModel.Damage(amount, tags);
             return !this.IsAlive;
         }

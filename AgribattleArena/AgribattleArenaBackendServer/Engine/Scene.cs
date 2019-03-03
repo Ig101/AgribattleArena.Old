@@ -15,13 +15,24 @@ namespace AgribattleArenaBackendServer.Engine
         List<SpecEffect> specEffects;
         TileObject tempTileObject;
 
+        List<int> deletedObjects;
+        List<int> deletedEffects;
 
         public Scene()
         {
             actors = new List<TileObject>();
             specEffects = new List<SpecEffect>();
+            deletedObjects = new List<int>();
+            deletedEffects = new List<int>();
             EndTurn();
         }
+
+        #region Sync
+        public SynchronizationObject GetSynchronizationInfo()
+        {
+            return null;
+        }
+        #endregion
 
         #region Updates
         public void EndTurn()
@@ -45,7 +56,7 @@ namespace AgribattleArenaBackendServer.Engine
             }
         }
 
-        public void Update(float time)
+        void Update(float time)
         {
             foreach(TileObject obj in actors)
             {
@@ -58,12 +69,13 @@ namespace AgribattleArenaBackendServer.Engine
             AfterActionUpdate();
         }
 
-        public void AfterActionUpdate()
+        void AfterActionUpdate()
         {
             for(int i = 0; i<actors.Count;i++)
             {
                 if(!actors[i].IsAlive)
                 {
+                    deletedObjects.Add(i);
                     actors.RemoveAt(i);
                     i--;
                 }
@@ -72,6 +84,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 if(!specEffects[i].IsAlive)
                 {
+                    deletedEffects.Add(i);
                     specEffects.RemoveAt(i);
                     i--;
                 }
@@ -86,6 +99,7 @@ namespace AgribattleArenaBackendServer.Engine
             if (tempTileObject == actor)
             {
                 actor.Cast();
+                AfterActionUpdate();
                 this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor), null, null, null);
                 return true;
             }
@@ -99,6 +113,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Move(target);
                 if(result)
                 {
+                    AfterActionUpdate();
                     this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor),null,target.X,target.Y);
                 }
                 return result;
@@ -113,6 +128,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Cast(id, target);
                 if (result)
                 {
+                    AfterActionUpdate();
                     this.ReturnAction(this, Action.Cast, actors.FindIndex(x => x == actor), id, target.X,target.Y);
                 }
                 return result;
@@ -127,6 +143,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Attack(target);
                 if (result)
                 {
+                    AfterActionUpdate();
                     this.ReturnAction(this, Action.Attack, actors.FindIndex(x => x == actor),null,target.X,target.Y);
                 }
                 return result;
@@ -141,6 +158,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Wait();
                 if (result)
                 {
+                    AfterActionUpdate();
                     this.ReturnAction(this, Action.Wait, actors.FindIndex(x => x == actor), null, null, null);
                 }
                 return result;

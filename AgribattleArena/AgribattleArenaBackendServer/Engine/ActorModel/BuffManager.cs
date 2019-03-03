@@ -25,7 +25,13 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         float initiative;
         bool canMove;
         bool canAct;
+        int skillCd;
+        int skillCost;
+        int skillRange;
 
+        public int SkillCd { get { return skillCd; } }
+        public int SkillCost { get { return skillCost; } }
+        public int SkillRange { get { return skillRange; } }
         public bool CanMove { get { return canMove; } }
         public bool CanAct { get { return canAct; } }
         public RoleModel RoleModel { get { return roleModel; } }
@@ -53,6 +59,9 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
 
         void RecalculateBuffs()
         {
+            skillCd = 0;
+            skillCost = 0;
+            skillRange = 0;
             canMove = true;
             canAct = true;
             strength = 0;
@@ -75,18 +84,21 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
 
         public void AddBuff(Buff buff)
         {
+            roleModel.Owner.Affected = true;
             buffs.Add(buff);
             RecalculateBuffs();
         }
 
         public void RemoveBuff(Buff buff)
         {
+            roleModel.Owner.Affected = true;
             buffs.Remove(buff);
             RecalculateBuffs();
         }
 
         public void RemoveBuff(int id)
         {
+            roleModel.Owner.Affected = true;
             buffs.RemoveAt(id);
             RecalculateBuffs();
         }
