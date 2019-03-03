@@ -27,7 +27,11 @@ namespace AgribattleArenaBackendServer.Engine
 
         public void Cast()
         {
-            Native.Action?.Invoke(Parent, this, mod, 1);
+            if (Native.Action != null)
+            {
+                Native.Action(Parent, this, mod, 1);
+                Parent.ReturnActionImplementation(Action.Decoration, Parent.Actors.FindIndex(x => x == this));
+            }
         }
 
         public override void EndTurn()
@@ -39,7 +43,6 @@ namespace AgribattleArenaBackendServer.Engine
         public override void StartTurn()
         {
             Cast();
-            //TODO ReturnAction
             EndTurn();
         }
     }

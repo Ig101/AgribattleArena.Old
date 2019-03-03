@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
+    public delegate void SyncHandler(Scene scene, Action action, int? id, int? actionId, int? targetX, int? targetY);
+
     public class Scene
     {
+        public event SyncHandler ReturnAction;
+        
         InitiativeScale initiativeScale;
 
         List<TileObject> actors;
@@ -64,7 +68,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Move(target);
                 if(result)
                 {
-                    //TODO ReturnAction
+                    this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor),null,target.X,target.Y);
                 }
                 return result;
             }
@@ -78,7 +82,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Cast(id, target);
                 if (result)
                 {
-                    //TODO ReturnAction
+                    this.ReturnAction(this, Action.Cast, actors.FindIndex(x => x == actor), id, target.X,target.Y);
                 }
                 return result;
             }
@@ -92,7 +96,7 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Attack(target);
                 if (result)
                 {
-                    //TODO ReturnAction
+                    this.ReturnAction(this, Action.Attack, actors.FindIndex(x => x == actor),null,target.X,target.Y);
                 }
                 return result;
             }
@@ -106,11 +110,16 @@ namespace AgribattleArenaBackendServer.Engine
                 bool result = actor.Wait();
                 if (result)
                 {
-                    //TODO ReturnAction
+                    this.ReturnAction(this, Action.Wait, actors.FindIndex(x => x == actor), null, null, null);
                 }
                 return result;
             }
             return false;
+        }
+
+        public void ReturnActionImplementation(Action action, int? id)
+        {
+            this.ReturnAction(this, action, id, null, null, null);
         }
 
         public Tile GetTile (float x, float y)

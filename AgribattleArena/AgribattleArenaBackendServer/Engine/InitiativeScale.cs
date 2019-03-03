@@ -37,7 +37,7 @@ namespace AgribattleArenaBackendServer.Engine
                 this.tempTileObject = newObject;
                 scene.Update(minInitiativePosition);
                 this.tempTileObject.StartTurn();
-                //TODO ReturnAction
+                scene.ReturnActionImplementation(Action.EndTurn, null);
             }
         }
 
