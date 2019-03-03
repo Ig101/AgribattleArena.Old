@@ -33,9 +33,14 @@ namespace AgribattleArenaBackendServer.Engine
             this.native = native;
         }
 
-        public void Update()
+        public void Update(float time)
         {
-            native.Action?.Invoke(parent, this, native.ActionMod);
+            native.Action?.Invoke(parent, this, native.ActionMod, time);
+        }
+
+        public Point GetCenter()
+        {
+            return new Point(0, 0);
         }
     }
 }

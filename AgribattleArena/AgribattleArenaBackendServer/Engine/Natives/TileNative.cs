@@ -5,23 +5,24 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Natives
 {
-    public class TileNative
+    public class TileNative: TaggingNative
     {
-        string id;
         SceneTileAction action;
         float actionMod;
         bool unbearable;
+        bool flat;
         int defaultHeight;
-
+        
+        public bool Flat { get { return flat; } }
         public int DefaultHeight { get { return defaultHeight; } }
         public bool Unbearable { get { return unbearable; } }
-        public string Id { get { return id; } }
         public SceneTileAction Action { get { return action; } }
         public float ActionMod { get { return actionMod; } }
 
-        public TileNative (string id, SceneTileAction action, float actionMod, bool unbearable, int defaultHeight)
+        public TileNative (string id, SceneTileAction action, float actionMod, bool unbearable, bool flat, int defaultHeight, string[] tags)
+            :base(id, tags)
         {
-            this.id = id;
+            this.flat = flat;
             this.action = action;
             this.actionMod = actionMod;
             this.unbearable = unbearable;
