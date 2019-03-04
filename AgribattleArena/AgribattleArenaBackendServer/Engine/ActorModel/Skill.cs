@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.ActorModel
 {
-    public class Skill
+    public class Skill: IdObject
     {
         RoleModel roleModel;
 
@@ -26,6 +26,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         public float PreparationTime { get { return preparationTime; } set { preparationTime = value; } }
 
         public Skill (RoleModel roleModel, SkillNative skill, float? cd, float? mod, int? cost, int? range)
+            :base(roleModel.Owner.Parent)
         {
             this.range = range ?? skill.DefaultRange;
             this.mod = mod ?? skill.DefaultMod;

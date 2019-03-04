@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public abstract class GameObject
+    public abstract class GameObject: IdObject
     {
         Scene parent;
 
@@ -21,7 +21,8 @@ namespace AgribattleArenaBackendServer.Engine
         public float Y { get { return y; } set { y = value; } }
         public float Z { get { return z; } set { z = value; } }
 
-        public GameObject (Scene parent, float x, float y, float z)
+        public GameObject(Scene parent, float x, float y, float z) 
+            : base(parent)
         {
             this.isAlive = true;
             this.parent = parent;

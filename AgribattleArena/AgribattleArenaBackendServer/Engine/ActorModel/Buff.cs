@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.ActorModel
 {
-    public class Buff
+    public class Buff: IdObject
     {
         BuffManager manager;
 
@@ -21,6 +21,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         public float? Duration { get { return duration; } set { duration = value; } }
 
         public Buff(BuffManager manager, BuffNative native, float? mod, float? duration)
+            :base(manager.RoleModel.Owner.Parent)
         {
             this.mod = mod ?? native.Mod;
             this.duration = duration ?? native.Duration;

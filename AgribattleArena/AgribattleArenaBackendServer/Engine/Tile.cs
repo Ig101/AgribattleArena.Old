@@ -16,7 +16,9 @@ namespace AgribattleArenaBackendServer.Engine
         int x;
         int y;
         TileNative native;
+        bool affected;
 
+        public bool Affected { get { return affected; } set { affected = value; } }
         public Scene Parent { get { return parent; } }
         public TileObject TempObject { get { return tempObject; } set { tempObject = value; } }
         public int Height { get { return height; } set { height = value; } }

@@ -1,38 +1,63 @@
-﻿using System;
+﻿using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.Synchronization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public delegate void SyncHandler(Scene scene, Action action, int? id, int? actionId, int? targetX, int? targetY);
+    public delegate void SyncHandler(Scene scene, Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
 
     public class Scene
     {
         public event SyncHandler ReturnAction;
 
+        Tile[,] tiles;
         List<TileObject> actors;
         List<SpecEffect> specEffects;
         TileObject tempTileObject;
 
-        List<int> deletedObjects;
-        List<int> deletedEffects;
+        List<TileObject> deletedActors;
+        List<SpecEffect> deletedEffects;
+        uint idsCounter;
 
-        public Scene()
+        #region Sync
+        public SynchronizationObject GetSynchronizationData (bool nullify)
         {
+            SynchronizationObject sync = new SynchronizationObject(actors, deletedActors, deletedEffects, tiles);
+            if (nullify)
+            {
+                sync.ChangedActors.ForEach(x => x.Affected = false);
+                sync.ChangedTiles.ForEach(x => x.Affected = false);
+                this.deletedActors.Clear();
+                this.deletedEffects.Clear();
+            }
+            return sync;
+        }
+
+        public FullSynchronizationObject GetFullSynchronizationData()
+        {
+            return new FullSynchronizationObject(actors, specEffects, tiles);
+        }
+        #endregion
+
+        public Scene(ILevelGenerator generator)
+        {
+            idsCounter = 0;
             actors = new List<TileObject>();
             specEffects = new List<SpecEffect>();
-            deletedObjects = new List<int>();
-            deletedEffects = new List<int>();
+            deletedActors = new List<TileObject>();
+            deletedEffects = new List<SpecEffect>();
             EndTurn();
         }
 
-        #region Sync
-        public SynchronizationObject GetSynchronizationInfo()
+        public uint GetNextId ()
         {
-            return null;
+            uint tempId = idsCounter;
+            idsCounter++;
+            return tempId;
         }
-        #endregion
 
         #region Updates
         public void EndTurn()
@@ -51,8 +76,8 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 this.tempTileObject = newObject;
                 Update(minInitiativePosition);
+                ReturnAction(this, Action.EndTurn, null, null, null, null, GetSynchronizationData(true));
                 this.tempTileObject.StartTurn();
-                ReturnAction(this, Action.EndTurn, null, null, null, null);
             }
         }
 
@@ -75,7 +100,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 if(!actors[i].IsAlive)
                 {
-                    deletedObjects.Add(i);
+                    deletedActors.Add(actors[i]);
                     actors.RemoveAt(i);
                     i--;
                 }
@@ -84,7 +109,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 if(!specEffects[i].IsAlive)
                 {
-                    deletedEffects.Add(i);
+                    deletedEffects.Add(specEffects[i]);
                     specEffects.RemoveAt(i);
                     i--;
                 }
@@ -100,7 +125,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 actor.Cast();
                 AfterActionUpdate();
-                this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor), null, null, null);
+                this.ReturnAction(this, Action.Move, actor.Id, null, null, null, GetSynchronizationData(true));
                 return true;
             }
             return false;
@@ -114,7 +139,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if(result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Move, actors.FindIndex(x => x == actor),null,target.X,target.Y);
+                    this.ReturnAction(this, Action.Move, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -129,7 +154,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Cast, actors.FindIndex(x => x == actor), id, target.X,target.Y);
+                    this.ReturnAction(this, Action.Cast, actor.Id, id, target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -144,7 +169,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Attack, actors.FindIndex(x => x == actor),null,target.X,target.Y);
+                    this.ReturnAction(this, Action.Attack, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -159,7 +184,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Wait, actors.FindIndex(x => x == actor), null, null, null);
+                    this.ReturnAction(this, Action.Wait, actor.Id, null, null, null, GetSynchronizationData(true));
                 }
                 return result;
             }

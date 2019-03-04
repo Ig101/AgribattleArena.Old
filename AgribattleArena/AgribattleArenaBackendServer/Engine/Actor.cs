@@ -35,7 +35,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public bool Cast(int id, Tile target)
         {
-            Skill skill = roleModel.Skills[id]; 
+            Skill skill = roleModel.Skills.Find(x=>x.Id == id); 
             return skill.Cast(target);
         }
 
@@ -51,17 +51,25 @@ namespace AgribattleArenaBackendServer.Engine
                 roleModel.BuffManager.CanMove && ((target.X == TempTile.X && Math.Abs(target.Y - TempTile.Y) == 1) ||
                 (target.Y == TempTile.Y && Math.Abs(target.X - TempTile.X) == 1)))
             {
-                target.TempObject = this;
-                this.TempTile.TempObject = null;
-                this.TempTile = target;
-                Point pos = target.GetCenter();
-                this.X = pos.X;
-                this.Y = pos.Y;
+                ChangePosition(target);
                 return true;
             }
             return false;
         }
         //
+
+        public void ChangePosition (Tile target)
+        {
+            this.Affected = true;
+            this.TempTile.Affected = true;
+            target.Affected = true;
+            target.TempObject = this;
+            this.TempTile.TempObject = null;
+            this.TempTile = target;
+            Point pos = target.GetCenter();
+            this.X = pos.X;
+            this.Y = pos.Y;
+        }
 
         public override void EndTurn()
         {
