@@ -9,12 +9,12 @@ namespace AgribattleArenaBackendServer.Engine.Generator
     public class GenerationTile
     {
         int height;
-        TileNative native;
+        string native;
 
         public int Height { get { return height; } }
-        public TileNative Native { get { return native; } }
+        public string Native { get { return native; } }
 
-        public GenerationTile(TileNative native, int height)
+        public GenerationTile(string native, int height)
         {
             this.height = height;
             this.native = native;

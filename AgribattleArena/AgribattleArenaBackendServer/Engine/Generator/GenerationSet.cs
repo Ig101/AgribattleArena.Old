@@ -9,15 +9,18 @@ namespace AgribattleArenaBackendServer.Engine.Generator
     public class GenerationSet
     {
         GenerationTile[,] tileSet;
-        List<GenerationObject> objects;
+        List<GenerationObject> actors;
+        List<GenerationObject> decorations;
 
         public GenerationTile[,] TileSet { get { return tileSet; } }
-        public List<GenerationObject> Objects { get { return objects; } }
+        public List<GenerationObject> Actors { get { return actors; } }
+        public List<GenerationObject> Decorations { get { return decorations; } }
 
-        public GenerationSet(GenerationTile[,] tileSet, List<GenerationObject> objects)
+        public GenerationSet(GenerationTile[,] tileSet, List<GenerationObject> actors, List<GenerationObject> decorations)
         {
             this.tileSet = tileSet;
-            this.objects = objects;
+            this.actors = actors;
+            this.decorations = decorations;
         }
     }
 }

@@ -19,9 +19,10 @@ namespace AgribattleArenaBackendServer.Engine.Generator
         public GenerationSet GenerateNewScene()
         {
             GenerationTile[,] tileSet = new GenerationTile[x,y];
-            List<GenerationObject> objects = new List<GenerationObject>();
+            List<GenerationObject> actors = new List<GenerationObject>();
+            List<GenerationObject> decorations = new List<GenerationObject>();
 
-            return new GenerationSet(tileSet, objects);
+            return new GenerationSet(tileSet, actors,decorations);
         }
     }
 }

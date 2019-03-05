@@ -8,17 +8,17 @@ namespace AgribattleArenaBackendServer.Engine.Generator
 {
     public class GenerationObject
     {
-        TaggingNative native;
+        string native;
         int tileX;
         int tileY;
-        RoleModelNative roleNative;
+        string roleNative;
 
-        public RoleModelNative RoleNative { get { return roleNative; } }
-        public TaggingNative Native { get { return native; } }
+        public string RoleNative { get { return roleNative; } }
+        public string Native { get { return native; } }
         public int TileX { get { return tileX; } }
         public int TileY { get { return tileY; } }
 
-        public GenerationObject (ActorNative native, int tileX, int tileY, RoleModelNative roleNative)
+        public GenerationObject (string native, int tileX, int tileY, string roleNative)
         {
             this.roleNative = roleNative;
             this.native = native;
@@ -26,7 +26,7 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             this.tileY = tileY;
         }
 
-        public GenerationObject(DecorationNative native, int tileX, int tileY)
+        public GenerationObject(string native, int tileX, int tileY)
         {
             this.roleNative = null;
             this.native = native;

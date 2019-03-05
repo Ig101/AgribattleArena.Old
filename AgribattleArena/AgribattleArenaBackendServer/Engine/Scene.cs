@@ -43,12 +43,16 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 for(int y = 0; y<tiles.GetLength(1);y++)
                 {
-
+                    CreateTile(set.TileSet[x, y].Native, x, y, set.TileSet[x, y].Height);
                 }
             }
-            foreach(GenerationObject actor in set.Objects)
+            foreach(GenerationObject actor in set.Actors)
             {
-
+                CreateActor(actor.Native, actor.RoleNative, tiles[actor.TileX, actor.TileY], null);
+            }
+            foreach(GenerationObject decoration in set.Decorations)
+            {
+                CreateDecoration(decoration.Native, tiles[decoration.TileX, decoration.TileY], null, null, null, null);
             }
             EndTurn();
         }
@@ -58,6 +62,11 @@ namespace AgribattleArenaBackendServer.Engine
             uint tempId = idsCounter;
             idsCounter++;
             return tempId;
+        }
+
+        public Tile GetTile(float x, float y)
+        {
+            return tiles[(int)(x / Misc.tileSize), (int)(y / Misc.tileSize)];
         }
 
         #region Creation
@@ -82,7 +91,7 @@ namespace AgribattleArenaBackendServer.Engine
             return effect;
         }
 
-        public Tile CreateTile(string native, string roleNative, int x, int y, int? height)
+        public Tile CreateTile(string native, int x, int y, int? height)
         {
             Tile tile = new Tile(this, x, y, nativeManager.GetTileNative(native), height);
             tiles[x,y] = tile;
@@ -247,10 +256,5 @@ namespace AgribattleArenaBackendServer.Engine
             return false;
         }
         #endregion
-
-        public Tile GetTile (float x, float y)
-        {
-            return null;
-        }
     }
 }
