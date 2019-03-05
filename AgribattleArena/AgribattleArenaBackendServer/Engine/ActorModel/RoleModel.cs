@@ -76,6 +76,30 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             this.attackingSkill = new Skill(this, native.AttackSkill, 0, null, 1,null);
         }
 
+        public Skill AddSkill (Skill skill)
+        {
+            owner.Affected = true;
+            skills.Add(skill);
+            return skill;
+        }
+
+        public Skill AddSkill (string native, float? cd, float? mod, int? cost, int? range)
+        {
+            return AddSkill(new Skill(this, owner.Parent.NativeManager.GetSkillNative(native), cd, mod, cost, range));
+        }
+
+        public Skill RemoveSkill (Skill skill)
+        {
+            owner.Affected = true;
+            skills.Remove(skill);
+            return skill;
+        }
+
+        public Skill RemoveSkill(uint id)
+        {
+            return RemoveSkill(skills.Find(x => x.Id == id));
+        }
+
         public void SpendActionPoints (int amount)
         {
             this.actionPoints -= amount;

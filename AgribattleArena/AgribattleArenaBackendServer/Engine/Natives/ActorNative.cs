@@ -7,8 +7,13 @@ namespace AgribattleArenaBackendServer.Engine.Natives
 {
     public class ActorNative : TaggingNative
     {
-        public ActorNative(string id, string[] tags) : base(id, tags)
+        float defaultZ;
+
+        public float DefaultZ { get { return defaultZ; } }
+
+        public ActorNative(string id, string[] tags, float defaultZ) : base(id, tags)
         {
+            this.defaultZ = defaultZ;
         }
     }
 }

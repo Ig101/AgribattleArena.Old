@@ -19,7 +19,8 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         public float DefaultMod { get { return defaultMod; } }
         public SkillObjectTargetAction Action { get { return action; } }
 
-        public SkillNative(string id, string[] tags, SkillObjectTargetAction action, int cost, float cd, float mod, int range) : base(id, tags)
+        public SkillNative(string id, string[] tags, SkillObjectTargetAction action, int cost, float cd, float mod, int range) 
+            : base(id, tags)
         {
             this.defaultRange = range;
             this.defaultMod = mod;

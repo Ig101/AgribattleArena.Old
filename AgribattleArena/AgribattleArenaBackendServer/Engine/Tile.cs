@@ -11,7 +11,7 @@ namespace AgribattleArenaBackendServer.Engine
         Scene parent;
 
         TileObject tempObject;
-        int height;
+        float height;
 
         int x;
         int y;
@@ -21,7 +21,7 @@ namespace AgribattleArenaBackendServer.Engine
         public bool Affected { get { return affected; } set { affected = value; } }
         public Scene Parent { get { return parent; } }
         public TileObject TempObject { get { return tempObject; } set { tempObject = value; } }
-        public int Height { get { return height; } set { height = value; } }
+        public float Height { get { return height; } set { height = value; } }
         public int X { get { return x; } }
         public int Y { get { return y; } }
         public TileNative Native { get { return native; } set { native = value; } }

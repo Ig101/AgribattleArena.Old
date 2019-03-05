@@ -82,18 +82,30 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             }
         }
 
-        public void AddBuff(Buff buff)
+        public Buff AddBuff(Buff buff)
         {
             roleModel.Owner.Affected = true;
             buffs.Add(buff);
             RecalculateBuffs();
+            return buff;
         }
 
-        public void RemoveBuff(Buff buff)
+        public Buff AddBuff(string native, float? mod, float? duration)
+        {
+            return AddBuff(new Buff(this, roleModel.Owner.Parent.NativeManager.GetBuffNative(native), mod, duration));
+        }
+
+        public Buff RemoveBuff(Buff buff)
         {
             roleModel.Owner.Affected = true;
             buffs.Remove(buff);
             RecalculateBuffs();
+            return buff;
+        }
+
+        public Buff RemoveBuff(uint id)
+        {
+            return RemoveBuff(buffs.Find(x => x.Id == id));
         }
 
         public void RemoveBuff(int id)

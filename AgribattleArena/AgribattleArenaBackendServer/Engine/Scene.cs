@@ -1,4 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Engine.Synchronization;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,11 @@ namespace AgribattleArenaBackendServer.Engine
 {
     public delegate void SyncHandler(Scene scene, Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
 
-    public class Scene
+    public class Scene: IScene
     {
         public event SyncHandler ReturnAction;
+
+        INativeManager nativeManager;
 
         Tile[,] tiles;
         List<TileObject> actors;
@@ -21,6 +24,71 @@ namespace AgribattleArenaBackendServer.Engine
         List<TileObject> deletedActors;
         List<SpecEffect> deletedEffects;
         uint idsCounter;
+
+        public INativeManager NativeManager { get { return nativeManager; } }
+        public TileObject TempTileObject { get { return tempTileObject; } }
+
+
+        public Scene(ILevelGenerator generator, INativeManager nativeManager)
+        {
+            this.nativeManager = nativeManager;
+            idsCounter = 0;
+            actors = new List<TileObject>();
+            specEffects = new List<SpecEffect>();
+            deletedActors = new List<TileObject>();
+            deletedEffects = new List<SpecEffect>();
+            GenerationSet set = generator.GenerateNewScene();
+            tiles = new Tile[set.TileSet.GetLength(0), set.TileSet.GetLength(1)];
+            for(int x = 0; x<tiles.GetLength(0);x++)
+            {
+                for(int y = 0; y<tiles.GetLength(1);y++)
+                {
+
+                }
+            }
+            foreach(GenerationObject actor in set.Objects)
+            {
+
+            }
+            EndTurn();
+        }
+
+        public uint GetNextId()
+        {
+            uint tempId = idsCounter;
+            idsCounter++;
+            return tempId;
+        }
+
+        #region Creation
+        public Actor CreateActor(string native, string roleNative, Tile target, float? z)
+        {
+            Actor actor = new Actor(this, target, z, nativeManager.GetActorNative(native), nativeManager.GetRoleModelNative(roleNative));
+            actors.Add(actor);
+            return actor;
+        }
+
+        public ActiveDecoration CreateDecoration(string native, Tile target, float? z, int? health, TagSynergy[] armor, float? mod)
+        {
+            ActiveDecoration actor = new ActiveDecoration(this, target, z, health, armor, nativeManager.GetDecorationNative(native), mod);
+            actors.Add(actor);
+            return actor;
+        }
+
+        public SpecEffect CreateEffect(string native, float x, float y, float? z, float? duration, float? mod)
+        {
+            SpecEffect effect = new SpecEffect(this, x, y, z, nativeManager.GetEffectNative(native), duration, mod);
+            specEffects.Add(effect);
+            return effect;
+        }
+
+        public Tile CreateTile(string native, string roleNative, int x, int y, int? height)
+        {
+            Tile tile = new Tile(this, x, y, nativeManager.GetTileNative(native), height);
+            tiles[x,y] = tile;
+            return tile;
+        }
+        #endregion
 
         #region Sync
         public SynchronizationObject GetSynchronizationData (bool nullify)
@@ -36,28 +104,16 @@ namespace AgribattleArenaBackendServer.Engine
             return sync;
         }
 
+        public SynchronizationObject GetSynchronizationData ()
+        {
+            return GetSynchronizationData(false);
+        }
+
         public FullSynchronizationObject GetFullSynchronizationData()
         {
             return new FullSynchronizationObject(actors, specEffects, tiles);
         }
         #endregion
-
-        public Scene(ILevelGenerator generator)
-        {
-            idsCounter = 0;
-            actors = new List<TileObject>();
-            specEffects = new List<SpecEffect>();
-            deletedActors = new List<TileObject>();
-            deletedEffects = new List<SpecEffect>();
-            EndTurn();
-        }
-
-        public uint GetNextId ()
-        {
-            uint tempId = idsCounter;
-            idsCounter++;
-            return tempId;
-        }
 
         #region Updates
         public void EndTurn()

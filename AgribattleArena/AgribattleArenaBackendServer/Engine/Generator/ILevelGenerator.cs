@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgribattleArenaBackendServer.Engine.Synchronization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,5 +8,6 @@ namespace AgribattleArenaBackendServer.Engine.Generator
 {
     public interface ILevelGenerator
     {
+        GenerationSet GenerateNewScene();
     }
 }

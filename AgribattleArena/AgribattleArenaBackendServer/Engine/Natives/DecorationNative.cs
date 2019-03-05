@@ -9,12 +9,22 @@ namespace AgribattleArenaBackendServer.Engine.Natives
     {
         float defaultMod;
         SceneObjectAction action;
-        
+        float defaultZ;
+        TagSynergy[] defaultArmor;
+        int defaultHealth;
+
+        public TagSynergy[] DefaultArmor { get { return defaultArmor; } }
+        public int DefaultHealth { get { return defaultHealth; } }
+        public float DefaultZ { get { return defaultZ; } }
         public float DefaultMod { get { return defaultMod; } }
         public SceneObjectAction Action { get { return action; } }
 
-        public DecorationNative(string id, string[] tags, float defaultMod, SceneObjectAction action) : base(id, tags)
+        public DecorationNative(string id, string[] tags, float defaultMod, SceneObjectAction action, float defaultZ, int defaultHealth, TagSynergy[] defaultArmor) 
+            : base(id, tags)
         {
+            this.defaultHealth = defaultHealth;
+            this.defaultArmor = defaultArmor;
+            this.defaultZ = defaultZ;
             this.defaultMod = defaultMod;
             this.action = action;
         }

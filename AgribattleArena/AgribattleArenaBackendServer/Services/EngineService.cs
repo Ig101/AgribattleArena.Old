@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class EngineService
+    public class EngineService: IEngineService
     {
-        List<Scene> scenes;
+        List<IScene> scenes;
 
-        public void SynchronizeHandler (Scene sender, Engine.Action action, int? id, int? actionId, int? targetX, int? targetY)
+        public void SynchronizeHandler (IScene sender, Engine.Action action, uint? id, int? actionId, int? targetX, int? targetY)
         {
-
+            
         }
     }
 }
