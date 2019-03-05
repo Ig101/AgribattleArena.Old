@@ -18,6 +18,7 @@ namespace AgribattleArenaBackendServer.Engine
             : base(parent, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor), native)
         {
             this.mod = mod ?? native.DefaultMod;
+            this.InitiativePosition += 1;
         }
 
         public override void Update(float time)

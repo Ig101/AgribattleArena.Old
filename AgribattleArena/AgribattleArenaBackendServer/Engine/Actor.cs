@@ -19,6 +19,7 @@ namespace AgribattleArenaBackendServer.Engine
         {
             this.roleModel = new RoleModel(this,roleModel);
             this.DamageModel.SetupRoleModel(this.roleModel);
+            this.InitiativePosition += 1f / this.roleModel.Initiative;
         }
 
         public override void Update(float time)

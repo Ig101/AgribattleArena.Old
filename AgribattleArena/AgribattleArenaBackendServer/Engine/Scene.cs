@@ -15,6 +15,7 @@ namespace AgribattleArenaBackendServer.Engine
         public event SyncHandler ReturnAction;
 
         INativeManager nativeManager;
+        Random gameRandom;
 
         Tile[,] tiles;
         List<TileObject> actors;
@@ -24,13 +25,20 @@ namespace AgribattleArenaBackendServer.Engine
         List<TileObject> deletedActors;
         List<SpecEffect> deletedEffects;
         uint idsCounter;
+        int randomCounter;
 
         public INativeManager NativeManager { get { return nativeManager; } }
         public TileObject TempTileObject { get { return tempTileObject; } }
 
-
-        public Scene(ILevelGenerator generator, INativeManager nativeManager)
+        public float GetNextRandom()
         {
+            randomCounter++;
+            return (float)gameRandom.NextDouble();
+        }
+
+        public Scene(ILevelGenerator generator, INativeManager nativeManager, int seed)
+        {
+            this.gameRandom = new Random(seed);
             this.nativeManager = nativeManager;
             idsCounter = 0;
             actors = new List<TileObject>();
@@ -102,7 +110,7 @@ namespace AgribattleArenaBackendServer.Engine
         #region Sync
         public SynchronizationObject GetSynchronizationData (bool nullify)
         {
-            SynchronizationObject sync = new SynchronizationObject(actors, deletedActors, deletedEffects, tiles);
+            SynchronizationObject sync = new SynchronizationObject(actors, deletedActors, deletedEffects, tiles,randomCounter);
             if (nullify)
             {
                 sync.ChangedActors.ForEach(x => x.Affected = false);
@@ -120,7 +128,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public FullSynchronizationObject GetFullSynchronizationData()
         {
-            return new FullSynchronizationObject(actors, specEffects, tiles);
+            return new FullSynchronizationObject(actors, specEffects, tiles,randomCounter);
         }
         #endregion
 

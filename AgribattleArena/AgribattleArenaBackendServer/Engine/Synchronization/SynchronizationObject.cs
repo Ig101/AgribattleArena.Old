@@ -12,8 +12,9 @@ namespace AgribattleArenaBackendServer.Engine.Synchronization
         List<SpecEffect> deletedEffects;
         List<TileObject> deletedActors;
         Point tileLength;
+        int randomCounter;
 
-
+        public int RandomCounter { get { return randomCounter; } }
         public List<TileObject> ChangedActors { get { return changedActors; } }
         public List<SpecEffect> ChangedEffects { get { return new List<SpecEffect>(); } }
         public List<TileObject> DeletedActors { get { return deletedActors; } }
@@ -32,8 +33,9 @@ namespace AgribattleArenaBackendServer.Engine.Synchronization
             }
         }
 
-        public SynchronizationObject (List<TileObject> actors, List<TileObject> deletedActors, List<SpecEffect> deletedEffects, Tile[,] tiles)
+        public SynchronizationObject (List<TileObject> actors, List<TileObject> deletedActors, List<SpecEffect> deletedEffects, Tile[,] tiles, int randomCounter)
         {
+            this.randomCounter = randomCounter;
             tileLength = new Point(tiles.GetLength(0), tiles.GetLength(1));
             this.changedActors = new List<TileObject>();
             this.changedActors.AddRange(actors.FindAll(x => x.Affected));

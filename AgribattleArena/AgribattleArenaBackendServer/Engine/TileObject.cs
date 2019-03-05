@@ -28,6 +28,7 @@ namespace AgribattleArenaBackendServer.Engine
             this.tempTile = tempTile;
             this.tempTile.TempObject = this;
             this.damageModel = damageModel;
+            this.initiativePosition += (parent.GetNextRandom() / 50);
         }
 
         public bool Damage (float amount, string[] tags)

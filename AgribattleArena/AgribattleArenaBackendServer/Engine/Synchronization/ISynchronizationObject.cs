@@ -7,6 +7,7 @@ namespace AgribattleArenaBackendServer.Engine.Synchronization
 {
     public interface ISynchronizationObject
     {
+        int RandomCounter { get; }
         List<TileObject> ChangedActors { get; }
         List<SpecEffect> ChangedEffects { get; }
         List<TileObject> DeletedActors { get; }

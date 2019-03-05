@@ -10,7 +10,9 @@ namespace AgribattleArenaBackendServer.Engine.Synchronization
         List<TileObject> actors;
         List<SpecEffect> effects;
         Tile[,] tiles;
+        int randomCounter;
 
+        public int RandomCounter { get { return randomCounter; } }
         public List<TileObject> ChangedActors { get { return actors; } }
         public List<SpecEffect> ChangedEffects { get { return effects; } }
         public List<TileObject> DeletedActors { get { return new List<TileObject>(); } }
@@ -18,8 +20,9 @@ namespace AgribattleArenaBackendServer.Engine.Synchronization
         public List<Tile> ChangedTiles => tiles.Cast<Tile>().ToList();
         public Tile[,] TileSet { get { return tiles; } }
 
-        public FullSynchronizationObject (List<TileObject> actors, List<SpecEffect> effects, Tile[,] tiles)
+        public FullSynchronizationObject (List<TileObject> actors, List<SpecEffect> effects, Tile[,] tiles, int randomCounter)
         {
+            this.randomCounter = randomCounter;
             this.actors = actors;
             this.effects = effects;
             this.tiles = tiles;
