@@ -16,6 +16,8 @@ namespace AgribattleArenaBackendServer.Engine
     {
         public event SyncHandler ReturnAction;
 
+        int id;
+
         INativeManager nativeManager;
         Random gameRandom;
 
@@ -30,7 +32,9 @@ namespace AgribattleArenaBackendServer.Engine
         int randomCounter;
 
         public INativeManager NativeManager { get { return nativeManager; } }
+
         public TileObject TempTileObject { get { return tempTileObject; } }
+        public int Id { get { return id; } }
 
         public float GetNextRandom()
         {
@@ -38,8 +42,9 @@ namespace AgribattleArenaBackendServer.Engine
             return (float)gameRandom.NextDouble();
         }
 
-        public Scene(ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
+            this.id = id;
             this.gameRandom = new Random(seed);
             this.nativeManager = nativeManager;
             idsCounter = 0;

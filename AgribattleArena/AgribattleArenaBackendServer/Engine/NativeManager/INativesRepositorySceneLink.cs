@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
-    public interface INativesRepository
+    public interface INativesRepositorySceneLink
     {
         Dictionary<string, TaggingNative> GetAllNatives();
     }

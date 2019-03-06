@@ -9,6 +9,7 @@ namespace AgribattleArenaBackendServer.Engine
     public interface IScene
     {
         TileObject TempTileObject { get; }
+        int Id { get; }
 
         SynchronizationObject GetSynchronizationData();
         FullSynchronizationObject GetFullSynchronizationData();
