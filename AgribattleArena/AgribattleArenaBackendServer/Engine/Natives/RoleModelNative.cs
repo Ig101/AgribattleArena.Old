@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Natives
 {
-    public class RoleModelNative
+    public class RoleModelNative: TaggingNative
     {
         int strength;
         int willpower;
@@ -27,7 +27,8 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         public SkillNative[] Skills { get { return skills; } }
         public int ActionPointsIncome { get { return actionPointsIncome; } }
 
-        public RoleModelNative (int strength, int willpower, int constitution, int speed, TagSynergy[] armor, SkillNative attackSkill, SkillNative[] skills, int actionPointsIncome)
+        public RoleModelNative (string id, int strength, int willpower, int constitution, int speed, TagSynergy[] armor, SkillNative attackSkill, SkillNative[] skills, int actionPointsIncome)
+            :base (id, null)
         {
             this.strength = strength;
             this.willpower = willpower;
@@ -39,7 +40,8 @@ namespace AgribattleArenaBackendServer.Engine.Natives
             this.actionPointsIncome = actionPointsIncome;
         }
 
-        public RoleModelNative(INativeManager nativeManager, int strength, int willpower, int constitution, int speed, TagSynergy[] armor, string attackSkillId, string[] skillsId, int actionPointsIncome)
+        public RoleModelNative(INativeManager nativeManager, string id, int strength, int willpower, int constitution, int speed, TagSynergy[] armor, string attackSkillId, string[] skillsId, int actionPointsIncome)
+            : base(id, null)
         {
             this.strength = strength;
             this.willpower = willpower;

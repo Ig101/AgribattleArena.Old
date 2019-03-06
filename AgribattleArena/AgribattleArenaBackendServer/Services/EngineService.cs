@@ -14,6 +14,11 @@ namespace AgribattleArenaBackendServer.Services
         ILevelGenerator levelGenerator;
         List<IScene> scenes;
 
+        public EngineService()
+        {
+
+        }
+
         public void SynchronizeHandler (IScene sender, Engine.Action action, uint? id, int? actionId, int? targetX, int? targetY)
         {
             
