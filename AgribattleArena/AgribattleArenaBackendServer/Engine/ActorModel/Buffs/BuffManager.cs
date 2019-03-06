@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AgribattleArenaBackendServer.Engine.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArenaBackendServer.Engine.ActorModel
+namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
 {
     public class BuffManager
     {

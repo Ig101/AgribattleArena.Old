@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArenaBackendServer.Engine.Generator
+namespace AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities
 {
     public class GenerationSet
     {

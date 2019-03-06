@@ -1,10 +1,11 @@
 ﻿using AgribattleArenaBackendServer.Engine.ActorModel;
+using AgribattleArenaBackendServer.Engine.ActorModel.Buffs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArenaBackendServer.Engine
+namespace AgribattleArenaBackendServer.Engine.Helpers
 {
     public delegate void SceneTileAction(Scene scene, Tile tile, float mod, float time);
     public delegate void SceneObjectAction(Scene scene, GameObject obj, float mod, float time);

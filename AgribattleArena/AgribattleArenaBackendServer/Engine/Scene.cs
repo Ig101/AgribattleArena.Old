@@ -1,4 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
+using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Engine.Synchronization;
 using System;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public delegate void SyncHandler(Scene scene, Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
+    public delegate void SyncHandler(Scene scene, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
 
     public class Scene: IScene
     {
@@ -149,7 +151,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 this.tempTileObject = newObject;
                 Update(minInitiativePosition);
-                ReturnAction(this, Action.EndTurn, null, null, null, null, GetSynchronizationData(true));
+                ReturnAction(this, Engine.Helpers.Action.EndTurn, null, null, null, null, GetSynchronizationData(true));
                 this.tempTileObject.StartTurn();
             }
         }
@@ -198,7 +200,7 @@ namespace AgribattleArenaBackendServer.Engine
             {
                 actor.Cast();
                 AfterActionUpdate();
-                this.ReturnAction(this, Action.Move, actor.Id, null, null, null, GetSynchronizationData(true));
+                this.ReturnAction(this, Engine.Helpers.Action.Move, actor.Id, null, null, null, GetSynchronizationData(true));
                 return true;
             }
             return false;
@@ -212,7 +214,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if(result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Move, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
+                    this.ReturnAction(this, Engine.Helpers.Action.Move, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -227,7 +229,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Cast, actor.Id, id, target.X,target.Y, GetSynchronizationData(true));
+                    this.ReturnAction(this, Engine.Helpers.Action.Cast, actor.Id, id, target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -242,7 +244,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Attack, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
+                    this.ReturnAction(this, Engine.Helpers.Action.Attack, actor.Id,null,target.X,target.Y, GetSynchronizationData(true));
                 }
                 return result;
             }
@@ -257,7 +259,7 @@ namespace AgribattleArenaBackendServer.Engine
                 if (result)
                 {
                     AfterActionUpdate();
-                    this.ReturnAction(this, Action.Wait, actor.Id, null, null, null, GetSynchronizationData(true));
+                    this.ReturnAction(this, Engine.Helpers.Action.Wait, actor.Id, null, null, null, GetSynchronizationData(true));
                 }
                 return result;
             }

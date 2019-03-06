@@ -19,7 +19,7 @@ namespace AgribattleArenaBackendServer.Services
 
         }
 
-        public void SynchronizeHandler (IScene sender, Engine.Action action, uint? id, int? actionId, int? targetX, int? targetY)
+        public void SynchronizeHandler (IScene sender, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY)
         {
             
         }

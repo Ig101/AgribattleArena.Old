@@ -1,4 +1,4 @@
-﻿namespace AgribattleArenaBackendServer.Engine
+﻿namespace AgribattleArenaBackendServer.Engine.Helpers
 {
     public class TagSynergy
     {

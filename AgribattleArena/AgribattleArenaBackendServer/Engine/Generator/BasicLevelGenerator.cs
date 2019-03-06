@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,11 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             List<GenerationObject> decorations = new List<GenerationObject>();
 
             return new GenerationSet(tileSet, actors,decorations);
+        }
+
+        GenerationSet ILevelGenerator.GenerateNewScene()
+        {
+            throw new NotImplementedException();
         }
     }
 }
