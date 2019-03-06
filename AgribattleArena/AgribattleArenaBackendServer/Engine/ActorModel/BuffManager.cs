@@ -78,7 +78,15 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             initiative = 0;
             foreach(Buff buff in buffs)
             {
-                buff.Native.BuffAplier?.Invoke(this, buff.Mod);
+                //buff.Native.BuffAplier?.Invoke(this, buff.Mod);
+                if (buff.Native.BuffAplier != null)
+                {
+                    Jint.Engine actionEngine = new Jint.Engine();
+                    actionEngine
+                        .SetValue("buffManager", this)
+                        .SetValue("mod", buff.Mod)
+                        .Execute(buff.Native.BuffAplier);
+                }
             }
         }
 

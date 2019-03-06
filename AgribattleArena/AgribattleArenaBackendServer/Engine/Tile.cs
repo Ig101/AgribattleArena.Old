@@ -37,7 +37,17 @@ namespace AgribattleArenaBackendServer.Engine
 
         public void Update(float time)
         {
-            native.Action?.Invoke(parent, this, native.ActionMod, time);
+            //native.Action?.Invoke(parent, this, native.ActionMod, time);
+            if (Native.Action != null)
+            {
+                Jint.Engine actionEngine = new Jint.Engine();
+                actionEngine
+                    .SetValue("scene", Parent)
+                    .SetValue("act", this)
+                    .SetValue("mod", native.ActionMod)
+                    .SetValue("time", time)
+                    .Execute(Native.Action);
+            }
         }
 
         public Point GetCenter()

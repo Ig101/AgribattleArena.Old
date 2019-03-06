@@ -8,7 +8,7 @@ namespace AgribattleArenaBackendServer.Engine.Natives
     public class DecorationNative : TaggingNative
     {
         float defaultMod;
-        SceneObjectAction action;
+        string action;
         float defaultZ;
         TagSynergy[] defaultArmor;
         int defaultHealth;
@@ -17,9 +17,9 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         public int DefaultHealth { get { return defaultHealth; } }
         public float DefaultZ { get { return defaultZ; } }
         public float DefaultMod { get { return defaultMod; } }
-        public SceneObjectAction Action { get { return action; } }
+        public string Action { get { return action; } }
 
-        public DecorationNative(string id, string[] tags, float defaultMod, SceneObjectAction action, float defaultZ, int defaultHealth, TagSynergy[] defaultArmor) 
+        public DecorationNative(string id, string[] tags, float defaultMod, string action, float defaultZ, int defaultHealth, TagSynergy[] defaultArmor) 
             : base(id, tags)
         {
             this.defaultHealth = defaultHealth;

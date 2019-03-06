@@ -7,17 +7,17 @@ namespace AgribattleArenaBackendServer.Engine.Natives
 {
     public class BuffNative : TaggingNative
     {
-        SceneObjectAction action;
-        BuffAction buffAplier;
+        string action;
+        string buffAplier;
         float? duration;
         float mod;
 
-        public SceneObjectAction Action { get { return action; } }
-        public BuffAction BuffAplier { get { return buffAplier; } }
+        public string Action { get { return action; } }
+        public string BuffAplier { get { return buffAplier; } }
         public float? Duration { get { return duration; } }
         public float Mod { get { return mod; } }
 
-        public BuffNative(string id, string[] tags, SceneObjectAction action, BuffAction buffAplier, float? duration, float mod) 
+        public BuffNative(string id, string[] tags, string action, string buffAplier, float? duration, float mod) 
             : base(id, tags)
         {
             this.action = action;

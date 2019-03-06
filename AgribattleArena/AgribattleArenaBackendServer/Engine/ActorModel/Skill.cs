@@ -48,7 +48,17 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             {
                 roleModel.ActionPoints -= cost;
                 preparationTime = cd;
-                native.Action(roleModel.Owner.Parent, roleModel.Owner, target, this);
+                //native.Action(roleModel.Owner.Parent, roleModel.Owner, target, this);
+                if (native.Action != null)
+                {
+                    Jint.Engine actionEngine = new Jint.Engine();
+                    actionEngine
+                        .SetValue("scene", roleModel.Owner.Parent)
+                        .SetValue("act", roleModel.Owner)
+                        .SetValue("targetTile", target)
+                        .SetValue("skill", this)
+                        .Execute(native.Action);
+                }
                 return true;
             }
             return false;

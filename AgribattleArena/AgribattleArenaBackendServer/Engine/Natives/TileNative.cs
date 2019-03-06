@@ -7,7 +7,7 @@ namespace AgribattleArenaBackendServer.Engine.Natives
 {
     public class TileNative: TaggingNative
     {
-        SceneTileAction action;
+        string action;
         float actionMod;
         bool unbearable;
         bool flat;
@@ -16,10 +16,10 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         public bool Flat { get { return flat; } }
         public int DefaultHeight { get { return defaultHeight; } }
         public bool Unbearable { get { return unbearable; } }
-        public SceneTileAction Action { get { return action; } }
+        public string Action { get { return action; } }
         public float ActionMod { get { return actionMod; } }
 
-        public TileNative (string id, SceneTileAction action, float actionMod, bool unbearable, bool flat, int defaultHeight, string[] tags)
+        public TileNative (string id, string action, float actionMod, bool unbearable, bool flat, int defaultHeight, string[] tags)
             :base(id, tags)
         {
             this.flat = flat;

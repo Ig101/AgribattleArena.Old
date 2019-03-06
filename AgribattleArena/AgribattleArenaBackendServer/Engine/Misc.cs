@@ -9,7 +9,7 @@ namespace AgribattleArenaBackendServer.Engine
     public delegate void SceneTileAction(Scene scene, Tile tile, float mod, float time);
     public delegate void SceneObjectAction(Scene scene, GameObject obj, float mod, float time);
     public delegate void SceneObjectTargetAction(Scene scene, GameObject obj, Tile targetTile, float mod, float time);
-    public delegate void SkillObjectTargetAction(Scene scene, Actor act, Tile targetTime, Skill skill);
+    public delegate void SkillObjectTargetAction(Scene scene, Actor act, Tile targetTile, Skill skill);
     public delegate void BuffAction(BuffManager manager, float mod);
 
     public enum Action { Move, Attack, Cast, Wait, Decoration, EndTurn, EndGame}

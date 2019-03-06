@@ -28,7 +28,16 @@ namespace AgribattleArenaBackendServer.Engine
 
         public void Cast()
         {
-                Native.Action?.Invoke(Parent, this, mod, 1);
+            //Native.Action?.Invoke(Parent, this, mod, 1);
+            if (Native.Action != null)
+            {
+                Jint.Engine actionEngine = new Jint.Engine();
+                actionEngine
+                    .SetValue("scene", Parent)
+                    .SetValue("act", this)
+                    .SetValue("mod", mod)
+                    .Execute(Native.Action);
+            }
         }
 
         public override void EndTurn()

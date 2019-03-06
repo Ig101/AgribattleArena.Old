@@ -27,7 +27,17 @@ namespace AgribattleArenaBackendServer.Engine
 
         public override void Update(float time)
         {
-            this.native.Action?.Invoke(Parent, this, mod, time);
+            //this.native.Action?.Invoke(Parent, this, mod, time);
+            if (Native.Action != null)
+            {
+                Jint.Engine actionEngine = new Jint.Engine();
+                actionEngine
+                    .SetValue("scene", Parent)
+                    .SetValue("act", this)
+                    .SetValue("mod", mod)
+                    .SetValue("time", time)
+                    .Execute(Native.Action);
+            }
             if (this.duration <= 0) IsAlive = false;
             else this.duration-=time;
         }

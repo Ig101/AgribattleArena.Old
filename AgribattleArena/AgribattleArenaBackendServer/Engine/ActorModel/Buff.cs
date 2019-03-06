@@ -31,8 +31,18 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         
         public void Update (float time)
         {
-            native.Action?.Invoke(manager.RoleModel.Owner.Parent, manager.RoleModel.Owner, mod, time);
-            if(duration!=null)
+            //native.Action?.Invoke(manager.RoleModel.Owner.Parent, manager.RoleModel.Owner, mod, time);
+            if (Native.Action != null)
+            {
+                Jint.Engine actionEngine = new Jint.Engine();
+                actionEngine
+                    .SetValue("scene", manager.RoleModel.Owner.Parent)
+                    .SetValue("act", manager.RoleModel.Owner)
+                    .SetValue("mod", mod)
+                    .SetValue("time",time)
+                    .Execute(Native.Action);
+            }
+            if (duration!=null)
             {
                 duration -= time;
             }
