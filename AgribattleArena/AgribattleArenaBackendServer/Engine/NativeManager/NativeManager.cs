@@ -11,7 +11,7 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
     {
         Dictionary<string,TaggingNative> natives;
 
-        public NativeManager(INativesRepositorySceneLink repository)
+        public NativeManager(INativesServiceSceneLink repository)
         {
             natives = repository.GetAllNatives();
         }

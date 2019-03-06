@@ -1,12 +1,11 @@
-﻿using AgribattleArenaBackendServer.Services.Contracts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class SceneInfoRepository: ISceneInfoRepository
+    public interface INativesService
     {
     }
 }
