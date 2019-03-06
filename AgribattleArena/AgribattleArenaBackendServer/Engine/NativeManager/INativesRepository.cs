@@ -1,0 +1,13 @@
+﻿using AgribattleArenaBackendServer.Engine.Natives;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace AgribattleArenaBackendServer.Engine.NativeManager
+{
+    public interface INativesRepository
+    {
+        Dictionary<string, TaggingNative> GetAllNatives();
+    }
+}

@@ -8,7 +8,6 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
     public interface INativeManager
     {
-        bool LoadNativesExternal();
         void AddNative(TaggingNative native);
         TileNative GetTileNative(string id);
         ActorNative GetActorNative(string id);
