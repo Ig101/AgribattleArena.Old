@@ -9,6 +9,6 @@ namespace AgribattleArenaBackendServer.Engine.Generator
 {
     public interface ILevelGenerator
     {
-        GenerationSet GenerateNewScene();
+        GenerationSet GenerateNewScene(List<int> playerIds, int seed);
     }
 }

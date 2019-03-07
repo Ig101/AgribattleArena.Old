@@ -16,8 +16,8 @@ namespace AgribattleArenaBackendServer.Engine
         public float Mod { get { return mod; } set { mod = value; } }
         public EffectNative Native { get { return native; } set { native = value; } }
 
-        public SpecEffect(Scene parent, float x, float y, float? z, EffectNative native, float? duration, float? mod)
-            : base(parent, x, y, z ?? native.DefaultZ)
+        public SpecEffect(Scene parent, int? ownerId, float x, float y, float? z, EffectNative native, float? duration, float? mod)
+            : base(parent, ownerId, x, y, z ?? native.DefaultZ)
         {
             this.duration = duration?? native.DefaultDuration;
             this.native = native;

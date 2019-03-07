@@ -26,7 +26,7 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             return new GenerationSet(tileSet, actors,decorations);
         }
 
-        GenerationSet ILevelGenerator.GenerateNewScene()
+        GenerationSet ILevelGenerator.GenerateNewScene(List<int> playerIds, int seed)
         {
             throw new NotImplementedException();
         }

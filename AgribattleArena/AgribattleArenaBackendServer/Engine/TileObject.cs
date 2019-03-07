@@ -21,8 +21,8 @@ namespace AgribattleArenaBackendServer.Engine
         public DamageModel DamageModel { get { return damageModel; } }
         public Tile TempTile { get { return tempTile; }  set { tempTile = value; } }
 
-        public TileObject(Scene parent, Tile tempTile, float z, DamageModel damageModel, TaggingNative native)
-            : base(parent, tempTile.GetCenter().X, tempTile.GetCenter().Y, z)
+        public TileObject(Scene parent, int? ownerId, Tile tempTile, float z, DamageModel damageModel, TaggingNative native)
+            : base(parent, ownerId, tempTile.GetCenter().X, tempTile.GetCenter().Y, z)
         {
             this.native = native;
             this.tempTile = tempTile;

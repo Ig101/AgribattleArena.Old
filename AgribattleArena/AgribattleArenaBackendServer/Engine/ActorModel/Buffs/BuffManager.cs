@@ -94,7 +94,24 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
         public Buff AddBuff(Buff buff)
         {
             roleModel.Owner.Affected = true;
-            buffs.Add(buff);
+            Buff tempVersion;
+            if (!buff.Native.Repeatable && (tempVersion = buffs.Find(x => x.Native.Id == buff.Native.Id)) != null)
+            {
+                if (buff.Native.SummarizeLength)
+                {
+                    tempVersion.Duration += buff.Duration;
+                }
+                else
+                {
+                    tempVersion.Duration = buff.Duration;
+                }
+                tempVersion.Mod = Math.Max(tempVersion.Mod, buff.Mod);
+                buff = tempVersion;
+            }
+            else
+            {
+                buffs.Add(buff);
+            }
             RecalculateBuffs();
             return buff;
         }

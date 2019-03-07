@@ -17,6 +17,7 @@ namespace AgribattleArenaBackendServer.Engine
         public event SyncHandler ReturnAction;
 
         int id;
+        List<int> playerIds;
 
         INativeManager nativeManager;
         Random gameRandom;
@@ -35,6 +36,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         public TileObject TempTileObject { get { return tempTileObject; } }
         public int Id { get { return id; } }
+        public List<int> PlayerIds { get { return playerIds; } }
 
         public float GetNextRandom()
         {
@@ -42,8 +44,10 @@ namespace AgribattleArenaBackendServer.Engine
             return (float)gameRandom.NextDouble();
         }
 
-        public Scene(int id, ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, List<int> playerIds, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
+            //TODO playerSignatures
+            this.playerIds = playerIds;
             this.id = id;
             this.gameRandom = new Random(seed);
             this.nativeManager = nativeManager;
@@ -52,7 +56,7 @@ namespace AgribattleArenaBackendServer.Engine
             specEffects = new List<SpecEffect>();
             deletedActors = new List<TileObject>();
             deletedEffects = new List<SpecEffect>();
-            GenerationSet set = generator.GenerateNewScene();
+            GenerationSet set = generator.GenerateNewScene(playerIds, unchecked(seed * id));
             tiles = new Tile[set.TileSet.GetLength(0), set.TileSet.GetLength(1)];
             for(int x = 0; x<tiles.GetLength(0);x++)
             {
@@ -63,11 +67,11 @@ namespace AgribattleArenaBackendServer.Engine
             }
             foreach(GenerationObject actor in set.Actors)
             {
-                CreateActor(actor.Native, actor.RoleNative, tiles[actor.TileX, actor.TileY], null);
+                CreateActor(actor.Owner, actor.Native, actor.RoleNative, tiles[actor.TileX, actor.TileY], null);
             }
             foreach(GenerationObject decoration in set.Decorations)
             {
-                CreateDecoration(decoration.Native, tiles[decoration.TileX, decoration.TileY], null, null, null, null);
+                CreateDecoration(decoration.Owner, decoration.Native, tiles[decoration.TileX, decoration.TileY], null, null, null, null);
             }
             EndTurn();
         }
@@ -85,23 +89,23 @@ namespace AgribattleArenaBackendServer.Engine
         }
 
         #region Creation
-        public Actor CreateActor(string native, string roleNative, Tile target, float? z)
+        public Actor CreateActor(int? ownerId, string native, string roleNative, Tile target, float? z)
         {
-            Actor actor = new Actor(this, target, z, nativeManager.GetActorNative(native), nativeManager.GetRoleModelNative(roleNative));
+            Actor actor = new Actor(this, ownerId, target, z, nativeManager.GetActorNative(native), nativeManager.GetRoleModelNative(roleNative));
             actors.Add(actor);
             return actor;
         }
 
-        public ActiveDecoration CreateDecoration(string native, Tile target, float? z, int? health, TagSynergy[] armor, float? mod)
+        public ActiveDecoration CreateDecoration(int? ownerId, string native, Tile target, float? z, int? health, TagSynergy[] armor, float? mod)
         {
-            ActiveDecoration actor = new ActiveDecoration(this, target, z, health, armor, nativeManager.GetDecorationNative(native), mod);
+            ActiveDecoration actor = new ActiveDecoration(this, ownerId, target, z, health, armor, nativeManager.GetDecorationNative(native), mod);
             actors.Add(actor);
             return actor;
         }
 
-        public SpecEffect CreateEffect(string native, float x, float y, float? z, float? duration, float? mod)
+        public SpecEffect CreateEffect(int? ownerId, string native, float x, float y, float? z, float? duration, float? mod)
         {
-            SpecEffect effect = new SpecEffect(this, x, y, z, nativeManager.GetEffectNative(native), duration, mod);
+            SpecEffect effect = new SpecEffect(this, ownerId, x, y, z, nativeManager.GetEffectNative(native), duration, mod);
             specEffects.Add(effect);
             return effect;
         }

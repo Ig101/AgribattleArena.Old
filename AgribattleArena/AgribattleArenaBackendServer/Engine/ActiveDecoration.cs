@@ -15,8 +15,8 @@ namespace AgribattleArenaBackendServer.Engine
         public new DecorationNative Native { get { return (DecorationNative)base.Native; } }
         public float Mod { get { return mod; } set { mod = value; } }
 
-        public ActiveDecoration(Scene parent,  Tile tempTile, float? z, int? maxHealth, TagSynergy[] armor, DecorationNative native, float?mod) 
-            : base(parent, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor), native)
+        public ActiveDecoration(Scene parent, int? ownerId, Tile tempTile, float? z, int? maxHealth, TagSynergy[] armor, DecorationNative native, float?mod) 
+            : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor), native)
         {
             this.mod = mod ?? native.DefaultMod;
             this.InitiativePosition += 1;

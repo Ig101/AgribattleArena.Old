@@ -15,8 +15,8 @@ namespace AgribattleArenaBackendServer.Engine
         public RoleModel RoleModel { get { return roleModel; } }
         public new ActorNative Native { get { return (ActorNative)base.Native; } }
 
-        public Actor(Scene parent, Tile tempTile, float? z, ActorNative native, RoleModelNative roleModel)
-            : base(parent, tempTile, z ?? native.DefaultZ, new DamageModel(), native)
+        public Actor(Scene parent, int? ownerId, Tile tempTile, float? z, ActorNative native, RoleModelNative roleModel)
+            : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(), native)
         {
             this.roleModel = new RoleModel(this,roleModel);
             this.DamageModel.SetupRoleModel(this.roleModel);
