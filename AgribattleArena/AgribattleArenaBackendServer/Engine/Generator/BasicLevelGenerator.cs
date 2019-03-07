@@ -6,29 +6,36 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Generator
 {
+    //TODO Not Ready
     public class BasicLevelGenerator : ILevelGenerator
     {
-        int x;
-        int y;
+        IProfileServiceSceneLink profiles;
 
-        public BasicLevelGenerator()
+        int sizeX;
+        int sizeY;
+
+        public BasicLevelGenerator(IProfileServiceSceneLink profiles, int sizeX, int sizeY)
         {
-            x = 40;
-            y = 40;
+            this.sizeX=sizeX;
+            this.sizeY=sizeY;
+            this.profiles = profiles;
         }
 
-        public GenerationSet GenerateNewScene()
+        public GenerationSet GenerateNewScene(List<int> playerIds, int seed)
         {
-            GenerationTile[,] tileSet = new GenerationTile[x,y];
+            Random random = new Random(seed);
+            GenerationTile[,] tileSet = new GenerationTile[sizeX,sizeY];
             List<GenerationObject> actors = new List<GenerationObject>();
             List<GenerationObject> decorations = new List<GenerationObject>();
+            List<PlayerActor> playerActors = new List<PlayerActor>();
 
-            return new GenerationSet(tileSet, actors,decorations);
-        }
+            List<PlayerActor> actorsFromService = new List<PlayerActor>();
+            foreach(int playerId in playerIds)
+            {
 
-        GenerationSet ILevelGenerator.GenerateNewScene(List<int> playerIds, int seed)
-        {
-            throw new NotImplementedException();
+            }
+            //TODO Generation method
+            return new GenerationSet(tileSet, actors,decorations, playerActors);
         }
     }
 }

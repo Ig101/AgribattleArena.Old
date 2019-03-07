@@ -1,4 +1,5 @@
-﻿using AgribattleArenaBackendServer.Engine.Generator;
+﻿using AgribattleArenaBackendServer.Engine.ActorModel;
+using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
@@ -39,12 +40,6 @@ namespace AgribattleArenaBackendServer.Engine
         public int RandomCounter { get { return randomCounter; } }
         public List<int> PlayerIds { get { return playerIds; } }
 
-        public float GetNextRandom()
-        {
-            randomCounter++;
-            return (float)gameRandom.NextDouble();
-        }
-
         public Scene(int id, List<int> playerIds, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
             //TODO playerSignatures
@@ -66,6 +61,10 @@ namespace AgribattleArenaBackendServer.Engine
                     CreateTile(set.TileSet[x, y].Native, x, y, set.TileSet[x, y].Height);
                 }
             }
+            foreach(PlayerActor actor in set.PlayerActors)
+            {
+                CreateActor(actor.Owner, actor.Native, actor.RoleModel, tiles[actor.TileX, actor.TileY], null);
+            }
             foreach(GenerationObject actor in set.Actors)
             {
                 CreateActor(actor.Owner, actor.Native, actor.RoleNative, tiles[actor.TileX, actor.TileY], null);
@@ -75,6 +74,12 @@ namespace AgribattleArenaBackendServer.Engine
                 CreateDecoration(decoration.Owner, decoration.Native, tiles[decoration.TileX, decoration.TileY], null, null, null, null);
             }
             EndTurn();
+        }
+
+        public float GetNextRandom()
+        {
+            randomCounter++;
+            return (float)gameRandom.NextDouble();
         }
 
         public uint GetNextId()
@@ -93,6 +98,13 @@ namespace AgribattleArenaBackendServer.Engine
         public Actor CreateActor(int? ownerId, string native, string roleNative, Tile target, float? z)
         {
             Actor actor = new Actor(this, ownerId, target, z, nativeManager.GetActorNative(native), nativeManager.GetRoleModelNative(roleNative));
+            actors.Add(actor);
+            return actor;
+        }
+
+        public Actor CreateActor(int? ownerId, string native, RoleModel roleModel, Tile target, float? z)
+        {
+            Actor actor = new Actor(this, ownerId, target, z, nativeManager.GetActorNative(native), roleModel);
             actors.Add(actor);
             return actor;
         }

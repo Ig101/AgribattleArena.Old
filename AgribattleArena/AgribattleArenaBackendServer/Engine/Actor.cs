@@ -23,6 +23,14 @@ namespace AgribattleArenaBackendServer.Engine
             this.InitiativePosition += 1f / this.roleModel.Initiative;
         }
 
+        public Actor(Scene parent, int? ownerId, Tile tempTile, float? z, ActorNative native, RoleModel roleModel)
+            : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(), native)
+        {
+            this.roleModel = roleModel;
+            this.DamageModel.SetupRoleModel(this.roleModel);
+            this.InitiativePosition += 1f / this.roleModel.Initiative;
+        }
+
         public override void Update(float time)
         {
             this.InitiativePosition -= time;
