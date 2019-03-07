@@ -54,6 +54,7 @@ namespace AgribattleArenaBackendServer.Engine
                 (target.Y == TempTile.Y && Math.Abs(target.X - TempTile.X) == 1)))
             {
                 ChangePosition(target);
+                roleModel.SpendActionPoints(1);
                 return true;
             }
             return false;

@@ -47,8 +47,6 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             if (roleModel.ActionPoints >= cost && preparationTime <= 0 && roleModel.BuffManager.CanAct &&
                 Misc.RangeBetween(roleModel.Owner.TempTile.X, roleModel.Owner.TempTile.Y, target.X, target.Y) <= range)
             {
-                roleModel.ActionPoints -= cost;
-                preparationTime = cd;
                 //native.Action(roleModel.Owner.Parent, roleModel.Owner, target, this);
                 if (native.Action != null)
                 {
@@ -60,6 +58,8 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
                         .SetValue("skill", this)
                         .Execute(native.Action);
                 }
+                preparationTime = cd;
+                roleModel.SpendActionPoints(cost);
                 return true;
             }
             return false;
