@@ -19,11 +19,6 @@ namespace AgribattleArenaBackendServer.Services
             this.context = context;
         }
 
-        string MapAction(Contexts.NativesEntities.SceneAction action)
-        {
-            return Encoding.Unicode.GetString(action.Script);
-        }
-
         public List<ActionNative> GetActions()
         {
             return AutoMapper.Mapper.Map<List<ActionNative>>(context.Actions.ToList());
