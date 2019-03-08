@@ -15,10 +15,5 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         {
             this.defaultZ = defaultZ;
         }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
     }
 }
