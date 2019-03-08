@@ -10,7 +10,7 @@ namespace AgribattleArenaBackendServer.Contexts.ProfilesEntities
     public class TagsArmor
     {
         [Key]
-        int id;
+        public int Id { get; set; }
         [Required]
         [MaxLength(15)]
         public string Tag { get; set; }

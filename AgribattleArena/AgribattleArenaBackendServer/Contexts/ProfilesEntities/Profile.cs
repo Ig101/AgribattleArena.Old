@@ -13,6 +13,7 @@ namespace AgribattleArenaBackendServer.Contexts.ProfilesEntities
         public string Login { get; set; }
         [Required]
         public string Password { get; set; }
+        public int MaxPlayers { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public List<Player> Actors { get; set; }

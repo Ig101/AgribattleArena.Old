@@ -32,7 +32,6 @@ namespace AgribattleArenaBackendServer.Contexts
         {
             modelBuilder.Entity<RoleModelSkill>()
                 .HasKey(t => new { t.RoleModelId, t.SkillId });
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<RoleModel>().ToTable("role_models");
             modelBuilder.Entity<RoleModelSkill>().ToTable("role_model_skill");
             modelBuilder.Entity<RoleModelSkill>().HasIndex(x => x.RoleModelId);
@@ -45,6 +44,7 @@ namespace AgribattleArenaBackendServer.Contexts
             modelBuilder.Entity<Tag>().HasIndex(x => x.SkillId);
             modelBuilder.Entity<Tag>().HasIndex(x => x.TileId);
             modelBuilder.Entity<Tag>().HasIndex(x => x.SpecEffectId);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

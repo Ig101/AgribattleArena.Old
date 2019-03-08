@@ -34,6 +34,8 @@ namespace AgribattleArenaBackendServer
             //Change it
             string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
             services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
+            connectionString = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
+            services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString));
             //
             services.AddTransient<INativesService, NativesService>();
             services.AddTransient<INativesServiceSceneLink, NativesService>();
