@@ -38,7 +38,7 @@ namespace AgribattleArenaBackendServer.Engine
         public TileObject TempTileObject { get { return tempTileObject; } }
         public int Id { get { return id; } }
         public int RandomCounter { get { return randomCounter; } }
-        public List<int> PlayerIds { get { return playerIds; } }
+        public IEnumerable<int> PlayerIds { get { return playerIds; } }
 
         public Scene(int id, List<int> playerIds, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {

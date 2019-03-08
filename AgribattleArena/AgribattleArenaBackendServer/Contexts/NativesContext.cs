@@ -12,7 +12,7 @@ namespace AgribattleArenaBackendServer.Contexts
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Buff> Buffs { get; set; }
         public DbSet<Decoration> Decorations { get; set; }
-        public DbSet<RoleModel> RoleModes { get; set; }
+        public DbSet<RoleModel> RoleModels { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SpecEffect> SpecEffects { get; set; }
         public DbSet<Tile> Tiles { get; set; }

@@ -46,6 +46,11 @@ namespace AgribattleArenaBackendServer
                 app.UseHsts();
             }
 
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+
+            });
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }

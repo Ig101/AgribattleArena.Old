@@ -8,6 +8,6 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
     public interface INativesServiceSceneLink
     {
-        Dictionary<string, TaggingNative> GetAllNatives();
+        IDictionary<string, TaggingNative> GetAllNatives();
     }
 }

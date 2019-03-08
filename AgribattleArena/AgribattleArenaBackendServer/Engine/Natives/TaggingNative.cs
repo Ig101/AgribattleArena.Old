@@ -10,8 +10,8 @@ namespace AgribattleArenaBackendServer.Engine.Natives
         string id;
         string[] tags;
 
-        public string Id { get { return id; } set { id = value; } }
-        public string[] Tags { get { return tags; } set { tags = value; } }
+        public string Id { get { return id; } }
+        public string[] Tags { get { return tags; } }
 
         public TaggingNative (string id, string[] tags)
         {

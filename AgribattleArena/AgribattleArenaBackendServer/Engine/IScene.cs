@@ -10,7 +10,7 @@ namespace AgribattleArenaBackendServer.Engine
     {
         TileObject TempTileObject { get; }
         int Id { get; }
-        List<int> PlayerIds { get; }
+        IEnumerable<int> PlayerIds { get; }
         int RandomCounter { get; }
 
         SynchronizationObject GetSynchronizationData();

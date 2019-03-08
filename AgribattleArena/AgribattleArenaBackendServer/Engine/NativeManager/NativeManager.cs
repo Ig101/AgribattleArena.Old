@@ -9,7 +9,7 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
     public class NativeManager : INativeManager
     {
-        Dictionary<string,TaggingNative> natives;
+        IDictionary<string,TaggingNative> natives;
 
         public NativeManager(INativesServiceSceneLink repository)
         {
