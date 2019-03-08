@@ -1,4 +1,5 @@
-﻿using AgribattleArenaBackendServer.Engine;
+﻿using AgribattleArenaBackendServer.Contexts;
+using AgribattleArenaBackendServer.Engine;
 using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using System;
@@ -14,9 +15,21 @@ namespace AgribattleArenaBackendServer.Services
         ILevelGenerator levelGenerator;
         List<IScene> scenes;
 
-        public EngineService()
+        public EngineService(INativesServiceSceneLink nativesService)
         {
+            nativeManager = new NativeManager(nativesService);
+            levelGenerator = new BasicLevelGenerator(40, 40);
+            scenes = new List<IScene>();
+        }
 
+        public void AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed)
+        {
+            scenes.Add(new Scene(id, players, profilesService, levelGenerator, nativeManager, seed));
+        }
+
+        public void ReinitializeNatives(INativesServiceSceneLink nativesService)
+        {
+            nativeManager.Initialize(nativesService);
         }
 
         public void SynchronizeHandler (IScene sender, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY)

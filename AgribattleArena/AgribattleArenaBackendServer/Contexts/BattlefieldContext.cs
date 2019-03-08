@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Contexts
 {
-    public class EngineContext
+    public class BattlefieldContext
     {
     }
 }

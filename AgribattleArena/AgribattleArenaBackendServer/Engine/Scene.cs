@@ -40,7 +40,7 @@ namespace AgribattleArenaBackendServer.Engine
         public int RandomCounter { get { return randomCounter; } }
         public IEnumerable<int> PlayerIds { get { return playerIds; } }
 
-        public Scene(int id, List<int> playerIds, ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, List<int> playerIds, IProfilesServiceSceneLink profilesService, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
             //TODO playerSignatures
             this.playerIds = playerIds;
@@ -52,7 +52,7 @@ namespace AgribattleArenaBackendServer.Engine
             specEffects = new List<SpecEffect>();
             deletedActors = new List<TileObject>();
             deletedEffects = new List<SpecEffect>();
-            GenerationSet set = generator.GenerateNewScene(playerIds, unchecked(seed * id));
+            GenerationSet set = generator.GenerateNewScene(profilesService, playerIds, unchecked(seed * id));
             tiles = new Tile[set.TileSet.GetLength(0), set.TileSet.GetLength(1)];
             for(int x = 0; x<tiles.GetLength(0);x++)
             {

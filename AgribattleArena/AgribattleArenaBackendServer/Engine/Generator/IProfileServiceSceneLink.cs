@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Generator
 {
-    public interface IProfileServiceSceneLink
+    public interface IProfilesServiceSceneLink
     {
         List<PlayerActor> GetPlayerActors(int playerId);
     }

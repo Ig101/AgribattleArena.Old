@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public interface IProfilesService
-    {
+    public interface IBattlefieldService
+    { 
     }
 }

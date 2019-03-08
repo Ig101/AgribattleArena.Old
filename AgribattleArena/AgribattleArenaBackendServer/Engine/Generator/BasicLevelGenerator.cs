@@ -9,19 +9,17 @@ namespace AgribattleArenaBackendServer.Engine.Generator
     //TODO Not Ready
     public class BasicLevelGenerator : ILevelGenerator
     {
-        IProfileServiceSceneLink profiles;
 
         int sizeX;
         int sizeY;
 
-        public BasicLevelGenerator(IProfileServiceSceneLink profiles, int sizeX, int sizeY)
+        public BasicLevelGenerator(int sizeX, int sizeY)
         {
             this.sizeX=sizeX;
             this.sizeY=sizeY;
-            this.profiles = profiles;
         }
 
-        public GenerationSet GenerateNewScene(List<int> playerIds, int seed)
+        public GenerationSet GenerateNewScene(IProfilesServiceSceneLink profilesService, List<int> playerIds, int seed)
         {
             Random random = new Random(seed);
             GenerationTile[,] tileSet = new GenerationTile[sizeX,sizeY];

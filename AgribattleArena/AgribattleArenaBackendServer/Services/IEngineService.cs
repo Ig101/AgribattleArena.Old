@@ -1,4 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Engine;
+using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.NativeManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ namespace AgribattleArenaBackendServer.Services
 {
     public interface IEngineService
     {
-        void SynchronizeHandler(IScene sender, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY);
+        void AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed);
+        void ReinitializeNatives(INativesServiceSceneLink nativesService);
     }
 }

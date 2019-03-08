@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Contexts;
+using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,9 +31,16 @@ namespace AgribattleArenaBackendServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //Change it
             string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
             services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
-            services.AddScoped<INativesService, NativesService>();
+            //
+            services.AddTransient<INativesService, NativesService>();
+            services.AddTransient<INativesServiceSceneLink, NativesService>();
+            services.AddTransient<IProfilesService, ProfilesService>();
+            services.AddTransient<IProfilesServiceSceneLink, ProfilesService>();
+            services.AddSingleton<IEngineService, EngineService>();
+            services.AddTransient<IBattlefieldService, BattlefieldService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

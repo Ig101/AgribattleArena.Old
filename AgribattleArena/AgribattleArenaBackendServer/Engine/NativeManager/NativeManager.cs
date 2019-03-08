@@ -13,7 +13,7 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 
         public NativeManager(INativesServiceSceneLink repository)
         {
-            natives = repository.GetAllNatives();
+            Initialize(repository);
         }
 
         public void AddNative(TaggingNative native)
@@ -112,5 +112,9 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
+        public void Initialize(INativesServiceSceneLink nativesService)
+        {
+            natives.Clear();
+        }
     }
 }

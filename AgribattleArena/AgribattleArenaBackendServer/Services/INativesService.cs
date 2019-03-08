@@ -15,5 +15,7 @@ namespace AgribattleArenaBackendServer.Services
         IEnumerable<BuffNative> GetBuffs();
         IEnumerable<TileNative> GetTiles();
         IEnumerable<EffectNative> GetEffects();
+
+        //TODO Dto methods
     }
 }
