@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace AgribattleArenaBackendServer.Services
 {
     public interface IBattlefieldService
-    { 
+    {
+        void StartNewBattle(List<int> players);
     }
 }

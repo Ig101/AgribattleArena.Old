@@ -23,5 +23,10 @@ namespace AgribattleArenaBackendServer.Services
             this.nativesService = nativesService;
             this.engineService = engineService;
         }
+
+        public void StartNewBattle(List<int> players)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,9 +22,11 @@ namespace AgribattleArenaBackendServer.Services
             scenes = new List<IScene>();
         }
 
-        public void AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed)
+        public Scene AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed)
         {
-            scenes.Add(new Scene(id, players, profilesService, levelGenerator, nativeManager, seed));
+            Scene scene = new Scene(id, players, profilesService, levelGenerator, nativeManager, seed);
+            scenes.Add(scene);
+            return scene;
         }
 
         public void ReinitializeNatives(INativesServiceSceneLink nativesService)

@@ -10,7 +10,7 @@ namespace AgribattleArenaBackendServer.Services
 {
     public interface IEngineService
     {
-        void AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed);
+        Scene AddNewScene(int id, List<int> players, IProfilesServiceSceneLink profilesService, int seed);
         void ReinitializeNatives(INativesServiceSceneLink nativesService);
     }
 }
