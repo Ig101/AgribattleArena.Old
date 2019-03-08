@@ -18,9 +18,9 @@ namespace AgribattleArenaBackendServer.Contexts.NativesEntities
         public int DefaultCost { get; set; }
         public float DefaultCd { get; set; }
         public float DefaultMod { get; set; }
-        public int ActionId { get; set; }
+        public string ActionId { get; set; }
         [ForeignKey("ActionId")]
-        public Action Action { get; set; }
+        public SceneAction Action { get; set; }
         public List<RoleModel> RoleModels { get; set; }
         public List<RoleModelSkill> RoleModelSkills { get; set; }
     }

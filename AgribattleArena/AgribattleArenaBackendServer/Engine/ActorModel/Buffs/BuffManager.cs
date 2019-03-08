@@ -86,7 +86,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
                     actionEngine
                         .SetValue("buffManager", this)
                         .SetValue("mod", buff.Mod)
-                        .Execute(buff.Native.BuffAplier);
+                        .Execute(buff.Native.BuffAplier.Script);
                 }
             }
         }

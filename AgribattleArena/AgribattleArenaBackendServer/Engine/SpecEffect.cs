@@ -1,4 +1,4 @@
-﻿using AgribattleArenaBackendServer.Engine.Natives;
+﻿using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace AgribattleArenaBackendServer.Engine
                     .SetValue("act", this)
                     .SetValue("mod", mod)
                     .SetValue("time", time)
-                    .Execute(Native.Action);
+                    .Execute(Native.Action.Script);
             }
             if (this.duration <= 0) IsAlive = false;
             else this.duration-=time;

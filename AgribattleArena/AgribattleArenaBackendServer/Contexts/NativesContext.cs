@@ -16,6 +16,7 @@ namespace AgribattleArenaBackendServer.Contexts
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SpecEffect> SpecEffects { get; set; }
         public DbSet<Tile> Tiles { get; set; }
+        public DbSet<SceneAction> Actions { get; set; }
 
         public NativesContext(DbContextOptions<NativesContext> options)
             : base(options)

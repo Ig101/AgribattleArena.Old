@@ -17,9 +17,9 @@ namespace AgribattleArenaBackendServer.Contexts.NativesEntities
         public int DefaultHealth { get; set; }
         public float DefaultZ { get; set; }
         public float DefaultMod { get; set; }
-        public int ActionId { get; set; }
+        public string ActionId { get; set; }
         [ForeignKey("ActionId")]
-        public Action Action { get; set; }
+        public SceneAction Action { get; set; }
         public List<TagSynergy> TagSynergies { get; set; }
     }
 }

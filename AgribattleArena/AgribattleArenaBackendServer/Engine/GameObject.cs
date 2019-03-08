@@ -1,4 +1,4 @@
-﻿using AgribattleArenaBackendServer.Engine.Natives;
+﻿using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;

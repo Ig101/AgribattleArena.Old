@@ -17,8 +17,8 @@ namespace AgribattleArenaBackendServer.Contexts.NativesEntities
         public float DefaultZ { get; set; }
         public float DefaultDuration { get; set; }
         public float DefaultMod { get; set; }
-        public int ActionId { get; set; }
+        public string ActionId { get; set; }
         [ForeignKey("ActionId")]
-        public Action Action { get; set; }
+        public SceneAction Action { get; set; }
     }
 }

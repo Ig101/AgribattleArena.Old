@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Contexts;
 using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.NativeManager;
+using AgribattleArenaBackendServer.Models.Natives;
 using AgribattleArenaBackendServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,8 +35,8 @@ namespace AgribattleArenaBackendServer
             //Change it
             string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
             services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
-            connectionString = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
-            services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString));
+         //   connectionString = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
+           // services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString));
             //
             services.AddTransient<INativesService, NativesService>();
             services.AddTransient<INativesServiceSceneLink, NativesService>();
@@ -59,7 +60,20 @@ namespace AgribattleArenaBackendServer
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
-
+                cfg.CreateMap<Contexts.NativesEntities.Actor, ActorNative>();
+                cfg.CreateMap<Contexts.NativesEntities.Buff, BuffNative>();
+                cfg.CreateMap<Contexts.NativesEntities.Decoration, DecorationNative>()
+                    .ForMember(d => d.DefaultArmor, o => o.MapFrom(c => c.TagSynergies));
+                cfg.CreateMap<Contexts.NativesEntities.RoleModel, RoleModelNative>()
+                    .ForMember(d => d.Skills, o => o.MapFrom(c => c.RoleModelSkills))
+                    .ForMember(d => d.Armor,o => o.MapFrom(c => c.TagSynergies));
+                cfg.CreateMap<Contexts.NativesEntities.Skill, SkillNative>();
+                cfg.CreateMap<Contexts.NativesEntities.RoleModelSkill, SkillNative>()
+                    .ForMember(d => d, o => o.MapFrom(c => c.Skill));
+                cfg.CreateMap<Contexts.NativesEntities.SpecEffect, EffectNative>();
+                cfg.CreateMap<Contexts.NativesEntities.SceneAction, ActionNative>()
+                    .ForMember(d => d.Name,o => o.MapFrom(c=>c.Id));
+                cfg.CreateMap<Contexts.NativesEntities.Tile, TileNative>();
             });
 
             app.UseHttpsRedirection();

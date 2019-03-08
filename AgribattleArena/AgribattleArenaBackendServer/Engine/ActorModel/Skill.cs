@@ -1,5 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Engine.Helpers;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +56,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
                         .SetValue("act", roleModel.Owner)
                         .SetValue("targetTile", target)
                         .SetValue("skill", this)
-                        .Execute(native.Action);
+                        .Execute(native.Action.Script);
                 }
                 preparationTime = cd;
                 roleModel.SpendActionPoints(cost);

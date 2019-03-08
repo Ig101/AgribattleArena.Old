@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 
 namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
@@ -114,7 +114,7 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 
         public void Initialize(INativesServiceSceneLink nativesService)
         {
-            natives.Clear();
+            natives = nativesService.GetAllNatives();
         }
     }
 }

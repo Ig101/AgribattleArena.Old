@@ -16,12 +16,12 @@ namespace AgribattleArenaBackendServer.Contexts.NativesEntities
         public List<Tag> Tags { get; set; }
         public bool Repeatable { get; set; }
         public bool SummarizeLength { get; set; }
-        public int ActionId { get; set; }
+        public string ActionId { get; set; }
         [ForeignKey("ActionId")]
-        public Action Action { get; set; }
-        public int BuffApplierId { get; set; }
+        public SceneAction Action { get; set; }
+        public string BuffApplierId { get; set; }
         [ForeignKey("BuffApplierId")]
-        public Action BuffApplier { get; set; }
+        public SceneAction BuffApplier { get; set; }
         public float? Duration { get; set; }
         public float Mod { get; set; }
     }

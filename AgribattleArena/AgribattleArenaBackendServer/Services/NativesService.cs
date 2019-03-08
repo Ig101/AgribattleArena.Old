@@ -1,7 +1,7 @@
 ﻿using AgribattleArenaBackendServer.Contexts;
 using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,111 +19,49 @@ namespace AgribattleArenaBackendServer.Services
             this.context = context;
         }
 
-        string MapAction(Contexts.NativesEntities.Action action)
+        string MapAction(Contexts.NativesEntities.SceneAction action)
         {
             return Encoding.Unicode.GetString(action.Script);
         }
 
-        TagSynergy MapSynergy(Contexts.NativesEntities.TagSynergy synergy)
+        public List<ActionNative> GetActions()
         {
-            return new TagSynergy(synergy.SelfTag, synergy.TargetTag, synergy.Mod);
+            return AutoMapper.Mapper.Map<List<ActionNative>>(context.Actions.ToList());
         }
 
-        ActorNative MapActor(Contexts.NativesEntities.Actor actor)
+        public List<ActorNative> GetActors()
         {
-            return new ActorNative(actor.Id, actor.Tags.Select(x => x.Name).ToArray(), actor.DefaultZ);
+            return AutoMapper.Mapper.Map<List<ActorNative>>(context.Actors.ToList());
         }
 
-        DecorationNative MapDecoration(Contexts.NativesEntities.Decoration decoration)
+        public List<DecorationNative> GetDecorations()
         {
-            return new DecorationNative(decoration.Id, decoration.Tags.Select(x => x.Name).ToArray(), decoration.DefaultMod, decoration.Action.Script.ToString(),
-                    decoration.DefaultZ, decoration.DefaultHealth, decoration.TagSynergies.Select(x => MapSynergy(x)).ToArray());
+            return AutoMapper.Mapper.Map<List<DecorationNative>>(context.Decorations.ToList());
         }
 
-        SkillNative MapSkill(Contexts.NativesEntities.Skill skill)
+        public List<RoleModelNative> GetRoleModels()
         {
-            return new SkillNative(skill.Id, skill.Tags.Select(x => x.Name).ToArray(), MapAction(skill.Action), 
-                skill.DefaultCost, skill.DefaultCd, skill.DefaultMod, skill.DefaultRange);
+            return AutoMapper.Mapper.Map<List<RoleModelNative>>(context.RoleModels.ToList());
         }
 
-        RoleModelNative MapRoleModel(Contexts.NativesEntities.RoleModel roleModel)
+        public List<SkillNative> GetSkills()
         {
-            return new RoleModelNative(roleModel.Id, roleModel.Strength, roleModel.Willpower, roleModel.Constitution, roleModel.Speed,
-                roleModel.TagSynergies.Select(x => new TagSynergy(x.SelfTag, x.TargetTag, x.Mod)).ToArray(), MapSkill(roleModel.AttackingSkill),
-                roleModel.RoleModelSkills.Select(x => MapSkill(x.Skill)).ToArray(), roleModel.ActionPointsIncome);
+            return AutoMapper.Mapper.Map<List<SkillNative>>(context.Skills.ToList());
         }
 
-        BuffNative MapBuff (Contexts.NativesEntities.Buff buff)
+        public List<BuffNative>  GetBuffs()
         {
-            return new BuffNative(buff.Id, buff.Tags.Select(x => x.Name).ToArray(), MapAction(buff.Action), MapAction(buff.BuffApplier),
-                buff.Duration, buff.Mod, buff.SummarizeLength, buff.Repeatable);
+            return AutoMapper.Mapper.Map<List<BuffNative>>(context.Buffs.ToList());
         }
 
-        TileNative MapTile (Contexts.NativesEntities.Tile tile)
+        public List<TileNative> GetTiles()
         {
-            return new TileNative(tile.Id, MapAction(tile.Action), tile.ActionMod, tile.Unbearable, tile.Flat, tile.DefaultHeight,
-                tile.Tags.Select(x => x.Name).ToArray());
+            return AutoMapper.Mapper.Map<List<TileNative>>(context.Tiles.ToList());
         }
 
-        EffectNative MapEffect (Contexts.NativesEntities.SpecEffect effect)
+        public List<EffectNative> GetEffects()
         {
-            return new EffectNative(effect.Id, effect.Tags.Select(x => x.Name).ToArray(), MapAction(effect.Action),
-                effect.DefaultDuration, effect.DefaultMod, effect.DefaultZ);
-        }
-
-        public IEnumerable<ActorNative> GetActors()
-        {
-            List<ActorNative> natives = new List<ActorNative>();
-            natives.AddRange(context.Actors.Select(actor=> MapActor(actor)));
-            return natives;
-        }
-
-        public IEnumerable<DecorationNative> GetDecorations()
-        {
-            List<DecorationNative> natives = new List<DecorationNative>();
-            natives.AddRange(context.Decorations.Select(decoration =>
-                MapDecoration(decoration)));
-            return natives;
-        }
-
-        public IEnumerable<RoleModelNative> GetRoleModels()
-        {
-            List<RoleModelNative> natives = new List<RoleModelNative>();
-            natives.AddRange(context.RoleModels.Select(roleModel =>
-                MapRoleModel(roleModel)));
-            return natives;
-        }
-
-        public IEnumerable<SkillNative> GetSkills()
-        {
-            List<SkillNative> natives = new List<SkillNative>();
-            natives.AddRange(context.Skills.Select(skill =>
-                MapSkill(skill)));
-            return natives;
-        }
-
-        public IEnumerable<BuffNative>  GetBuffs()
-        {
-            List<BuffNative> natives = new List<BuffNative>();
-            natives.AddRange(context.Buffs.Select(buff =>
-                MapBuff(buff)));
-            return natives;
-        }
-
-        public IEnumerable<TileNative> GetTiles()
-        {
-            List<TileNative> natives = new List<TileNative>();
-            natives.AddRange(context.Tiles.Select(tile =>
-                MapTile(tile)));
-            return natives;
-        }
-
-        public IEnumerable<EffectNative> GetEffects()
-        {
-            List<EffectNative> natives = new List<EffectNative>();
-            natives.AddRange(context.SpecEffects.Select(effect =>
-                MapEffect(effect)));
-            return natives;
+            return AutoMapper.Mapper.Map<List<EffectNative>>(context.SpecEffects.ToList());
         }
 
         void WriteTaggingObjectsToDictionary (List<TaggingNative> input, ref Dictionary<string, TaggingNative> output)
@@ -137,14 +75,407 @@ namespace AgribattleArenaBackendServer.Services
         public IDictionary<string, TaggingNative> GetAllNatives()
         {
             Dictionary<string, TaggingNative> natives = new Dictionary<string, TaggingNative>();
+            List<SkillNative> skills = GetSkills();
+            List<ActionNative> actions = GetActions();
+            WriteTaggingObjectsToDictionary(skills.ToList<TaggingNative>(), ref natives);
             WriteTaggingObjectsToDictionary(GetActors().ToList<TaggingNative>(),ref natives);
-            WriteTaggingObjectsToDictionary(GetDecorations().ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetEffects().ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetBuffs().ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetSkills().ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetRoleModels().ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetTiles().ToList<TaggingNative>(), ref natives);
+            List<DecorationNative> decorations = context.Decorations.Select(decoration => new DecorationNative()
+            {
+                Action = actions.Find(x => x.Name == decoration.ActionId),
+                DefaultArmor = decoration.TagSynergies.Select(x => new TagSynergy(x.SelfTag, x.TargetTag, x.Mod)).ToList(),
+                DefaultHealth = decoration.DefaultHealth,
+                DefaultMod = decoration.DefaultMod,
+                DefaultZ = decoration.DefaultZ,
+                Id = decoration.Id,
+                Tags = decoration.Tags.Select(x => x.Name).ToList()
+            }).ToList();
+            WriteTaggingObjectsToDictionary(decorations.ToList<TaggingNative>(), ref natives);
+            List<EffectNative> effects = context.SpecEffects.Select(effect => new EffectNative()
+            {
+                Action = actions.Find(x => x.Name == effect.ActionId),
+                DefaultDuration = effect.DefaultDuration,
+                DefaultMod = effect.DefaultMod,
+                DefaultZ = effect.DefaultZ,
+                Id = effect.Id,
+                Tags = effect.Tags.Select(x => x.Name).ToList()
+            }).ToList();
+            WriteTaggingObjectsToDictionary(effects.ToList<TaggingNative>(), ref natives);
+            List<BuffNative> buffs = context.Buffs.Select(buff => new BuffNative()
+            {
+                Action = actions.Find(x => x.Name == buff.ActionId),
+                BuffAplier = actions.Find(x=>x.Name == buff.BuffApplierId),
+                Duration = buff.Duration,
+                Mod = buff.Mod,
+                Repeatable = buff.Repeatable,
+                SummarizeLength = buff.SummarizeLength,
+                Id = buff.Id,
+                Tags = buff.Tags.Select(x => x.Name).ToList()
+            }).ToList();
+            WriteTaggingObjectsToDictionary(buffs.ToList<TaggingNative>(), ref natives);
+            List<RoleModelNative> models = context.RoleModels.Select(model => new RoleModelNative()
+            {
+                AttackingSkill = skills.Find(x => x.Id == model.AttackingSkillId),
+                Skills = skills.Where(x => model.RoleModelSkills.Exists(b => b.SkillId == x.Id)).ToList(),
+                ActionPointsIncome = model.ActionPointsIncome,
+                Armor = model.TagSynergies.Select(x => new TagSynergy(x.SelfTag, x.TargetTag, x.Mod)).ToList(),
+                Constitution = model.Constitution,
+                Speed = model.Speed,
+                Strength = model.Strength,
+                Willpower = model.Willpower,
+                Id = model.Id
+            }).ToList();
+            WriteTaggingObjectsToDictionary(models.ToList<TaggingNative>(), ref natives);
+            List<TileNative> tiles = context.Tiles.Select(tile => new TileNative()
+            {
+                Action = actions.Find(x => x.Name == tile.ActionId),
+                ActionMod = tile.ActionMod,
+                DefaultHeight = tile.DefaultHeight,
+                Flat = tile.Flat,
+                Unbearable = tile.Unbearable,
+                Id = tile.Id,
+                Tags = tile.Tags.Select(x => x.Name).ToList()
+            }).ToList();
+            WriteTaggingObjectsToDictionary(tiles.ToList<TaggingNative>(), ref natives);
             return natives;
+        }
+
+        public ActionNative GetAction (string id)
+        {
+            return AutoMapper.Mapper.Map<ActionNative>(context.Actions.Find(id));
+        }
+
+        public ActorNative GetActor(string id)
+        {
+            return AutoMapper.Mapper.Map<ActorNative>(context.Actors.Find(id));
+        }
+
+        public DecorationNative GetDecoration(string id)
+        {
+            return AutoMapper.Mapper.Map<DecorationNative>(context.Decorations.Find(id));
+        }
+
+        public RoleModelNative GetRoleModel(string id)
+        {
+            return AutoMapper.Mapper.Map<RoleModelNative>(context.RoleModels.Find(id));
+        }
+
+        public SkillNative GetSkill(string id)
+        {
+            return AutoMapper.Mapper.Map<SkillNative>(context.Skills.Find(id));
+        }
+
+        public BuffNative GetBuff(string id)
+        {
+            return AutoMapper.Mapper.Map<BuffNative>(context.Buffs.Find(id));
+        }
+
+        public TileNative GetTile(string id)
+        {
+            return AutoMapper.Mapper.Map<TileNative>(context.Tiles.Find(id));
+        }
+
+        public EffectNative GetEffect(string id)
+        {
+            return AutoMapper.Mapper.Map<EffectNative>(context.SpecEffects.Find(id));
+        }
+
+        public bool AddActor(ActorNative actor)
+        {
+            if (context.Actors.Find(actor.Id) == null)
+            {
+                context.Actors.Add(new Contexts.NativesEntities.Actor()
+                {
+                    Id = actor.Id,
+                    DefaultZ = actor.DefaultZ,
+                    Tags = actor.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList()
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddDecoration(DecorationNative decoration)
+        {
+            if (context.Decorations.Find(decoration.Id) == null)
+            {
+                context.Decorations.Add(new Contexts.NativesEntities.Decoration()
+                {
+                    Id = decoration.Id,
+                    DefaultZ = decoration.DefaultZ,
+                    Tags = decoration.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList(),
+                    DefaultHealth = decoration.DefaultHealth,
+                    DefaultMod = decoration.DefaultMod,
+                    TagSynergies = decoration.DefaultArmor.Select(x => new Contexts.NativesEntities.TagSynergy()
+                    {
+                        Mod = x.Mod,
+                        SelfTag = x.SelfTag,
+                        TargetTag = x.TargetTag
+                    }).ToList(),
+                    Action = context.Actions.Find(decoration.Action.Name) ?? new Contexts.NativesEntities.SceneAction()
+                    {
+                        Id = decoration.Action.Name,
+                        Script = Encoding.Unicode.GetBytes(decoration.Action.Script)
+                    }
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddRoleModel(RoleModelNativeToAdd roleModel)
+        {
+            if (context.RoleModels.Find(roleModel.Id) == null)
+            {
+                bool allSkillsExists = true;
+                if (context.Skills.Find(roleModel.AttackSkill) == null) allSkillsExists = false;
+                foreach(string skill in roleModel.Skills)
+                {
+                    if (!allSkillsExists) continue;
+                    if (context.Skills.Find(skill) == null) allSkillsExists = false;
+                }
+                if (allSkillsExists)
+                {
+                    Contexts.NativesEntities.RoleModel newModel = new Contexts.NativesEntities.RoleModel()
+                    {
+                        Id = roleModel.Id,
+                        ActionPointsIncome = roleModel.ActionPointsIncome,
+                        AttackingSkill = context.Skills.Find(roleModel.AttackSkill),
+                        Constitution = roleModel.Constitution,
+                        Speed = roleModel.Speed,
+                        Strength = roleModel.Strength,
+                        Willpower = roleModel.Willpower,
+                        TagSynergies = roleModel.Armor.Select(x => new Contexts.NativesEntities.TagSynergy()
+                        {
+                            Mod = x.Mod,
+                            SelfTag = x.SelfTag,
+                            TargetTag = x.TargetTag
+                        }).ToList()
+                    };
+                    newModel.RoleModelSkills = context.Skills.Where(x => roleModel.Skills.Exists(b => b == x.Id)).Select(x => new Contexts.NativesEntities.RoleModelSkill()
+                    {
+                        RoleModel = newModel,
+                        Skill = x
+                    }).ToList();
+                    context.RoleModels.Add(newModel);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool AddSkill(SkillNative skill)
+        {
+            if (context.Skills.Find(skill.Id) == null)
+            {
+                context.Skills.Add(new Contexts.NativesEntities.Skill()
+                {
+                    Id = skill.Id,
+                    Tags = skill.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList(),
+                    DefaultMod = skill.DefaultMod,
+                    Action = context.Actions.Find(skill.Action.Name) ?? new Contexts.NativesEntities.SceneAction()
+                    {
+                        Id = skill.Action.Name,
+                        Script = Encoding.Unicode.GetBytes(skill.Action.Script)
+                    }
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddBuff(BuffNative buff)
+        {
+            if (context.Buffs.Find(buff.Id) == null)
+            {
+                context.Buffs.Add(new Contexts.NativesEntities.Buff()
+                {
+                    Id = buff.Id,
+                    Tags = buff.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList(),
+                    Action = context.Actions.Find(buff.Action.Name) ?? new Contexts.NativesEntities.SceneAction()
+                    {
+                        Id = buff.Action.Name,
+                        Script = Encoding.Unicode.GetBytes(buff.Action.Script)
+                    }
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddTile(TileNative tile)
+        {
+            if (context.Tiles.Find(tile.Id) == null)
+            {
+                context.Tiles.Add(new Contexts.NativesEntities.Tile()
+                {
+                    Id = tile.Id,
+                    Tags = tile.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList(),
+                    Action = context.Actions.Find(tile.Action.Name) ?? new Contexts.NativesEntities.SceneAction()
+                    {
+                        Id = tile.Action.Name,
+                        Script = Encoding.Unicode.GetBytes(tile.Action.Script)
+                    }
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddEffect(EffectNative effect)
+        {
+            if (context.SpecEffects.Find(effect.Id) == null)
+            {
+                context.SpecEffects.Add(new Contexts.NativesEntities.SpecEffect()
+                {
+                    Id = effect.Id,
+                    DefaultZ = effect.DefaultZ,
+                    Tags = effect.Tags.Select(x => new Contexts.NativesEntities.Tag()
+                    {
+                        Name = x
+                    }).ToList(),
+                    DefaultMod = effect.DefaultMod,
+                    Action = context.Actions.Find(effect.Action.Name) ?? new Contexts.NativesEntities.SceneAction()
+                    {
+                        Id = effect.Action.Name,
+                        Script = Encoding.Unicode.GetBytes(effect.Action.Script)
+                    }
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddAction(ActionNative action)
+        {
+            if (context.Actions.Find(action.Name) == null)
+            {
+                context.Actions.Add(new Contexts.NativesEntities.SceneAction()
+                {
+                    Id = action.Name,
+                    Script = Encoding.Unicode.GetBytes(action.Script)
+                });
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveActor(string id)
+        {
+            Contexts.NativesEntities.Actor actor;
+            if ((actor = context.Actors.Find(id)) != null)
+            {
+                context.Actors.Remove(actor);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveDecoration(string id)
+        {
+            Contexts.NativesEntities.Decoration decoration;
+            if ((decoration = context.Decorations.Find(id)) != null)
+            {
+                context.Decorations.Remove(decoration);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveRoleModel(string id)
+        {
+            Contexts.NativesEntities.RoleModel model;
+            if ((model = context.RoleModels.Find(id)) != null)
+            {
+                context.RoleModels.Remove(model);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveSkill(string id)
+        {
+            Contexts.NativesEntities.Skill skill;
+            if ((skill = context.Skills.Find(id)) != null)
+            {
+                context.Skills.Remove(skill);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveBuff(string id)
+        {
+            Contexts.NativesEntities.Buff buff;
+            if ((buff = context.Buffs.Find(id)) != null)
+            {
+                context.Buffs.Remove(buff);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveTile(string id)
+        {
+            Contexts.NativesEntities.Tile tile;
+            if ((tile = context.Tiles.Find(id)) != null)
+            {
+                context.Tiles.Remove(tile);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveEffect(string id)
+        {
+            Contexts.NativesEntities.SpecEffect effect;
+            if ((effect = context.SpecEffects.Find(id)) != null)
+            {
+                context.SpecEffects.Remove(effect);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveAction(string id)
+        {
+            Contexts.NativesEntities.SceneAction action;
+            if((action = context.Actions.Find(id))!=null)
+            {
+                context.Actions.Remove(action);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }

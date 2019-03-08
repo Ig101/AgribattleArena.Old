@@ -17,9 +17,9 @@ namespace AgribattleArenaBackendServer.Contexts.NativesEntities
         public bool Flat { get; set; }
         public int DefaultHeight { get; set; }
         public bool Unbearable { get; set; }
-        public int ActionId { get; set; }
+        public string ActionId { get; set; }
         [ForeignKey("ActionId")]
-        public Action Action { get; set; }
+        public SceneAction Action { get; set; }
         public float ActionMod { get; set; }
     }
 }

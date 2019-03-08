@@ -1,6 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Engine.ActorModel;
 using AgribattleArenaBackendServer.Engine.Helpers;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace AgribattleArenaBackendServer.Engine
         public float Mod { get { return mod; } set { mod = value; } }
 
         public ActiveDecoration(Scene parent, int? ownerId, Tile tempTile, float? z, int? maxHealth, TagSynergy[] armor, DecorationNative native, float?mod) 
-            : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor), native)
+            : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor.ToArray()), native)
         {
             this.mod = mod ?? native.DefaultMod;
             this.InitiativePosition += 1;
@@ -37,7 +37,7 @@ namespace AgribattleArenaBackendServer.Engine
                     .SetValue("scene", Parent)
                     .SetValue("act", this)
                     .SetValue("mod", mod)
-                    .Execute(Native.Action);
+                    .Execute(Native.Action.Script);
             }
         }
 

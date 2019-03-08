@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Engine.Helpers;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 
 namespace AgribattleArenaBackendServer.Engine
 {
@@ -47,7 +47,7 @@ namespace AgribattleArenaBackendServer.Engine
                     .SetValue("act", this)
                     .SetValue("mod", native.ActionMod)
                     .SetValue("time", time)
-                    .Execute(Native.Action);
+                    .Execute(Native.Action.Script);
             }
         }
 

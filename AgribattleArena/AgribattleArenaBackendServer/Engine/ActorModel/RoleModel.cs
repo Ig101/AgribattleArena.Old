@@ -1,6 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Engine.ActorModel.Buffs;
 using AgribattleArenaBackendServer.Engine.Helpers;
-using AgribattleArenaBackendServer.Engine.Natives;
+using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,14 +68,14 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             this.willpower = native.Willpower;
             this.constitution = native.Constitution;
             this.speed = native.Speed;
-            this.armor = native.Armor;
+            this.armor = native.Armor.ToArray();
             this.actionPointsIncome = native.ActionPointsIncome;
             this.skills = new List<Skill>();
             foreach(SkillNative skill in native.Skills)
             {
                 skills.Add(new Skill(this, skill,null,null,null,null));
             }
-            this.attackingSkill = new Skill(this, native.AttackSkill, 0, null, 1,null);
+            this.attackingSkill = new Skill(this, native.AttackingSkill, 0, null, 1,null);
         }
 
         public Skill AddSkill (Skill skill)
