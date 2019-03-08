@@ -35,7 +35,16 @@ namespace AgribattleArenaBackendServer.Contexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<RoleModel>().ToTable("role_models");
             modelBuilder.Entity<RoleModelSkill>().ToTable("role_model_skill");
+            modelBuilder.Entity<RoleModelSkill>().HasIndex(x => x.RoleModelId);
             modelBuilder.Entity<TagSynergy>().ToTable("tag_synergy");
+            modelBuilder.Entity<TagSynergy>().HasIndex(x => x.RoleModelId);
+            modelBuilder.Entity<TagSynergy>().HasIndex(x => x.DecorationId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.DecorationId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.ActorId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.BuffId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.SkillId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.TileId);
+            modelBuilder.Entity<Tag>().HasIndex(x => x.SpecEffectId);
         }
     }
 }
