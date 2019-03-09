@@ -28,12 +28,8 @@ namespace AgribattleArenaBackendServer.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProfileRole>()
-                .HasKey(t => new { t.ProfileLogin, t.RoleId });
             modelBuilder.Entity<RoleRight>()
                 .HasKey(t => new { t.RightId, t.RoleId });
-            modelBuilder.Entity<ProfileRole>().HasIndex(x => x.ProfileLogin);
-            modelBuilder.Entity<ProfileRole>().ToTable("profile_role");
             modelBuilder.Entity<RoleRight>().HasIndex(x => x.RoleId);
             modelBuilder.Entity<RoleRight>().ToTable("role_right");
             modelBuilder.Entity<Skill>().HasIndex(x => x.ActorId);

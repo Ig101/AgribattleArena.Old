@@ -9,7 +9,6 @@ namespace AgribattleArenaBackendServer.Engine.Generator
     //TODO Not Ready
     public class BasicLevelGenerator : ILevelGenerator
     {
-
         int sizeX;
         int sizeY;
 
@@ -19,21 +18,16 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             this.sizeY=sizeY;
         }
 
-        public GenerationSet GenerateNewScene(IProfilesServiceSceneLink profilesService, List<int> playerIds, int seed)
+        public GenerationSet GenerateNewScene(List<PlayerActor> playerActors, List<int> playerIds, int seed)
         {
             Random random = new Random(seed);
             GenerationTile[,] tileSet = new GenerationTile[sizeX,sizeY];
             List<GenerationObject> actors = new List<GenerationObject>();
             List<GenerationObject> decorations = new List<GenerationObject>();
-            List<PlayerActor> playerActors = new List<PlayerActor>();
+            List<PlayerActorWithTile> filledPlayerActors = new List<PlayerActorWithTile>();
 
-            List<PlayerActor> actorsFromService = new List<PlayerActor>();
-            foreach(int playerId in playerIds)
-            {
-
-            }
             //TODO Generation method
-            return new GenerationSet(tileSet, actors,decorations, playerActors);
+            return new GenerationSet(tileSet, actors,decorations, filledPlayerActors);
         }
     }
 }

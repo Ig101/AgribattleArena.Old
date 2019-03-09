@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Models.Natives
 {
-    public class TileNative: TaggingNative
+    public class TileNativeDto: TaggingNativeDto
     {
         public bool Flat { get; set; }
         public int DefaultHeight { get; set; }
         public bool Unbearable { get; set; }
-        public ActionNative Action { get; set; }
+        public ActionNativeDto Action { get; set; }
         public float ActionMod { get; set; }
     }
 }

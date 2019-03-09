@@ -16,7 +16,7 @@ namespace AgribattleArenaBackendServer.Engine
 
         int x;
         int y;
-        TileNative native;
+        TileNativeDto native;
         bool affected;
 
         public bool Affected { get { return affected; } set { affected = value; } }
@@ -25,9 +25,9 @@ namespace AgribattleArenaBackendServer.Engine
         public float Height { get { return height; } set { height = value; } }
         public int X { get { return x; } }
         public int Y { get { return y; } }
-        public TileNative Native { get { return native; } set { native = value; } }
+        public TileNativeDto Native { get { return native; } set { native = value; } }
 
-        public Tile (Scene parent, int x, int y, TileNative native, int? height)
+        public Tile (Scene parent, int x, int y, TileNativeDto native, int? height)
         {
             this.parent = parent;
             this.x = x;

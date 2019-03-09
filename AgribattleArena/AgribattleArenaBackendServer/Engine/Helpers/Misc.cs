@@ -14,6 +14,7 @@ namespace AgribattleArenaBackendServer.Engine.Helpers
     public delegate void BuffAction(BuffManager manager, float mod);
 
     public enum Action { Move, Attack, Cast, Wait, Decoration, EndTurn, EndGame}
+    public enum ActorAction { Move, Attack, Cast, Wait }
 
     public struct Point
     {

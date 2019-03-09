@@ -9,24 +9,19 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
 {
     public class NativeManager : INativeManager
     {
-        IDictionary<string,TaggingNative> natives;
+        IDictionary<string,TaggingNativeDto> natives;
 
         public NativeManager(INativesServiceSceneLink repository)
         {
             Initialize(repository);
         }
 
-        public void AddNative(TaggingNative native)
-        {
-            this.natives.Add(native.Id, native);
-        }
-
-        public ActorNative GetActorNative(string id)
+        public ActorNativeDto GetActorNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is ActorNative)
+            if (native != null && native is ActorNativeDto)
             {
-                return (ActorNative)natives[id];
+                return (ActorNativeDto)natives[id];
             }
             else
             {
@@ -34,12 +29,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public BuffNative GetBuffNative(string id)
+        public BuffNativeDto GetBuffNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is BuffNative)
+            if (native != null && native is BuffNativeDto)
             {
-                return (BuffNative)natives[id];
+                return (BuffNativeDto)natives[id];
             }
             else
             {
@@ -47,12 +42,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public DecorationNative GetDecorationNative(string id)
+        public DecorationNativeDto GetDecorationNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is DecorationNative)
+            if (native != null && native is DecorationNativeDto)
             {
-                return (DecorationNative)natives[id];
+                return (DecorationNativeDto)natives[id];
             }
             else
             {
@@ -60,12 +55,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public EffectNative GetEffectNative(string id)
+        public EffectNativeDto GetEffectNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is EffectNative)
+            if (native != null && native is EffectNativeDto)
             {
-                return (EffectNative)natives[id];
+                return (EffectNativeDto)natives[id];
             }
             else
             {
@@ -73,12 +68,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public RoleModelNative GetRoleModelNative(string id)
+        public RoleModelNativeDto GetRoleModelNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is RoleModelNative)
+            if (native != null && native is RoleModelNativeDto)
             {
-                return (RoleModelNative)natives[id];
+                return (RoleModelNativeDto)natives[id];
             }
             else
             {
@@ -86,12 +81,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public SkillNative GetSkillNative(string id)
+        public SkillNativeDto GetSkillNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is SkillNative)
+            if (native != null && native is SkillNativeDto)
             {
-                return (SkillNative)natives[id];
+                return (SkillNativeDto)natives[id];
             }
             else
             {
@@ -99,12 +94,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
             }
         }
 
-        public TileNative GetTileNative(string id)
+        public TileNativeDto GetTileNative(string id)
         {
             object native = natives[id];
-            if (native != null && native is TileNative)
+            if (native != null && native is TileNativeDto)
             {
-                return (TileNative)natives[id];
+                return (TileNativeDto)natives[id];
             }
             else
             {

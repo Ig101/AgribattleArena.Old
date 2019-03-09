@@ -1,12 +1,13 @@
 ﻿using AgribattleArenaBackendServer.Contexts.NativesEntities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Models.Natives
 {
-    public class RoleModelNativeToAdd: TaggingNative
+    public class RoleModelNativeToAddDto: TaggingNativeDto
     {
         public string AttackSkill { get; set; }
         public int Strength { get; set; }

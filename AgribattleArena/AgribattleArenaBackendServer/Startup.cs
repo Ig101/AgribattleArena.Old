@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Contexts;
 using AgribattleArenaBackendServer.Engine.Generator;
+using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Models.Natives;
+using AgribattleArenaBackendServer.Models.Profiles;
 using AgribattleArenaBackendServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,9 +43,10 @@ namespace AgribattleArenaBackendServer
             services.AddTransient<INativesService, NativesService>();
             services.AddTransient<INativesServiceSceneLink, NativesService>();
             services.AddTransient<IProfilesService, ProfilesService>();
-            services.AddTransient<IProfilesServiceSceneLink, ProfilesService>();
+            services.AddTransient<IProfilesServiceSceneLink, ProfilesMockService>();
             services.AddSingleton<IEngineService, EngineService>();
             services.AddTransient<IBattlefieldService, BattlefieldService>();
+            services.AddSingleton<IQueueingService, QueueingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,20 +63,34 @@ namespace AgribattleArenaBackendServer
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Contexts.NativesEntities.Actor, ActorNative>();
-                cfg.CreateMap<Contexts.NativesEntities.Buff, BuffNative>();
-                cfg.CreateMap<Contexts.NativesEntities.Decoration, DecorationNative>()
+                cfg.CreateMap<Contexts.NativesEntities.Actor, ActorNativeDto>();
+                cfg.CreateMap<Contexts.NativesEntities.Buff, BuffNativeDto>();
+                cfg.CreateMap<Contexts.NativesEntities.Decoration, DecorationNativeDto>()
                     .ForMember(d => d.DefaultArmor, o => o.MapFrom(c => c.TagSynergies));
-                cfg.CreateMap<Contexts.NativesEntities.RoleModel, RoleModelNative>()
+                cfg.CreateMap<Contexts.NativesEntities.RoleModel, RoleModelNativeDto>()
                     .ForMember(d => d.Skills, o => o.MapFrom(c => c.RoleModelSkills))
                     .ForMember(d => d.Armor,o => o.MapFrom(c => c.TagSynergies));
-                cfg.CreateMap<Contexts.NativesEntities.Skill, SkillNative>();
-                cfg.CreateMap<Contexts.NativesEntities.RoleModelSkill, SkillNative>()
+                cfg.CreateMap<Contexts.NativesEntities.Skill, SkillNativeDto>();
+                cfg.CreateMap<Contexts.NativesEntities.RoleModelSkill, SkillNativeDto>()
                     .ForMember(d => d, o => o.MapFrom(c => c.Skill));
-                cfg.CreateMap<Contexts.NativesEntities.SpecEffect, EffectNative>();
-                cfg.CreateMap<Contexts.NativesEntities.SceneAction, ActionNative>()
+                cfg.CreateMap<Contexts.NativesEntities.SpecEffect, EffectNativeDto>();
+                cfg.CreateMap<Contexts.NativesEntities.SceneAction, ActionNativeDto>()
                     .ForMember(d => d.Name,o => o.MapFrom(c=>c.Id));
-                cfg.CreateMap<Contexts.NativesEntities.Tile, TileNative>();
+                cfg.CreateMap<Contexts.NativesEntities.Tile, TileNativeDto>();
+                cfg.CreateMap<TagsArmorDto, TagSynergy>()
+                    .ForMember(d => d.TargetTag, o => o.MapFrom(c => c.Tag));
+                cfg.CreateMap<PlayerActorDto, RoleModelNativeToAddDto>()
+                    .ForMember(d => d.AttackSkill, o => o.MapFrom(c => c.AttackingSkillNative));
+                cfg.CreateMap<Contexts.ProfilesEntities.Skill, string>()
+                    .ForMember(d => d, o => o.MapFrom(c => c.Native));
+                cfg.CreateMap<Contexts.ProfilesEntities.TagsArmor, TagsArmorDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Actor, PlayerActorDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Player, PlayerDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Profile, ProfileDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Role, RoleDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Right, RightDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.RoleRight, RightDto>()
+                    .ForMember(d => d, o => o.MapFrom(c => c.Right));
             });
 
             app.UseHttpsRedirection();

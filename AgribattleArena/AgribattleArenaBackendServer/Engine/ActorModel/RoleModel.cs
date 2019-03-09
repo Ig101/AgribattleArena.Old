@@ -61,7 +61,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             this.buffManager = new BuffManager(this);
         }
 
-        public RoleModel (Actor owner, RoleModelNative native)
+        public RoleModel (Actor owner, RoleModelNativeDto native)
         {
             this.owner = owner;
             this.strength = native.Strength;
@@ -71,7 +71,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             this.armor = native.Armor.ToArray();
             this.actionPointsIncome = native.ActionPointsIncome;
             this.skills = new List<Skill>();
-            foreach(SkillNative skill in native.Skills)
+            foreach(SkillNativeDto skill in native.Skills)
             {
                 skills.Add(new Skill(this, skill,null,null,null,null));
             }

@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Models.Natives
 {
-    public class ActionNative
+    public class ActorNativeDto : TaggingNativeDto
     {
-        public string Name { get; set; }
-        public string Script { get; set; }
+        public float DefaultZ { get; set; }
     }
 }

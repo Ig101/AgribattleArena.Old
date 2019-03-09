@@ -11,7 +11,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
     {
         RoleModel roleModel;
 
-        SkillNative native;
+        SkillNativeDto native;
         float cd;
         float mod;
         int cost;
@@ -20,13 +20,13 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         float preparationTime;
 
         public int Range { get { return range + (range>1?roleModel.BuffManager.SkillRange:0); } }
-        public SkillNative Native { get { return native; } }
+        public SkillNativeDto Native { get { return native; } }
         public float Cd { get { return cd + (cd>0?roleModel.BuffManager.SkillCd:0); } }
         public float Mod { get { return mod; } }
         public int Cost { get { return cost + roleModel.BuffManager.SkillCost; } }
         public float PreparationTime { get { return preparationTime; } set { preparationTime = value; } }
 
-        public Skill (RoleModel roleModel, SkillNative skill, float? cd, float? mod, int? cost, int? range)
+        public Skill (RoleModel roleModel, SkillNativeDto skill, float? cd, float? mod, int? cost, int? range)
             :base(roleModel.Owner.Parent)
         {
             this.range = range ?? skill.DefaultRange;

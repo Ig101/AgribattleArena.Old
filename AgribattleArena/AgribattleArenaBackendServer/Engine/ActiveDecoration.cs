@@ -12,10 +12,10 @@ namespace AgribattleArenaBackendServer.Engine
     {
         float mod;
 
-        public new DecorationNative Native { get { return (DecorationNative)base.Native; } }
+        public new DecorationNativeDto Native { get { return (DecorationNativeDto)base.Native; } }
         public float Mod { get { return mod; } set { mod = value; } }
 
-        public ActiveDecoration(Scene parent, int? ownerId, Tile tempTile, float? z, int? maxHealth, TagSynergy[] armor, DecorationNative native, float?mod) 
+        public ActiveDecoration(Scene parent, int? ownerId, Tile tempTile, float? z, int? maxHealth, TagSynergy[] armor, DecorationNativeDto native, float?mod) 
             : base(parent, ownerId, tempTile, z ?? native.DefaultZ, new DamageModel(maxHealth ?? native.DefaultHealth, armor ?? native.DefaultArmor.ToArray()), native)
         {
             this.mod = mod ?? native.DefaultMod;

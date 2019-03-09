@@ -10,17 +10,17 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
     {
         BuffManager manager;
 
-        BuffNative native;
+        BuffNativeDto native;
 
         float mod;
         float? duration;
 
         public BuffManager Manager { get { return manager; } }
-        public BuffNative Native { get { return native; } }
+        public BuffNativeDto Native { get { return native; } }
         public float Mod { get { return mod; } set { mod = value; } }
         public float? Duration { get { return duration; } set { duration = value; } }
 
-        public Buff(BuffManager manager, BuffNative native, float? mod, float? duration)
+        public Buff(BuffManager manager, BuffNativeDto native, float? mod, float? duration)
             :base(manager.RoleModel.Owner.Parent)
         {
             this.mod = mod ?? native.Mod;

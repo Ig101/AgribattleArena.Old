@@ -19,62 +19,62 @@ namespace AgribattleArenaBackendServer.Services
             this.context = context;
         }
 
-        public List<ActionNative> GetActions()
+        public List<ActionNativeDto> GetActions()
         {
-            return AutoMapper.Mapper.Map<List<ActionNative>>(context.Actions.ToList());
+            return AutoMapper.Mapper.Map<List<ActionNativeDto>>(context.Actions.ToList());
         }
 
-        public List<ActorNative> GetActors()
+        public List<ActorNativeDto> GetActors()
         {
-            return AutoMapper.Mapper.Map<List<ActorNative>>(context.Actors.ToList());
+            return AutoMapper.Mapper.Map<List<ActorNativeDto>>(context.Actors.ToList());
         }
 
-        public List<DecorationNative> GetDecorations()
+        public List<DecorationNativeDto> GetDecorations()
         {
-            return AutoMapper.Mapper.Map<List<DecorationNative>>(context.Decorations.ToList());
+            return AutoMapper.Mapper.Map<List<DecorationNativeDto>>(context.Decorations.ToList());
         }
 
-        public List<RoleModelNative> GetRoleModels()
+        public List<RoleModelNativeDto> GetRoleModels()
         {
-            return AutoMapper.Mapper.Map<List<RoleModelNative>>(context.RoleModels.ToList());
+            return AutoMapper.Mapper.Map<List<RoleModelNativeDto>>(context.RoleModels.ToList());
         }
 
-        public List<SkillNative> GetSkills()
+        public List<SkillNativeDto> GetSkills()
         {
-            return AutoMapper.Mapper.Map<List<SkillNative>>(context.Skills.ToList());
+            return AutoMapper.Mapper.Map<List<SkillNativeDto>>(context.Skills.ToList());
         }
 
-        public List<BuffNative>  GetBuffs()
+        public List<BuffNativeDto>  GetBuffs()
         {
-            return AutoMapper.Mapper.Map<List<BuffNative>>(context.Buffs.ToList());
+            return AutoMapper.Mapper.Map<List<BuffNativeDto>>(context.Buffs.ToList());
         }
 
-        public List<TileNative> GetTiles()
+        public List<TileNativeDto> GetTiles()
         {
-            return AutoMapper.Mapper.Map<List<TileNative>>(context.Tiles.ToList());
+            return AutoMapper.Mapper.Map<List<TileNativeDto>>(context.Tiles.ToList());
         }
 
-        public List<EffectNative> GetEffects()
+        public List<EffectNativeDto> GetEffects()
         {
-            return AutoMapper.Mapper.Map<List<EffectNative>>(context.SpecEffects.ToList());
+            return AutoMapper.Mapper.Map<List<EffectNativeDto>>(context.SpecEffects.ToList());
         }
 
-        void WriteTaggingObjectsToDictionary (List<TaggingNative> input, ref Dictionary<string, TaggingNative> output)
+        void WriteTaggingObjectsToDictionary (List<TaggingNativeDto> input, ref Dictionary<string, TaggingNativeDto> output)
         {
-            foreach (TaggingNative obj in input)
+            foreach (TaggingNativeDto obj in input)
             {
                 output.Add(obj.Id, obj);
             }
         }
 
-        public IDictionary<string, TaggingNative> GetAllNatives()
+        public IDictionary<string, TaggingNativeDto> GetAllNatives()
         {
-            Dictionary<string, TaggingNative> natives = new Dictionary<string, TaggingNative>();
-            List<SkillNative> skills = GetSkills();
-            List<ActionNative> actions = GetActions();
-            WriteTaggingObjectsToDictionary(skills.ToList<TaggingNative>(), ref natives);
-            WriteTaggingObjectsToDictionary(GetActors().ToList<TaggingNative>(),ref natives);
-            List<DecorationNative> decorations = context.Decorations.Select(decoration => new DecorationNative()
+            Dictionary<string, TaggingNativeDto> natives = new Dictionary<string, TaggingNativeDto>();
+            List<SkillNativeDto> skills = GetSkills();
+            List<ActionNativeDto> actions = GetActions();
+            WriteTaggingObjectsToDictionary(skills.ToList<TaggingNativeDto>(), ref natives);
+            WriteTaggingObjectsToDictionary(GetActors().ToList<TaggingNativeDto>(),ref natives);
+            List<DecorationNativeDto> decorations = context.Decorations.Select(decoration => new DecorationNativeDto()
             {
                 Action = actions.Find(x => x.Name == decoration.ActionId),
                 DefaultArmor = decoration.TagSynergies.Select(x => new TagSynergy(x.SelfTag, x.TargetTag, x.Mod)).ToList(),
@@ -84,8 +84,8 @@ namespace AgribattleArenaBackendServer.Services
                 Id = decoration.Id,
                 Tags = decoration.Tags.Select(x => x.Name).ToList()
             }).ToList();
-            WriteTaggingObjectsToDictionary(decorations.ToList<TaggingNative>(), ref natives);
-            List<EffectNative> effects = context.SpecEffects.Select(effect => new EffectNative()
+            WriteTaggingObjectsToDictionary(decorations.ToList<TaggingNativeDto>(), ref natives);
+            List<EffectNativeDto> effects = context.SpecEffects.Select(effect => new EffectNativeDto()
             {
                 Action = actions.Find(x => x.Name == effect.ActionId),
                 DefaultDuration = effect.DefaultDuration,
@@ -94,8 +94,8 @@ namespace AgribattleArenaBackendServer.Services
                 Id = effect.Id,
                 Tags = effect.Tags.Select(x => x.Name).ToList()
             }).ToList();
-            WriteTaggingObjectsToDictionary(effects.ToList<TaggingNative>(), ref natives);
-            List<BuffNative> buffs = context.Buffs.Select(buff => new BuffNative()
+            WriteTaggingObjectsToDictionary(effects.ToList<TaggingNativeDto>(), ref natives);
+            List<BuffNativeDto> buffs = context.Buffs.Select(buff => new BuffNativeDto()
             {
                 Action = actions.Find(x => x.Name == buff.ActionId),
                 BuffAplier = actions.Find(x=>x.Name == buff.BuffApplierId),
@@ -106,8 +106,8 @@ namespace AgribattleArenaBackendServer.Services
                 Id = buff.Id,
                 Tags = buff.Tags.Select(x => x.Name).ToList()
             }).ToList();
-            WriteTaggingObjectsToDictionary(buffs.ToList<TaggingNative>(), ref natives);
-            List<RoleModelNative> models = context.RoleModels.Select(model => new RoleModelNative()
+            WriteTaggingObjectsToDictionary(buffs.ToList<TaggingNativeDto>(), ref natives);
+            List<RoleModelNativeDto> models = context.RoleModels.Select(model => new RoleModelNativeDto()
             {
                 AttackingSkill = skills.Find(x => x.Id == model.AttackingSkillId),
                 Skills = skills.Where(x => model.RoleModelSkills.Exists(b => b.SkillId == x.Id)).ToList(),
@@ -119,8 +119,8 @@ namespace AgribattleArenaBackendServer.Services
                 Willpower = model.Willpower,
                 Id = model.Id
             }).ToList();
-            WriteTaggingObjectsToDictionary(models.ToList<TaggingNative>(), ref natives);
-            List<TileNative> tiles = context.Tiles.Select(tile => new TileNative()
+            WriteTaggingObjectsToDictionary(models.ToList<TaggingNativeDto>(), ref natives);
+            List<TileNativeDto> tiles = context.Tiles.Select(tile => new TileNativeDto()
             {
                 Action = actions.Find(x => x.Name == tile.ActionId),
                 ActionMod = tile.ActionMod,
@@ -130,51 +130,75 @@ namespace AgribattleArenaBackendServer.Services
                 Id = tile.Id,
                 Tags = tile.Tags.Select(x => x.Name).ToList()
             }).ToList();
-            WriteTaggingObjectsToDictionary(tiles.ToList<TaggingNative>(), ref natives);
+            WriteTaggingObjectsToDictionary(tiles.ToList<TaggingNativeDto>(), ref natives);
             return natives;
         }
 
-        public ActionNative GetAction (string id)
+        public ActionNativeDto GetAction (string id)
         {
-            return AutoMapper.Mapper.Map<ActionNative>(context.Actions.Find(id));
+            Contexts.NativesEntities.SceneAction action = context.Actions.Find(id);
+            if (action != null)
+                return AutoMapper.Mapper.Map<ActionNativeDto>(action);
+            else return null;
         }
 
-        public ActorNative GetActor(string id)
+        public ActorNativeDto GetActor(string id)
         {
-            return AutoMapper.Mapper.Map<ActorNative>(context.Actors.Find(id));
+            Contexts.NativesEntities.Actor actor = context.Actors.Find(id);
+            if (actor != null)
+                return AutoMapper.Mapper.Map<ActorNativeDto>(actor);
+            else return null;
         }
 
-        public DecorationNative GetDecoration(string id)
+        public DecorationNativeDto GetDecoration(string id)
         {
-            return AutoMapper.Mapper.Map<DecorationNative>(context.Decorations.Find(id));
+            Contexts.NativesEntities.Decoration decoration = context.Decorations.Find(id);
+            if (decoration != null)
+                return AutoMapper.Mapper.Map<DecorationNativeDto>(decoration);
+            else return null;
         }
 
-        public RoleModelNative GetRoleModel(string id)
+        public RoleModelNativeDto GetRoleModel(string id)
         {
-            return AutoMapper.Mapper.Map<RoleModelNative>(context.RoleModels.Find(id));
+            Contexts.NativesEntities.RoleModel model = context.RoleModels.Find(id);
+            if (model != null)
+                return AutoMapper.Mapper.Map<RoleModelNativeDto>(model);
+            else return null;
         }
 
-        public SkillNative GetSkill(string id)
+        public SkillNativeDto GetSkill(string id)
         {
-            return AutoMapper.Mapper.Map<SkillNative>(context.Skills.Find(id));
+            Contexts.NativesEntities.Skill skill = context.Skills.Find(id);
+            if (skill != null)
+                return AutoMapper.Mapper.Map<SkillNativeDto>(skill);
+            else return null;
         }
 
-        public BuffNative GetBuff(string id)
+        public BuffNativeDto GetBuff(string id)
         {
-            return AutoMapper.Mapper.Map<BuffNative>(context.Buffs.Find(id));
+            Contexts.NativesEntities.Buff buff = context.Buffs.Find(id);
+            if (buff != null)
+                return AutoMapper.Mapper.Map<BuffNativeDto>(buff);
+            else return null;
         }
 
-        public TileNative GetTile(string id)
+        public TileNativeDto GetTile(string id)
         {
-            return AutoMapper.Mapper.Map<TileNative>(context.Tiles.Find(id));
+            Contexts.NativesEntities.Tile tile = context.Tiles.Find(id);
+            if (tile != null)
+                return AutoMapper.Mapper.Map<TileNativeDto>(tile);
+            else return null;
         }
 
-        public EffectNative GetEffect(string id)
+        public EffectNativeDto GetEffect(string id)
         {
-            return AutoMapper.Mapper.Map<EffectNative>(context.SpecEffects.Find(id));
+            Contexts.NativesEntities.SpecEffect effect = context.SpecEffects.Find(id);
+            if (effect != null)
+                return AutoMapper.Mapper.Map<EffectNativeDto>(effect);
+            else return null;
         }
 
-        public bool AddActor(ActorNative actor)
+        public bool AddActor(ActorNativeDto actor)
         {
             if (context.Actors.Find(actor.Id) == null)
             {
@@ -193,7 +217,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddDecoration(DecorationNative decoration)
+        public bool AddDecoration(DecorationNativeDto decoration)
         {
             if (context.Decorations.Find(decoration.Id) == null)
             {
@@ -225,7 +249,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddRoleModel(RoleModelNativeToAdd roleModel)
+        public bool AddRoleModel(RoleModelNativeToAddDto roleModel)
         {
             if (context.RoleModels.Find(roleModel.Id) == null)
             {
@@ -267,7 +291,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddSkill(SkillNative skill)
+        public bool AddSkill(SkillNativeDto skill)
         {
             if (context.Skills.Find(skill.Id) == null)
             {
@@ -291,7 +315,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddBuff(BuffNative buff)
+        public bool AddBuff(BuffNativeDto buff)
         {
             if (context.Buffs.Find(buff.Id) == null)
             {
@@ -314,7 +338,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddTile(TileNative tile)
+        public bool AddTile(TileNativeDto tile)
         {
             if (context.Tiles.Find(tile.Id) == null)
             {
@@ -337,7 +361,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddEffect(EffectNative effect)
+        public bool AddEffect(EffectNativeDto effect)
         {
             if (context.SpecEffects.Find(effect.Id) == null)
             {
@@ -362,7 +386,7 @@ namespace AgribattleArenaBackendServer.Services
             return false;
         }
 
-        public bool AddAction(ActionNative action)
+        public bool AddAction(ActionNativeDto action)
         {
             if (context.Actions.Find(action.Name) == null)
             {

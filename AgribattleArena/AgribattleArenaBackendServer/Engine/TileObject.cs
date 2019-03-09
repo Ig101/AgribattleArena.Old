@@ -9,19 +9,19 @@ namespace AgribattleArenaBackendServer.Engine
 {
     public abstract class TileObject : GameObject
     {
-        TaggingNative native;
+        TaggingNativeDto native;
         Tile tempTile;
         DamageModel damageModel;
         float initiativePosition;
         bool affected;
 
         public bool Affected { get { return affected; } set { affected = value; } }
-        public TaggingNative Native { get { return native; } }
+        public TaggingNativeDto Native { get { return native; } }
         public float InitiativePosition { get { return initiativePosition; } set { initiativePosition = value; } }
         public DamageModel DamageModel { get { return damageModel; } }
         public Tile TempTile { get { return tempTile; }  set { tempTile = value; } }
 
-        public TileObject(Scene parent, int? ownerId, Tile tempTile, float z, DamageModel damageModel, TaggingNative native)
+        public TileObject(Scene parent, int? ownerId, Tile tempTile, float z, DamageModel damageModel, TaggingNativeDto native)
             : base(parent, ownerId, tempTile.GetCenter().X, tempTile.GetCenter().Y, z)
         {
             this.native = native;

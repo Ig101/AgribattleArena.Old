@@ -8,32 +8,32 @@ namespace AgribattleArenaBackendServer.Services
 {
     public interface INativesService
     {
-        List<ActionNative> GetActions();
-        List<ActorNative> GetActors();
-        List<DecorationNative> GetDecorations();
-        List<RoleModelNative> GetRoleModels();
-        List<SkillNative> GetSkills();
-        List<BuffNative> GetBuffs();
-        List<TileNative> GetTiles();
-        List<EffectNative> GetEffects();
+        List<ActionNativeDto> GetActions();
+        List<ActorNativeDto> GetActors();
+        List<DecorationNativeDto> GetDecorations();
+        List<RoleModelNativeDto> GetRoleModels();
+        List<SkillNativeDto> GetSkills();
+        List<BuffNativeDto> GetBuffs();
+        List<TileNativeDto> GetTiles();
+        List<EffectNativeDto> GetEffects();
 
-        ActionNative GetAction(string id);
-        ActorNative GetActor(string id);
-        DecorationNative GetDecoration(string id);
-        RoleModelNative GetRoleModel(string id);
-        SkillNative GetSkill(string id);
-        BuffNative GetBuff(string id);
-        TileNative GetTile(string id);
-        EffectNative GetEffect(string id);
+        ActionNativeDto GetAction(string id);
+        ActorNativeDto GetActor(string id);
+        DecorationNativeDto GetDecoration(string id);
+        RoleModelNativeDto GetRoleModel(string id);
+        SkillNativeDto GetSkill(string id);
+        BuffNativeDto GetBuff(string id);
+        TileNativeDto GetTile(string id);
+        EffectNativeDto GetEffect(string id);
 
-        bool AddAction(ActionNative id);
-        bool AddActor(ActorNative actor);
-        bool AddDecoration(DecorationNative decoration);
-        bool AddRoleModel(RoleModelNativeToAdd roleModel);
-        bool AddSkill(SkillNative skill);
-        bool AddBuff(BuffNative buff);
-        bool AddTile(TileNative tile);
-        bool AddEffect(EffectNative effect);
+        bool AddAction(ActionNativeDto id);
+        bool AddActor(ActorNativeDto actor);
+        bool AddDecoration(DecorationNativeDto decoration);
+        bool AddRoleModel(RoleModelNativeToAddDto roleModel);
+        bool AddSkill(SkillNativeDto skill);
+        bool AddBuff(BuffNativeDto buff);
+        bool AddTile(TileNativeDto tile);
+        bool AddEffect(EffectNativeDto effect);
 
         bool RemoveAction(string id);
         bool RemoveActor(string id);

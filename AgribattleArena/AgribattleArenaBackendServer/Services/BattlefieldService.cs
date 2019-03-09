@@ -10,23 +10,16 @@ namespace AgribattleArenaBackendServer.Services
 {
     public class BattlefieldService: IBattlefieldService
     {
-        INativesServiceSceneLink nativesService;
-        IProfilesServiceSceneLink profilesService;
-        IEngineService engineService;
         BattlefieldContext context;
 
-        public BattlefieldService(BattlefieldContext context, IProfilesServiceSceneLink profilesService,
-            INativesServiceSceneLink nativesService, IEngineService engineService)
+        public BattlefieldService(BattlefieldContext context)
         {
             this.context = context;
-            this.profilesService = profilesService;
-            this.nativesService = nativesService;
-            this.engineService = engineService;
         }
 
-        public void StartNewBattle(List<int> players)
+        public int AddNewBattle(List<int> players, int seed)
         {
-            throw new NotImplementedException();
+            return 1;
         }
     }
 }

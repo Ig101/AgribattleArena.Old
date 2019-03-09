@@ -4,6 +4,7 @@ using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Engine.Synchronization;
+using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
-    public delegate void SyncHandler(Scene scene, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
+    public delegate void SyncHandler(IScene scene, Engine.Helpers.Action action, uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject syncInfo);
 
     public class Scene: IScene
     {
@@ -40,7 +41,7 @@ namespace AgribattleArenaBackendServer.Engine
         public int RandomCounter { get { return randomCounter; } }
         public IEnumerable<int> PlayerIds { get { return playerIds; } }
 
-        public Scene(int id, List<int> playerIds, IProfilesServiceSceneLink profilesService, ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, List<int> playerIds, List<PlayerActor> playerActors, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
             //TODO playerSignatures
             this.playerIds = playerIds;
@@ -52,7 +53,7 @@ namespace AgribattleArenaBackendServer.Engine
             specEffects = new List<SpecEffect>();
             deletedActors = new List<TileObject>();
             deletedEffects = new List<SpecEffect>();
-            GenerationSet set = generator.GenerateNewScene(profilesService, playerIds, unchecked(seed * id));
+            GenerationSet set = generator.GenerateNewScene(playerActors, playerIds, unchecked(seed * id));
             tiles = new Tile[set.TileSet.GetLength(0), set.TileSet.GetLength(1)];
             for(int x = 0; x<tiles.GetLength(0);x++)
             {
@@ -61,9 +62,22 @@ namespace AgribattleArenaBackendServer.Engine
                     CreateTile(set.TileSet[x, y].Native, x, y, set.TileSet[x, y].Height);
                 }
             }
-            foreach(PlayerActor actor in set.PlayerActors)
+            foreach(PlayerActorWithTile actor in set.PlayerActors)
             {
-                CreateActor(actor.Owner, actor.Native, actor.RoleModel, tiles[actor.TileX, actor.TileY], null);
+                RoleModelNativeDto roleModel = new RoleModelNativeDto()
+                {
+                    ActionPointsIncome = actor.RoleModel.ActionPointsIncome,
+                    Armor = actor.RoleModel.Armor.Select(tag => new TagSynergy(tag.SelfTag, tag.TargetTag, tag.Mod)).ToList(),
+                    AttackingSkill = nativeManager.GetSkillNative(actor.RoleModel.AttackSkill),
+                    Constitution = actor.RoleModel.Constitution,
+                    Skills = actor.RoleModel.Skills.Select(skill => nativeManager.GetSkillNative(skill)).ToList(),
+                    Id = actor.RoleModel.Id,
+                    Speed = actor.RoleModel.Speed,
+                    Strength = actor.RoleModel.Strength,
+                    Tags = actor.RoleModel.Tags,
+                    Willpower = actor.RoleModel.Willpower
+                };
+                CreateActor(actor.Owner, actor.Native, roleModel, tiles[actor.TileX, actor.TileY], null);
             }
             foreach(GenerationObject actor in set.Actors)
             {
@@ -102,7 +116,7 @@ namespace AgribattleArenaBackendServer.Engine
             return actor;
         }
 
-        public Actor CreateActor(int? ownerId, string native, RoleModel roleModel, Tile target, float? z)
+        public Actor CreateActor(int? ownerId, string native, RoleModelNativeDto roleModel, Tile target, float? z)
         {
             Actor actor = new Actor(this, ownerId, target, z, nativeManager.GetActorNative(native), roleModel);
             actors.Add(actor);

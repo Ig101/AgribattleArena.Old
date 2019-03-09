@@ -9,13 +9,12 @@ namespace AgribattleArenaBackendServer.Engine.NativeManager
     public interface INativeManager
     {
         void Initialize(INativesServiceSceneLink nativesService);
-        void AddNative(TaggingNative native);
-        TileNative GetTileNative(string id);
-        ActorNative GetActorNative(string id);
-        DecorationNative GetDecorationNative(string id);
-        BuffNative GetBuffNative(string id);
-        SkillNative GetSkillNative(string id);
-        RoleModelNative GetRoleModelNative(string id);
-        EffectNative GetEffectNative(string id);
+        TileNativeDto GetTileNative(string id);
+        ActorNativeDto GetActorNative(string id);
+        DecorationNativeDto GetDecorationNative(string id);
+        BuffNativeDto GetBuffNative(string id);
+        SkillNativeDto GetSkillNative(string id);
+        RoleModelNativeDto GetRoleModelNative(string id);
+        EffectNativeDto GetEffectNative(string id);
     }
 }
