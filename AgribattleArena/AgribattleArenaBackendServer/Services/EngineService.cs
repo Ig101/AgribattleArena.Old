@@ -19,7 +19,6 @@ namespace AgribattleArenaBackendServer.Services
     {
         Random globalRandom;
         INativeManager nativeManager;
-        ILevelGenerator levelGenerator;
         List<IScene> scenes;
         IHubContext<BattleHub> battleHub;
 
@@ -28,11 +27,10 @@ namespace AgribattleArenaBackendServer.Services
             globalRandom = new Random();
             this.battleHub = battleHub;
             nativeManager = new NativeManager(nativesService);
-            levelGenerator = new BasicLevelGenerator(40, 40);
             scenes = new List<IScene>();
         }
 
-        public bool AddNewScene(int id, List<BattleUserDto> players, List<PartyActor> playerActors, int seed)
+        public bool AddNewScene(int id, List<BattleUserDto> players, List<GenerationPartyActor> playerActors, ILevelGenerator levelGenerator, int seed)
         {
             try
             {

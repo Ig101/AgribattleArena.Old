@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities
 {
-    public class PartyActor
+    public class GenerationPartyActor
     {
         int? owner;
         string native;
@@ -18,7 +18,7 @@ namespace AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities
         public RoleModelNativeToAddDto RoleModel { get { return roleModel; } }
         public string Native { get { return native; } }
 
-        public PartyActor(string native, int? owner, RoleModelNativeToAddDto roleModel)
+        public GenerationPartyActor(string native, int? owner, RoleModelNativeToAddDto roleModel)
         {
             this.owner = owner;
             this.roleModel = roleModel;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine
 {
+    //TODO Sync
     public class SynchronizationInfo
     {
     }

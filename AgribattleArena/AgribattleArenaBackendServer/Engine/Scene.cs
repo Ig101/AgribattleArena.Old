@@ -41,9 +41,8 @@ namespace AgribattleArenaBackendServer.Engine
         public int RandomCounter { get { return randomCounter; } }
         public IEnumerable<BattleUserDto> PlayerIds { get { return players; } }
 
-        public Scene(int id, List<BattleUserDto> players, List<PartyActor> playerActors, ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, List<BattleUserDto> players, List<GenerationPartyActor> playerActors, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
-            //TODO playerSignatures
             this.players = players;
             this.id = id;
             this.gameRandom = new Random(seed);
@@ -62,7 +61,7 @@ namespace AgribattleArenaBackendServer.Engine
                     CreateTile(set.TileSet[x, y].Native, x, y, set.TileSet[x, y].Height);
                 }
             }
-            foreach(PlayerActorWithTile actor in set.PlayerActors)
+            foreach(GenerationPartyActorWithTile actor in set.PartyActors)
             {
                 RoleModelNativeDto roleModel = new RoleModelNativeDto()
                 {

@@ -12,7 +12,7 @@ namespace AgribattleArenaBackendServer.Services
     public interface IProfilesService
     {
         Task<Profile> GetProfile(ClaimsPrincipal user);
-        Task<List<PartyActor>> GetPartyActors(BattleUserDto user);
-        Task<List<PartyActor>> GetAllPartyActors(List<BattleUserDto> users);
+        Task<List<GenerationPartyActor>> GetPartyActors(BattleUserDto user);
+        Task<List<GenerationPartyActor>> GetAllPartyActors(List<BattleUserDto> users);
     }
 }

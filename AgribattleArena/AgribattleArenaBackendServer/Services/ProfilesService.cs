@@ -28,13 +28,13 @@ namespace AgribattleArenaBackendServer.Services
             return await GetUserAsync(user);
         }
 
-        public async Task<List<PartyActor>> GetPartyActors (BattleUserDto user)
+        public async Task<List<GenerationPartyActor>> GetPartyActors (BattleUserDto user)
         {
             Profile profile = await FindByIdAsync(user.UserId);
             Party party = profile.Parties.Find(x => x.Id == user.PartyId);
             if (party != null)
             {
-                return party.Actors.Select(x => new PartyActor(x.ActorNative, user.PartyId, AutoMapper.Mapper.Map<RoleModelNativeToAddDto>(x))).ToList();
+                return party.Actors.Select(x => new GenerationPartyActor(x.ActorNative, user.PartyId, AutoMapper.Mapper.Map<RoleModelNativeToAddDto>(x))).ToList();
             }
             else
             {
@@ -42,9 +42,9 @@ namespace AgribattleArenaBackendServer.Services
             }
         }
 
-        public async Task<List<PartyActor>> GetAllPartyActors(List<BattleUserDto> users)
+        public async Task<List<GenerationPartyActor>> GetAllPartyActors(List<BattleUserDto> users)
         {
-            List<PartyActor> aggregatedList = new List<PartyActor>();
+            List<GenerationPartyActor> aggregatedList = new List<GenerationPartyActor>();
             foreach(BattleUserDto user in users)
             {
                 aggregatedList.AddRange(await GetPartyActors(user));

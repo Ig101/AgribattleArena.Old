@@ -19,13 +19,13 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             this.sizeY=sizeY;
         }
 
-        public GenerationSet GenerateNewScene(List<PartyActor> playerActors, List<BattleUserDto> playerIds, int seed)
+        public GenerationSet GenerateNewScene(List<GenerationPartyActor> playerActors, List<BattleUserDto> playerIds, int seed)
         {
             Random random = new Random(seed);
             GenerationTile[,] tileSet = new GenerationTile[sizeX,sizeY];
             List<GenerationObject> actors = new List<GenerationObject>();
             List<GenerationObject> decorations = new List<GenerationObject>();
-            List<PlayerActorWithTile> filledPlayerActors = new List<PlayerActorWithTile>();
+            List<GenerationPartyActorWithTile> filledPlayerActors = new List<GenerationPartyActorWithTile>();
 
             //TODO Generation method
             return new GenerationSet(tileSet, actors,decorations, filledPlayerActors);
