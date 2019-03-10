@@ -8,6 +8,7 @@ using AgribattleArenaBackendServer.Hubs;
 using AgribattleArenaBackendServer.Models.Battle;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,17 @@ namespace AgribattleArenaBackendServer.Services
         List<IScene> scenes;
         IHubContext<BattleHub> battleHub;
 
-        public EngineService(INativesServiceSceneLink nativesService, IHubContext<BattleHub> battleHub)
+        public EngineService(IHubContext<BattleHub> battleHub, IServiceScopeFactory serviceScopeFactory)
         {
             globalRandom = new Random();
             this.battleHub = battleHub;
-            nativeManager = new NativeManager(nativesService);
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var scopedProcessingService =
+                    scope.ServiceProvider
+                        .GetRequiredService<INativesServiceSceneLink>();
+                nativeManager = new NativeManager(scopedProcessingService);
+            }
             scenes = new List<IScene>();
         }
 

@@ -11,9 +11,9 @@ namespace AgribattleArenaBackendServer.Controllers
     public class QueueController: ControllerBase
     {
         IProfilesService profilesService;
-        IQueueingStorageService queueingService;
+        IQueueService queueingService;
 
-        public QueueController(IQueueingStorageService queueingService, IProfilesService profilesService)
+        public QueueController(IQueueService queueingService, IProfilesService profilesService)
         {
             this.profilesService = profilesService;
             this.queueingService = queueingService;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Contexts;
 using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
@@ -49,6 +50,8 @@ namespace AgribattleArenaBackendServer
             services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
             string connectionString2 = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena;Pwd=admin;";
             services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString2));
+          //  string connectionString3 = @"Server=localhost;Database=aa_battlefield;Uid=agribattleArena;Pwd=admin;";
+          //  services.AddDbContext<BattleContext>(o => o.UseMySql(connectionString3));
             //
 
             services.AddIdentity<Profile, IdentityRole>(options =>
@@ -62,10 +65,11 @@ namespace AgribattleArenaBackendServer
             services.AddSingleton<IEngineServiceQueueLink, EngineService>();
             services.AddSingleton<IEngineServiceHubLink, EngineService>();
             services.AddTransient<IBattleServiceQueueLink, BattleService>();
-            services.AddSingleton<IQueueingStorageService, QueueingStorageService>();
-            services.AddSingleton<IQueueingStorageServiceHubLink, QueueingStorageService>();
             services.AddScoped<IProfilesService, ProfilesService>();
+            services.AddScoped<IProfilesServiceQueueLink, ProfilesService>();
             services.AddHostedService<QueueService>();
+            services.AddSingleton<IQueueService, QueueService>();
+            services.AddSingleton<IQueueStorageServiceHubLink, QueueService>();
             services.AddSignalR();
         }
 
@@ -83,7 +87,20 @@ namespace AgribattleArenaBackendServer
                     .ForMember(d => d.Armor,o => o.MapFrom(c => c.TagSynergies));
                 cfg.CreateMap<Contexts.NativesEntities.Skill, SkillNativeDto>();
                 cfg.CreateMap<Contexts.NativesEntities.RoleModelSkill, SkillNativeDto>()
-                    .ForMember(d => d, o => o.MapFrom(c => c.Skill));
+                    .ConvertUsing(c => new SkillNativeDto()
+                    {
+                        DefaultCost = c.Skill.DefaultCost,
+                        Tags = c.Skill.Tags.Select(x => x.Name).ToList(),
+                        Id = c.SkillId,
+                        Action = new ActionNativeDto()
+                        {
+                            Name = c.Skill.Action.Id,
+                            Script = Encoding.Unicode.GetString(c.Skill.Action.Script)
+                        },
+                        DefaultCd = c.Skill.DefaultCd,
+                        DefaultMod = c.Skill.DefaultMod,
+                        DefaultRange = c.Skill.DefaultRange
+                    });
                 cfg.CreateMap<Contexts.NativesEntities.SpecEffect, EffectNativeDto>();
                 cfg.CreateMap<Contexts.NativesEntities.SceneAction, ActionNativeDto>()
                     .ForMember(d => d.Name,o => o.MapFrom(c=>c.Id));
@@ -93,7 +110,7 @@ namespace AgribattleArenaBackendServer
                 cfg.CreateMap<Contexts.ProfilesEntities.Actor, RoleModelNativeToAddDto>()
                     .ForMember(d => d.AttackSkill, o => o.MapFrom(c => c.AttackingSkillNative));
                 cfg.CreateMap<Contexts.ProfilesEntities.Skill, string>()
-                    .ForMember(d => d, o => o.MapFrom(c => c.Native));
+                    .ConvertUsing(c => c.Native);
                 cfg.CreateMap<Contexts.ProfilesEntities.TagsArmor, TagsArmorDto>();
                 cfg.CreateMap<Contexts.ProfilesEntities.Actor, PartyActorDto>();
                 cfg.CreateMap<Contexts.ProfilesEntities.Party, PartyDto>();

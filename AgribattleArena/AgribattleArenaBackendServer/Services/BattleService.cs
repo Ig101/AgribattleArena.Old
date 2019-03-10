@@ -11,11 +11,15 @@ namespace AgribattleArenaBackendServer.Services
     //TODO Not Ready
     public class BattleService: IBattleServiceQueueLink
     {
-        BattleContext context;
+        /*BattleContext context;
 
         public BattleService(BattleContext context)
         {
             this.context = context;
+        }*/
+
+        public BattleService()
+        {
         }
 
         public int AddNewBattle(List<int> players, int seed)

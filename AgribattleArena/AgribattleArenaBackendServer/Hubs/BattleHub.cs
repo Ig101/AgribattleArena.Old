@@ -12,9 +12,9 @@ namespace AgribattleArenaBackendServer.Hubs
     public class BattleHub: Hub
     {
         IEngineServiceHubLink engineService;
-        IQueueingStorageServiceHubLink queueingService;
+        IQueueStorageServiceHubLink queueingService;
 
-        public BattleHub(IEngineServiceHubLink engineService, IQueueingStorageServiceHubLink queueingService)
+        public BattleHub(IEngineServiceHubLink engineService, IQueueStorageServiceHubLink queueingService)
         {
             this.engineService = engineService;
             this.queueingService = queueingService;
