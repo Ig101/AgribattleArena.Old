@@ -1,17 +1,16 @@
-﻿using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
+﻿using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Models.Battle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public interface IProfilesService
+    public interface IEngineServiceQueueLink
     {
-        Task<Profile> GetProfile(ClaimsPrincipal user);
-        Task<List<GenerationPartyActor>> GetPartyActors(BattleUserDto user);
+        bool AddNewScene(int id, List<BattleUserDto> players, List<GenerationPartyActor> playerActors, ILevelGenerator levelGenerator, int seed);
+        int GetNextRandomNumber();
     }
 }

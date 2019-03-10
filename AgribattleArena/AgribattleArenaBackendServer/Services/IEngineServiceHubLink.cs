@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public interface IQueueingService
+    public interface IEngineServiceHubLink
     {
+        bool LeaveScene(string id);
     }
 }

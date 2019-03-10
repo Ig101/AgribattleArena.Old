@@ -1,4 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
+using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Models.Battle;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 namespace AgribattleArenaBackendServer.Engine.Generator
 {
     //TODO Not Ready
-    public class BasicLevelGenerator : ILevelGenerator
+    public class DuelLevelGenerator : ILevelGenerator
     {
         int sizeX;
         int sizeY;
 
-        public BasicLevelGenerator(int sizeX, int sizeY)
+        public DuelLevelGenerator()
         {
-            this.sizeX=sizeX;
-            this.sizeY=sizeY;
+            this.sizeX = Misc.duelMapSide;
+            this.sizeY = Misc.duelMapSide;
         }
 
         public GenerationSet GenerateNewScene(List<GenerationPartyActor> playerActors, List<BattleUserDto> playerIds, int seed)

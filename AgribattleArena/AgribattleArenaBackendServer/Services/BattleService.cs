@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class BattleService: IBattleService
+    //TODO Not Ready
+    public class BattleService: IBattleServiceQueueLink
     {
         BattleContext context;
 

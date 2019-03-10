@@ -11,10 +11,10 @@ namespace AgribattleArenaBackendServer.Hubs
     [Authorize]
     public class BattleHub: Hub
     {
-        IEngineService engineService;
-        IQueueingService queueingService;
+        IEngineServiceHubLink engineService;
+        IQueueingStorageServiceHubLink queueingService;
 
-        public BattleHub(IEngineService engineService, IQueueingService queueingService)
+        public BattleHub(IEngineServiceHubLink engineService, IQueueingStorageServiceHubLink queueingService)
         {
             this.engineService = engineService;
             this.queueingService = queueingService;
@@ -27,6 +27,8 @@ namespace AgribattleArenaBackendServer.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
+            queueingService.Dequeue(Context.UserIdentifier);
+            engineService.LeaveScene(Context.UserIdentifier);
             return base.OnDisconnectedAsync(exception);
         }
     }

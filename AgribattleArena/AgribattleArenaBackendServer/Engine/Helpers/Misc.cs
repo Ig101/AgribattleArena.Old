@@ -33,6 +33,8 @@ namespace AgribattleArenaBackendServer.Engine.Helpers
 
     public class Misc
     {
+        public const int duelMapSide = 40;
+
         public const int tileSize = 128;
 
         public const int maxActionPoints = 8;

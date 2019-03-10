@@ -59,9 +59,13 @@ namespace AgribattleArenaBackendServer
             services.AddTransient<INativesService, NativesService>();
             services.AddTransient<INativesServiceSceneLink, NativesService>();
             services.AddSingleton<IEngineService, EngineService>();
-            services.AddTransient<IBattleService, BattleService>();
-            services.AddSingleton<IQueueingService, QueueingService>();
+            services.AddSingleton<IEngineServiceQueueLink, EngineService>();
+            services.AddSingleton<IEngineServiceHubLink, EngineService>();
+            services.AddTransient<IBattleServiceQueueLink, BattleService>();
+            services.AddSingleton<IQueueingStorageService, QueueingStorageService>();
+            services.AddSingleton<IQueueingStorageServiceHubLink, QueueingStorageService>();
             services.AddScoped<IProfilesService, ProfilesService>();
+            services.AddHostedService<QueueService>();
             services.AddSignalR();
         }
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public interface IBattleService
+    public interface IQueueingStorageServiceHubLink
     {
-        int AddNewBattle(List<int> players, int seed);
+        bool Dequeue(string userId);
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class ProfilesService : UserManager<Profile>, IProfilesService
+    public class ProfilesService : UserManager<Profile>, IProfilesService, IProfilesServiceQueueLink
     {
         public ProfilesService(IUserStore<Profile> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<Profile> passwordHasher, 
             IEnumerable<IUserValidator<Profile>> userValidators, IEnumerable<IPasswordValidator<Profile>> passwordValidators, ILookupNormalizer keyNormalizer, 

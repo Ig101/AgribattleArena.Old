@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class EngineService: IEngineService
+    public class EngineService: IEngineService, IEngineServiceQueueLink, IEngineServiceHubLink
     {
         Random globalRandom;
         INativeManager nativeManager;
@@ -30,7 +30,7 @@ namespace AgribattleArenaBackendServer.Services
             scenes = new List<IScene>();
         }
 
-        public bool AddNewScene(int id, List<BattleUserDto> players, List<GenerationPartyActor> playerActors, ILevelGenerator levelGenerator, int seed)
+        public bool AddNewScene(int id,List<BattleUserDto> players, List<GenerationPartyActor> playerActors, ILevelGenerator levelGenerator, int seed)
         {
             try
             {
@@ -70,6 +70,12 @@ namespace AgribattleArenaBackendServer.Services
         public int GetNextRandomNumber()
         {
             return globalRandom.Next();
+        }
+
+        public bool LeaveScene(string id)
+        {
+            //TODO Leaver
+            return true;
         }
     }
 }

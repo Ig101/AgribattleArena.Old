@@ -1,5 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
 using AgribattleArenaBackendServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Controllers
 {
-    [Route("api/profiles")]
-    public class ProfilesController: ControllerBase
+    [Route("api/login")]
+    public class AuthorizationController: ControllerBase
     {
         UserManager<Profile> userManager;
         SignInManager<Profile> signInManager;
 
-        public ProfilesController(ProfilesService userManager,
+        public AuthorizationController(ProfilesService userManager,
             SignInManager<Profile> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register()
         {
             var result = await userManager.CreateAsync(null);
@@ -30,7 +31,7 @@ namespace AgribattleArenaBackendServer.Controllers
         }
 
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<IActionResult> Login()
         {
             
