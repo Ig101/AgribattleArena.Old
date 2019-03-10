@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class BattlefieldService: IBattlefieldService
+    public class BattleService: IBattleService
     {
-        BattlefieldContext context;
+        BattleContext context;
 
-        public BattlefieldService(BattlefieldContext context)
+        public BattleService(BattleContext context)
         {
             this.context = context;
         }

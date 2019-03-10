@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities
 {
-    public class PlayerActorWithTile: PlayerActor
+    public class PlayerActorWithTile: PartyActor
     {
         int tileX;
         int tileY;

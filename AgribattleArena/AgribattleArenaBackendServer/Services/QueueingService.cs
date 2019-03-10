@@ -7,5 +7,10 @@ namespace AgribattleArenaBackendServer.Services
 {
     public class QueueingService: IQueueingService
     {
+
+        public QueueingService ()
+        {
+
+        }
     }
 }

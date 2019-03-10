@@ -1,58 +1,55 @@
-﻿using AgribattleArenaBackendServer.Contexts;
-using AgribattleArenaBackendServer.Engine.Generator;
+﻿using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
 using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
+using AgribattleArenaBackendServer.Models.Battle;
 using AgribattleArenaBackendServer.Models.Natives;
 using AgribattleArenaBackendServer.Models.Profiles;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public class ProfilesService : IProfilesService, IProfilesServiceSceneLink
+    public class ProfilesService : UserManager<Profile>, IProfilesService
     {
-        ProfilesContext context;
-
-        public ProfilesService(ProfilesContext context)
+        public ProfilesService(IUserStore<Profile> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<Profile> passwordHasher, 
+            IEnumerable<IUserValidator<Profile>> userValidators, IEnumerable<IPasswordValidator<Profile>> passwordValidators, ILookupNormalizer keyNormalizer, 
+            IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Profile>> logger) 
+            : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-            this.context = context;
         }
 
-        public PlayerDto GetPlayer(int playerId)
+        public async Task<Profile> GetProfile(ClaimsPrincipal user)
         {
-            return AutoMapper.Mapper.Map<PlayerDto>(context.Players.Find(playerId));
+            return await GetUserAsync(user);
         }
 
-        public PlayerActorDto GetPlayerActor(int actorId)
+        public async Task<List<PartyActor>> GetPartyActors (BattleUserDto user)
         {
-            return AutoMapper.Mapper.Map<PlayerActorDto>(context.Actors.Find(actorId));
+            Profile profile = await FindByIdAsync(user.UserId);
+            Party party = profile.Parties.Find(x => x.Id == user.PartyId);
+            if (party != null)
+            {
+                return party.Actors.Select(x => new PartyActor(x.ActorNative, user.PartyId, AutoMapper.Mapper.Map<RoleModelNativeToAddDto>(x))).ToList();
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public List<PlayerActor> GetPlayerActors(int playerId)
+        public async Task<List<PartyActor>> GetAllPartyActors(List<BattleUserDto> users)
         {
-            PlayerDto player = GetPlayer(playerId);
-            return player.Actors.Select(x => new PlayerActor(x.ActorNative, playerId, AutoMapper.Mapper.Map<PlayerActorDto,RoleModelNativeToAddDto>(x))).ToList();
-        }
-
-        public ProfileDto GetProfile(string login)
-        {
-            return AutoMapper.Mapper.Map<ProfileDto>(context.Profiles.Find(login));
-        }
-
-        public List<RightDto> GetRights()
-        {
-            return AutoMapper.Mapper.Map<List<RightDto>>(context.Rights);
-        }
-
-        public RoleDto GetRole(int roleId)
-        {
-            return AutoMapper.Mapper.Map<RoleDto>(context.Players.Find(roleId));
-        }
-
-        public List<RoleDto> GetRoles()
-        {
-            return AutoMapper.Mapper.Map<List<RoleDto>>(context.Roles);
+            List<PartyActor> aggregatedList = new List<PartyActor>();
+            foreach(BattleUserDto user in users)
+            {
+                aggregatedList.AddRange(await GetPartyActors(user));
+            }
+            return aggregatedList;
         }
     }
 }

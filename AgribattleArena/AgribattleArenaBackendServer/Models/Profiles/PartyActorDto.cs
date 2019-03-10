@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Models.Profiles
 {
-    public class PlayerActorDto
+    public class PartyActorDto
     {
         public string ActorNative { get; set; }
         public string AttackingSkillNative { get; set; }

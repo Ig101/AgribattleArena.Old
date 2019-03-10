@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Services
 {
-    public interface IBattlefieldService
+    public interface IBattleService
     {
         int AddNewBattle(List<int> players, int seed);
     }

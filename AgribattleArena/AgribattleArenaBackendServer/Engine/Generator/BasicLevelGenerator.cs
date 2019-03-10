@@ -1,4 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
+using AgribattleArenaBackendServer.Models.Battle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace AgribattleArenaBackendServer.Engine.Generator
             this.sizeY=sizeY;
         }
 
-        public GenerationSet GenerateNewScene(List<PlayerActor> playerActors, List<int> playerIds, int seed)
+        public GenerationSet GenerateNewScene(List<PartyActor> playerActors, List<BattleUserDto> playerIds, int seed)
         {
             Random random = new Random(seed);
             GenerationTile[,] tileSet = new GenerationTile[sizeX,sizeY];

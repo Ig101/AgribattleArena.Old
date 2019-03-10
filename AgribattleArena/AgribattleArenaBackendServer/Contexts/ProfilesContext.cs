@@ -1,4 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,10 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Contexts
 {
-    public class ProfilesContext : DbContext
+    public class ProfilesContext : IdentityDbContext<Profile>
     {
-        public DbSet<Profile> Profiles { get; set; }
-        public DbSet<Player> Players { get; set; }
+        public DbSet<Party> Players { get; set; }
         public DbSet<Actor> Actors { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Right> Rights { get; set; }
 
         public ProfilesContext(DbContextOptions<ProfilesContext> options)
             : base(options)
@@ -28,10 +26,6 @@ namespace AgribattleArenaBackendServer.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RoleRight>()
-                .HasKey(t => new { t.RightId, t.RoleId });
-            modelBuilder.Entity<RoleRight>().HasIndex(x => x.RoleId);
-            modelBuilder.Entity<RoleRight>().ToTable("role_right");
             modelBuilder.Entity<Skill>().HasIndex(x => x.ActorId);
             modelBuilder.Entity<TagsArmor>().HasIndex(x => x.ActorId);
             modelBuilder.Entity<TagsArmor>().ToTable("tags_armor");

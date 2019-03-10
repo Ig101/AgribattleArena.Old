@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Models.Profiles
 {
-    public class PlayerDto
+    public class PartyDto
     {
         [Required]
         [MaxLength(20)]
@@ -14,6 +14,6 @@ namespace AgribattleArenaBackendServer.Models.Profiles
         public int ActorsLimit { get; set; }
         public int Victories { get; set; }
         public int Games { get; set; }
-        public List<PlayerActorDto> Actors { get; set; }
+        public List<PartyActorDto> Actors { get; set; }
     }
 }

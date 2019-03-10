@@ -25,8 +25,8 @@ namespace AgribattleArenaBackendServer.Contexts.ProfilesEntities
         public int ActionPointsIncome { get; set; }
         public List<TagsArmor> Armor { get; set; }
 
-        public int PlayerId { get; set; }
-        [ForeignKey("PlayerId")]
-        public Player Player { get; set; }
+        public int PartyId { get; set; }
+        [ForeignKey("PartyId")]
+        public Party Party { get; set; }
     }
 }

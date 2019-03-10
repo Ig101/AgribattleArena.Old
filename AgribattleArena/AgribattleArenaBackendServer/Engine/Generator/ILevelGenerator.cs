@@ -1,5 +1,6 @@
 ﻿using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Engine.Synchronization;
+using AgribattleArenaBackendServer.Models.Battle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace AgribattleArenaBackendServer.Engine.Generator
 {
     public interface ILevelGenerator
     {
-        GenerationSet GenerateNewScene(List<PlayerActor> playerActors, List<int> playerIds, int seed);
+        GenerationSet GenerateNewScene(List<PartyActor> playerActors, List<BattleUserDto> playerIds, int seed);
     }
 }

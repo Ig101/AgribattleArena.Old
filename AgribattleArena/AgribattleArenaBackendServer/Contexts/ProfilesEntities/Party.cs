@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArenaBackendServer.Contexts.ProfilesEntities
 {
-    public class Player
+    public class Party
     {
         [Key]
         public int Id { get; set; }
@@ -16,12 +16,10 @@ namespace AgribattleArenaBackendServer.Contexts.ProfilesEntities
         public string Name { get; set; }
         public int ActorsLimit { get; set; }
 
-        public int Victories { get; set; }
-        public int Games { get; set; }
         public List<Actor> Actors { get; set; }
 
-        public string ProfileLogin { get; set; }
-        [ForeignKey("ProfileLogin")]
+        public string ProfileId { get; set; }
+        [ForeignKey("ProfileId")]
         public Profile Profile { get; set; }
     }
 }

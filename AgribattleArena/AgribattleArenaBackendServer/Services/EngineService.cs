@@ -4,6 +4,10 @@ using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Engine.Synchronization;
+using AgribattleArenaBackendServer.Hubs;
+using AgribattleArenaBackendServer.Models.Battle;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +21,18 @@ namespace AgribattleArenaBackendServer.Services
         INativeManager nativeManager;
         ILevelGenerator levelGenerator;
         List<IScene> scenes;
+        IHubContext<BattleHub> battleHub;
 
-        public EngineService(INativesServiceSceneLink nativesService)
+        public EngineService(INativesServiceSceneLink nativesService, IHubContext<BattleHub> battleHub)
         {
             globalRandom = new Random();
+            this.battleHub = battleHub;
             nativeManager = new NativeManager(nativesService);
             levelGenerator = new BasicLevelGenerator(40, 40);
             scenes = new List<IScene>();
         }
 
-        public bool AddNewScene(int id, List<int> players, List<PlayerActor> playerActors, int seed)
+        public bool AddNewScene(int id, List<BattleUserDto> players, List<PartyActor> playerActors, int seed)
         {
             try
             {
@@ -51,10 +57,16 @@ namespace AgribattleArenaBackendServer.Services
             IScene tempScene = scenes.Find(x => x.Id == sceneId);
         }
 
+        void SendSynchronizationInfo(IScene scene, SynchronizationInfo info)
+        {
+            battleHub.Clients.Users(scene.PlayerIds.Select(x => x.UserId).ToList()).SendAsync("SynchronizeBattlefiled", info);
+        }
+
         public void SynchronizeHandler(IScene sender, Engine.Helpers.Action action, 
             uint? id, int? actionId, int? targetX, int? targetY, ISynchronizationObject synchronizationObject)
         {
-            //TODO WebsocketsAction
+            SynchronizationInfo info = new SynchronizationInfo();
+            SendSynchronizationInfo(sender, info);
         }
 
         public int GetNextRandomNumber()

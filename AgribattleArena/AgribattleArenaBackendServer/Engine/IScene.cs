@@ -1,4 +1,5 @@
 ﻿using AgribattleArenaBackendServer.Engine.Synchronization;
+using AgribattleArenaBackendServer.Models.Battle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace AgribattleArenaBackendServer.Engine
     {
         TileObject TempTileObject { get; }
         int Id { get; }
-        IEnumerable<int> PlayerIds { get; }
+        IEnumerable<BattleUserDto> PlayerIds { get; }
         int RandomCounter { get; }
 
         SynchronizationObject GetSynchronizationData();

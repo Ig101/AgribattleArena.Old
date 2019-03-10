@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AgribattleArenaBackendServer.Contexts;
+using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
 using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
+using AgribattleArenaBackendServer.Hubs;
 using AgribattleArenaBackendServer.Models.Natives;
 using AgribattleArenaBackendServer.Models.Profiles;
 using AgribattleArenaBackendServer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,9 +27,12 @@ namespace AgribattleArenaBackendServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        IHostingEnvironment env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            this.env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -34,33 +41,33 @@ namespace AgribattleArenaBackendServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            if (!env.IsDevelopment())
+                services.Configure<MvcOptions>(o =>
+                o.Filters.Add(new RequireHttpsAttribute()));
             //Change it
-            string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
+            string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena;Pwd=admin;";
             services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
-         //   connectionString = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena_bl;Pwd=Qdmin123/;";
-           // services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString));
+            string connectionString2 = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena;Pwd=admin;";
+            services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString2));
             //
+
+            services.AddIdentity<Profile, IdentityRole>(options =>
+                options.Password.RequireDigit = false)
+                .AddEntityFrameworkStores<ProfilesContext>()
+                .AddUserManager<ProfilesService>()
+                .AddDefaultTokenProviders();
             services.AddTransient<INativesService, NativesService>();
             services.AddTransient<INativesServiceSceneLink, NativesService>();
-            services.AddTransient<IProfilesService, ProfilesService>();
-            services.AddTransient<IProfilesServiceSceneLink, ProfilesMockService>();
             services.AddSingleton<IEngineService, EngineService>();
-            services.AddTransient<IBattlefieldService, BattlefieldService>();
+            services.AddTransient<IBattleService, BattleService>();
             services.AddSingleton<IQueueingService, QueueingService>();
+            services.AddScoped<IProfilesService, ProfilesService>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Contexts.NativesEntities.Actor, ActorNativeDto>();
@@ -79,21 +86,27 @@ namespace AgribattleArenaBackendServer
                 cfg.CreateMap<Contexts.NativesEntities.Tile, TileNativeDto>();
                 cfg.CreateMap<TagsArmorDto, TagSynergy>()
                     .ForMember(d => d.TargetTag, o => o.MapFrom(c => c.Tag));
-                cfg.CreateMap<PlayerActorDto, RoleModelNativeToAddDto>()
+                cfg.CreateMap<Contexts.ProfilesEntities.Actor, RoleModelNativeToAddDto>()
                     .ForMember(d => d.AttackSkill, o => o.MapFrom(c => c.AttackingSkillNative));
                 cfg.CreateMap<Contexts.ProfilesEntities.Skill, string>()
                     .ForMember(d => d, o => o.MapFrom(c => c.Native));
                 cfg.CreateMap<Contexts.ProfilesEntities.TagsArmor, TagsArmorDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Actor, PlayerActorDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Player, PlayerDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Profile, ProfileDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Role, RoleDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Right, RightDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.RoleRight, RightDto>()
-                    .ForMember(d => d, o => o.MapFrom(c => c.Right));
+                cfg.CreateMap<Contexts.ProfilesEntities.Actor, PartyActorDto>();
+                cfg.CreateMap<Contexts.ProfilesEntities.Party, PartyDto>();
             });
-
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            { 
+                app.UseHsts();
+            }
+            app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseSignalR(routes => {
+                routes.MapHub<BattleHub>("/battle");
+            });
             app.UseMvc();
         }
     }

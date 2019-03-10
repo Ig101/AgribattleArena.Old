@@ -1,9 +1,9 @@
-﻿using AgribattleArenaBackendServer.Engine.ActorModel;
-using AgribattleArenaBackendServer.Engine.Generator;
+﻿using AgribattleArenaBackendServer.Engine.Generator;
 using AgribattleArenaBackendServer.Engine.Generator.GeneratorEntities;
 using AgribattleArenaBackendServer.Engine.Helpers;
 using AgribattleArenaBackendServer.Engine.NativeManager;
 using AgribattleArenaBackendServer.Engine.Synchronization;
+using AgribattleArenaBackendServer.Models.Battle;
 using AgribattleArenaBackendServer.Models.Natives;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace AgribattleArenaBackendServer.Engine
         public event SyncHandler ReturnAction;
 
         int id;
-        List<int> playerIds;
+        List<BattleUserDto> players;
 
         INativeManager nativeManager;
         Random gameRandom;
@@ -39,12 +39,12 @@ namespace AgribattleArenaBackendServer.Engine
         public TileObject TempTileObject { get { return tempTileObject; } }
         public int Id { get { return id; } }
         public int RandomCounter { get { return randomCounter; } }
-        public IEnumerable<int> PlayerIds { get { return playerIds; } }
+        public IEnumerable<BattleUserDto> PlayerIds { get { return players; } }
 
-        public Scene(int id, List<int> playerIds, List<PlayerActor> playerActors, ILevelGenerator generator, INativeManager nativeManager, int seed)
+        public Scene(int id, List<BattleUserDto> players, List<PartyActor> playerActors, ILevelGenerator generator, INativeManager nativeManager, int seed)
         {
             //TODO playerSignatures
-            this.playerIds = playerIds;
+            this.players = players;
             this.id = id;
             this.gameRandom = new Random(seed);
             this.nativeManager = nativeManager;
@@ -53,7 +53,7 @@ namespace AgribattleArenaBackendServer.Engine
             specEffects = new List<SpecEffect>();
             deletedActors = new List<TileObject>();
             deletedEffects = new List<SpecEffect>();
-            GenerationSet set = generator.GenerateNewScene(playerActors, playerIds, unchecked(seed * id));
+            GenerationSet set = generator.GenerateNewScene(playerActors, players, unchecked(seed * id));
             tiles = new Tile[set.TileSet.GetLength(0), set.TileSet.GetLength(1)];
             for(int x = 0; x<tiles.GetLength(0);x++)
             {

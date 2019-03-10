@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArenaBackendServer.Contexts
+namespace AgribattleArenaBackendServer.Engine
 {
-    public class BattlefieldContext
+    public class SynchronizationInfo
     {
     }
 }
