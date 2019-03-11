@@ -76,13 +76,30 @@ namespace AgribattleArenaBackendServer.Engine
 
         public override void EndTurn()
         {
-            this.InitiativePosition += 1f/roleModel.Initiative;
-            Parent.EndTurn();
+            if (Parent.TempTileObject == this)
+            {
+                this.InitiativePosition += 1f / roleModel.Initiative;
+                Parent.EndTurn();
+            }
         }
 
         public override void StartTurn()
         {
-            this.roleModel.ActionPoints += roleModel.ActionPointsIncome;
+            if (Parent.TempTileObject == this)
+            {
+                if(!roleModel.CheckStunnedState())
+                    this.roleModel.ActionPoints += roleModel.ActionPointsIncome;
+            }
+        }
+
+        public override bool Damage(float amount, string[] tags)
+        { 
+            bool dead = base.Damage(amount, tags);
+            if(dead)
+            {
+                roleModel.BuffManager.RemoveAllBuffs();
+            }
+            return dead;
         }
     }
 }

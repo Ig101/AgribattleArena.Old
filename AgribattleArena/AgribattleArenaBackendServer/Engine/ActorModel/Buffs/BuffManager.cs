@@ -30,22 +30,98 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
         int skillCost;
         int skillRange;
 
-        public int SkillCd { get { return skillCd; } }
-        public int SkillCost { get { return skillCost; } }
-        public int SkillRange { get { return skillRange; } }
-        public bool CanMove { get { return canMove; } }
-        public bool CanAct { get { return canAct; } }
-        public RoleModel RoleModel { get { return roleModel; } }
-        public float Initiative { get { return initiative; } }
-        public float AttackPower { get { return attackPower; } }
-        public float SkillPower { get { return skillPower; } }
-        public int MaxHealth { get { return (int)maxHealth; } }
-        public int ActionPointsIncome { get { return (int)actionPointsIncome; } }
-        public int Strength { get { return (int)strength; } }
-        public int Willpower { get { return (int)willpower; } }
-        public int Constitution { get { return (int)constitution; } }
-        public int Speed { get { return (int)speed; } }
-        public List<TagSynergy> Armor { get { return armor; } }
+        public int SkillCd { get { return skillCd; } set { skillCd = value; } }
+        public int SkillCost { get { return skillCost; } set { skillCost = value; } }
+        public int SkillRange { get { return skillRange; } set { skillRange = value; } }
+        public bool CanMove { get { return canMove; } set { canMove = value; roleModel.CheckStunnedState(); } }
+        public bool CanAct { get { return canAct; } set { canAct = value; roleModel.CheckStunnedState(); } }
+        public RoleModel RoleModel { get { return roleModel; } set { roleModel = value; } }
+        public float Initiative { get { return initiative; } set {
+                float oldInitiative = roleModel.Initiative;
+                initiative = value;
+                float newInitiative = roleModel.Initiative;
+                if (roleModel.Speed <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+                else
+                {
+                    roleModel.Owner.InitiativePosition *= oldInitiative / newInitiative;
+                }
+            } }
+        public float AttackPower { get { return attackPower; } set { attackPower = value; } }
+        public float SkillPower { get { return skillPower; } set { skillPower = value; } }
+        public int MaxHealth { get { return (int)maxHealth; } set {
+                float oldHealth = roleModel.MaxHealth;
+                maxHealth = value;
+                float newHealth = roleModel.MaxHealth;
+                if (roleModel.Constitution <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+                else
+                {
+                    roleModel.Owner.DamageModel.Health *= newHealth / oldHealth;
+                }
+            } }
+        public int ActionPointsIncome { get { return (int)actionPointsIncome; } set { actionPointsIncome = value; } }
+        public int Strength { get { return (int)strength; } set { strength = value; if (roleModel.Strength <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+            } }
+        public int Willpower { get { return (int)willpower; } set { willpower = value; if (roleModel.Willpower <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+            } }
+        public int Constitution { get { return (int)constitution; }
+            set
+            {
+                float oldHealth = roleModel.MaxHealth;
+                constitution = value;
+                float newHealth = roleModel.MaxHealth;
+                if (roleModel.Constitution <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+                else
+                {
+                    roleModel.Owner.DamageModel.Health *= newHealth / oldHealth;
+                }
+            }
+        }
+        public int Speed
+        {
+            get { return (int)speed; }
+            set
+            {
+                float oldInitiative = roleModel.Initiative;
+                speed = value;
+                float newInitiative = roleModel.Initiative;
+                if (roleModel.Speed <= 0)
+                {
+                    roleModel.Owner.DamageModel.Health = 0;
+                    roleModel.Owner.IsAlive = false;
+                    RemoveAllBuffs();
+                }
+                else
+                {
+                    roleModel.Owner.InitiativePosition *= oldInitiative / newInitiative;
+                }
+            }
+        }
+        public List<TagSynergy> Armor { get { return armor; }  }
         public List<TagSynergy> Attack { get { return attack; } }
         public List<Buff> Buffs { get { return buffs; } }
 
@@ -58,25 +134,31 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel.Buffs
             RecalculateBuffs();
         }
 
+        public void RemoveAllBuffs()
+        {
+            this.Buffs.Clear();
+            RecalculateBuffs();
+        }
+
         void RecalculateBuffs()
         {
-            skillCd = 0;
-            skillCost = 0;
-            skillRange = 0;
-            canMove = true;
-            canAct = true;
-            strength = 0;
-            willpower = 0;
-            constitution = 0;
-            speed = 0;
-            armor.Clear();
-            armor.AddRange(roleModel.DefaultArmor);
-            attack.Clear();
-            actionPointsIncome = 0;
-            maxHealth = 0;
-            skillPower = 0;
-            attackPower = 0;
-            initiative = 0;
+            SkillCd = 0;
+            SkillCost = 0;
+            SkillRange = 0;
+            CanMove = true;
+            CanAct = true;
+            Strength = 0;
+            Willpower = 0;
+            Constitution = 0;
+            Speed = 0;
+            Armor.Clear();
+            Armor.AddRange(roleModel.DefaultArmor);
+            Attack.Clear();
+            ActionPointsIncome = 0;
+            MaxHealth = 0;
+            SkillPower = 0;
+            AttackPower = 0;
+            Initiative = 0;
             foreach(Buff buff in buffs)
             {
                 //buff.Native.BuffAplier?.Invoke(this, buff.Mod);

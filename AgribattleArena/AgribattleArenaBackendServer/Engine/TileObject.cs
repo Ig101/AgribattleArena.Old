@@ -31,7 +31,7 @@ namespace AgribattleArenaBackendServer.Engine
             this.initiativePosition += (parent.GetNextRandom() / 50);
         }
 
-        public bool Damage (float amount, string[] tags)
+        public virtual bool Damage (float amount, string[] tags)
         {
             this.Affected = true;
             this.IsAlive = this.IsAlive && !damageModel.Damage(amount, tags);

@@ -108,6 +108,17 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
             if (actionPoints <= 0) owner.EndTurn();
         }
 
+        public bool CheckStunnedState()
+        {
+            if(!buffManager.CanAct && !buffManager.CanMove)
+            {
+                this.actionPoints = 0;
+                owner.EndTurn();
+                return true;
+            }
+            return false;
+        }
+
         public void Update (float time)
         {
             buffManager.Update(time);
