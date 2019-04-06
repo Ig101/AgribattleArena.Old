@@ -19,7 +19,7 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
         public List<Buff> Buffs { get { return roleModel?.Buffs; } }
         public int MaxHealth { get { return roleModel?.MaxHealth ?? maxHealth.Value; } }
         public TagSynergy[] Armor { get { return roleModel?.Armor.ToArray() ?? armor; } }
-        public float Health { get { return health; } set { health = value; } }
+        public float Health { get { return health; } set { health = Math.Min(value,MaxHealth); } }
 
         public DamageModel (int maxHealth, TagSynergy[] armor)
         {
@@ -42,17 +42,20 @@ namespace AgribattleArenaBackendServer.Engine.ActorModel
 
         public bool Damage (float amount, string[] tags)
         {
-            foreach (string atackerTag in tags)
+            if (tags != null && armor!=null)
             {
-                foreach (TagSynergy synergy in Armor)
+                foreach (string atackerTag in tags)
                 {
-                    if(synergy.TargetTag == atackerTag)
+                    foreach (TagSynergy synergy in Armor)
                     {
-                        amount *= synergy.Mod;
+                        if (synergy.TargetTag == atackerTag)
+                        {
+                            amount *= synergy.Mod;
+                        }
                     }
                 }
             }
-            health -= amount;
+            Health -= amount;
             
             return health <= 0;
         }
