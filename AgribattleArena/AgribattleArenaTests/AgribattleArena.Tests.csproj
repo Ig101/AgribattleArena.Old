@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>AgribattleArena.Tests</AssemblyName>
+    <RootNamespace>AgribattleArena.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AgribattleArenaBackendServer\AgribattleArenaBackendServer.csproj" />
+    <ProjectReference Include="..\AgribattleArenaBackendServer\AgribattleArena.BackendServer.csproj" />
   </ItemGroup>
 
 </Project>

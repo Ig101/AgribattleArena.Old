@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArenaBackendServer", "AgribattleArenaBackendServer\AgribattleArenaBackendServer.csproj", "{9F63D99E-D4F2-4518-9FDB-345779EA0674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.BackendServer", "AgribattleArenaBackendServer\AgribattleArena.BackendServer.csproj", "{9F63D99E-D4F2-4518-9FDB-345779EA0674}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArenaTests", "AgribattleArenaTests\AgribattleArenaTests.csproj", "{AC4584BE-571E-405B-83A6-529935C1CA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.Tests", "AgribattleArenaTests\AgribattleArena.Tests.csproj", "{AC4584BE-571E-405B-83A6-529935C1CA33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArenaEngineLib", "AgribattleArenaEngineLib\AgribattleArenaEngineLib.csproj", "{8605839C-DA6E-4713-8CA2-A366CCBFEF84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArena.Engine", "AgribattleArenaEngineLib\AgribattleArena.Engine.csproj", "{8605839C-DA6E-4713-8CA2-A366CCBFEF84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
