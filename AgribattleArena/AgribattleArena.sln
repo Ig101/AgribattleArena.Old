@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArenaBackendServe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArenaTests", "AgribattleArenaTests\AgribattleArenaTests.csproj", "{AC4584BE-571E-405B-83A6-529935C1CA33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArenaEngineLib", "AgribattleArenaEngineLib\AgribattleArenaEngineLib.csproj", "{8605839C-DA6E-4713-8CA2-A366CCBFEF84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AC4584BE-571E-405B-83A6-529935C1CA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC4584BE-571E-405B-83A6-529935C1CA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC4584BE-571E-405B-83A6-529935C1CA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8605839C-DA6E-4713-8CA2-A366CCBFEF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8605839C-DA6E-4713-8CA2-A366CCBFEF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8605839C-DA6E-4713-8CA2-A366CCBFEF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8605839C-DA6E-4713-8CA2-A366CCBFEF84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
