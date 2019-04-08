@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AgribattleArenaBackendServer\AgribattleArena.BackendServer.csproj" />
+    <ProjectReference Include="..\AgribattleArena.BackendServer\AgribattleArena.BackendServer.csproj" />
+    <ProjectReference Include="..\AgribattleArena.Engine\AgribattleArena.Engine.csproj" />
   </ItemGroup>
 
 </Project>
