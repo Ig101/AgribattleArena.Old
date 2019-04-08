@@ -1,28 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AgribattleArenaBackendServer.Contexts;
-using AgribattleArenaBackendServer.Contexts.ProfilesEntities;
-using AgribattleArenaBackendServer.Engine.Generator;
-using AgribattleArenaBackendServer.Engine.Helpers;
-using AgribattleArenaBackendServer.Engine.NativeManager;
-using AgribattleArenaBackendServer.Hubs;
-using AgribattleArenaBackendServer.Models.Natives;
-using AgribattleArenaBackendServer.Models.Profiles;
-using AgribattleArenaBackendServer.Services;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace AgribattleArenaBackendServer
 {
@@ -45,89 +25,12 @@ namespace AgribattleArenaBackendServer
             if (!env.IsDevelopment())
                 services.Configure<MvcOptions>(o =>
                 o.Filters.Add(new RequireHttpsAttribute()));
-            //Change it
-            string connectionString = @"Server=localhost;Database=aa_natives;Uid=agribattleArena;Pwd=admin;";
-            services.AddDbContext<NativesContext>(o => o.UseMySql(connectionString));
-            string connectionString2 = @"Server=localhost;Database=aa_profiles;Uid=agribattleArena;Pwd=admin;";
-            services.AddDbContext<ProfilesContext>(o => o.UseMySql(connectionString2));
-          //  string connectionString3 = @"Server=localhost;Database=aa_battlefield;Uid=agribattleArena;Pwd=admin;";
-          //  services.AddDbContext<BattleContext>(o => o.UseMySql(connectionString3));
-            //
-
-            services.AddIdentity<Profile, IdentityRole>(options =>
-                options.Password.RequireDigit = false)
-                .AddEntityFrameworkStores<ProfilesContext>()
-                .AddUserManager<ProfilesService>()
-                .AddDefaultTokenProviders();
-            services.AddTransient<INativesService, NativesService>();
-            services.AddTransient<INativesServiceSceneLink, NativesService>();
-            services.AddSingleton<IEngineService, EngineService>();
-            services.AddSingleton<IEngineServiceQueueLink, EngineService>();
-            services.AddSingleton<IEngineServiceHubLink, EngineService>();
-            services.AddTransient<IBattleServiceQueueLink, BattleService>();
-            services.AddScoped<IProfilesService, ProfilesService>();
-            services.AddScoped<IProfilesServiceQueueLink, ProfilesService>();
-            services.AddHostedService<QueueService>();
-            services.AddSingleton<IQueueService, QueueService>();
-            services.AddSingleton<IQueueStorageServiceHubLink, QueueService>();
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Contexts.NativesEntities.Actor, ActorNativeDto>();
-                cfg.CreateMap<Contexts.NativesEntities.Buff, BuffNativeDto>();
-                cfg.CreateMap<Contexts.NativesEntities.Decoration, DecorationNativeDto>()
-                    .ForMember(d => d.DefaultArmor, o => o.MapFrom(c => c.TagSynergies));
-                cfg.CreateMap<Contexts.NativesEntities.RoleModel, RoleModelNativeDto>()
-                    .ForMember(d => d.Skills, o => o.MapFrom(c => c.RoleModelSkills))
-                    .ForMember(d => d.Armor,o => o.MapFrom(c => c.TagSynergies));
-                cfg.CreateMap<Contexts.NativesEntities.Skill, SkillNativeDto>();
-                cfg.CreateMap<Contexts.NativesEntities.RoleModelSkill, SkillNativeDto>()
-                    .ConvertUsing(c => new SkillNativeDto()
-                    {
-                        DefaultCost = c.Skill.DefaultCost,
-                        Tags = c.Skill.Tags.Select(x => x.Name).ToList(),
-                        Id = c.SkillId,
-                        Action = new ActionNativeDto()
-                        {
-                            Name = c.Skill.Action.Id,
-                            Script = Encoding.Unicode.GetString(c.Skill.Action.Script)
-                        },
-                        DefaultCd = c.Skill.DefaultCd,
-                        DefaultMod = c.Skill.DefaultMod,
-                        DefaultRange = c.Skill.DefaultRange
-                    });
-                cfg.CreateMap<Contexts.NativesEntities.SpecEffect, EffectNativeDto>();
-                cfg.CreateMap<Contexts.NativesEntities.SceneAction, ActionNativeDto>()
-                    .ForMember(d => d.Name,o => o.MapFrom(c=>c.Id));
-                cfg.CreateMap<Contexts.NativesEntities.Tile, TileNativeDto>();
-                cfg.CreateMap<TagsArmorDto, TagSynergy>()
-                    .ForMember(d => d.TargetTag, o => o.MapFrom(c => c.Tag));
-                cfg.CreateMap<Contexts.ProfilesEntities.Actor, RoleModelNativeToAddDto>()
-                    .ForMember(d => d.AttackSkill, o => o.MapFrom(c => c.AttackingSkillNative));
-                cfg.CreateMap<Contexts.ProfilesEntities.Skill, string>()
-                    .ConvertUsing(c => c.Native);
-                cfg.CreateMap<Contexts.ProfilesEntities.TagsArmor, TagsArmorDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Actor, PartyActorDto>();
-                cfg.CreateMap<Contexts.ProfilesEntities.Party, PartyDto>();
-            });
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            { 
-                app.UseHsts();
-            }
-            app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseSignalR(routes => {
-                routes.MapHub<BattleHub>("/battle");
-            });
             app.UseMvc();
         }
     }
