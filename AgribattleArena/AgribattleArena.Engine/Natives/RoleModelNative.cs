@@ -1,0 +1,51 @@
+﻿using AgribattleArena.Engine.NativeManagers;
+using AgribattleArena.Engine.Helpers;
+
+namespace AgribattleArena.Engine.Natives
+{
+    class RoleModelNative
+    {
+        public string Id { get; }
+        public SkillNative AttackingSkill { get; }
+        public int DefaultStrength { get; }
+        public int DefaultWillpower { get; }
+        public int DefaultConstitution { get; }
+        public int DefaultSpeed { get; }
+        public TagSynergy[] Armor { get; }
+        public SkillNative[] Skills { get; }
+        public int DefaultActionPointsIncome { get; }
+
+        public RoleModelNative (string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
+            TagSynergy[] armor, int defaultActionPointsIncome, SkillNative attackingSkill, SkillNative[] skills)
+        {
+            this.Id = id;
+            this.AttackingSkill = attackingSkill;
+            this.DefaultActionPointsIncome = defaultActionPointsIncome;
+            this.DefaultConstitution = defaultConstitution;
+            this.DefaultWillpower = defaultWillpower;
+            this.DefaultStrength = defaultStrength;
+            this.DefaultSpeed = defaultSpeed;
+            this.Armor = armor;
+            this.Skills = skills;
+        }
+
+        public RoleModelNative(INativeManager nativeManager, string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed,
+            TagSynergy[] armor, int defaultActionPointsIncome, string attackingSkillId, string[] skillIds)
+        {
+            this.Id = id;
+            this.AttackingSkill = nativeManager.GetSkillNative(attackingSkillId);
+            this.DefaultActionPointsIncome = defaultActionPointsIncome;
+            this.DefaultConstitution = defaultConstitution;
+            this.DefaultWillpower = defaultWillpower;
+            this.DefaultStrength = defaultStrength;
+            this.DefaultSpeed = defaultSpeed;
+            this.Armor = armor;
+            SkillNative[] skills = new SkillNative[skillIds.Length];
+            for(int i = 0; i<skills.Length;i++)
+            {
+                skills[i] = nativeManager.GetSkillNative(skillIds[i]);
+            }
+            this.Skills = skills;
+        }
+    }
+}
