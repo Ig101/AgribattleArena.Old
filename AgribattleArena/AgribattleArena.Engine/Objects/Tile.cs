@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Objects
 {
-    public class Tile
+    public class Tile: ITileParentRef
     {
         ISceneParentRef parent;
 

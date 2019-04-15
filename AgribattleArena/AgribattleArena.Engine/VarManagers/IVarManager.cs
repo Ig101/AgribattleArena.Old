@@ -9,6 +9,10 @@ namespace AgribattleArena.Engine.VarManagers
         int TileSize { get; }
 
         int SkippedTurnsLimit { get; }
-        
+        int MaxActionPoints { get; }
+        int ConstitutionMod { get; }
+        float WillpowerMod { get; }
+        float StrengthMod { get; }
+        float SpeedMod { get; }
     }
 }
