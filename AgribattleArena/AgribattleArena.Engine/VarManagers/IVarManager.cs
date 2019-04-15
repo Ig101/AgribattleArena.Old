@@ -6,6 +6,9 @@ namespace AgribattleArena.Engine.VarManagers
 {
     public interface IVarManager
     {
+        int TileSize { get; }
+
         int SkippedTurnsLimit { get; }
+        
     }
 }
