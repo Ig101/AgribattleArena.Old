@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
 {
-    class BuffManager
+    public class BuffManager
     {
     }
 }

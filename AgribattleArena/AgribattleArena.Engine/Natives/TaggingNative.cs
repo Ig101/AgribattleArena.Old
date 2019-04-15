@@ -1,6 +1,6 @@
 ﻿namespace AgribattleArena.Engine.Natives
 {
-    class TaggingNative
+    public class TaggingNative
     {
         public string Id { get; }
         public string[] Tags { get; }

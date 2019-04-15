@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.NativeManagers
 {
-    interface INativeManager
+    public interface INativeManager
     {
         TileNative GetTileNative(string id);
         ActorNative GetActorNative(string id);

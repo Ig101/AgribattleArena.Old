@@ -1,10 +1,12 @@
 ﻿using AgribattleArena.Engine.Helpers.DelegateLists;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
 
 namespace AgribattleArena.Engine.Natives
 {
-    class TileNative: TaggingNative
+    public class TileNative: TaggingNative
     {
         public bool Flat { get; }
         public int DefaultHeight { get; }
@@ -12,19 +14,24 @@ namespace AgribattleArena.Engine.Natives
         public TileActions.Action Action { get; }
         public float DefaultMod { get; }
 
-        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, string actionName)
-            :this(id, tags, flat, defaultHeight, unbearable, defaultMod, (TileActions.Action)Delegate.CreateDelegate(typeof(TileActions.Action), typeof(TileActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static)))
+        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actionNames)
+            :this(id, tags, flat, defaultHeight, unbearable, defaultMod, actionNames.Select(actionName => 
+            (TileActions.Action)Delegate.CreateDelegate(typeof(TileActions.Action), typeof(TileActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))))
         {
 
         }
 
-        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, TileActions.Action action)
+        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<TileActions.Action> actions)
             :base(id,tags)
         {
             this.Flat = flat;
             this.DefaultHeight = defaultHeight;
             this.Unbearable = unbearable;
-            this.Action = action;
+            this.Action = null;
+            foreach (TileActions.Action action in actions)
+            {
+                this.Action += action;
+            }
             this.DefaultMod = defaultMod;
         }
     }

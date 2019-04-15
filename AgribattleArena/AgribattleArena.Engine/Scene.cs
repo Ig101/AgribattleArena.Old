@@ -2,7 +2,7 @@
 
 namespace AgribattleArena.Engine
 {
-    class Scene
+    public class Scene
     {
         readonly IVarManager varManager;
 

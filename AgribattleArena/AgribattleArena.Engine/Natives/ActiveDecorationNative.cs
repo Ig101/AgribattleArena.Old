@@ -1,11 +1,14 @@
 ﻿using AgribattleArena.Engine.Helpers;
 using AgribattleArena.Engine.Helpers.DelegateLists;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace AgribattleArena.Engine.Natives
 {
-    class ActiveDecorationNative: TaggingNative
+    //TODO Multiple delegates
+    public class ActiveDecorationNative: TaggingNative
     {
         public TagSynergy[] DefaultArmor { get; }
         public int DefaultHealth { get; }
@@ -13,20 +16,25 @@ namespace AgribattleArena.Engine.Natives
         public float DefaultMod { get; }
         public ActiveDecorationActions.Action Action { get; set; }
 
-        public ActiveDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, string actionName)
-            :this(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, (ActiveDecorationActions.Action)Delegate.CreateDelegate(typeof(ActiveDecorationActions.Action), typeof(ActiveDecorationActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static)))
+        public ActiveDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<string> actionNames)
+            :this(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, actionNames.Select(actionName => 
+            (ActiveDecorationActions.Action)Delegate.CreateDelegate(typeof(ActiveDecorationActions.Action), typeof(ActiveDecorationActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))))
         {
 
         }
 
-        public ActiveDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, ActiveDecorationActions.Action action)
+        public ActiveDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<ActiveDecorationActions.Action> actions)
             : base(id, tags)
         {
             this.DefaultArmor = defaultArmor;
             this.DefaultHealth = defaultHealth;
             this.DefaultZ = defaultZ;
             this.DefaultMod = defaultMod;
-            this.Action = action;
+            this.Action = null;
+            foreach(ActiveDecorationActions.Action action in actions)
+            {
+                this.Action += action;
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AgribattleArena.Engine
 {
-    class Player
+    public class Player
     {
         readonly ISceneParentRef parent;
 

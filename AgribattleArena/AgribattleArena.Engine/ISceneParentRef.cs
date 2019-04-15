@@ -2,7 +2,7 @@
 
 namespace AgribattleArena.Engine
 {
-    interface ISceneParentRef
+    public interface ISceneParentRef
     {
         IVarManager VarManager { get; }
 

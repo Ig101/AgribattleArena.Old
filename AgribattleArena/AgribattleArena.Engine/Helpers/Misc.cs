@@ -6,7 +6,7 @@ namespace AgribattleArena.Engine.Helpers
 {
     public enum PlayerStatus { Playing, Victorious, Defeated }
 
-    class Misc
+    public class Misc
     {
     }
 }

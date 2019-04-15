@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Objects
 {
-    interface IActorParentRef
+    public interface IActorParentRef
     {
     }
 }

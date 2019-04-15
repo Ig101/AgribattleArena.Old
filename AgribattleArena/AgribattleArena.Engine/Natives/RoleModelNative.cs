@@ -3,7 +3,7 @@ using AgribattleArena.Engine.Helpers;
 
 namespace AgribattleArena.Engine.Natives
 {
-    class RoleModelNative
+    public class RoleModelNative
     {
         public string Id { get; }
         public SkillNative AttackingSkill { get; }

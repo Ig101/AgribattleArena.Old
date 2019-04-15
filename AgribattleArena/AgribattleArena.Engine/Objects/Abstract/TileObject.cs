@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Objects.Abstract
 {
-    abstract class TileObject
+    public abstract class TileObject//: GameObject
     {
     }
 }

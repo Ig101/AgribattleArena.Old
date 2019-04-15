@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Synchronizers
 {
-    class Synchronizer
+    public class Synchronizer
     {
     }
 }

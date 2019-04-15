@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.VarManagers
 {
-    class VarManager
+    public class VarManager
     {
 
     }

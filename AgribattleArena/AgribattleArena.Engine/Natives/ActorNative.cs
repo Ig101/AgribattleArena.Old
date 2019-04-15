@@ -1,6 +1,6 @@
 ﻿namespace AgribattleArena.Engine.Natives
 {
-    class ActorNative: TaggingNative
+    public class ActorNative: TaggingNative
     {
         public float DefaultZ { get; }
 

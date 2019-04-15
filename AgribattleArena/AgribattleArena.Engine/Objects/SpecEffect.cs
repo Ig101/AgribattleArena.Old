@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Objects
 {
-    class SpecEffect: GameObject
+    public class SpecEffect: GameObject
     {
         float duration;
         float mod;

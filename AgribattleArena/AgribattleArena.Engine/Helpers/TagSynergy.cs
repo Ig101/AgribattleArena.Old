@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.Helpers
 {
-    struct TagSynergy
+    public struct TagSynergy
     {
         string selfTag;
         string targetTag;

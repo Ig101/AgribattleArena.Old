@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine
 {
-    interface IPlayerParentRef
+    public interface IPlayerParentRef
     {
     }
 }

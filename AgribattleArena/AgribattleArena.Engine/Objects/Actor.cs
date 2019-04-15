@@ -1,10 +1,11 @@
-﻿using System;
+﻿using AgribattleArena.Engine.Objects.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AgribattleArena.Engine.Objects
 {
-    class Actor
+    public class Actor//: TileObject
     {
     }
 }

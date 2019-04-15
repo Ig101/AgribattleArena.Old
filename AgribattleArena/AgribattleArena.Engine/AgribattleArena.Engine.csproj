@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="ForExternalUse\UnitTestHelpers\" />
     <Folder Include="Synchronizers\SynchronizationObjects\" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.SceneGenerators
 {
-    interface ISceneGenerator
+    public interface ISceneGenerator
     {
     }
 }
