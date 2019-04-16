@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
 {
-    public interface IPlayerActorForGeneration
+    public class IActiveDecoration
     {
     }
 }

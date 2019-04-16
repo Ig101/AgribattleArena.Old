@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AgribattleArena.Engine.ForExternalUse
+namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
 {
-    public interface ISceneGenerator
+    class Actor
     {
     }
 }

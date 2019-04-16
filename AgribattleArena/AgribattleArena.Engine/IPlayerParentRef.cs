@@ -1,5 +1,5 @@
 ﻿using AgribattleArena.Engine.Helpers;
-using AgribattleArena.Engine.Objects.Abstract;
+using AgribattleArena.Engine.Objects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ namespace AgribattleArena.Engine
     {
         ISceneParentRef Parent { get; }
         int Id { get; }
-        List<TileObject> KeyActors { get; }
+        List<Actor> KeyActors { get; }
         int TurnsSkipped { get; }
         PlayerStatus Status { get; }
     }
