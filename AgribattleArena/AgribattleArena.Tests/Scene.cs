@@ -8,15 +8,11 @@ using AgribattleArena.Engine.Synchronizers;
 using AgribattleArena.Engine.VarManagers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AgribattleArena.Engine
 { 
     public class Scene: ISceneParentRef, ISceneForSceneGenerator, ForExternalUse.IScene
     {
-        public delegate bool DefeatCondition(ISceneParentRef scene, IPlayerParentRef player);
-        public delegate bool WinCondition(ISceneParentRef scene);
-
         public event EventHandler<SyncEventArgs> ReturnAction;
 
         int id;
@@ -25,20 +21,15 @@ namespace AgribattleArena.Engine
         float remainedTurnTime;
         TileObject tempTileObject;
 
-        WinCondition winCondition;
-        DefeatCondition defeatCondition;
-
         readonly IVarManager varManager;
         INativeManager nativeManager;
         Random gameRandom;
 
         Tile[][] tiles;
-        List<Actor> actors;
-        List<ActiveDecoration> decorations;
+        List<TileObject> actors;
         List<SpecEffect> specEffects;
 
-        List<Actor> deletedActors;
-        List<ActiveDecoration> deletedDecorations;
+        List<TileObject> deletedActors;
         List<SpecEffect> deletedEffects;
         int idsCounter;
         int randomCounter;
@@ -60,13 +51,11 @@ namespace AgribattleArena.Engine
             this.gameRandom = new Random(seed);
             this.nativeManager = (INativeManager)nativeManager;
             ISceneGenerator tempGenerator = (ISceneGenerator)generator;
-            this.winCondition = tempGenerator.WinCondition;
-            this.defeatCondition = tempGenerator.DefeatCondition;
             idsCounter = 0;
             this.players = new List<Player>();
-            actors = new List<Actor>();
+            actors = new List<TileObject>();
             specEffects = new List<SpecEffect>();
-            deletedActors = new List<Actor>();
+            deletedActors = new List<TileObject>();
             deletedEffects = new List<SpecEffect>();
             tempGenerator.GenerateNewScene(this, players, unchecked(seed * id));
             EndTurn();
@@ -124,7 +113,7 @@ namespace AgribattleArena.Engine
         public ActiveDecoration CreateDecoration(Player owner, string nativeName, Tile target, float? z, int? health, TagSynergy[] armor, float? mod)
         {
             ActiveDecoration decoration = new ActiveDecoration(this, owner, target, z, health, armor, nativeManager.GetDecorationNative(nativeName), mod);
-            decorations.Add(decoration);
+            actors.Add(decoration);
             return decoration;
         }
 
@@ -146,27 +135,14 @@ namespace AgribattleArena.Engine
         #region Sync
         public ForExternalUse.Synchronization.ISynchronizer GetSynchronizationData(bool nullify)
         {
-            List<Actor> changedActors = actors.FindAll(x => x.Affected);
-            List<ActiveDecoration> changedDecorations = decorations.FindAll(x => x.Affected);
-            List<Tile> changedTiles = new List<Tile>();
-            for (int x = 0; x < tiles.Length; x++)
-            {
-                for (int y = 0; y < tiles[x].Length; y++)
-                {
-                    if (tiles[x][y].Affected) changedTiles.Add(tiles[x][y]);
-                }
-            }
-            Synchronizer sync = new Synchronizer(players, changedActors, changedDecorations, deletedActors, deletedDecorations, deletedEffects, 
-                new Point(tiles.Length, tiles[0].Length), changedTiles, randomCounter);
+            ForExternalUse.Synchronization.ISynchronizer sync = null;/* new SynchronizationObject(actors, deletedActors, deletedEffects, tiles, randomCounter);
             if (nullify)
             {
-                changedActors.ForEach(x => x.Affected = false);
-                changedDecorations.ToList().ForEach(x => x.Affected = false);
-                changedTiles.ToList().ForEach(x => x.Affected = false);
-                this.deletedDecorations.Clear();
+                sync.ChangedActors.ForEach(x => x.Affected = false);
+                sync.ChangedTiles.ForEach(x => x.Affected = false);
                 this.deletedActors.Clear();
                 this.deletedEffects.Clear();
-            }
+            }*/
             return sync;
         }
 
@@ -177,7 +153,7 @@ namespace AgribattleArena.Engine
 
         public ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
         {
-            return new SynchronizerFull(players, actors, decorations, specEffects, tiles, randomCounter);
+            return null;// new FullSynchronizationObject(actors, specEffects, tiles, randomCounter);
         }
         #endregion
 
@@ -196,7 +172,7 @@ namespace AgribattleArena.Engine
             }
             if (newObject != null)
             {
-                this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped>0?varManager.TurnTimeLimit:varManager.TurnTimeLimitAfterSkip;
+                this.remainedTurnTime = varManager.TurnTimeLimit;
                 TileObject previousTempTileObject = this.tempTileObject; 
                 this.tempTileObject = newObject;
                 Update(minInitiativePosition);
@@ -237,13 +213,9 @@ namespace AgribattleArena.Engine
                     i--;
                 }
             }
-            foreach (Player player in players)
+            foreach(Player player in players)
             {
-                if (player.Status == PlayerStatus.Playing &&
-                    (player.TurnsSkipped >= varManager.SkippedTurnsLimit || defeatCondition(this, player)))
-                {
-                    player.Defeat();
-                }
+                player.
             }
         }
 
@@ -258,7 +230,7 @@ namespace AgribattleArena.Engine
                 tempTileObject.EndTurn();
                 if (player!=null)
                 {
-                    player.SkipTurn();
+                    player.SkipTurn()
                     AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.SkipTurn, tempTileObject, null, null, null);
                 }
             }
@@ -267,28 +239,16 @@ namespace AgribattleArena.Engine
         public void AfterUpdateSynchronization (ForExternalUse.EngineHelper.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
         {
             AfterActionUpdate();
-            this.ReturnAction(this, new SyncEventArgs(this, version++, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
-            if(winCondition(this))
-            {
-                this.ReturnAction(this, new SyncEventArgs(this, version++, ForExternalUse.EngineHelper.Action.EndGame, GetSynchronizationData(true), null, null, null, null));
-            }
+            this.ReturnAction(this, new SyncEventArgs(this, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
+
         }
         #endregion
 
         #region Actions
-        void ApplyActionAfterSkipping()
-        {
-            remainedTurnTime += varManager.TurnTimeLimit - varManager.TurnTimeLimitAfterSkip;
-        }
-
         public bool DecorationCast(ActiveDecoration actor)
         {
             if (tempTileObject == actor)
             {
-                if(actor.Owner?.ActThisTurn() ?? false)
-                {
-                    ApplyActionAfterSkipping();
-                }
                 actor.Cast();
                 AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Decoration, actor, null, null, null);
                 return true;
@@ -300,10 +260,6 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject == actor)
             {
-                if (actor.Owner?.ActThisTurn() ?? false)
-                {
-                    ApplyActionAfterSkipping();
-                }
                 bool result = actor.Move(target);
                 if (result)
                 {
@@ -318,10 +274,6 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject == actor)
             {
-                if (actor.Owner?.ActThisTurn() ?? false)
-                {
-                    ApplyActionAfterSkipping();
-                }
                 bool result = actor.Cast(id, target);
                 if (result)
                 {
@@ -336,10 +288,6 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject == actor)
             {
-                if (actor.Owner?.ActThisTurn() ?? false)
-                {
-                    ApplyActionAfterSkipping();
-                }
                 bool result = actor.Attack(target);
                 if (result)
                 {
@@ -354,10 +302,6 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject == actor)
             {
-                if (actor.Owner?.ActThisTurn() ?? false)
-                {
-                    ApplyActionAfterSkipping();
-                }
                 bool result = actor.Wait();
                 if (result)
                 {

@@ -122,7 +122,7 @@ namespace AgribattleArena.Engine.Objects
             target.TempObject = this;
             this.TempTile.TempObject = null;
             this.TempTile = target;
-            Point pos = target.Center;
+            PointF pos = target.Center;
             this.X = pos.X;
             this.Y = pos.Y;
         }

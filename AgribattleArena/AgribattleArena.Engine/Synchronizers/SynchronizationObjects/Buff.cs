@@ -1,10 +1,14 @@
-﻿using System;
+﻿using AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
 {
-    class Buff
+    class Buff: IBuff
     {
+        public Buff(Objects.Immaterial.Buffs.Buff buff)
+        {
+        }
     }
 }

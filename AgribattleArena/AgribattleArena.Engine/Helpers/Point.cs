@@ -6,18 +6,18 @@ namespace AgribattleArena.Engine.Helpers
 {
     public struct Point
     {
-        float x;
-        float y;
+        int x;
+        int y;
 
-        public float X { get { return x; } }
-        public float Y { get { return y; } }
+        public int X { get { return x; } }
+        public int Y { get { return y; } }
 
-        public static Point operator * (Point point, float multiplier)
+        public static Point operator * (Point point, int multiplier)
         {
             return new Point(point.X * multiplier, point.Y * multiplier);
         }
 
-        public static Point operator / (Point point, float multiplier)
+        public static Point operator / (Point point, int multiplier)
         {
             return new Point(point.X / multiplier, point.Y / multiplier);
         }
@@ -32,7 +32,7 @@ namespace AgribattleArena.Engine.Helpers
             return new Point(point1.X - point2.X, point1.Y - point2.Y);
         }
 
-        public Point(float x, float y)
+        public Point(int x, int y)
         {
             this.x = x;
             this.y = y;

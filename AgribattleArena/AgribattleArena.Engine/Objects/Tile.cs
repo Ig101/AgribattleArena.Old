@@ -25,10 +25,10 @@ namespace AgribattleArena.Engine.Objects
         public int X { get { return x; } }
         public int Y { get { return y; } }
         public TileNative Native { get { return native; } set { native = value; } }
-        public Point Center { get
+        public PointF Center { get
             {
                 int tileSize = parent.VarManager.TileSize;
-                return new Point(x, y) * (tileSize + 0.5f);
+                return new PointF(x, y) * (tileSize + 0.5f);
             }
         }
 

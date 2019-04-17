@@ -28,11 +28,16 @@ namespace AgribattleArena.Engine
             this.status = PlayerStatus.Playing;
         }
 
-        public bool SkipTurn()
+        public void SkipTurn()
         {
             turnsSkipped++;
-            if(turnsSkipped>=parent.VarManager.SkippedTurnsLimit)
+        }
+
+        public bool ActThisTurn()
+        {
+            if (turnsSkipped > 0)
             {
+                turnsSkipped = 0;
                 return true;
             }
             return false;
