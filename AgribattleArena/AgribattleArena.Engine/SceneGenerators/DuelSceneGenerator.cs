@@ -5,12 +5,17 @@ using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
 
 namespace AgribattleArena.Engine.SceneGenerators
 {
+    //TODO Implement
     class DuelSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
         public Scene.DefeatCondition DefeatCondition { get { return DefeatConditionDuel; } }
         public Scene.WinCondition WinCondition { get { return WinConditionDuel; } }
 
-        //TODO DuelSceneGeneration
+        public DuelSceneGenerator()
+        {
+
+        }
+
         public void GenerateNewScene(ISceneForSceneGenerator scene, IEnumerable<IPlayer> players, int seed)
         {
 
