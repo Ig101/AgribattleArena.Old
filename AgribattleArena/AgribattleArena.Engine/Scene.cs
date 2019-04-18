@@ -54,11 +54,12 @@ namespace AgribattleArena.Engine
         public IEnumerable<Player> Players { get { return players; } }
 
         public Scene(int id, IEnumerable<ForExternalUse.Generation.ObjectInterfaces.IPlayer> players, ForExternalUse.Generation.ISceneGenerator generator, 
-            ForExternalUse.INativeManager nativeManager, int seed)
+            ForExternalUse.INativeManager nativeManager, ForExternalUse.IVarManager varManager, int seed)
         {
             this.id = id;
             this.gameRandom = new Random(seed);
             this.nativeManager = (INativeManager)nativeManager;
+            this.varManager = (IVarManager)varManager;
             ISceneGenerator tempGenerator = (ISceneGenerator)generator;
             this.winCondition = tempGenerator.WinCondition;
             this.defeatCondition = tempGenerator.DefeatCondition;
@@ -200,7 +201,7 @@ namespace AgribattleArena.Engine
                 TileObject previousTempTileObject = this.tempTileObject; 
                 this.tempTileObject = newObject;
                 Update(minInitiativePosition);
-                AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.EndTurn, previousTempTileObject, null, null, null);
+                AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null);
                 this.tempTileObject.StartTurn();
             }
         }
@@ -259,18 +260,22 @@ namespace AgribattleArena.Engine
                 if (player!=null)
                 {
                     player.SkipTurn();
-                    AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.SkipTurn, tempTileObject, null, null, null);
+                    AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null);
                 }
             }
         }
 
-        public void AfterUpdateSynchronization (ForExternalUse.EngineHelper.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
+        public void AfterUpdateSynchronization (Helpers.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
         {
             AfterActionUpdate();
             this.ReturnAction(this, new SyncEventArgs(this, version++, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
             if(winCondition(this))
             {
-                this.ReturnAction(this, new SyncEventArgs(this, version++, ForExternalUse.EngineHelper.Action.EndGame, GetSynchronizationData(true), null, null, null, null));
+                foreach(Player player in players)
+                {
+                    if (player.Status == PlayerStatus.Playing) player.Victory();
+                }
+                this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.EndGame, GetSynchronizationData(true), null, null, null, null));
             }
         }
         #endregion
@@ -290,7 +295,7 @@ namespace AgribattleArena.Engine
                     ApplyActionAfterSkipping();
                 }
                 actor.Cast();
-                AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Decoration, actor, null, null, null);
+                AfterUpdateSynchronization(Helpers.Action.Decoration, actor, null, null, null);
                 return true;
             }
             return false;
@@ -307,7 +312,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Move(target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Move, actor, null, target.X, target.Y);
+                    AfterUpdateSynchronization(Helpers.Action.Move, actor, null, target.X, target.Y);
                 }
                 return result;
             }
@@ -325,7 +330,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Cast(id, target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Cast, actor, null, target.X, target.Y);
+                    AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, target.X, target.Y);
                 }
                 return result;
             }
@@ -343,7 +348,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Attack(target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Attack, actor, null, target.X, target.Y);
+                    AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, target.X, target.Y);
                 }
                 return result;
             }
@@ -361,7 +366,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Wait();
                 if (result)
                 {
-                    AfterUpdateSynchronization(ForExternalUse.EngineHelper.Action.Wait, actor, null, null, null);
+                    AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null);
                 }
                 return result;
             }

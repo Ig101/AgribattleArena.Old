@@ -6,5 +6,10 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
 {
     public interface ITile
     {
+        int X { get; }
+        int Y { get; }
+        int? TempActorId { get; }
+        float Height { get; }
+        string NativeId { get; }
     }
 }

@@ -7,13 +7,23 @@ namespace AgribattleArena.Engine.SceneGenerators
 {
     class DuelSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
-        public Scene.DefeatCondition DefeatCondition => throw new NotImplementedException();
+        public Scene.DefeatCondition DefeatCondition { get { return DefeatConditionDuel; } }
+        public Scene.WinCondition WinCondition { get { return WinConditionDuel; } }
 
-        public Scene.WinCondition WinCondition => throw new NotImplementedException();
-
+        //TODO DuelSceneGeneration
         public void GenerateNewScene(ISceneForSceneGenerator scene, IEnumerable<IPlayer> players, int seed)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public static bool DefeatConditionDuel (ISceneParentRef scene, IPlayerParentRef player)
+        {
+            return false;
+        }
+
+        public static bool WinConditionDuel (ISceneParentRef scene)
+        {
+            return false;
         }
     }
 }

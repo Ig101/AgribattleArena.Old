@@ -1,4 +1,5 @@
-﻿using AgribattleArena.Engine.Helpers;
+﻿using AgribattleArena.Engine.ForExternalUse;
+using AgribattleArena.Engine.Helpers;
 using AgribattleArena.Engine.Natives;
 using AgribattleArena.Engine.Objects;
 using System;
@@ -9,6 +10,9 @@ namespace AgribattleArena.Engine
 {
     public interface ISceneForSceneGenerator
     {
+        VarManagers.IVarManager VarManager { get; }
+        NativeManagers.INativeManager NativeManager { get; }
+
         Tile[][] SetupEmptyTileSet(int width, int height);
         Player CreatePlayer(int id);
         Actor CreateActor(Player owner, string nativeName, string roleNativeName, Tile target, float? z);

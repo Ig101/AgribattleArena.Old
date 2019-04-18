@@ -1,45 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using AgribattleArena.Engine.Helpers;
 using AgribattleArena.Engine.Natives;
 
 namespace AgribattleArena.Engine.NativeManagers
 {
     class NativeManager : INativeManager, ForExternalUse.INativeManager
     {
+        Dictionary<string,ActorNative> actorNatives;
+        Dictionary<string,ActiveDecorationNative> decorationNatives;
+        Dictionary<string,BuffNative> buffNatives;
+        Dictionary<string,SpecEffectNative> effectNatives;
+        Dictionary<string,SkillNative> skillNatives;
+        Dictionary<string,RoleModelNative> roleModelNatives;
+        Dictionary<string,TileNative> tileNatives;
+
+        public NativeManager()
+        {
+            actorNatives = new Dictionary<string, ActorNative>();
+            decorationNatives = new Dictionary<string, ActiveDecorationNative>();
+            buffNatives = new Dictionary<string, BuffNative>();
+            effectNatives = new Dictionary<string, SpecEffectNative>();
+            skillNatives = new Dictionary<string, SkillNative>();
+            roleModelNatives = new Dictionary<string, RoleModelNative>();
+            tileNatives = new Dictionary<string, TileNative>();
+        }
+
+        public void AddActorNative(string id, string[] tags, float defaultZ, TagSynergy[] armor)
+        {
+            actorNatives.Add(id, new ActorNative(id, tags, defaultZ, armor));
+        }
+
+        public void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
+            IEnumerable<string> actions, IEnumerable<string> appliers)
+        {
+            buffNatives.Add(id, new BuffNative(id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
+                actions, appliers));
+        }
+
+        public void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<string> actions)
+        {
+            decorationNatives.Add(id, new ActiveDecorationNative(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
+        }
+
+        public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions)
+        {
+            effectNatives.Add(id, new SpecEffectNative(id, tags, defaultZ, defaultDuration, defaultMod, actions));
+        }
+
+        public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
+            int defaultActionPointsIncome, SkillNative attackingSkill, SkillNative[] skills)
+        { 
+            roleModelNatives.Add(id, new RoleModelNative(id, defaultStrength, defaultWillpower, defaultConstitution, defaultSpeed, defaultActionPointsIncome,
+                attackingSkill, skills));
+        }
+
+        public void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
+        {
+            skillNatives.Add(id, new SkillNative(id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions));
+        }
+
+        public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions)
+        {
+            tileNatives.Add(id, new TileNative(id, tags, flat, defaultHeight, unbearable, defaultMod, actions));
+        }
+
         public ActorNative GetActorNative(string id)
         {
-            throw new NotImplementedException();
+            ActorNative native = actorNatives[id];
+            if(native == null)
+            {
+                throw new NativeNotFoundException(typeof(ActorNative).ToString(), id);
+            }
+            return native;
         }
 
         public BuffNative GetBuffNative(string id)
         {
-            throw new NotImplementedException();
+            BuffNative native = buffNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(BuffNative).ToString(), id);
+            }
+            return native;
         }
 
         public ActiveDecorationNative GetDecorationNative(string id)
         {
-            throw new NotImplementedException();
+            ActiveDecorationNative native = decorationNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(ActiveDecorationNative).ToString(), id);
+            }
+            return native;
         }
 
         public SpecEffectNative GetEffectNative(string id)
         {
-            throw new NotImplementedException();
+            SpecEffectNative native = effectNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(SpecEffectNative).ToString(), id);
+            }
+            return native;
         }
 
         public RoleModelNative GetRoleModelNative(string id)
         {
-            throw new NotImplementedException();
+            RoleModelNative native = roleModelNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(RoleModelNative).ToString(), id);
+            }
+            return native;
         }
 
         public SkillNative GetSkillNative(string id)
         {
-            throw new NotImplementedException();
+            SkillNative native = skillNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(SkillNative).ToString(), id);
+            }
+            return native;
         }
 
         public TileNative GetTileNative(string id)
         {
-            throw new NotImplementedException();
+            TileNative native = tileNatives[id];
+            if (native == null)
+            {
+                throw new NativeNotFoundException(typeof(TileNative).ToString(), id);
+            }
+            return native;
         }
     }
 }

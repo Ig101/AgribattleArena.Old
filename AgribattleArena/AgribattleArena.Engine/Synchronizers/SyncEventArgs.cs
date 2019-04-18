@@ -9,7 +9,7 @@ namespace AgribattleArena.Engine.Synchronizers
     public class SyncEventArgs: EventArgs, ISyncEventArgs
     {
         IScene scene;
-        ForExternalUse.EngineHelper.Action action;
+        Helpers.Action action;
         int version;
         ISynchronizer syncInfo;
 
@@ -26,7 +26,7 @@ namespace AgribattleArena.Engine.Synchronizers
         public int? TargetX { get { return targetX; } }
         public int? TargetY { get { return targetY; } }
 
-        public SyncEventArgs (IScene scene, int version, ForExternalUse.EngineHelper.Action action, ISynchronizer syncInfo, int? id, int? actionId, int? targetX, int? targetY )
+        public SyncEventArgs (IScene scene, int version, Helpers.Action action, ISynchronizer syncInfo, int? id, int? actionId, int? targetX, int? targetY )
         {
             this.version = version;
             this.scene = scene;

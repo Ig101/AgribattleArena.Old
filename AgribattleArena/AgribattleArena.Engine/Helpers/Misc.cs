@@ -5,6 +5,7 @@ using System.Text;
 namespace AgribattleArena.Engine.Helpers
 {
     public enum PlayerStatus { Playing, Victorious, Defeated }
+    public enum Action { Move, Attack, Cast, Wait, Decoration, EndTurn, EndGame, SkipTurn }
 
     public static class Misc
     {
