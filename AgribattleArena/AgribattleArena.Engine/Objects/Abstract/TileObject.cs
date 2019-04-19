@@ -37,6 +37,11 @@ namespace AgribattleArena.Engine.Objects.Abstract
             return !this.IsAlive;
         }
 
+        public virtual void Kill()
+        {
+            this.IsAlive = false;
+        }
+
         public abstract void EndTurn();
 
         public abstract void StartTurn();

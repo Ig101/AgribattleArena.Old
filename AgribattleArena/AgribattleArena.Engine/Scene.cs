@@ -100,7 +100,7 @@ namespace AgribattleArena.Engine
             return tempId;
         }
 
-        public Tile GetTile(float x, float y)
+        public Tile GetTileByPoint(float x, float y)
         {
             return tiles[(int)(x / VarManager.TileSize)][(int)(y / VarManager.TileSize)];
         }
@@ -152,15 +152,23 @@ namespace AgribattleArena.Engine
             return effect;
         }
 
+        public Tile ChangeTile(string nativeName, int x, int y, int? height)
+        {
+            if (tiles[x][y] == null) return null;
+            Tile tile = tiles[x][y];
+            tile.Native = nativeManager.GetTileNative(nativeName);
+            if (height != null) tile.Height = height.Value;
+            if(tile.Native.Unbearable && tile.TempObject!=null)
+            {
+                tile.TempObject.Kill();
+            }
+            return tile;
+        }
+
         public Tile CreateTile(string nativeName, int x, int y, int? height)
         {
-            TileObject tempObject = tiles[x][y].TempObject;
+            if (tiles[x][y] != null) return null;
             Tile tile = new Tile(this, x, y, nativeManager.GetTileNative(nativeName), height);
-            if (tempObject != null)
-            {
-                tile.TempObject = tempObject;
-                tempObject.TempTile = tile;
-            }
             tiles[x][y] = tile;
             return tile;
         }

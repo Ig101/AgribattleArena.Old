@@ -74,7 +74,7 @@ namespace AgribattleArena.Engine
             return tempId;
         }
 
-        public Tile GetTile(float x, float y)
+        public Tile GetTileByPoint(float x, float y)
         {
             return tiles[(int)(x / VarManager.TileSize)][(int)(y / VarManager.TileSize)];
         }
