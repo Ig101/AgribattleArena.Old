@@ -29,41 +29,48 @@ namespace AgribattleArena.Engine.NativeManagers
 
         public void AddActorNative(string id, string[] tags, float defaultZ, TagSynergy[] armor)
         {
-            actorNatives.Add(id, new ActorNative(id, tags, defaultZ, armor));
+            if(actorNatives[id]==null)
+                actorNatives.Add(id, new ActorNative(id, tags, defaultZ, armor));
         }
 
         public void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers)
         {
-            buffNatives.Add(id, new BuffNative(id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
-                actions, appliers));
+            if (buffNatives[id] == null)
+                buffNatives.Add(id, new BuffNative(id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
+                    actions, appliers));
         }
 
         public void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<string> actions)
         {
-            decorationNatives.Add(id, new ActiveDecorationNative(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
+            if (decorationNatives[id] == null)
+                decorationNatives.Add(id, new ActiveDecorationNative(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
         }
 
         public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions)
         {
-            effectNatives.Add(id, new SpecEffectNative(id, tags, defaultZ, defaultDuration, defaultMod, actions));
+            if (effectNatives[id] == null)
+                effectNatives.Add(id, new SpecEffectNative(id, tags, defaultZ, defaultDuration, defaultMod, actions));
         }
 
         public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
             int defaultActionPointsIncome, SkillNative attackingSkill, SkillNative[] skills)
-        { 
-            roleModelNatives.Add(id, new RoleModelNative(id, defaultStrength, defaultWillpower, defaultConstitution, defaultSpeed, defaultActionPointsIncome,
-                attackingSkill, skills));
+        {
+            if (roleModelNatives[id] == null)
+                roleModelNatives.Add(id, new RoleModelNative(id, defaultStrength, defaultWillpower, defaultConstitution, defaultSpeed, defaultActionPointsIncome,
+                    attackingSkill, skills));
         }
 
         public void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
         {
-            skillNatives.Add(id, new SkillNative(id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions));
+            if (skillNatives[id] == null)
+                skillNatives.Add(id, new SkillNative(id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions));
         }
 
         public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions)
         {
-            tileNatives.Add(id, new TileNative(id, tags, flat, defaultHeight, unbearable, defaultMod, actions));
+            if (tileNatives[id] == null)
+                tileNatives.Add(id, new TileNative(id, tags, flat, defaultHeight, unbearable, defaultMod, actions));
         }
 
         public ActorNative GetActorNative(string id)
