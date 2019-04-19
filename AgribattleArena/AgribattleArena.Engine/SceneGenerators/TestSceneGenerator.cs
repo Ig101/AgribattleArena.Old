@@ -16,9 +16,13 @@ namespace AgribattleArena.Engine.SceneGenerators
         public Scene.WinConditionMethod WinCondition { get { return WinConditionTest; } }
         public string Definition { get { return "TestScene"; } }
 
-        public TestSceneGenerator()
-        {
+        string[,] tileSet;
 
+        public TestSceneGenerator(string[,] tileSet)
+        {
+            if (tileSet.GetLength(0) != 20) throw new ArgumentException("Number of rows doesn't equal to 20");
+            if (tileSet.GetLength(1) != 20) throw new ArgumentException("Number of columns doesn't equal to 20");
+            this.tileSet = tileSet;
         }
 
         public void GenerateNewScene(ISceneForSceneGenerator scene, IEnumerable<IPlayer> players, int seed)
@@ -28,14 +32,7 @@ namespace AgribattleArena.Engine.SceneGenerators
             {
                 for(int y = 0; y<sceneTiles[x].Length;y++)
                 {
-                    if(x == 0 || y == 0 || x==sceneTiles.Length-1 || y == sceneTiles[0].Length-1)
-                    {
-                        scene.CreateTile("tile_test_wall",x,y,null);
-                    }
-                    else
-                    {
-                        scene.CreateTile("tile_test", x, y, null);
-                    }
+                    scene.CreateTile(tileSet[x, y], x, y, null);
                 }
             }
             List<IPlayer> tempPlayers = players.ToList();

@@ -10,9 +10,14 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
     public static class EngineHelper
     {
         #region SceneGenerators
-        public static ISceneGenerator CreateTestSceneGenerator()
+        /// <summary>
+        /// 2 players, less than 5 actors per player, 20x20 tileSet, actors will be at 2 and 17 X tile and 2+i*2 Y tile
+        /// </summary>
+        /// <param name="tileSet"></param>
+        /// <returns></returns>
+        public static ISceneGenerator CreateTestSceneGenerator(string[,] tileSet)
         {
-            return new SceneGenerators.TestSceneGenerator();
+            return new SceneGenerators.TestSceneGenerator(tileSet);
         }
         #endregion
 
