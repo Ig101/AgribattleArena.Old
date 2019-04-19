@@ -10,6 +10,7 @@ namespace AgribattleArena.Engine.SceneGenerators
     {
         public Scene.DefeatCondition DefeatCondition { get { return DefeatConditionDuel; } }
         public Scene.WinCondition WinCondition { get { return WinConditionDuel; } }
+        public string Definition { get { return "DuelScene"; } }
 
         public DuelSceneGenerator()
         {

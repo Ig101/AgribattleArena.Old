@@ -6,6 +6,6 @@ namespace AgribattleArena.Engine.ForExternalUse.Generation
 {
     public interface ISceneGenerator
     {
-        
+        string Definition { get; }
     }
 }

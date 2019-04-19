@@ -56,6 +56,7 @@ namespace AgribattleArena.Engine.Objects
         public Actor(ISceneParentRef parent, IPlayerParentRef owner, int? externalId, ITileParentRef tempTile, float? z, ActorNative native, RoleModelNative roleModelNative)
             : base(parent, owner, tempTile, z ?? native.DefaultZ, new DamageModel(), native)
         {
+            this.varManager = parent.VarManager;
             this.externalId = externalId;
             this.native = native;
             this.DamageModel.SetupRoleModel(this);
@@ -72,6 +73,7 @@ namespace AgribattleArena.Engine.Objects
                 skills.Add(new Skill(this, skill, null, null, null, null));
             }
             this.attackingSkill = new Skill(this, roleModelNative.AttackingSkill, 0, null, 1, null);
+            this.buffManager = new BuffManager(this);
         }
 
         public override void Update(float time)

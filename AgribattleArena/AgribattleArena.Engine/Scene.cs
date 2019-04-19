@@ -63,12 +63,14 @@ namespace AgribattleArena.Engine
             ISceneGenerator tempGenerator = (ISceneGenerator)generator;
             this.winCondition = tempGenerator.WinCondition;
             this.defeatCondition = tempGenerator.DefeatCondition;
-            idsCounter = 0;
+            this.idsCounter = 0;
             this.players = new List<Player>();
-            actors = new List<Actor>();
-            specEffects = new List<SpecEffect>();
-            deletedActors = new List<Actor>();
-            deletedEffects = new List<SpecEffect>();
+            this.actors = new List<Actor>();
+            this.decorations = new List<ActiveDecoration>();
+            this.specEffects = new List<SpecEffect>();
+            this.deletedActors = new List<Actor>();
+            this.deletedDecorations = new List<ActiveDecoration>();
+            this.deletedEffects = new List<SpecEffect>();
             tempGenerator.GenerateNewScene(this, players, unchecked(seed * id));
             EndTurn();
         }
@@ -117,6 +119,7 @@ namespace AgribattleArena.Engine
 
         public Actor CreateActor(Player owner, int? externalId, string nativeName, RoleModelNative roleModel, Tile target, float? z)
         {
+            if (target.TempObject != null) return null;
             Actor actor = new Actor(this, owner, externalId, target, z, nativeManager.GetActorNative(nativeName), roleModel);
             actors.Add(actor);
             return actor;
@@ -124,6 +127,7 @@ namespace AgribattleArena.Engine
 
         public ActiveDecoration CreateDecoration(Player owner, string nativeName, Tile target, float? z, int? health, TagSynergy[] armor, float? mod)
         {
+            if (target.TempObject != null) return null;
             ActiveDecoration decoration = new ActiveDecoration(this, owner, target, z, health, armor, nativeManager.GetDecorationNative(nativeName), mod);
             decorations.Add(decoration);
             return decoration;
@@ -138,7 +142,13 @@ namespace AgribattleArena.Engine
 
         public Tile CreateTile(string nativeName, int x, int y, int? height)
         {
+            TileObject tempObject = tiles[x][y].TempObject;
             Tile tile = new Tile(this, x, y, nativeManager.GetTileNative(nativeName), height);
+            if (tempObject != null)
+            {
+                tile.TempObject = tempObject;
+                tempObject.TempTile = tile;
+            }
             tiles[x][y] = tile;
             return tile;
         }
@@ -226,6 +236,15 @@ namespace AgribattleArena.Engine
                 {
                     deletedActors.Add(actors[i]);
                     actors.RemoveAt(i);
+                    i--;
+                }
+            }
+            for (int i = 0; i < decorations.Count; i++)
+            {
+                if (!decorations[i].IsAlive)
+                {
+                    deletedDecorations.Add(decorations[i]);
+                    decorations.RemoveAt(i);
                     i--;
                 }
             }

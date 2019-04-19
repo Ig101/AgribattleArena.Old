@@ -6,22 +6,30 @@ namespace AgribattleArena.Engine.VarManagers
 {
     public class VarManager : IVarManager, ForExternalUse.IVarManager
     {
-        public float TurnTimeLimit => throw new NotImplementedException();
+        public float TurnTimeLimit { get; }
+        public float TurnTimeLimitAfterSkip { get; }
+        public int SkippedTurnsLimit { get; }
 
-        public float TurnTimeLimitAfterSkip => throw new NotImplementedException();
+        public int TileSize { get; }
 
-        public int SkippedTurnsLimit => throw new NotImplementedException();
+        public int MaxActionPoints { get; }
+        public int ConstitutionMod { get; }
+        public float WillpowerMod { get; }
+        public float StrengthMod { get; }
+        public float SpeedMod { get; }
 
-        public int TileSize => throw new NotImplementedException();
-
-        public int MaxActionPoints => throw new NotImplementedException();
-
-        public int ConstitutionMod => throw new NotImplementedException();
-
-        public float WillpowerMod => throw new NotImplementedException();
-
-        public float StrengthMod => throw new NotImplementedException();
-
-        public float SpeedMod => throw new NotImplementedException();
+        public VarManager(float turnTimeLimit, float turnTimeLimitAfterSkip, int skippedTurnsLimit, int tileSize, int maxActionPoints, 
+            int constitutionMod, float willpowerMod, float strengthMod, float speedMod)
+        {
+            this.TurnTimeLimit = turnTimeLimit;
+            this.TurnTimeLimitAfterSkip = turnTimeLimitAfterSkip;
+            this.SkippedTurnsLimit = skippedTurnsLimit;
+            this.TileSize = tileSize;
+            this.MaxActionPoints = maxActionPoints;
+            this.ConstitutionMod = constitutionMod;
+            this.WillpowerMod = willpowerMod;
+            this.StrengthMod = strengthMod;
+            this.SpeedMod = speedMod;
+        }
     }
 }
