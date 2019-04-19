@@ -14,8 +14,8 @@ namespace AgribattleArena.Engine
 { 
     public class Scene: ISceneParentRef, ISceneForSceneGenerator, ForExternalUse.IScene
     {
-        public delegate bool DefeatCondition(ISceneParentRef scene, IPlayerParentRef player);
-        public delegate bool WinCondition(ISceneParentRef scene);
+        public delegate bool DefeatConditionMethod(ISceneParentRef scene, IPlayerParentRef player);
+        public delegate bool WinConditionMethod(ISceneParentRef scene);
 
         public event EventHandler<SyncEventArgs> ReturnAction;
 
@@ -25,8 +25,8 @@ namespace AgribattleArena.Engine
         float remainedTurnTime;
         TileObject tempTileObject;
 
-        WinCondition winCondition;
-        DefeatCondition defeatCondition;
+        WinConditionMethod winCondition;
+        DefeatConditionMethod defeatCondition;
 
         readonly IVarManager varManager;
         INativeManager nativeManager;
@@ -42,6 +42,18 @@ namespace AgribattleArena.Engine
         List<SpecEffect> deletedEffects;
         int idsCounter;
         int randomCounter;
+
+        public DefeatConditionMethod DefeatCondition { get { return defeatCondition; } }
+        public WinConditionMethod WinCondition { get { return winCondition; } }
+        public Random GameRandom { get { return gameRandom; } }
+        public Tile[][] Tiles { get { return tiles; } }
+        public List<Actor> Actors { get { return actors; } }
+        public List<ActiveDecoration> Decorations { get { return decorations; } }
+        public List<SpecEffect> SpecEffects { get { return specEffects; } }
+        public List<Actor> DeletedActors { get { return deletedActors; } }
+        public List<ActiveDecoration> DeletedDecorations { get { return deletedDecorations; } }
+        public List<SpecEffect> DeletedEffects { get { return deletedEffects; } }
+        public int IdsCounter { get { return idsCounter; } }
 
         public IVarManager VarManager { get { return varManager; } }
         public INativeManager NativeManager { get { return nativeManager; } }

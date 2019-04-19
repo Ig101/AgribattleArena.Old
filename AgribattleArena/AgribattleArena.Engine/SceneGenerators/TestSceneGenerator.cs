@@ -12,8 +12,8 @@ namespace AgribattleArena.Engine.SceneGenerators
 {
     class TestSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
-        public Scene.DefeatCondition DefeatCondition { get { return DefeatConditionTest; } }
-        public Scene.WinCondition WinCondition { get { return WinConditionTest; } }
+        public Scene.DefeatConditionMethod DefeatCondition { get { return DefeatConditionTest; } }
+        public Scene.WinConditionMethod WinCondition { get { return WinConditionTest; } }
         public string Definition { get { return "TestScene"; } }
 
         public TestSceneGenerator()

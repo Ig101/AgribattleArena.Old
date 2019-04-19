@@ -32,6 +32,12 @@ namespace AgribattleArena.Engine.Objects
         List<Skill> skills;
         Skill attackingSkill;
 
+        public int SelfStrength { get { return strength; } }
+        public int SelfWillpower { get { return willpower; } }
+        public int SelfConstitution { get { return constitution; } }
+        public int SelfSpeed { get { return speed; } }
+        public int SelfActionPointsIncome { get { return actionPointsIncome; } }
+
         public int? ExternalId { get { return externalId; } }
         public Skill AttackingSkill { get { return attackingSkill; } }
         public BuffManager BuffManager { get { return buffManager; } }

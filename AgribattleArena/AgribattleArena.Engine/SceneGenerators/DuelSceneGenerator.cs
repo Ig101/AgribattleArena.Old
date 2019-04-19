@@ -8,8 +8,8 @@ namespace AgribattleArena.Engine.SceneGenerators
     //TODO Implement
     class DuelSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
-        public Scene.DefeatCondition DefeatCondition { get { return DefeatConditionDuel; } }
-        public Scene.WinCondition WinCondition { get { return WinConditionDuel; } }
+        public Scene.DefeatConditionMethod DefeatCondition { get { return DefeatConditionDuel; } }
+        public Scene.WinConditionMethod WinCondition { get { return WinConditionDuel; } }
         public string Definition { get { return "DuelScene"; } }
 
         public DuelSceneGenerator()

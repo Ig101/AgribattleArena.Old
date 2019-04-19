@@ -30,6 +30,14 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
         int skillCost;
         int skillRange;
 
+        public float AdditionStrength { get { return strength; } }
+        public float AdditionWillpower { get { return willpower; } }
+        public float AdditionConstitution { get { return constitution; } }
+        public float AdditionSpeed { get { return speed; } }
+        public float AdditionActionPointsIncome { get { return actionPointsIncome; } }
+        public float AdditionMaxHealth { get { return maxHealth; } }
+        public float AdditionInitiative { get { return initiative; } }
+
         public int SkillCd { get { return skillCd; } set { skillCd = value; } }
         public int SkillCost { get { return skillCost; } set { skillCost = value; } }
         public int SkillRange { get { return skillRange; } set { skillRange = value; } }
