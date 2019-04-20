@@ -1,6 +1,7 @@
 ﻿using AgribattleArena.Engine.ForExternalUse.Synchronization;
 using AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces;
 using AgribattleArena.Engine.Helpers;
+using AgribattleArena.Engine.Objects.Abstract;
 using AgribattleArena.Engine.Synchronizers.SynchronizationObjects;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,13 @@ namespace AgribattleArena.Engine.Synchronizers
         IEnumerable<ISpecEffect> deletedEffects;
         IEnumerable<IActor> deletedActors;
         IEnumerable<IActiveDecoration> deletedDecorations;
+        IActor tempActor;
+        IActiveDecoration tempDecoration;
         Point tileLength;
         int randomCounter;
 
+        public IActiveDecoration TempDecoration { get { return tempDecoration; } }
+        public IActor TempActor { get { return tempActor; } }
         public int RandomCounter { get; }
         public IEnumerable<IPlayer> Players { get { return players; } }
         public IEnumerable<IActor> ChangedActors { get { return changedActors; } }
@@ -44,10 +49,12 @@ namespace AgribattleArena.Engine.Synchronizers
         }
 
 
-        public Synchronizer(List<Player> players, List<Objects.Actor> changedActors, List<Objects.ActiveDecoration> changedDecorations,
+        public Synchronizer(TileObject tempObject, List<Player> players, List<Objects.Actor> changedActors, List<Objects.ActiveDecoration> changedDecorations,
             List<Objects.Actor> deletedActors, List<Objects.ActiveDecoration> deletedDecorations, List<Objects.SpecEffect> deletedEffects, Point tileLength,
             List<Objects.Tile> changedTiles, int randomCounter)
         {
+            if (tempObject is Objects.Actor) this.tempActor = new Actor((Objects.Actor)tempObject);
+            if (tempObject is Objects.ActiveDecoration) this.tempDecoration = new ActiveDecoration((Objects.ActiveDecoration)tempObject);
             this.randomCounter = randomCounter;
             this.tileLength = tileLength;
             this.players = players.Select(x => new SynchronizationObjects.Player(x));

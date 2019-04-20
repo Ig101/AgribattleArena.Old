@@ -187,7 +187,7 @@ namespace AgribattleArena.Engine
                     if (tiles[x][y].Affected) changedTiles.Add(tiles[x][y]);
                 }
             }
-            Synchronizer sync = new Synchronizer(players, changedActors, changedDecorations, deletedActors, deletedDecorations, deletedEffects, 
+            Synchronizer sync = new Synchronizer(tempTileObject, players, changedActors, changedDecorations, deletedActors, deletedDecorations, deletedEffects, 
                 new Point(tiles.Length, tiles[0].Length), changedTiles, randomCounter);
             if (nullify)
             {
@@ -208,7 +208,7 @@ namespace AgribattleArena.Engine
 
         public ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
         {
-            return new SynchronizerFull(players, actors, decorations, specEffects, tiles, randomCounter);
+            return new SynchronizerFull(tempTileObject, players, actors, decorations, specEffects, tiles, randomCounter);
         }
         #endregion
 

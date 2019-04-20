@@ -16,8 +16,8 @@ namespace AgribattleArena.Engine.Helpers
 
         public TagSynergy(string selfTag, string targetTag, float mod)
         {
-            this.selfTag = selfTag;
-            this.targetTag = targetTag;
+            this.selfTag = string.Intern(selfTag);
+            this.targetTag = string.Intern(targetTag);
             this.mod = mod;
         }
     }

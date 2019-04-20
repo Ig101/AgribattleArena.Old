@@ -27,30 +27,40 @@ namespace AgribattleArena.Engine.NativeManagers
             tileNatives = new Dictionary<string, TileNative>();
         }
 
+        string[] InternTags(string[] tags)
+        {
+            string[] newTags = new string[tags.Length];
+            for(int i=0; i<tags.Length;i++)
+            {
+                newTags[i] = string.Intern(tags[i]);
+            }
+            return newTags;
+        }
+
         public void AddActorNative(string id, string[] tags, float defaultZ, TagSynergy[] armor)
         {
             if(actorNatives[id]==null)
-                actorNatives.Add(id, new ActorNative(id, tags, defaultZ, armor));
+                actorNatives.Add(id, new ActorNative(id, InternTags(tags), defaultZ, armor));
         }
 
         public void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers)
         {
             if (buffNatives[id] == null)
-                buffNatives.Add(id, new BuffNative(id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
+                buffNatives.Add(id, new BuffNative(id, InternTags(tags), repeatable, summarizeLength, defaultDuration, defaultMod,
                     actions, appliers));
         }
 
         public void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<string> actions)
         {
             if (decorationNatives[id] == null)
-                decorationNatives.Add(id, new ActiveDecorationNative(id, tags, defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
+                decorationNatives.Add(id, new ActiveDecorationNative(id, InternTags(tags), defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
         }
 
         public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions)
         {
             if (effectNatives[id] == null)
-                effectNatives.Add(id, new SpecEffectNative(id, tags, defaultZ, defaultDuration, defaultMod, actions));
+                effectNatives.Add(id, new SpecEffectNative(id, InternTags(tags), defaultZ, defaultDuration, defaultMod, actions));
         }
 
         public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
@@ -64,13 +74,13 @@ namespace AgribattleArena.Engine.NativeManagers
         public void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
         {
             if (skillNatives[id] == null)
-                skillNatives.Add(id, new SkillNative(id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions));
+                skillNatives.Add(id, new SkillNative(id, InternTags(tags), defaultRange, defaultCost, defaultCd, defaultMod, actions));
         }
 
         public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions)
         {
             if (tileNatives[id] == null)
-                tileNatives.Add(id, new TileNative(id, tags, flat, defaultHeight, unbearable, defaultMod, actions));
+                tileNatives.Add(id, new TileNative(id, InternTags(tags), flat, defaultHeight, unbearable, defaultMod, actions));
         }
 
         public ActorNative GetActorNative(string id)

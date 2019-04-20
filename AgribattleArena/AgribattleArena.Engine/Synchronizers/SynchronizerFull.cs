@@ -1,5 +1,6 @@
 ﻿using AgribattleArena.Engine.ForExternalUse.Synchronization;
 using AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces;
+using AgribattleArena.Engine.Objects.Abstract;
 using AgribattleArena.Engine.Synchronizers.SynchronizationObjects;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,14 @@ namespace AgribattleArena.Engine.Synchronizers
         IEnumerable<IActiveDecoration> decorations;
         IEnumerable<ISpecEffect> effects;
         ITile[,] tiles;
+        IActor tempActor;
+        IActiveDecoration tempDecoration;
 
         int randomCounter;
 
         public int RandomCounter { get; }
+        public IActiveDecoration TempDecoration { get { return tempDecoration; } }
+        public IActor TempActor { get { return tempActor; } }
         public IEnumerable<IPlayer> Players { get { return players; } }
         public IEnumerable<IActor> ChangedActors { get { return actors; } }
         public IEnumerable<IActiveDecoration> ChangedDecorations { get { return decorations; } }
@@ -30,9 +35,11 @@ namespace AgribattleArena.Engine.Synchronizers
         public IEnumerable<ITile> ChangedTiles { get { return tiles.Cast<ITile>().ToList(); } }
         public ITile[,] TileSet { get { return tiles; } }
 
-        public SynchronizerFull(List<Player> players, List<Objects.Actor> actors, List<Objects.ActiveDecoration> decorations, 
+        public SynchronizerFull(TileObject tempObject, List<Player> players, List<Objects.Actor> actors, List<Objects.ActiveDecoration> decorations, 
             List<Objects.SpecEffect> effects, Objects.Tile[][] tiles, int randomCounter)
         {
+            if (tempObject is Objects.Actor) this.tempActor = new Actor((Objects.Actor)tempObject);
+            if (tempObject is Objects.ActiveDecoration) this.tempDecoration = new ActiveDecoration((Objects.ActiveDecoration)tempObject);
             this.randomCounter = randomCounter;
             this.players = players.Select(x => new SynchronizationObjects.Player(x));
             this.decorations = decorations.Select(x => new ActiveDecoration(x));

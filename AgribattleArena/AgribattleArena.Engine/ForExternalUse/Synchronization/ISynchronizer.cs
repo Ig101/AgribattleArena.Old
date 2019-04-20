@@ -10,6 +10,8 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization
     public interface ISynchronizer
     {
         int RandomCounter { get; }
+        IActor TempActor { get; }
+        IActiveDecoration TempDecoration { get; }
         IEnumerable<IPlayer> Players { get; }
         IEnumerable<IActor> ChangedActors { get; }
         IEnumerable<IActiveDecoration> ChangedDecorations { get; }
