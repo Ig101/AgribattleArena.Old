@@ -18,6 +18,7 @@ namespace AgribattleArena.Engine.Synchronizers
         int? targetX;
         int? targetY;
 
+        public Helpers.Action Action { get { return action; } }
         public int Version { get { return version; } }
         public IScene Scene { get { return scene; } }
         public ISynchronizer SyncInfo { get { return syncInfo; } }
