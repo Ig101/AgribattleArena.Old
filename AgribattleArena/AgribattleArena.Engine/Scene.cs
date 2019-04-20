@@ -84,7 +84,7 @@ namespace AgribattleArena.Engine
             this.deletedDecorations = new List<ActiveDecoration>();
             this.deletedEffects = new List<SpecEffect>();
             tempGenerator.GenerateNewScene(this, players, unchecked(seed * id));
-            EndTurn();
+            StartGame();
         }
 
         public float GetNextRandom()
@@ -213,6 +213,12 @@ namespace AgribattleArena.Engine
         #endregion
 
         #region Updates
+        public void StartGame()
+        {
+            this.ReturnAction(this, new SyncEventArgs(this, version, Helpers.Action.StartGame, GetFullSynchronizationData(), 
+                null,null,null,null));
+            EndTurn();
+        }
         public void EndTurn()
         {
             float minInitiativePosition = float.MaxValue;

@@ -45,6 +45,7 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
             return new NativeManagers.NativeManager();
         }
 
+        //TODO Feedback delegate
         public static IScene CreateNewScene (int id, IEnumerable<Generation.ObjectInterfaces.IPlayer> players, ISceneGenerator generator,
             INativeManager nativeManager, IVarManager varManager, int seed)
         {
