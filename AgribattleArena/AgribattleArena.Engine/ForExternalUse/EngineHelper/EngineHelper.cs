@@ -1,5 +1,6 @@
 ﻿using AgribattleArena.Engine.ForExternalUse.Generation;
 using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
+using AgribattleArena.Engine.ForExternalUse.Synchronization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,11 +46,12 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
             return new NativeManagers.NativeManager();
         }
 
-        //TODO Feedback delegate
-        public static IScene CreateNewScene (int id, IEnumerable<Generation.ObjectInterfaces.IPlayer> players, ISceneGenerator generator,
-            INativeManager nativeManager, IVarManager varManager, int seed)
+        public static IScene CreateNewScene(int id, IEnumerable<Generation.ObjectInterfaces.IPlayer> players, ISceneGenerator generator,
+            INativeManager nativeManager, IVarManager varManager, int seed, EventHandler<ISyncEventArgs> eventHandler)
         {
-            return new Scene(id, players, generator, nativeManager, varManager, seed);
+            Scene scene = new Scene(id, players, generator, nativeManager, varManager, seed);
+            scene.ReturnAction += eventHandler;
+            return scene;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AgribattleArena.Engine
         public delegate bool DefeatConditionMethod(ISceneParentRef scene, IPlayerParentRef player);
         public delegate bool WinConditionMethod(ISceneParentRef scene);
 
-        public event EventHandler<SyncEventArgs> ReturnAction;
+        public event EventHandler<ForExternalUse.Synchronization.ISyncEventArgs> ReturnAction;
 
         int id;
         List<Player> players;
