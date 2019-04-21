@@ -3,6 +3,7 @@ using AgribattleArena.Engine.Natives;
 using AgribattleArena.Engine.Objects.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AgribattleArena.Engine.Objects.Immaterial
@@ -57,13 +58,14 @@ namespace AgribattleArena.Engine.Objects.Immaterial
         public float CalculateMod(string[] targetTags)
         {
             float tempMod = this.mod;
-            foreach (string attackTag in native.Tags)
+            foreach (string attackTag in native.Tags.Concat(parent.Tags))
             {
                 foreach (string defenceTag in targetTags)
                 {
                     foreach (TagSynergy synergy in parent.AttackModifiers)
                     {
-                        if (synergy.SelfTag == attackTag && synergy.TargetTag == defenceTag)
+                        if ((synergy.SelfTag == attackTag || synergy.SelfTag == null) && (synergy.TargetTag == defenceTag || synergy.TargetTag == null) &&
+                            !(synergy.SelfTag == null && synergy.TargetTag == null))
                         {
                             tempMod *= synergy.Mod;
                         }

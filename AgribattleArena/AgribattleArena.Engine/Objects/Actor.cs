@@ -32,6 +32,7 @@ namespace AgribattleArena.Engine.Objects
         List<Skill> skills;
         Skill attackingSkill;
 
+        public string[] Tags { get { return native.Tags; } }
         public int SelfStrength { get { return strength; } }
         public int SelfWillpower { get { return willpower; } }
         public int SelfConstitution { get { return constitution; } }

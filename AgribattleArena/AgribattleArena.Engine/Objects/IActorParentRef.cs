@@ -10,6 +10,7 @@ namespace AgribattleArena.Engine.Objects
 {
     public interface IActorParentRef
     {
+        string[] Tags { get; }
         ISceneParentRef Parent { get; }
         IPlayerParentRef Owner { get; set; }
         bool IsAlive { get; set; }
