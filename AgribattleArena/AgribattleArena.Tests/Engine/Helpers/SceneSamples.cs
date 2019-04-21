@@ -13,6 +13,14 @@ namespace AgribattleArena.Tests.Engine.Helpers
 {
     public static class SceneSamples
     {
+        /// <summary>
+        /// Scene
+        /// tileSet 20x20, test_tile rounded by test_wall
+        /// firstPlayer have actor with high strength and constitution
+        /// secondPlayer have actor with high willpower and speed
+        /// </summary>
+        /// <param name="eventHandler"></param>
+        /// <returns></returns>
         public static Scene CreateSimpleScene(EventHandler<ISyncEventArgs> eventHandler)
         {
             INativeManager nativeManager = EngineHelper.CreateNativeManager();

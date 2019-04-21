@@ -115,24 +115,11 @@ namespace AgribattleArena.Engine.Objects
                 BuffManager.CanMove && ((target.X == TempTile.X && Math.Abs(target.Y - TempTile.Y) == 1) ||
                 (target.Y == TempTile.Y && Math.Abs(target.X - TempTile.X) == 1)))
             {
-                ChangePosition(target);
+                ChangePosition(target, true);
                 SpendActionPoints(1);
                 return true;
             }
             return false;
-        }
-
-        public void ChangePosition(Tile target)
-        {
-            this.Affected = true;
-            this.TempTile.Affected = true;
-            target.Affected = true;
-            target.TempObject = this;
-            this.TempTile.TempObject = null;
-            this.TempTile = target;
-            PointF pos = target.Center;
-            this.X = pos.X;
-            this.Y = pos.Y;
         }
 
         public override void EndTurn()

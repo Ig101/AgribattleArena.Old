@@ -13,19 +13,20 @@ using System.Text;
 
 namespace AgribattleArena.Tests.Engine
 {
-    [TestFixture(Description = "Tests over scene with 20x20 tileSet, 2 players with 1 actor in each army")]
+    [TestFixture]
     public class SceneShould: BasicEngineTester
     {
         [SetUp]
         public void Prepare ()
         {
             _syncMessages = new List<ISyncEventArgs>();
-            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
         }
 
         [Test]
-        public void CreateScene ()
+        public void CreateSimpleScene ()
         {
+            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
+
             Assert.That(_scene, Is.Not.Null, "Check scene object existence");
             Assert.That(_syncMessages.Count, Is.EqualTo(2), "Check messages count");
             Assert.That(_syncMessages[0].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.StartGame), "Check StartGame message action");
@@ -39,7 +40,7 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_syncMessages[0].SyncInfo.DeletedActors.ToList().Count, Is.EqualTo(0), "Check deletedActors count in StartGame message");
             Assert.That(_syncMessages[1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn), "Check EndTurn message action");
             Assert.That(_syncMessages[1].Version, Is.EqualTo(1), "Check version of EndTurn message");
-            Assert.That(_syncMessages[1].SyncInfo.TempActor.ExternalId, Is.EqualTo(2), "Check tempActor in EndTurn message");
+            Assert.That(_syncMessages[1].SyncInfo.TempActor, Is.Not.Null, "Check tempActor in EndTurn message");
             Assert.That(_syncMessages[1].SyncInfo.ChangedActors.Count(), Is.EqualTo(0), "Check changedActors count in EndTurn message");
             Assert.That(_syncMessages[1].SyncInfo.ChangedTiles.Count(), Is.EqualTo(0), "Check changedTiles count in EndTurn message");
             Assert.That(_syncMessages[1].SyncInfo.DeletedActors.Count(), Is.EqualTo(0), "Check deletedActors count in EndTurn message");

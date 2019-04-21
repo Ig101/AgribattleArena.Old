@@ -1,4 +1,5 @@
-﻿using AgribattleArena.Engine.Helpers;
+﻿using AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces;
+using AgribattleArena.Engine.Helpers;
 using AgribattleArena.Engine.NativeManagers;
 using AgribattleArena.Engine.Natives;
 using AgribattleArena.Engine.Objects;
@@ -365,18 +366,19 @@ namespace AgribattleArena.Engine
             return false;
         }
 
-        public bool ActorMove(Actor actor, Tile target)
+        public bool ActorMove(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject == actor)
+            if (tempTileObject.Id == actorId)
             {
+                Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
                 {
                     ApplyActionAfterSkipping();
                 }
-                bool result = actor.Move(target);
+                bool result = actor.Move(tiles[targetX][targetY]);
                 if (result)
                 {
-                    if(AfterUpdateSynchronization(Helpers.Action.Move, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                    if(AfterUpdateSynchronization(Helpers.Action.Move, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
                         EndTurn();
                 }
                 return result;
@@ -384,18 +386,19 @@ namespace AgribattleArena.Engine
             return false;
         }
 
-        public bool ActorCast(Actor actor, int id, Tile target)
+        public bool ActorCast(int actorId, int skillId, int targetX, int targetY)
         {
-            if (tempTileObject == actor)
+            if (tempTileObject.Id == actorId)
             {
+                Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
                 {
                     ApplyActionAfterSkipping();
                 }
-                bool result = actor.Cast(id, target);
+                bool result = actor.Cast(id, tiles[targetX][targetY]);
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
                         EndTurn();
                 }
                 return result;
@@ -403,18 +406,19 @@ namespace AgribattleArena.Engine
             return false;
         }
 
-        public bool ActorAttack(Actor actor, Tile target)
+        public bool ActorAttack(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject == actor)
+            if (tempTileObject.Id == actorId)
             {
+                Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
                 {
                     ApplyActionAfterSkipping();
                 }
-                bool result = actor.Attack(target);
+                bool result = actor.Attack(tiles[targetX][targetY]);
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                    if (AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
                         EndTurn();
                 }
                 return result;
@@ -422,10 +426,11 @@ namespace AgribattleArena.Engine
             return false;
         }
 
-        public bool ActorWait(Actor actor)
+        public bool ActorWait(int actorId)
         {
-            if (tempTileObject == actor)
+            if (tempTileObject.Id == actorId)
             {
+                Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
                 {
                     ApplyActionAfterSkipping();

@@ -1,4 +1,5 @@
-﻿using AgribattleArena.Engine.Natives;
+﻿using AgribattleArena.Engine.Helpers;
+using AgribattleArena.Engine.Natives;
 using AgribattleArena.Engine.Objects.Immaterial;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,21 @@ namespace AgribattleArena.Engine.Objects.Abstract
         public virtual void Kill()
         {
             this.IsAlive = false;
+        }
+
+        public void ChangePosition(Tile target, bool changeHeight)
+        {
+            float heightChange = target.Height - this.TempTile.Height;
+            this.Affected = true;
+            this.TempTile.Affected = true;
+            target.Affected = true;
+            target.TempObject = this;
+            this.TempTile.TempObject = null;
+            this.TempTile = target;
+            PointF pos = target.Center;
+            this.X = pos.X;
+            this.Y = pos.Y;
+            this.Z += heightChange;
         }
 
         public abstract void EndTurn();

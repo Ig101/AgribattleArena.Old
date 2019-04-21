@@ -27,10 +27,6 @@ namespace AgribattleArena.Engine
 
         void EndTurn();
         bool DecorationCast(ActiveDecoration actor);
-        bool ActorMove(Actor actor, Tile target);
-        bool ActorCast(Actor actor, int id, Tile target);
-        bool ActorAttack(Actor actor, Tile target);
-        bool ActorWait(Actor actor);
 
         Actor CreateActor(Player owner, string nativeName, string roleNativeName, Tile target, float? z);
         Actor CreateActor(Player owner, int? externalId, string nativeName, RoleModelNative roleModel, Tile target, float? z);
