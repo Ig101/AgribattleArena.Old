@@ -329,14 +329,14 @@ namespace AgribattleArena.Engine
         public bool AfterUpdateSynchronization (Helpers.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
         {
             AfterActionUpdate();
-            this.ReturnAction(this, new SyncEventArgs(this, version++, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
-            if(winCondition(this))
+            this.ReturnAction?.Invoke(this, new SyncEventArgs(this, version++, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
+            if (winCondition(this))
             {
                 foreach(Player player in players)
                 {
                     if (player.Status == PlayerStatus.Playing) player.Victory();
                 }
-                this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.EndGame, GetSynchronizationDataPlayersOnly(), null, null, null, null));
+                this.ReturnAction?.Invoke(this, new SyncEventArgs(this, version++, Helpers.Action.EndGame, GetSynchronizationDataPlayersOnly(), null, null, null, null));
                 return false;
             }
             return true;
