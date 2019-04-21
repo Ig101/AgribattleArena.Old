@@ -153,11 +153,11 @@ namespace AgribattleArena.Engine
             return effect;
         }
 
-        public Tile ChangeTile(string nativeName, int x, int y, int? height, Player initiator)
+        public Tile ChangeTile(string nativeName, int x, int y, int? height, Player owner)
         {
             if (tiles[x][y] == null) return null;
             Tile tile = tiles[x][y];
-            tile.Owner = initiator;
+            tile.Owner = owner;
             tile.Native = nativeManager.GetTileNative(nativeName);
             if (height != null) tile.Height = height.Value;
             if(tile.Native.Unbearable && tile.TempObject!=null)

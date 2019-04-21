@@ -83,7 +83,12 @@ namespace AgribattleArena.Engine.NativeManagers
 
         public void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
         {
-            skillNatives.Add(id, new SkillNative(id, InternTags(tags), defaultRange, defaultCost, defaultCd, defaultMod, actions));
+            AddSkillNative(id, id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions);
+        }
+
+        public void AddSkillNative(string id, string idForFront, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
+        {
+            skillNatives.Add(id, new SkillNative(id, idForFront, InternTags(tags), defaultRange, defaultCost, defaultCd, defaultMod, actions));
         }
 
         public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions, 

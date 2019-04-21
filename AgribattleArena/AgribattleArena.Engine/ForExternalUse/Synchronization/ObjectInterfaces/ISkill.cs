@@ -9,6 +9,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         int Id { get; }
         int Range { get; }
         string NativeId { get; }
+        string SecretNativeId { get; }
         float Cd { get; }
         float Mod { get; }
         int Cost { get; }
