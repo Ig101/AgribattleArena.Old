@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
 {
@@ -237,16 +238,17 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             return buff;
         }
 
-        public Buff RemoveBuff(uint id)
+        public Buff RemoveBuff(int id)
         {
             return RemoveBuff(buffs.Find(x => x.Id == id));
         }
 
-        public void RemoveBuff(int id)
+        public int RemoveBuffsByTag(string tag)
         {
             parent.Affected = true;
-            buffs.RemoveAt(id);
+            int count = buffs.RemoveAll(x => x.Native.Tags.Contains(tag));
             RecalculateBuffs();
+            return count;
         }
 
         public void Update(float time)
