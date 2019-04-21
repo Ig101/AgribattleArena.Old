@@ -7,6 +7,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
 {
     class SpecEffect: ISpecEffect
     {
+        public int Id { get; }
         public int? OwnerId { get; }
         public bool IsAlive { get; }
         public float X { get; }
@@ -15,9 +16,11 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float? Duration { get; }
         public float Mod { get; }
         public string NativeId { get; }
+        public string SecretNativeId { get; }
 
         public SpecEffect(Objects.SpecEffect specEffect)
         {
+            this.Id = specEffect.Id;
             this.OwnerId = specEffect.Owner?.Id;
             this.IsAlive = specEffect.IsAlive;
             this.X = specEffect.X;
@@ -25,7 +28,8 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
             this.Z = specEffect.Z;
             this.Duration = specEffect.Duration;
             this.Mod = specEffect.Mod;
-            this.NativeId = specEffect.Native.Id;
+            this.NativeId = specEffect.Native.IdForFront;
+            this.SecretNativeId = specEffect.Native.Id;
         }
     }
 }

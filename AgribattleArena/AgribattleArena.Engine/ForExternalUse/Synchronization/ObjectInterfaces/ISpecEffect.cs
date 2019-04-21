@@ -6,6 +6,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
 {
     public interface ISpecEffect
     {
+        int Id { get; }
         int? OwnerId { get; }
         bool IsAlive { get; }
         float X { get; }
@@ -14,5 +15,6 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         float? Duration { get; }
         float Mod { get; }
         string NativeId { get; }
+        string SecretNativeId { get; }
     }
 }

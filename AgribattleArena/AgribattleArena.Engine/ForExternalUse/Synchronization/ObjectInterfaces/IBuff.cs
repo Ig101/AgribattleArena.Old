@@ -8,6 +8,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
     {
         int Id { get; }
         string NativeId { get; }
+        string SecretNativeId { get; }
         float Mod { get; }
         float? Duration { get; }
     }

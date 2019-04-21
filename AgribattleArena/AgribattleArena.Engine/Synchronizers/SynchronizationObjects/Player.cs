@@ -12,6 +12,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public List<ForExternalUse.Generation.ObjectInterfaces.IActor> KeyActorsGen { get; }
 
         public int Id { get; }
+        public int? Team { get; }
         public List<int?> KeyActorsSync { get; }
         public int TurnsSkipped { get; }
         public PlayerStatus Status { get; }
@@ -19,13 +20,15 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public Player(Engine.Player player)
         {
             this.Id = player.Id;
+            this.Team = player.Team;
             this.KeyActorsSync = player.KeyActors.Select(x => x.ExternalId).ToList();
             this.TurnsSkipped = player.TurnsSkipped;
             this.Status = player.Status;
         }
 
-        public Player(int id, List<ForExternalUse.Generation.ObjectInterfaces.IActor> keyActors)
+        public Player(int id, int? team, List<ForExternalUse.Generation.ObjectInterfaces.IActor> keyActors)
         {
+            this.Team = team;
             this.Id = id;
             this.KeyActorsGen = keyActors;
         }

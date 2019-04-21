@@ -9,6 +9,7 @@ namespace AgribattleArena.Engine
     public interface IPlayerParentRef
     {
         int Id { get; }
+        int? Team { get; }
         List<Actor> KeyActors { get; }
         int TurnsSkipped { get; }
         PlayerStatus Status { get; }

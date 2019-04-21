@@ -6,21 +6,24 @@ namespace AgribattleArena.Engine
 {
     public class Player: IPlayerParentRef
     {
-        readonly ISceneParentRef parent;
+        ISceneParentRef parent;
 
-        readonly int id;
-        readonly List<Actor> keyActors;
+        int id;
+        int? team;
+        List<Actor> keyActors;
         int turnsSkipped;
         PlayerStatus status;
 
+        public int? Team { get { return team; } }
         public ISceneParentRef Parent { get { return parent; } }
         public int Id { get { return id; } }
         public List<Actor> KeyActors { get { return keyActors; } }
         public int TurnsSkipped { get { return turnsSkipped; } }
         public PlayerStatus Status { get { return status; } set { status = value; } }
 
-        public Player (ISceneParentRef parent, int id)
+        public Player (ISceneParentRef parent, int id, int? team)
         {
+            this.team = team;
             this.parent = parent;
             this.id = id;
             this.keyActors = new List<Actor>();

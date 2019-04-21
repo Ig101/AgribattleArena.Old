@@ -29,9 +29,9 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
                 speed, skillNames.ToList(), actionPointsIncome);
         }
 
-        public static IPlayer CreatePlayerForGeneration (int id, IEnumerable<IActor> keyActors)
+        public static IPlayer CreatePlayerForGeneration (int id, int? team, IEnumerable<IActor> keyActors)
         {
-            return new Synchronizers.SynchronizationObjects.Player(id, keyActors.ToList());
+            return new Synchronizers.SynchronizationObjects.Player(id, team, keyActors.ToList());
         }
 
         public static IVarManager CreateVarManager(float turnTimeLimit, float turnTimeLimitAfterSkip, int skippedTurnsLimit, int tileSize, int maxActionPoints,

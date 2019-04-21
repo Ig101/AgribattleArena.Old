@@ -42,7 +42,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         {
             this.Id = actor.Id;
             this.ExternalId = actor.ExternalId;
-            this.NativeId = actor.Native.Id;
+            this.NativeId = actor.Native.IdForFront;
             this.AttackingSkill = new Skill(actor.AttackingSkill);
             this.ActionPointsIncome = actor.ActionPointsIncome;
             this.Strength = actor.Strength;

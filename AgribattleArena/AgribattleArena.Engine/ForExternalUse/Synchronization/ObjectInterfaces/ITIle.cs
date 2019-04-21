@@ -11,5 +11,6 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         int? TempActorId { get; }
         float Height { get; }
         string NativeId { get; }
+        string SecretNativeId { get; }
     }
 }

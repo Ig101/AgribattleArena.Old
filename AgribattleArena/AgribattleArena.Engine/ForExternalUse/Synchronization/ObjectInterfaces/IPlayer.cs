@@ -8,6 +8,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
     public interface IPlayer
     {
         int Id { get; }
+        int? Team { get; }
         List<int?> KeyActorsSync { get; }
         int TurnsSkipped { get; }
         PlayerStatus Status { get; }

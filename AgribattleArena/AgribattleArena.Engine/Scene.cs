@@ -118,9 +118,9 @@ namespace AgribattleArena.Engine
             return tiles;
         }
 
-        public Player CreatePlayer (int id)
+        public Player CreatePlayer (int id, int? team)
         {
-            Player player = new Player(this, id);
+            Player player = new Player(this, id, team);
             players.Add(player);
             return player;
         }
@@ -153,10 +153,11 @@ namespace AgribattleArena.Engine
             return effect;
         }
 
-        public Tile ChangeTile(string nativeName, int x, int y, int? height)
+        public Tile ChangeTile(string nativeName, int x, int y, int? height, Player initiator)
         {
             if (tiles[x][y] == null) return null;
             Tile tile = tiles[x][y];
+            tile.Owner = initiator;
             tile.Native = nativeManager.GetTileNative(nativeName);
             if (height != null) tile.Height = height.Value;
             if(tile.Native.Unbearable && tile.TempObject!=null)

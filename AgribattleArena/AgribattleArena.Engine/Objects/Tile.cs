@@ -10,6 +10,7 @@ namespace AgribattleArena.Engine.Objects
     public class Tile: ITileParentRef
     {
         ISceneParentRef parent;
+        IPlayerParentRef owner;
 
         TileObject tempObject;
         float height;
@@ -18,6 +19,7 @@ namespace AgribattleArena.Engine.Objects
         TileNative native;
         bool affected;
 
+        public IPlayerParentRef Owner { get { return owner; } set { owner = value; } }
         public bool Affected { get { return affected; } set { affected = value; } }
         public ISceneParentRef Parent { get { return parent; } }
         public TileObject TempObject { get { return tempObject; } }
@@ -34,6 +36,7 @@ namespace AgribattleArena.Engine.Objects
 
         public Tile(ISceneParentRef parent, int x, int y, TileNative native, int? height)
         {
+            this.owner = null;
             this.parent = parent;
             this.x = x;
             this.y = y;

@@ -19,7 +19,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         {
             this.Id = skill.Id;
             this.Range = skill.Range;
-            this.NativeId = skill.Native.Id;
+            this.NativeId = skill.Native.IdForFront;
             this.Cd = skill.Cd;
             this.Mod = skill.Mod;
             this.Cost = skill.Cost;
