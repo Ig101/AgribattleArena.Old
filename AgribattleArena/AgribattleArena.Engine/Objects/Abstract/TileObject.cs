@@ -44,6 +44,6 @@ namespace AgribattleArena.Engine.Objects.Abstract
 
         public abstract void EndTurn();
 
-        public abstract void StartTurn();
+        public abstract bool StartTurn();
     }
 }

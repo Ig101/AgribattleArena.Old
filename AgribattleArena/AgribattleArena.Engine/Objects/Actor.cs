@@ -48,7 +48,7 @@ namespace AgribattleArena.Engine.Objects
 
         public int MaxHealth { get { return Constitution * varManager.ConstitutionMod + buffManager.MaxHealth; } }
         public int ActionPointsIncome { get { return actionPointsIncome + buffManager.ActionPointsIncome; } set { actionPointsIncome = value; } }
-        public int ActionPoints { get { return actionPoints; } set { actionPoints = value > varManager.MaxActionPoints ? varManager.MaxActionPoints : value; } }
+        public int ActionPoints { get { return actionPoints; } set { actionPoints = value > varManager.MaxActionPoints ? varManager.MaxActionPoints : value < 0? 0: value; } }
         public float SkillPower { get { return Willpower * varManager.WillpowerMod + buffManager.SkillPower; } }
         public float AttackPower { get { return Strength * varManager.StrengthMod + buffManager.AttackPower; } }
         public float Initiative { get { return Speed * varManager.SpeedMod + buffManager.Initiative; } }
@@ -140,17 +140,17 @@ namespace AgribattleArena.Engine.Objects
             if (Parent.TempTileObject == this)
             {
                 this.InitiativePosition += 1f / Initiative;
-                Parent.EndTurn();
             }
         }
 
-        public override void StartTurn()
+        public override bool StartTurn()
         {
             if (Parent.TempTileObject == this)
             {
-                if (!CheckStunnedState())
-                    this.ActionPoints += ActionPointsIncome;
+                this.ActionPoints += ActionPointsIncome;
+                return CheckActionAvailability();
             }
+            return false;
         }
 
         public override bool Damage(float amount, string[] tags)
@@ -189,19 +189,23 @@ namespace AgribattleArena.Engine.Objects
 
         public void SpendActionPoints(int amount)
         {
+            if (this.actionPoints < amount) throw new ArgumentException("Not enough action points", "amount");
             this.actionPoints -= amount;
-            if (actionPoints <= 0) EndTurn();
         }
 
-        public bool CheckStunnedState()
+        bool CheckStunnedState()
         {
             if (!buffManager.CanAct && !buffManager.CanMove)
             {
                 this.actionPoints = 0;
-                EndTurn();
                 return true;
             }
             return false;
+        }
+
+        public bool CheckActionAvailability()
+        {
+            return this.IsAlive && this.ActionPoints > 0 && !CheckStunnedState();
         }
     }
 }

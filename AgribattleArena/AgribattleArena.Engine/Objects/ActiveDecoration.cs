@@ -35,13 +35,12 @@ namespace AgribattleArena.Engine.Objects
         public override void EndTurn()
         {
             this.InitiativePosition += 1;
-            Parent.EndTurn();
         }
 
-        public override void StartTurn()
+        public override bool StartTurn()
         {
             Parent.DecorationCast(this);
-            EndTurn();
+            return true;
         }
     }
 }

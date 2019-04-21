@@ -221,25 +221,35 @@ namespace AgribattleArena.Engine
         }
         public void EndTurn()
         {
-            float minInitiativePosition = float.MaxValue;
-            TileObject newObject = null;
-            foreach (TileObject obj in actors)
+            bool turnStarted;
+            do
             {
-                if (obj.IsAlive && obj.InitiativePosition < minInitiativePosition)
+                tempTileObject.EndTurn();
+                float minInitiativePosition = float.MaxValue;
+                TileObject newObject = null;
+                foreach (TileObject obj in actors)
                 {
-                    minInitiativePosition = obj.InitiativePosition;
-                    newObject = obj;
+                    if (obj.IsAlive && obj.InitiativePosition < minInitiativePosition)
+                    {
+                        minInitiativePosition = obj.InitiativePosition;
+                        newObject = obj;
+                    }
                 }
-            }
-            if (newObject != null)
-            {
-                this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped>0?varManager.TurnTimeLimit:varManager.TurnTimeLimitAfterSkip;
-                TileObject previousTempTileObject = this.tempTileObject; 
-                this.tempTileObject = newObject;
-                Update(minInitiativePosition);
-                AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null);
-                this.tempTileObject.StartTurn();
-            }
+                if (newObject != null)
+                {
+                    this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped > 0 ? varManager.TurnTimeLimit : varManager.TurnTimeLimitAfterSkip;
+                    TileObject previousTempTileObject = this.tempTileObject;
+                    this.tempTileObject = newObject;
+                    Update(minInitiativePosition);
+                    AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null);
+                    turnStarted = this.tempTileObject.StartTurn();
+                }
+                else
+                {
+                    turnStarted = true;
+                    AfterUpdateSynchronization(Helpers.Action.NoActorsDraw, null, null, null, null);
+                }
+            } while (!turnStarted);
         }
 
         void Update(float time)
@@ -341,6 +351,7 @@ namespace AgribattleArena.Engine
                 }
                 actor.Cast();
                 AfterUpdateSynchronization(Helpers.Action.Decoration, actor, null, null, null);
+                EndTurn();
                 return true;
             }
             return false;
@@ -359,6 +370,7 @@ namespace AgribattleArena.Engine
                 {
                     AfterUpdateSynchronization(Helpers.Action.Move, actor, null, target.X, target.Y);
                 }
+                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -377,6 +389,7 @@ namespace AgribattleArena.Engine
                 {
                     AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, target.X, target.Y);
                 }
+                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -395,6 +408,7 @@ namespace AgribattleArena.Engine
                 {
                     AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, target.X, target.Y);
                 }
+                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -413,6 +427,7 @@ namespace AgribattleArena.Engine
                 {
                     AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null);
                 }
+                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;

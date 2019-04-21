@@ -41,8 +41,8 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
         public int SkillCd { get { return skillCd; } set { skillCd = value; } }
         public int SkillCost { get { return skillCost; } set { skillCost = value; } }
         public int SkillRange { get { return skillRange; } set { skillRange = value; } }
-        public bool CanMove { get { return canMove; } set { canMove = value; parent.CheckStunnedState(); } }
-        public bool CanAct { get { return canAct; } set { canAct = value; parent.CheckStunnedState(); } }
+        public bool CanMove { get { return canMove; } set { canMove = value; } }
+        public bool CanAct { get { return canAct; } set { canAct = value; } }
         public IActorParentRef Parent { get { return parent; } set { parent = value; } }
         public float Initiative
         {

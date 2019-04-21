@@ -41,7 +41,6 @@ namespace AgribattleArena.Engine.Objects
         List<TagSynergy> Armor { get; }
         List<TagSynergy> AttackModifiers { get; }
 
-        bool CheckStunnedState();
         void SpendActionPoints(int amount);
     }
 }
