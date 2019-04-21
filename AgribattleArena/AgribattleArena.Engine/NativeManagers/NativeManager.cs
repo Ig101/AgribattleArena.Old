@@ -6,7 +6,7 @@ using AgribattleArena.Engine.Natives;
 
 namespace AgribattleArena.Engine.NativeManagers
 {
-    class NativeManager : INativeManager, ForExternalUse.INativeManager
+    public class NativeManager : INativeManager, ForExternalUse.INativeManager
     {
         Dictionary<string,ActorNative> actorNatives;
         Dictionary<string,ActiveDecorationNative> decorationNatives;

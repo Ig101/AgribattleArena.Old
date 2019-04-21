@@ -10,7 +10,7 @@ using AgribattleArena.Engine.Objects.Immaterial;
 
 namespace AgribattleArena.Engine.SceneGenerators
 {
-    class TestSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
+    public class TestSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
         public Scene.DefeatConditionMethod DefeatCondition { get { return DefeatConditionTest; } }
         public Scene.WinConditionMethod WinCondition { get { return WinConditionTest; } }

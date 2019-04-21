@@ -6,7 +6,7 @@ using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
 namespace AgribattleArena.Engine.SceneGenerators
 {
     //TODO Implement
-    class DuelSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
+    public class DuelSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
         public Scene.DefeatConditionMethod DefeatCondition { get { return DefeatConditionDuel; } }
         public Scene.WinConditionMethod WinCondition { get { return WinConditionDuel; } }
