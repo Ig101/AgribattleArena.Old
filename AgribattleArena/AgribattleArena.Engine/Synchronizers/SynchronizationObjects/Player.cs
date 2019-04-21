@@ -12,14 +12,14 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public List<ForExternalUse.Generation.ObjectInterfaces.IActor> KeyActorsGen { get; }
 
         public int Id { get; }
-        public List<int> KeyActorsSync { get; }
+        public List<int?> KeyActorsSync { get; }
         public int TurnsSkipped { get; }
         public PlayerStatus Status { get; }
 
         public Player(Engine.Player player)
         {
             this.Id = player.Id;
-            this.KeyActorsSync = player.KeyActors.Select(x => x.Id).ToList();
+            this.KeyActorsSync = player.KeyActors.Select(x => x.ExternalId).ToList();
             this.TurnsSkipped = player.TurnsSkipped;
             this.Status = player.Status;
         }

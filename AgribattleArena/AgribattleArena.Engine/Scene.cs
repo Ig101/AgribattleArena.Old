@@ -175,7 +175,13 @@ namespace AgribattleArena.Engine
         #endregion
 
         #region Sync
-        public ForExternalUse.Synchronization.ISynchronizer GetSynchronizationData(bool nullify)
+        ForExternalUse.Synchronization.ISynchronizer GetSynchronizationDataPlayersOnly()
+        {
+            return new Synchronizer(tempTileObject, players, new List<Actor>(), new List<ActiveDecoration>(), new List<Actor>(),
+                new List<ActiveDecoration>(), new List<SpecEffect>(), new Point(tiles.Length, tiles[0].Length), new List<Tile>(), randomCounter);
+        }
+        
+        ForExternalUse.Synchronization.ISynchronizer GetSynchronizationData(bool nullify)
         {
             List<Actor> changedActors = actors.FindAll(x => x.Affected);
             List<ActiveDecoration> changedDecorations = decorations.FindAll(x => x.Affected);
@@ -201,12 +207,12 @@ namespace AgribattleArena.Engine
             return sync;
         }
 
-        public ForExternalUse.Synchronization.ISynchronizer GetSynchronizationData()
+        ForExternalUse.Synchronization.ISynchronizer GetSynchronizationData()
         {
             return GetSynchronizationData(false);
         }
 
-        public ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
+        ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
         {
             return new SynchronizerFull(tempTileObject, players, actors, decorations, specEffects, tiles, randomCounter);
         }
@@ -320,7 +326,7 @@ namespace AgribattleArena.Engine
             }
         }
 
-        public void AfterUpdateSynchronization (Helpers.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
+        public bool AfterUpdateSynchronization (Helpers.Action action, TileObject actor, int? actionId, int? targetX, int? targetY)
         {
             AfterActionUpdate();
             this.ReturnAction(this, new SyncEventArgs(this, version++, action, GetSynchronizationData(true), actor?.Id, actionId, targetX, targetY));
@@ -330,8 +336,10 @@ namespace AgribattleArena.Engine
                 {
                     if (player.Status == PlayerStatus.Playing) player.Victory();
                 }
-                this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.EndGame, GetSynchronizationData(true), null, null, null, null));
+                this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.EndGame, GetSynchronizationDataPlayersOnly(), null, null, null, null));
+                return false;
             }
+            return true;
         }
         #endregion
 
@@ -350,8 +358,8 @@ namespace AgribattleArena.Engine
                     ApplyActionAfterSkipping();
                 }
                 actor.Cast();
-                AfterUpdateSynchronization(Helpers.Action.Decoration, actor, null, null, null);
-                EndTurn();
+                if(AfterUpdateSynchronization(Helpers.Action.Decoration, actor, null, null, null))
+                    EndTurn();
                 return true;
             }
             return false;
@@ -368,9 +376,9 @@ namespace AgribattleArena.Engine
                 bool result = actor.Move(target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(Helpers.Action.Move, actor, null, target.X, target.Y);
+                    if(AfterUpdateSynchronization(Helpers.Action.Move, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                        EndTurn();
                 }
-                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -387,9 +395,9 @@ namespace AgribattleArena.Engine
                 bool result = actor.Cast(id, target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, target.X, target.Y);
+                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                        EndTurn();
                 }
-                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -406,9 +414,9 @@ namespace AgribattleArena.Engine
                 bool result = actor.Attack(target);
                 if (result)
                 {
-                    AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, target.X, target.Y);
+                    if (AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, target.X, target.Y) && !actor.CheckActionAvailability())
+                        EndTurn();
                 }
-                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
@@ -425,9 +433,9 @@ namespace AgribattleArena.Engine
                 bool result = actor.Wait();
                 if (result)
                 {
-                    AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null);
+                    if (AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null) && !actor.CheckActionAvailability())
+                        EndTurn();
                 }
-                if (!actor.CheckActionAvailability()) EndTurn();
                 return result;
             }
             return false;
