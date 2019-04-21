@@ -163,6 +163,10 @@ namespace AgribattleArena.Engine
             {
                 tile.TempObject.Kill();
             }
+            if(tile.TempObject!=null)
+            {
+                tiles[x][y].Native.OnStepAction(this, tiles[x][y]);
+            }
             return tile;
         }
 
