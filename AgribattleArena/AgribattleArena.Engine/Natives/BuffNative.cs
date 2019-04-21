@@ -12,18 +12,25 @@ namespace AgribattleArena.Engine.Natives
         public bool SummarizeLength { get; }
         public BuffActions.Action Action { get; }
         public BuffActions.Applier Applier { get; }
+        public BuffActions.OnPurgeAction OnPurgeAction { get; }
         public float? DefaultDuration { get; }
         public float DefaultMod { get; }
 
-        public BuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, IEnumerable<string> applierNames)
+        public BuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, 
+            IEnumerable<string> applierNames, IEnumerable<string> onPurgeActionNames)
             :this(id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
-                 actionNames.Select(actionName => (BuffActions.Action)Delegate.CreateDelegate(typeof(BuffActions.Action), typeof(BuffActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))),
-                 applierNames.Select(applierName => (BuffActions.Applier)Delegate.CreateDelegate(typeof(BuffActions.Applier), typeof(BuffActions).GetMethod(applierName, BindingFlags.Public | BindingFlags.Static))))
+                 actionNames.Select(actionName => (BuffActions.Action)Delegate.CreateDelegate(typeof(BuffActions.Action), 
+                     typeof(BuffActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))),
+                 applierNames.Select(applierName => (BuffActions.Applier)Delegate.CreateDelegate(typeof(BuffActions.Applier), 
+                     typeof(BuffActions).GetMethod(applierName, BindingFlags.Public | BindingFlags.Static))),
+                 onPurgeActionNames.Select(actionName => (BuffActions.OnPurgeAction)Delegate.CreateDelegate(typeof(BuffActions.OnPurgeAction), 
+                     typeof(BuffActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))))
         {
 
         }
 
-        public BuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<BuffActions.Action> actions, IEnumerable<BuffActions.Applier> appliers)
+        public BuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, 
+            IEnumerable<BuffActions.Action> actions, IEnumerable<BuffActions.Applier> appliers, IEnumerable<BuffActions.OnPurgeAction> onPurgeActions)
             :base(id, tags)
         {
             this.Repeatable = repeatable;
@@ -39,6 +46,11 @@ namespace AgribattleArena.Engine.Natives
             foreach (BuffActions.Applier applier in appliers)
             {
                 this.Applier += applier;
+            }
+            this.OnPurgeAction = null;
+            foreach (BuffActions.OnPurgeAction action in onPurgeActions)
+            {
+                this.OnPurgeAction += action;
             }
         }
     }

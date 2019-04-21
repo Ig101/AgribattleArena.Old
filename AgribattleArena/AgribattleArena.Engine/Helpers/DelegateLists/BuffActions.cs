@@ -7,5 +7,6 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
     {
         public delegate void Action(ISceneParentRef scene, IActorParentRef actor, Buff buff, float time);
         public delegate void Applier(IBuffManagerParentRef manager, Buff buff);
+        public delegate void OnPurgeAction(ISceneParentRef scene, IActorParentRef actor, Buff buff);
     }
 }

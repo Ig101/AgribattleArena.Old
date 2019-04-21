@@ -27,7 +27,7 @@ namespace AgribattleArena.Engine.Natives
         }
 
         public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<TileActions.Action> actions,
-            IEnumerable<TileActions.OnStepAction> onStepAction)
+            IEnumerable<TileActions.OnStepAction> onStepActions)
             :base(id,tags)
         {
             this.Flat = flat;
@@ -37,6 +37,11 @@ namespace AgribattleArena.Engine.Natives
             foreach (TileActions.Action action in actions)
             {
                 this.Action += action;
+            }
+            this.OnStepAction = null;
+            foreach (TileActions.OnStepAction action in onStepActions)
+            {
+                this.OnStepAction += action;
             }
             this.DefaultMod = defaultMod;
         }

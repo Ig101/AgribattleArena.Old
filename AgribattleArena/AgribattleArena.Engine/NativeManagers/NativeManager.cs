@@ -43,20 +43,22 @@ namespace AgribattleArena.Engine.NativeManagers
         }
 
         public void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
-            IEnumerable<string> actions, IEnumerable<string> appliers)
+            IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions)
         {
             buffNatives.Add(id, new BuffNative(id, InternTags(tags), repeatable, summarizeLength, defaultDuration, defaultMod,
-                    actions, appliers));
+                    actions, appliers, onPurgeActions));
         }
 
-        public void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, IEnumerable<string> actions)
+        public void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, 
+            IEnumerable<string> actions, IEnumerable<string> onDeathActions)
         {
-            decorationNatives.Add(id, new ActiveDecorationNative(id, InternTags(tags), defaultArmor, defaultHealth, defaultZ, defaultMod, actions));
+            decorationNatives.Add(id, new ActiveDecorationNative(id, InternTags(tags), defaultArmor, defaultHealth, defaultZ, defaultMod, actions, onDeathActions));
         }
 
-        public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions)
+        public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions,
+            IEnumerable<string> onDeathActions)
         {
-            effectNatives.Add(id, new SpecEffectNative(id, InternTags(tags), defaultZ, defaultDuration, defaultMod, actions));
+            effectNatives.Add(id, new SpecEffectNative(id, InternTags(tags), defaultZ, defaultDuration, defaultMod, actions, onDeathActions));
         }
 
         public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 

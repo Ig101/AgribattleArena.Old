@@ -42,5 +42,10 @@ namespace AgribattleArena.Engine.Objects
             Parent.DecorationCast(this);
             return true;
         }
+
+        public override void OnDeathAction()
+        {
+            Native.OnDeathAction(Parent, this);
+        }
     }
 }

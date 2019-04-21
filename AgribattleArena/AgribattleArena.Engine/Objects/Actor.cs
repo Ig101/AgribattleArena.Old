@@ -151,6 +151,11 @@ namespace AgribattleArena.Engine.Objects
             return dead;
         }
 
+        public override void OnDeathAction()
+        {
+            buffManager.RemoveAllBuffs();
+        }
+
         public Skill AddSkill(Skill skill)
         {
             Affected = true;

@@ -33,5 +33,10 @@ namespace AgribattleArena.Engine.Objects
             if (this.duration <= 0) IsAlive = false;
             else this.duration -= time;
         }
+
+        public override void OnDeathAction()
+        {
+            native.OnDeathAction?.Invoke(Parent, this);
+        }
     }
 }

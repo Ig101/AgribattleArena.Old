@@ -171,6 +171,10 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
 
         public void RemoveAllBuffs()
         {
+            foreach(Buff buff in buffs)
+            {
+                buff.Purge();
+            }
             this.Buffs.Clear();
             RecalculateBuffs();
         }
@@ -233,6 +237,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
         public Buff RemoveBuff(Buff buff)
         {
             parent.Affected = true;
+            buff.Purge();
             buffs.Remove(buff);
             RecalculateBuffs();
             return buff;
@@ -243,12 +248,19 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             return RemoveBuff(buffs.Find(x => x.Id == id));
         }
 
-        public int RemoveBuffsByTag(string tag)
+        public void RemoveBuffsByTag(string tag)
         {
             parent.Affected = true;
-            int count = buffs.RemoveAll(x => x.Native.Tags.Contains(tag));
+            for(int i =0;i<buffs.Count;i++)
+            {
+                if(buffs[i].Native.Tags.Contains(tag))
+                {
+                    buffs[i].Purge();
+                    buffs.RemoveAt(i);
+                    i--;
+                }
+            }
             RecalculateBuffs();
-            return count;
         }
 
         public void Update(float time)
@@ -258,7 +270,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 buffs[i].Update(time);
                 if (buffs[i].Duration != null && buffs[i].Duration <= 0)
                 {
-                    RemoveBuff(i);
+                    buffs.RemoveAt(i);
                     i--;
                 }
             }

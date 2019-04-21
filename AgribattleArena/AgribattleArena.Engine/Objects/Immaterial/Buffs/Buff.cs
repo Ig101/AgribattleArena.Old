@@ -35,7 +35,12 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             {
                 duration -= time;
             }
-            native.Action?.Invoke(manager.Parent.Parent, manager.Parent, this, time);
+            native.Action?.Invoke(Parent, manager.Parent, this, time);
+        }
+
+        public void Purge()
+        {
+            Native.OnPurgeAction?.Invoke(Parent, manager.Parent, this);
         }
     }
 }

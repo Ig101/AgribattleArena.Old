@@ -10,7 +10,7 @@
         float z;
 
         public IPlayerParentRef Owner { get { return owner; } set { owner = value; } }
-        public bool IsAlive { get { return isAlive; } set { isAlive = value; } }
+        public bool IsAlive { get { return isAlive; } set { isAlive = value; OnDeathAction(); } }
         public float X { get { return x; } set { x = value; } }
         public float Y { get { return y; } set { y = value; } }
         public float Z { get { return z; } set { z = value; } }
@@ -26,5 +26,7 @@
         }
 
         public abstract void Update(float time);
+
+        public abstract void OnDeathAction();
     }
 }
