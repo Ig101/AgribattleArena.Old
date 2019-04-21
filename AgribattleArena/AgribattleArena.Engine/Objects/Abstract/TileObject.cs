@@ -26,7 +26,7 @@ namespace AgribattleArena.Engine.Objects.Abstract
         {
             this.native = native;
             this.tempTile = tempTile;
-            this.tempTile.TempObject = this;
+            this.tempTile.ChangeTempObject(this, false);
             this.damageModel = damageModel;
             this.initiativePosition += (parent.GetNextRandom() / 50);
             this.affected = true;
@@ -50,8 +50,8 @@ namespace AgribattleArena.Engine.Objects.Abstract
             this.Affected = true;
             this.TempTile.Affected = true;
             target.Affected = true;
-            target.TempObject = this;
-            this.TempTile.TempObject = null;
+            target.ChangeTempObject(this,true);
+            this.TempTile.RemoveTempObject();
             this.TempTile = target;
             PointF pos = target.Center;
             this.X = pos.X;

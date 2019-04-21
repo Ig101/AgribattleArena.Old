@@ -20,7 +20,7 @@ namespace AgribattleArena.Engine.Objects
 
         public bool Affected { get { return affected; } set { affected = value; } }
         public ISceneParentRef Parent { get { return parent; } }
-        public TileObject TempObject { get { return tempObject; } set { tempObject = value; } }
+        public TileObject TempObject { get { return tempObject; } }
         public float Height { get { return height; } set { height = value; } }
         public int X { get { return x; } }
         public int Y { get { return y; } }
@@ -45,6 +45,25 @@ namespace AgribattleArena.Engine.Objects
         public void Update(float time)
         {
             native.Action?.Invoke(parent, this, time);
+        }
+
+        public bool ChangeTempObject(TileObject tileObject, bool trigger)
+        {
+            if (tempObject != null) return false;
+            affected = true;
+            tempObject = tileObject;
+            if (trigger)
+            {
+                native.OnStepAction?.Invoke(parent, this);
+            }
+            return true;
+        }
+
+        public bool RemoveTempObject()
+        {
+            if (tempObject == null) return false;
+            tempObject = null;
+            return true;
         }
     }
 }

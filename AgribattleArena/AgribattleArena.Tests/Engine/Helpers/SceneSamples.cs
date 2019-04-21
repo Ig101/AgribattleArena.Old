@@ -24,8 +24,8 @@ namespace AgribattleArena.Tests.Engine.Helpers
         public static Scene CreateSimpleScene(EventHandler<ISyncEventArgs> eventHandler)
         {
             INativeManager nativeManager = EngineHelper.CreateNativeManager();
-            nativeManager.AddTileNative("test_wall", new string[] { }, false, 100, true, 1, new string[] { });
-            nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { });
+            nativeManager.AddTileNative("test_wall", new string[] { }, false, 100, true, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { }, new string[] { });
             nativeManager.AddActorNative("test_actor", new string[] { "living" }, 0, new TagSynergy[] { });
             nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 1, new string[] { });
             string[,] tileSet = new string[20, 20];

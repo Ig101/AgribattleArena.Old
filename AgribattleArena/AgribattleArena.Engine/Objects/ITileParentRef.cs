@@ -14,6 +14,9 @@ namespace AgribattleArena.Engine.Objects
         float Height { get; set; }
         int X { get; }
         int Y { get; }
-        TileObject TempObject { get; set; }
+        TileObject TempObject { get; }
+
+        bool ChangeTempObject(TileObject tileObject, bool trigger);
+        bool RemoveTempObject();
     }
 }
