@@ -39,6 +39,7 @@ namespace AgribattleArena.Engine.Objects
             this.y = y;
             this.height = height ?? native.DefaultHeight;
             this.native = native;
+            this.affected = true;
         }
 
         public void Update(float time)

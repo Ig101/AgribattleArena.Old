@@ -15,6 +15,7 @@ namespace AgribattleArena.Engine.Synchronizers
         IEnumerable<IPlayer> players;
         IEnumerable<IActor> changedActors;
         IEnumerable<IActiveDecoration> changedDecorations;
+        IEnumerable<ISpecEffect> changedEffects;
         IEnumerable<ITile> changedTiles;
         IEnumerable<ISpecEffect> deletedEffects;
         IEnumerable<IActor> deletedActors;
@@ -30,7 +31,7 @@ namespace AgribattleArena.Engine.Synchronizers
         public IEnumerable<IPlayer> Players { get { return players; } }
         public IEnumerable<IActor> ChangedActors { get { return changedActors; } }
         public IEnumerable<IActiveDecoration> ChangedDecorations { get { return changedDecorations; } }
-        public IEnumerable<ISpecEffect> ChangedEffects { get { return new List<ISpecEffect>(); } }
+        public IEnumerable<ISpecEffect> ChangedEffects { get { return changedEffects; } }
         public IEnumerable<IActor> DeletedActors { get { return deletedActors; } }
         public IEnumerable<IActiveDecoration> DeletedDecorations { get { return deletedDecorations; } }
         public IEnumerable<ISpecEffect> DeletedEffects { get { return deletedEffects; } }
@@ -50,8 +51,8 @@ namespace AgribattleArena.Engine.Synchronizers
 
 
         public Synchronizer(TileObject tempObject, List<Player> players, List<Objects.Actor> changedActors, List<Objects.ActiveDecoration> changedDecorations,
-            List<Objects.Actor> deletedActors, List<Objects.ActiveDecoration> deletedDecorations, List<Objects.SpecEffect> deletedEffects, Point tileLength,
-            List<Objects.Tile> changedTiles, int randomCounter)
+            List<Objects.SpecEffect> changedEffects, List<Objects.Actor> deletedActors, List<Objects.ActiveDecoration> deletedDecorations, 
+            List<Objects.SpecEffect> deletedEffects, Point tileLength, List<Objects.Tile> changedTiles, int randomCounter)
         {
             if (tempObject is Objects.Actor) this.tempActor = new Actor((Objects.Actor)tempObject);
             if (tempObject is Objects.ActiveDecoration) this.tempDecoration = new ActiveDecoration((Objects.ActiveDecoration)tempObject);
@@ -60,6 +61,7 @@ namespace AgribattleArena.Engine.Synchronizers
             this.players = players.Select(x => new SynchronizationObjects.Player(x));
             this.changedActors = changedActors.Select(x => new Actor(x));
             this.changedDecorations = changedDecorations.Select(x => new ActiveDecoration(x));
+            this.changedEffects = changedEffects.Select(x => new SpecEffect(x));
             List<ITile> tempChangedTiles = new List<ITile>();
             this.changedTiles = changedTiles.Select(x => new Tile(x));
             this.deletedActors = deletedActors.Select(x => new Actor(x));

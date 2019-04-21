@@ -11,7 +11,9 @@ namespace AgribattleArena.Engine.Objects
         float? duration;
         float mod;
         SpecEffectNative native;
+        bool affected;
 
+        public bool Affected { get { return affected; } set { affected = value; } }
         public float? Duration { get { return duration; } set { duration = value; } }
         public float Mod { get { return mod; } set { mod = value; } }
         public SpecEffectNative Native { get { return native; } set { native = value; } }
@@ -22,6 +24,7 @@ namespace AgribattleArena.Engine.Objects
             this.duration = duration ?? native.DefaultDuration ?? null;
             this.native = native;
             this.mod = mod ?? native.DefaultMod;
+            this.affected = true;
         }
 
         public override void Update(float time)

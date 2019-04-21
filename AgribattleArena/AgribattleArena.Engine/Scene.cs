@@ -178,7 +178,7 @@ namespace AgribattleArena.Engine
         #region Sync
         ForExternalUse.Synchronization.ISynchronizer GetSynchronizationDataPlayersOnly()
         {
-            return new Synchronizer(tempTileObject, players, new List<Actor>(), new List<ActiveDecoration>(), new List<Actor>(),
+            return new Synchronizer(tempTileObject, players, new List<Actor>(), new List<ActiveDecoration>(), new List<SpecEffect>(), new List<Actor>(),
                 new List<ActiveDecoration>(), new List<SpecEffect>(), new Point(tiles.Length, tiles[0].Length), new List<Tile>(), randomCounter);
         }
         
@@ -186,6 +186,7 @@ namespace AgribattleArena.Engine
         {
             List<Actor> changedActors = actors.FindAll(x => x.Affected);
             List<ActiveDecoration> changedDecorations = decorations.FindAll(x => x.Affected);
+            List<SpecEffect> changedEffects = specEffects.FindAll(x => x.Affected);
             List<Tile> changedTiles = new List<Tile>();
             for (int x = 0; x < tiles.Length; x++)
             {
@@ -194,12 +195,13 @@ namespace AgribattleArena.Engine
                     if (tiles[x][y].Affected) changedTiles.Add(tiles[x][y]);
                 }
             }
-            Synchronizer sync = new Synchronizer(tempTileObject, players, changedActors, changedDecorations, deletedActors, deletedDecorations, deletedEffects, 
-                new Point(tiles.Length, tiles[0].Length), changedTiles, randomCounter);
+            Synchronizer sync = new Synchronizer(tempTileObject, players, changedActors, changedDecorations, changedEffects, deletedActors, deletedDecorations, 
+                deletedEffects, new Point(tiles.Length, tiles[0].Length), changedTiles, randomCounter);
             if (nullify)
             {
                 changedActors.ForEach(x => x.Affected = false);
                 changedDecorations.ToList().ForEach(x => x.Affected = false);
+                changedEffects.ToList().ForEach(x => x.Affected = false);
                 changedTiles.ToList().ForEach(x => x.Affected = false);
                 this.deletedDecorations.Clear();
                 this.deletedActors.Clear();
@@ -213,16 +215,38 @@ namespace AgribattleArena.Engine
             return GetSynchronizationData(false);
         }
 
-        ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
+        ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData(bool nullify)
         {
+            if (nullify)
+            {
+                actors.ForEach(x => x.Affected = false);
+                decorations.ToList().ForEach(x => x.Affected = false);
+                specEffects.ToList().ForEach(x => x.Affected = false);
+                for (int x = 0; x < tiles.Length; x++)
+                {
+                    for (int y = 0; y < tiles[x].Length; y++)
+                    {
+                        tiles[x][y].Affected = false;
+                    }
+                }
+                this.deletedDecorations.Clear();
+                this.deletedActors.Clear();
+                this.deletedEffects.Clear();
+            }
             return new SynchronizerFull(tempTileObject, players, actors, decorations, specEffects, tiles, randomCounter);
+
+        }
+
+        public ForExternalUse.Synchronization.ISynchronizer GetFullSynchronizationData()
+        {
+            return GetFullSynchronizationData(false);
         }
         #endregion
 
         #region Updates
         public void StartGame()
         {
-            this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.StartGame, GetFullSynchronizationData(), 
+            this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.StartGame, GetFullSynchronizationData(true), 
                 null,null,null,null));
             EndTurn();
         }
