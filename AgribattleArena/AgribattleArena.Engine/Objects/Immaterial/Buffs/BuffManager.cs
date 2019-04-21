@@ -163,7 +163,9 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             armor = new List<TagSynergy>();
             attack = new List<TagSynergy>();
             buffs = new List<Buff>();
-            RecalculateBuffs();
+            armor.AddRange(parent.DefaultArmor);
+            canMove = true;
+            canAct = true;
         }
 
         public void RemoveAllBuffs()

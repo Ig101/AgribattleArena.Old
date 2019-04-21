@@ -51,6 +51,7 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
         {
             Scene scene = new Scene(id, players, generator, nativeManager, varManager, seed);
             scene.ReturnAction += eventHandler;
+            scene.StartGame();
             return scene;
         }
     }

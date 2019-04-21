@@ -7,36 +7,19 @@ using AgribattleArena.Engine.ForExternalUse.EngineHelper;
 using AgribattleArena.Engine.ForExternalUse.Generation;
 using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
 using AgribattleArena.Engine.ForExternalUse.Synchronization;
-using AgribattleArena.Engine.NativeManagers;
-using AgribattleArena.Engine.SceneGenerators;
-using AgribattleArena.Engine.VarManagers;
 
 namespace AgribattleArena.Tests.Engine.Helpers
 {
     public static class SceneHelper
     {
-        public static NativeManager CreateNativeManager()
+        public static IVarManager CreateVarManagerWithDefaultVars()
         {
-            NativeManager nativeManager = (NativeManager)EngineHelper.CreateNativeManager();
-
-            return nativeManager;
-        }
-
-        public static VarManager CreateVarManager()
-        {
-            VarManager varManager = (VarManager)EngineHelper.CreateVarManager(80, 20, 3, 32, 8, 5, 0.1f, 0.1f, 0.1f);
+            IVarManager varManager = EngineHelper.CreateVarManager(80, 20, 3, 32, 8, 5, 0.1f, 0.1f, 0.1f);
 
             return varManager;
         }
 
-        public static TestSceneGenerator CreateTestGenerator(string[,] tileSet)
-        {
-            TestSceneGenerator generator = (TestSceneGenerator)EngineHelper.CreateTestSceneGenerator(tileSet);
-
-            return generator;
-        }
-
-        public static IEnumerable<IPlayer> CreatePlayers(IActor[] firstActors, IActor[] secondActors)
+        public static IEnumerable<IPlayer> CreatePlayers(IEnumerable<IActor> firstActors, IEnumerable<IActor> secondActors)
         {
             List<IPlayer> players = new List<IPlayer>();
             players.Add(EngineHelper.CreatePlayerForGeneration(1, firstActors));
@@ -44,10 +27,11 @@ namespace AgribattleArena.Tests.Engine.Helpers
             return players;
         }
 
-        public static Scene CreateNewScene (string[,] tileSet, IActor[] firstPlayer, IActor[] secondPlayer)
+        public static Scene CreateNewScene (INativeManager nativeManager, string[,] tileSet, IEnumerable<IActor> firstPlayer, IEnumerable<IActor> secondPlayer, 
+            EventHandler<ISyncEventArgs> eventHandler)
         {
-            Scene scene = (Scene)EngineHelper.CreateNewScene(0, CreatePlayers(firstPlayer, secondPlayer), CreateTestGenerator(tileSet), CreateNativeManager(),
-                CreateVarManager(), 0, null);
+            Scene scene = (Scene)EngineHelper.CreateNewScene(0, CreatePlayers(firstPlayer, secondPlayer), EngineHelper.CreateTestSceneGenerator(tileSet), nativeManager,
+                CreateVarManagerWithDefaultVars(), 0, eventHandler);
 
             return scene;
         }

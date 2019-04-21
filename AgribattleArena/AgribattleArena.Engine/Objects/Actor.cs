@@ -65,14 +65,12 @@ namespace AgribattleArena.Engine.Objects
             this.varManager = parent.VarManager;
             this.externalId = externalId;
             this.native = native;
-            this.DamageModel.SetupRoleModel(this);
-            this.InitiativePosition += 1f / this.Initiative;
             this.strength = roleModelNative.DefaultStrength;
             this.willpower = roleModelNative.DefaultWillpower;
             this.constitution = roleModelNative.DefaultConstitution;
             this.speed = roleModelNative.DefaultSpeed;
-            this.armor = native.Armor.ToArray();
             this.actionPointsIncome = roleModelNative.DefaultActionPointsIncome;
+            this.armor = native.Armor.ToArray();
             this.skills = new List<Skill>();
             foreach (SkillNative skill in roleModelNative.Skills)
             {
@@ -80,6 +78,8 @@ namespace AgribattleArena.Engine.Objects
             }
             this.attackingSkill = new Skill(this, roleModelNative.AttackingSkill, 0, null, 1, null);
             this.buffManager = new BuffManager(this);
+            this.InitiativePosition += 1f / this.Initiative;
+            this.DamageModel.SetupRoleModel(this);
         }
 
         public override void Update(float time)

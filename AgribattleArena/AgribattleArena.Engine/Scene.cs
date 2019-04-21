@@ -85,7 +85,6 @@ namespace AgribattleArena.Engine
             this.deletedDecorations = new List<ActiveDecoration>();
             this.deletedEffects = new List<SpecEffect>();
             tempGenerator.GenerateNewScene(this, players, unchecked(seed * id));
-            StartGame();
         }
 
         public float GetNextRandom()
@@ -231,7 +230,7 @@ namespace AgribattleArena.Engine
             bool turnStarted;
             do
             {
-                tempTileObject.EndTurn();
+                tempTileObject?.EndTurn();
                 float minInitiativePosition = float.MaxValue;
                 TileObject newObject = null;
                 foreach (TileObject obj in actors)
