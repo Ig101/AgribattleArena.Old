@@ -45,7 +45,7 @@ namespace AgribattleArena.Engine.SceneGenerators
                 for(int j = 0; j<tempPlayers[i].KeyActorsGen.Count;j++)
                 {
                     tempScenePlayer.KeyActors.Add(GeneratorHelper.ConvertExternalActorFromGeneration(scene, tempScenePlayer,
-                        sceneTiles[2 + i * 15][2 + j * 2], tempPlayers[i].KeyActorsGen[j], null));
+                        sceneTiles[1 + i * 17][2 + j * 2], tempPlayers[i].KeyActorsGen[j], null));
                 }
             }
         }
