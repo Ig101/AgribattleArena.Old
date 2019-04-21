@@ -22,8 +22,8 @@ namespace AgribattleArena.Engine.Synchronizers
         public int Version { get { return version; } }
         public IScene Scene { get { return scene; } }
         public ISynchronizer SyncInfo { get { return syncInfo; } }
-        public int? Id { get { return id; } }
-        public int? ActionId { get { return actionId; } }
+        public int? ActorId { get { return id; } }
+        public int? SkillActionId { get { return actionId; } }
         public int? TargetX { get { return targetX; } }
         public int? TargetY { get { return targetY; } }
 

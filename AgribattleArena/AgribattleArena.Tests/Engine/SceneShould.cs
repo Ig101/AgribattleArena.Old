@@ -8,52 +8,41 @@ using AgribattleArena.Tests.Engine.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AgribattleArena.Tests.Engine
 {
-    [TestFixture]
+    [TestFixture(Description = "Tests over scene with 20x20 tileSet, 2 players with 1 actor in each army")]
     public class SceneShould: BasicEngineTester
     {
         [SetUp]
         public void Prepare ()
         {
             _syncMessages = new List<ISyncEventArgs>();
-            INativeManager nativeManager = EngineHelper.CreateNativeManager();
-            nativeManager.AddTileNative("test_wall", new string[] { }, false, 100, true, 1, new string[]{ });
-            nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { });
-            nativeManager.AddActorNative("test_actor", new string[] { "living" }, 0, new TagSynergy[] { });
-            nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 1, new string[] { });
-            string[,] tileSet = new string[20,20];
-            for(int x = 0; x<20; x++)
-            {
-                for(int y = 0;y<20;y++)
-                {
-                    if(x==0 || y==0 || x==19 || y==19)
-                    {
-                        tileSet[x, y] = "test_wall";
-                    }
-                    else
-                    {
-                        tileSet[x, y] = "test_tile";
-                    }
-                }
-            }
-            IActor[] firstPlayerActors = new IActor[]
-            {
-                EngineHelper.CreateActorForGeneration(1,"test_actor","test_actor_attack",10,10,10,10,new string[0],4)
-            };
-            IActor[] secondPlayerActors = new IActor[]
-            {
-                EngineHelper.CreateActorForGeneration(2,"test_actor","test_actor_attack",10,10,10,10,new string[0],4)
-            };
-            _scene = SceneHelper.CreateNewScene(nativeManager, tileSet, firstPlayerActors, secondPlayerActors, this.EventHandler);
+            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
         }
 
         [Test]
         public void CreateScene ()
         {
             Assert.That(_scene, Is.Not.Null, "Check scene object existence");
+            Assert.That(_syncMessages.Count, Is.EqualTo(2), "Check messages count");
+            Assert.That(_syncMessages[0].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.StartGame), "Check StartGame message action");
+            Assert.That(_syncMessages[0].Version, Is.EqualTo(0), "Check version of StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.TempActor, Is.Null, "Check tempActor in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.Players.Count(), Is.EqualTo(2), "Check players count in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.ChangedActors.Count(), Is.EqualTo(2), "Check changedActors count in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.ChangedDecorations.Count(), Is.EqualTo(0), "Check changedDecorations count in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.ChangedEffects.Count(), Is.EqualTo(0), "Check changedEffects count in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.ChangedTiles.Count(), Is.EqualTo(400), "Check changedTiles count in StartGame message");
+            Assert.That(_syncMessages[0].SyncInfo.DeletedActors.ToList().Count, Is.EqualTo(0), "Check deletedActors count in StartGame message");
+            Assert.That(_syncMessages[1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn), "Check EndTurn message action");
+            Assert.That(_syncMessages[1].Version, Is.EqualTo(1), "Check version of EndTurn message");
+            Assert.That(_syncMessages[1].SyncInfo.TempActor.ExternalId, Is.EqualTo(2), "Check tempActor in EndTurn message");
+            Assert.That(_syncMessages[1].SyncInfo.ChangedActors.Count(), Is.EqualTo(0), "Check changedActors count in EndTurn message");
+            Assert.That(_syncMessages[1].SyncInfo.ChangedTiles.Count(), Is.EqualTo(0), "Check changedTiles count in EndTurn message");
+            Assert.That(_syncMessages[1].SyncInfo.DeletedActors.Count(), Is.EqualTo(0), "Check deletedActors count in EndTurn message");
         }
     }
 }

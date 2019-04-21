@@ -221,7 +221,7 @@ namespace AgribattleArena.Engine
         #region Updates
         public void StartGame()
         {
-            this.ReturnAction(this, new SyncEventArgs(this, version, Helpers.Action.StartGame, GetFullSynchronizationData(), 
+            this.ReturnAction(this, new SyncEventArgs(this, version++, Helpers.Action.StartGame, GetFullSynchronizationData(), 
                 null,null,null,null));
             EndTurn();
         }
