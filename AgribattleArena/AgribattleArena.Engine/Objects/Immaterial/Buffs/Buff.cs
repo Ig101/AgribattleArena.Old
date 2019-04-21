@@ -31,11 +31,11 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
 
         public void Update(float time)
         {
-            native.Action?.Invoke(manager.Parent.Parent, manager.Parent, this, time);
             if (duration != null)
             {
                 duration -= time;
             }
+            native.Action?.Invoke(manager.Parent.Parent, manager.Parent, this, time);
         }
     }
 }
