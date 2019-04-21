@@ -141,16 +141,6 @@ namespace AgribattleArena.Engine.Objects
             return false;
         }
 
-        public override bool Damage(float amount, string[] tags)
-        {
-            bool dead = base.Damage(amount, tags);
-            if (dead)
-            {
-                BuffManager.RemoveAllBuffs();
-            }
-            return dead;
-        }
-
         public override void OnDeathAction()
         {
             buffManager.RemoveAllBuffs();
