@@ -49,6 +49,7 @@ namespace AgribattleArena.Engine
         public void Defeat()
         {
             status = PlayerStatus.Defeated;
+            parent.GetPlayerActors(this).ForEach(x => x.Kill());
         }
 
         public void Victory()

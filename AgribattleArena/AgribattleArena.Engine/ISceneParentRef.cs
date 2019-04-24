@@ -33,5 +33,6 @@ namespace AgribattleArena.Engine
         ActiveDecoration CreateDecoration(Player owner, string nativeName, Tile target, float? z, int? health, TagSynergy[] armor, float? mod);
         SpecEffect CreateEffect(Player owner, string nativeName, Tile target, float? z, float? duration, float? mod);
         Tile ChangeTile(string nativeName, int x, int y, int? height, Player initiator);
+        List<Actor> GetPlayerActors(Player player);
     }
 }

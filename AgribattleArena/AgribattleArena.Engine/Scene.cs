@@ -20,6 +20,8 @@ namespace AgribattleArena.Engine
 
         public event EventHandler<ForExternalUse.Synchronization.ISyncEventArgs> ReturnAction;
 
+        bool isActive;
+
         int id;
         List<Player> players;
         int version;
@@ -43,6 +45,8 @@ namespace AgribattleArena.Engine
         List<SpecEffect> deletedEffects;
         int idsCounter;
         int randomCounter;
+
+        public bool IsActive { get { return isActive; } }
 
         public DefeatConditionMethod DefeatCondition { get { return defeatCondition; } }
         public WinConditionMethod WinCondition { get { return winCondition; } }
@@ -70,6 +74,7 @@ namespace AgribattleArena.Engine
         public Scene(int id, IEnumerable<ForExternalUse.Generation.ObjectInterfaces.IPlayer> players, ForExternalUse.Generation.ISceneGenerator generator, 
             ForExternalUse.INativeManager nativeManager, ForExternalUse.IVarManager varManager, int seed)
         {
+            this.isActive = true;
             this.id = id;
             this.gameRandom = new Random(seed);
             this.nativeManager = (INativeManager)nativeManager;
@@ -99,6 +104,11 @@ namespace AgribattleArena.Engine
             int tempId = idsCounter;
             idsCounter++;
             return tempId;
+        }
+
+        public List<Actor> GetPlayerActors(Player player)
+        {
+            return actors.FindAll(x => x.Owner == player);
         }
 
         public Tile GetTileByPoint(float x, float y)
@@ -277,12 +287,20 @@ namespace AgribattleArena.Engine
                     TileObject previousTempTileObject = this.tempTileObject;
                     this.tempTileObject = newObject;
                     Update(minInitiativePosition);
-                    AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null);
-                    turnStarted = this.tempTileObject.StartTurn();
+                    if (AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null))
+                    {
+                        turnStarted = this.tempTileObject.StartTurn();
+                    }
+                    else
+                    {
+                        turnStarted = true;
+                        isActive = false;
+                    }
                 }
                 else
                 {
                     turnStarted = true;
+                    isActive = false;
                     AfterUpdateSynchronization(Helpers.Action.NoActorsDraw, null, null, null, null);
                 }
             } while (!turnStarted);
@@ -347,12 +365,12 @@ namespace AgribattleArena.Engine
             {
                 IPlayerParentRef player = tempTileObject.Owner;
                 TileObject previousTempTileObject = tempTileObject;
-                tempTileObject.EndTurn();
                 if (player!=null)
                 {
                     player.SkipTurn();
                     AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null);
                 }
+                tempTileObject.EndTurn();
             }
         }
 
