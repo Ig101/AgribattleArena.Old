@@ -57,7 +57,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
                 else
                 {
@@ -79,7 +78,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
                 else
                 {
@@ -97,7 +95,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
             }
         }
@@ -110,7 +107,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
             }
         }
@@ -126,7 +122,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
                 else
                 {
@@ -146,7 +141,6 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 {
                     parent.DamageModel.Health = 0;
                     parent.IsAlive = false;
-                    RemoveAllBuffs();
                 }
                 else
                 {
@@ -169,13 +163,30 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             canAct = true;
         }
 
-        public void RemoveAllBuffs()
+        public void RemoveAllBuffs(bool includeEternal)
         {
-            foreach(Buff buff in buffs)
+            if (includeEternal)
             {
-                buff.Purge();
+                buffs.ForEach(x => x.Purge());
+                buffs.Clear();
             }
-            this.Buffs.Clear();
+            else
+            {
+                for (int i = 0; i < buffs.Count; i++)
+                {
+                    if (!buffs[i].Native.Eternal)
+                    {
+                        buffs[i].Purge();
+                        buffs.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            RecalculateBuffs();
+        }
+
+        public void RemoveAllBuffsIncludeEternal()
+        {
             RecalculateBuffs();
         }
 

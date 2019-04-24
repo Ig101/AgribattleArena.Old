@@ -42,17 +42,17 @@ namespace AgribattleArena.Engine.NativeManagers
             actorNatives.Add(id, new ActorNative(id, InternTags(tags), defaultZ, armor));
         }
 
-        public void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
+        public void AddBuffNative(string id, string[] tags, bool eternal, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions)
         {
-            AddBuffNative(id, id, tags, repeatable, summarizeLength, defaultDuration, defaultMod,
+            AddBuffNative(id, id, tags, eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
                     actions, appliers, onPurgeActions);
         }
 
-        public void AddBuffNative(string id, string idForFront, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
+        public void AddBuffNative(string id, string idForFront, string[] tags, bool eternal, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions)
         {
-            buffNatives.Add(id, new BuffNative(id, idForFront, InternTags(tags), repeatable, summarizeLength, defaultDuration, defaultMod,
+            buffNatives.Add(id, new BuffNative(id, idForFront, InternTags(tags), eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
                     actions, appliers, onPurgeActions));
         }
 

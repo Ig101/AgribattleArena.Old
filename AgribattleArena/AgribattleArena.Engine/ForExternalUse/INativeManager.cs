@@ -9,9 +9,9 @@ namespace AgribattleArena.Engine.ForExternalUse
     public interface INativeManager
     {
         void AddActorNative(string id, string[] tags, float defaultZ, TagSynergy[] armor);
-        void AddBuffNative(string id, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
+        void AddBuffNative(string id, string[] tags, bool eternal, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions);
-        void AddBuffNative(string id, string idForFront, string[] tags, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
+        void AddBuffNative(string id, string idForFront, string[] tags, bool eternal, bool repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions);
         void AddDecorationNative(string id, string[] tags, TagSynergy[] defaultArmor, int defaultHealth, float defaultZ, float defaultMod, 
             IEnumerable<string> actions, IEnumerable<string> onDeathActions);

@@ -143,7 +143,7 @@ namespace AgribattleArena.Engine.Objects
 
         public override void OnDeathAction()
         {
-            buffManager.RemoveAllBuffs();
+            buffManager.RemoveAllBuffs(false);
         }
 
         public Skill AddSkill(Skill skill)

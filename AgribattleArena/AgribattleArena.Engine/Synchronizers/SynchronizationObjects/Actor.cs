@@ -37,6 +37,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float Initiative { get; }
         public List<TagSynergy> Armor { get; }
         public List<TagSynergy> AttackModifiers { get; }
+        public List<string> StartBuffs { get; }
 
         public Actor(Objects.Actor actor)
         {
@@ -70,8 +71,9 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         }
 
         public Actor(int externalId, string nativeId, string attackingSkillName, int strength, int willpower, int constitution,
-            int speed, List<string> skillNames, int actionPointsIncome)
+            int speed, List<string> skillNames, int actionPointsIncome, List<string> startBuffs)
         {
+            this.StartBuffs = startBuffs;
             this.ExternalId = externalId;
             this.NativeId = nativeId;
             this.AttackingSkillName = attackingSkillName;

@@ -23,10 +23,10 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
         #endregion
 
         public static IActor CreateActorForGeneration (int externalId, string nativeId, string attackingSkillName, int strength, int willpower,
-            int constitution, int speed, IEnumerable<string> skillNames, int actionPointsIncome)
+            int constitution, int speed, IEnumerable<string> skillNames, int actionPointsIncome, IEnumerable<string> startBuffs)
         {
             return new Synchronizers.SynchronizationObjects.Actor(externalId, nativeId, attackingSkillName, strength, willpower, constitution,
-                speed, skillNames.ToList(), actionPointsIncome);
+                speed, skillNames.ToList(), actionPointsIncome, startBuffs.ToList());
         }
 
         public static IPlayer CreatePlayerForGeneration (int id, int? team, IEnumerable<IActor> keyActors)

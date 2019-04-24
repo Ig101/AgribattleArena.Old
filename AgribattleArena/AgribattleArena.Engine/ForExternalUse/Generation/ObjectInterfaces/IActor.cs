@@ -15,5 +15,6 @@ namespace AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces
         int Speed { get; }
         List<string> SkillNames { get; }
         int ActionPointsIncome { get; }
+        List<string> StartBuffs { get; }
     }
 }
