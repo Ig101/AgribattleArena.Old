@@ -10,7 +10,8 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
     class Actor : IActor, ForExternalUse.Generation.ObjectInterfaces.IActor
     {
         public string AttackingSkillName { get; }
-        public List<string> SkillNames { get; }
+        public IEnumerable<string> SkillNames { get; }
+        public IEnumerable<string> StartBuffs { get; }
 
         public int Id { get; }
         public int? ExternalId { get; }
@@ -37,7 +38,6 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float Initiative { get; }
         public List<TagSynergy> Armor { get; }
         public List<TagSynergy> AttackModifiers { get; }
-        public List<string> StartBuffs { get; }
 
         public Actor(Objects.Actor actor)
         {
@@ -71,7 +71,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         }
 
         public Actor(int externalId, string nativeId, string attackingSkillName, int strength, int willpower, int constitution,
-            int speed, List<string> skillNames, int actionPointsIncome, List<string> startBuffs)
+            int speed, IEnumerable<string> skillNames, int actionPointsIncome, IEnumerable<string> startBuffs)
         {
             this.StartBuffs = startBuffs;
             this.ExternalId = externalId;

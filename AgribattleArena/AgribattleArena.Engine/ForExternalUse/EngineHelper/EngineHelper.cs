@@ -26,7 +26,7 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
             int constitution, int speed, IEnumerable<string> skillNames, int actionPointsIncome, IEnumerable<string> startBuffs)
         {
             return new Synchronizers.SynchronizationObjects.Actor(externalId, nativeId, attackingSkillName, strength, willpower, constitution,
-                speed, skillNames.ToList(), actionPointsIncome, startBuffs.ToList());
+                speed, skillNames, actionPointsIncome, startBuffs);
         }
 
         public static IPlayer CreatePlayerForGeneration (int id, int? team, IEnumerable<IActor> keyActors)

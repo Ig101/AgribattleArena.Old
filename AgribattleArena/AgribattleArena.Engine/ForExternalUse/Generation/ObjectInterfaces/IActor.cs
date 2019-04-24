@@ -13,8 +13,8 @@ namespace AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces
         int Willpower { get; }
         int Constitution { get; }
         int Speed { get; }
-        List<string> SkillNames { get; }
+        IEnumerable<string> SkillNames { get; }
         int ActionPointsIncome { get; }
-        List<string> StartBuffs { get; }
+        IEnumerable<string> StartBuffs { get; }
     }
 }
