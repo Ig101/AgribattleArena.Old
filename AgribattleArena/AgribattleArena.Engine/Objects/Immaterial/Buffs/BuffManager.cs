@@ -248,12 +248,12 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             return RemoveBuff(buffs.Find(x => x.Id == id));
         }
 
-        public void RemoveBuffsByTag(string tag)
+        public void RemoveBuffsByTagsCondition(Func<string[], bool> condition)
         {
             parent.Affected = true;
             for(int i =0;i<buffs.Count;i++)
             {
-                if(buffs[i].Native.Tags.Contains(tag))
+                if(condition(buffs[i].Native.Tags))
                 {
                     buffs[i].Purge();
                     buffs.RemoveAt(i);
