@@ -467,7 +467,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Wait();
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null) && !actor.CheckActionAvailability())
+                    if (AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null))
                         EndTurn();
                 }
                 return result;
