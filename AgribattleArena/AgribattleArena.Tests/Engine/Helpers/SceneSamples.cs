@@ -25,6 +25,14 @@ namespace AgribattleArena.Tests.Engine.Helpers
         {
             INativeManager nativeManager = EngineHelper.CreateNativeManager();
             nativeManager.AddTileNative("test_wall", new string[] { }, false, 100, true, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h1", new string[] { }, false, 9, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h2", new string[] { }, false, 18, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h3", new string[] { }, false, 27, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h4", new string[] { }, false, 36, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h5", new string[] { }, false, -9, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h6", new string[] { }, false, -18, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h7", new string[] { }, false, -27, false, 1, new string[] { }, new string[] { });
+            nativeManager.AddTileNative("test_tile_h8", new string[] { }, false, -36, false, 1, new string[] { }, new string[] { });
             nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { }, new string[] { });
             nativeManager.AddActorNative("test_actor", new string[] { "living" }, 0, new TagSynergy[] { });
             nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 1, new string[] { });
@@ -33,7 +41,15 @@ namespace AgribattleArena.Tests.Engine.Helpers
             {
                 for (int y = 0; y < 20; y++)
                 {
-                    if (x == 0 || y == 0 || x == 19 || y == 19)
+                    if (x == 17 && y == 3) tileSet[x, y] = "test_tile_h1";
+                    else if (x == 17 && y == 4) tileSet[x, y] = "test_tile_h2";
+                    else if (x == 16 && y == 4) tileSet[x, y] = "test_tile_h3";
+                    else if (x == 16 && y == 3) tileSet[x, y] = "test_tile_h4";
+                    else if (x == 15 && y == 3) tileSet[x, y] = "test_tile_h5";
+                    else if (x == 15 && y == 4) tileSet[x, y] = "test_tile_h6";
+                    else if (x == 14 && y == 4) tileSet[x, y] = "test_tile_h7";
+                    else if (x == 14 && y == 3) tileSet[x, y] = "test_tile_h8";
+                    else if (x == 0 || y == 0 || x == 19 || y == 19)
                     {
                         tileSet[x, y] = "test_wall";
                     }

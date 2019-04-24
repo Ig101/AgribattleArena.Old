@@ -60,5 +60,71 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_actor.TempTile.Y, Is.EqualTo(available?targetY:tempY), "Y position of Actor2");
             Assert.That(_actor.ActionPoints, Is.EqualTo(available?3:4), "Amount of actionPoints");
         }
+
+        int PrepareForMoveHeight (bool down)
+        {
+            _actor.ActionPoints = 6;
+            _scene.ActorMove(_actor.Id, 17, 2);
+            if (down)
+            {
+                _scene.ActorMove(_actor.Id, 16, 2);
+                _scene.ActorMove(_actor.Id, 15, 2);
+            }
+            _syncMessages.Clear();
+            return down ? 15 : 17;
+        }
+
+        [Test]
+        [TestCase(true, false, TestName = "MoveToPoint(0=>9=>18=>27=>36 height)")]
+        [TestCase(true, true, TestName = "MoveToPoint(0=>-9=>-18=>-27=>-36 height)")]
+        [TestCase(false, false, TestName = "MoveToPoint(0=>36 height)")]
+        [TestCase(false, true, TestName = "MoveToPoint(0=>-36 height)")]
+        public void MoveHeight(bool availability, bool down)
+        {
+            _actor.ActionPoints = 6;
+            _scene.ActorMove(_actor.Id, 17, 2);
+            if (down)
+            {
+                _scene.ActorMove(_actor.Id, 16, 2);
+                _scene.ActorMove(_actor.Id, 15, 2);
+            }
+            _syncMessages.Clear();
+            int tempActorPositionX = down ? 15 : 17;
+
+            if (availability)
+            {
+                Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX), "Move targetX start position");
+                Assert.That(_actor.TempTile.Y, Is.EqualTo(2), "Move targetY start position");
+                _actor.ActionPoints = 2;
+                Assert.That(_scene.ActorMove(_actor.Id, tempActorPositionX, 3), Is.True, "1 step availability");
+                Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX), "Move targetX 1 step");
+                Assert.That(_actor.TempTile.Y, Is.EqualTo(3), "Move targetY 1 step");
+                Assert.That(Math.Abs(_actor.TempTile.Height), Is.EqualTo(9));
+
+                _actor.ActionPoints = 2;
+                Assert.That(_scene.ActorMove(_actor.Id, tempActorPositionX, 4), Is.True, "1 step availability");
+                Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX), "Move targetX 2 step");
+                Assert.That(_actor.TempTile.Y, Is.EqualTo(4), "Move targetY 2 step");
+                Assert.That(Math.Abs(_actor.TempTile.Height), Is.EqualTo(18));
+
+                _actor.ActionPoints = 2;
+                Assert.That(_scene.ActorMove(_actor.Id, tempActorPositionX - 1, 4), Is.True, "1 step availability");
+                Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX - 1), "Move targetX 3 step");
+                Assert.That(_actor.TempTile.Y, Is.EqualTo(4), "Move targetY 3 step");
+                Assert.That(Math.Abs(_actor.TempTile.Height), Is.EqualTo(27));
+            }
+            else
+            {
+                _scene.ActorMove(_actor.Id, tempActorPositionX - 1, 2);
+                Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX - 1), "Move targetX start position");
+                Assert.That(_actor.TempTile.Y, Is.EqualTo(2), "Move targetY start position");
+            }
+
+            _actor.ActionPoints = 2;
+            Assert.That(_scene.ActorMove(_actor.Id, tempActorPositionX-1, 3), Is.EqualTo(availability), "last step availability");
+            Assert.That(_actor.TempTile.X, Is.EqualTo(tempActorPositionX - 1), "Move targetX last step");
+            Assert.That(_actor.TempTile.Y, Is.EqualTo(availability?3:2), "Move targetY last step");
+            Assert.That(Math.Abs(_actor.TempTile.Height), Is.EqualTo(availability?36:0));
+        }
     }
 }
