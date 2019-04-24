@@ -23,8 +23,6 @@ namespace AgribattleArena.Engine
         int GetNextId();
         float GetNextRandom();
 
-        Tile GetTileByPoint(float x, float y);
-
         void EndTurn();
         bool DecorationCast(ActiveDecoration actor);
 

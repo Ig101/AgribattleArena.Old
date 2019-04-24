@@ -34,10 +34,10 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
             return new Synchronizers.SynchronizationObjects.Player(id, team, keyActors.ToList());
         }
 
-        public static IVarManager CreateVarManager(float turnTimeLimit, float turnTimeLimitAfterSkip, int skippedTurnsLimit, int tileSize, int maxActionPoints,
+        public static IVarManager CreateVarManager(float turnTimeLimit, float turnTimeLimitAfterSkip, int skippedTurnsLimit, int maxActionPoints,
             int constitutionMod, float willpowerMod, float strengthMod, float speedMod)
         {
-            return new VarManagers.VarManager(turnTimeLimit, turnTimeLimitAfterSkip, skippedTurnsLimit, tileSize, maxActionPoints,
+            return new VarManagers.VarManager(turnTimeLimit, turnTimeLimitAfterSkip, skippedTurnsLimit, maxActionPoints,
                 constitutionMod, willpowerMod, strengthMod, speedMod);
         }
 

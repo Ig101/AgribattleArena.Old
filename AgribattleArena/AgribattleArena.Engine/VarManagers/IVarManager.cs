@@ -10,8 +10,6 @@ namespace AgribattleArena.Engine.VarManagers
         float TurnTimeLimitAfterSkip { get; }
         int SkippedTurnsLimit { get; }
 
-        int TileSize { get; }
-
         int MaxActionPoints { get; }
         int ConstitutionMod { get; }
         float WillpowerMod { get; }

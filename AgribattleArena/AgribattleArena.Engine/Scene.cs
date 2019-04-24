@@ -111,11 +111,6 @@ namespace AgribattleArena.Engine
             return actors.FindAll(x => x.Owner == player);
         }
 
-        public Tile GetTileByPoint(float x, float y)
-        {
-            return tiles[(int)(x / VarManager.TileSize)][(int)(y / VarManager.TileSize)];
-        }
-
         #region Creation
         public Tile[][] SetupEmptyTileSet (int width, int height)
         {

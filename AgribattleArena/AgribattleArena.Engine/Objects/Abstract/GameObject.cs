@@ -27,7 +27,7 @@
             this.isAlive = true;
             this.x = x;
             this.y = y;
-            this.z = parent.GetTileByPoint(x,y).Height + z;
+            this.z = parent.Tiles[x][y].Height + z;
         }
 
         public abstract void Update(float time);
