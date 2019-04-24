@@ -45,7 +45,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial
         public bool Cast(Tile target)
         {
             if (parent.ActionPoints >= cost && preparationTime <= 0 && parent.BuffManager.CanAct &&
-                Misc.RangeBetween(parent.TempTile.X, parent.TempTile.Y, target.X, target.Y) <= range)
+                Misc.RangeBetween(parent.X, parent.Y, target.X, target.Y) <= range)
             {
                 native.Action(parent.Parent, parent, target, this);
                 preparationTime = cd;

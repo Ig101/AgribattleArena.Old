@@ -113,8 +113,8 @@ namespace AgribattleArena.Engine.Objects
         public bool Move(Tile target)
         {
             if (target.TempObject == null && !target.Native.Unbearable && Math.Abs(target.Height - this.TempTile.Height) < 10 &&
-                BuffManager.CanMove && ((target.X == TempTile.X && Math.Abs(target.Y - TempTile.Y) == 1) ||
-                (target.Y == TempTile.Y && Math.Abs(target.X - TempTile.X) == 1)))
+                BuffManager.CanMove && ((target.X == X && Math.Abs(target.Y - Y) == 1) ||
+                (target.Y == Y && Math.Abs(target.X - X) == 1)))
             {
                 ChangePosition(target, true);
                 SpendActionPoints(1);
