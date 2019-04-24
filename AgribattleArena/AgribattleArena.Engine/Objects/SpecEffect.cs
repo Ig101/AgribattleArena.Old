@@ -18,7 +18,7 @@ namespace AgribattleArena.Engine.Objects
         public float Mod { get { return mod; } set { mod = value; } }
         public SpecEffectNative Native { get { return native; } set { native = value; } }
 
-        public SpecEffect(ISceneParentRef parent, IPlayerParentRef owner, float x, float y, float? z, SpecEffectNative native, float? duration, float? mod)
+        public SpecEffect(ISceneParentRef parent, IPlayerParentRef owner, int x, int y, float? z, SpecEffectNative native, float? duration, float? mod)
             : base(parent, owner, x, y, z ?? native.DefaultZ)
         {
             this.duration = duration ?? native.DefaultDuration ?? null;

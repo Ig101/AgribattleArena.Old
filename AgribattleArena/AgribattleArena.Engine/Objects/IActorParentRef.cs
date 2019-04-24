@@ -14,8 +14,8 @@ namespace AgribattleArena.Engine.Objects
         ISceneParentRef Parent { get; }
         IPlayerParentRef Owner { get; set; }
         bool IsAlive { get; set; }
-        float X { get; set; }
-        float Y { get; set; }
+        int X { get; set; }
+        int Y { get; set; }
         float Z { get; set; }
         bool Affected { get; set; }
         float InitiativePosition { get; set; }

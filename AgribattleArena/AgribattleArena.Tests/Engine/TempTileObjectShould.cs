@@ -126,5 +126,26 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_actor.TempTile.Y, Is.EqualTo(availability?3:2), "Move targetY last step");
             Assert.That(Math.Abs(_actor.TempTile.Height), Is.EqualTo(availability?36:0));
         }
+
+        void MoveCloseToEnemy ()
+        {
+            int step = 0;
+            do
+            {
+                step++;
+                _actor.ActionPoints = 4;
+                Assert.That(_scene.ActorMove(_actor.Id, _actor.TempTile.X - 1, 2), Is.True, "MoveCloseToEnemy success " + step);
+            } while (_actor.TempTile.X > 2);
+            Assert.That(_actor.TempTile.X, Is.EqualTo(2), "MoveCloseToEnemy result");
+            Assert.That(_actor.TempTile.Y, Is.EqualTo(2), "MoveCloseToEnemy result");
+        }
+
+        [Test]
+        [TestCase(TestName = "MoveToPoint(TileObject)")]
+        public void MoveToTileObject()
+        {
+            MoveCloseToEnemy();
+            Assert.That(_scene.ActorMove(_actor.Id, _actor.TempTile.X - 1, 2), Is.False, "Move to TileObject");
+        }
     }
 }

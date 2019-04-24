@@ -22,8 +22,8 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         float Health { get; }
         int? OwnerId { get; }
         bool IsAlive { get; }
-        float X { get; }
-        float Y { get; }
+        int X { get; }
+        int Y { get; }
         float Z { get; }
         int MaxHealth { get; }
         int ActionPoints { get; }

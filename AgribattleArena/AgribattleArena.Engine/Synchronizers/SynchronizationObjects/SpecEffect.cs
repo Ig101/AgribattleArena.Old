@@ -10,8 +10,8 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public int Id { get; }
         public int? OwnerId { get; }
         public bool IsAlive { get; }
-        public float X { get; }
-        public float Y { get; }
+        public int X { get; }
+        public int Y { get; }
         public float Z { get; }
         public float? Duration { get; }
         public float Mod { get; }

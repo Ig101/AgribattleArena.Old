@@ -9,8 +9,8 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         int Id { get; }
         int? OwnerId { get; }
         bool IsAlive { get; }
-        float X { get; }
-        float Y { get; }
+        int X { get; }
+        int Y { get; }
         float Z { get; }
         float? Duration { get; }
         float Mod { get; }

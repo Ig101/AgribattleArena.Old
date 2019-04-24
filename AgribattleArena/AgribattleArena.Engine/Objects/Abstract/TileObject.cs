@@ -22,7 +22,7 @@ namespace AgribattleArena.Engine.Objects.Abstract
         public ITileParentRef TempTile { get { return tempTile; } set { tempTile = value; } }
 
         public TileObject(ISceneParentRef parent, IPlayerParentRef owner, ITileParentRef tempTile, float z, DamageModel damageModel, TaggingNative native)
-            : base(parent, owner, tempTile.Center.X, tempTile.Center.Y, z)
+            : base(parent, owner, tempTile.X, tempTile.Y, z)
         {
             this.native = native;
             this.tempTile = tempTile;
@@ -53,9 +53,8 @@ namespace AgribattleArena.Engine.Objects.Abstract
             target.ChangeTempObject(this,true);
             this.TempTile.RemoveTempObject();
             this.TempTile = target;
-            PointF pos = target.Center;
-            this.X = pos.X;
-            this.Y = pos.Y;
+            this.X = target.X;
+            this.Y = target.Y;
             this.Z += heightChange;
         }
 

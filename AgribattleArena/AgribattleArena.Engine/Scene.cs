@@ -146,9 +146,9 @@ namespace AgribattleArena.Engine
             return decoration;
         }
 
-        public SpecEffect CreateEffect(Player owner, string nativeName, float x, float y, float? z, float? duration, float? mod)
+        public SpecEffect CreateEffect(Player owner, string nativeName, Tile target, float? z, float? duration, float? mod)
         {
-            SpecEffect effect = new SpecEffect(this, owner, x, y, z, nativeManager.GetEffectNative(nativeName), duration, mod);
+            SpecEffect effect = new SpecEffect(this, owner, target.X, target.Y, z, nativeManager.GetEffectNative(nativeName), duration, mod);
             specEffects.Add(effect);
             return effect;
         }

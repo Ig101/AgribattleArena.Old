@@ -5,8 +5,8 @@
         IPlayerParentRef owner;
 
         bool isAlive;
-        float x;
-        float y;
+        int x;
+        int y;
         float z;
 
         public IPlayerParentRef Owner { get { return owner; } set { owner = value; } }
@@ -16,11 +16,11 @@
                 isAlive = value;
                 if (!isAlive && prevoiusState) OnDeathAction();
             } }
-        public float X { get { return x; } set { x = value; } }
-        public float Y { get { return y; } set { y = value; } }
+        public int X { get { return x; } set { x = value; } }
+        public int Y { get { return y; } set { y = value; } }
         public float Z { get { return z; } set { z = value; } }
 
-        public GameObject(ISceneParentRef parent, IPlayerParentRef owner, float x, float y, float z)
+        public GameObject(ISceneParentRef parent, IPlayerParentRef owner, int x, int y, float z)
             : base(parent)
         {
             this.owner = owner;

@@ -27,8 +27,8 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float InitiativePosition { get; }
         public float Health { get; }
         public bool IsAlive { get; }
-        public float X { get; }
-        public float Y { get; }
+        public int X { get; }
+        public int Y { get; }
         public float Z { get; }
         public int MaxHealth { get; }
         public int ActionPoints { get; }
