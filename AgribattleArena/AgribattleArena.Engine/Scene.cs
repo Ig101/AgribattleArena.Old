@@ -320,6 +320,14 @@ namespace AgribattleArena.Engine
 
         void AfterActionUpdate()
         {
+            foreach (Player player in players)
+            {
+                if (player.Status == PlayerStatus.Playing &&
+                    (player.TurnsSkipped >= varManager.SkippedTurnsLimit || defeatCondition(this, player)))
+                {
+                    player.Defeat();
+                }
+            }
             for (int i = 0; i < actors.Count; i++)
             {
                 if (!actors[i].IsAlive)
@@ -345,14 +353,6 @@ namespace AgribattleArena.Engine
                     deletedEffects.Add(specEffects[i]);
                     specEffects.RemoveAt(i);
                     i--;
-                }
-            }
-            foreach (Player player in players)
-            {
-                if (player.Status == PlayerStatus.Playing &&
-                    (player.TurnsSkipped >= varManager.SkippedTurnsLimit || defeatCondition(this, player)))
-                {
-                    player.Defeat();
                 }
             }
         }
