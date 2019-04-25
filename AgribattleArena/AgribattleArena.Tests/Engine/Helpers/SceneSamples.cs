@@ -65,7 +65,7 @@ namespace AgribattleArena.Tests.Engine.Helpers
             };
             IActor[] secondPlayerActors = new IActor[]
             {
-                EngineHelper.CreateActorForGeneration(2,"test_actor","test_actor_attack",10,20,10,20,new string[0],4, new string[0])
+                EngineHelper.CreateActorForGeneration(2,"test_actor","test_actor_attack",10,20,10,18,new string[0],4, new string[0])
             };
             return SceneHelper.CreateNewScene(nativeManager, tileSet, firstPlayerActors, secondPlayerActors, eventHandler);
         }
