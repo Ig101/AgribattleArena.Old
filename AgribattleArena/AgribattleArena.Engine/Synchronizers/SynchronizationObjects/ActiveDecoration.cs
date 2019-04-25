@@ -16,7 +16,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float Health { get; }
         public float MaxHealth { get; }
         public List<TagSynergy> Armor { get; }
-        public int? OwnerId { get; }
+        public long? OwnerId { get; }
         public bool IsAlive { get; }
         public int X { get; }
         public int Y { get; }

@@ -8,7 +8,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
     public interface IActor
     {
         int Id { get; }
-        int? ExternalId { get; }
+        long? ExternalId { get; }
         string NativeId { get; }
         ISkill AttackingSkill { get; }
         int Strength { get; }
@@ -20,7 +20,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         List<IBuff> Buffs { get; }
         float InitiativePosition { get; }
         float Health { get; }
-        int? OwnerId { get; }
+        long? OwnerId { get; }
         bool IsAlive { get; }
         int X { get; }
         int Y { get; }

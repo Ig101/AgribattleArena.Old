@@ -22,7 +22,7 @@ namespace AgribattleArena.Engine
 
         bool isActive;
 
-        int id;
+        long id;
         List<Player> players;
         int version;
         float remainedTurnTime;
@@ -64,14 +64,14 @@ namespace AgribattleArena.Engine
         public INativeManager NativeManager { get { return nativeManager; } }
 
         public int Version { get { return version; } }
-        public IEnumerable<int> PlayerIds { get { return players.Select(x => x.Id); } }
+        public IEnumerable<long> PlayerIds { get { return players.Select(x => x.Id); } }
         public float RemainedTurnTime { get { return remainedTurnTime; } }
         public TileObject TempTileObject { get { return tempTileObject; } }
-        public int Id { get { return id; } }
+        public long Id { get { return id; } }
         public int RandomCounter { get { return randomCounter; } }
         public IEnumerable<Player> Players { get { return players; } }
 
-        public Scene(int id, IEnumerable<ForExternalUse.Generation.ObjectInterfaces.IPlayer> players, ForExternalUse.Generation.ISceneGenerator generator, 
+        public Scene(long id, IEnumerable<ForExternalUse.Generation.ObjectInterfaces.IPlayer> players, ForExternalUse.Generation.ISceneGenerator generator, 
             ForExternalUse.INativeManager nativeManager, ForExternalUse.IVarManager varManager, int seed)
         {
             this.isActive = true;
@@ -90,7 +90,7 @@ namespace AgribattleArena.Engine
             this.deletedActors = new List<Actor>();
             this.deletedDecorations = new List<ActiveDecoration>();
             this.deletedEffects = new List<SpecEffect>();
-            tempGenerator.GenerateNewScene(this, players, unchecked(seed * id));
+            tempGenerator.GenerateNewScene(this, players, unchecked(seed * (int)id));
         }
 
         public float GetNextRandom()
@@ -123,7 +123,7 @@ namespace AgribattleArena.Engine
             return tiles;
         }
 
-        public Player CreatePlayer (int id, int? team)
+        public Player CreatePlayer (long id, int? team)
         {
             Player player = new Player(this, id, team);
             players.Add(player);
@@ -135,7 +135,7 @@ namespace AgribattleArena.Engine
             return CreateActor(owner, null, nativeName, nativeManager.GetRoleModelNative(roleNativeName), target, z);
         }
 
-        public Actor CreateActor(Player owner, int? externalId, string nativeName, RoleModelNative roleModel, Tile target, float? z)
+        public Actor CreateActor(Player owner, long? externalId, string nativeName, RoleModelNative roleModel, Tile target, float? z)
         {
             if (target.TempObject != null) return null;
             Actor actor = new Actor(this, owner, externalId, target, z, nativeManager.GetActorNative(nativeName), roleModel);
@@ -449,7 +449,7 @@ namespace AgribattleArena.Engine
                 {
                     ApplyActionAfterSkipping();
                 }
-                bool result = actor.Cast(id, tiles[targetX][targetY]);
+                bool result = actor.Cast(skillId, tiles[targetX][targetY]);
                 if (result)
                 {
                     if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, targetX, targetY) && !actor.CheckActionAvailability())

@@ -22,14 +22,14 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
         }
         #endregion
 
-        public static IActor CreateActorForGeneration (int externalId, string nativeId, string attackingSkillName, int strength, int willpower,
+        public static IActor CreateActorForGeneration (long externalId, string nativeId, string attackingSkillName, int strength, int willpower,
             int constitution, int speed, IEnumerable<string> skillNames, int actionPointsIncome, IEnumerable<string> startBuffs)
         {
             return new Synchronizers.SynchronizationObjects.Actor(externalId, nativeId, attackingSkillName, strength, willpower, constitution,
                 speed, skillNames, actionPointsIncome, startBuffs);
         }
 
-        public static IPlayer CreatePlayerForGeneration (int id, int? team, IEnumerable<IActor> keyActors)
+        public static IPlayer CreatePlayerForGeneration (long id, int? team, IEnumerable<IActor> keyActors)
         {
             return new Synchronizers.SynchronizationObjects.Player(id, team, keyActors.ToList());
         }
@@ -46,7 +46,7 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
             return new NativeManagers.NativeManager();
         }
 
-        public static IScene CreateNewScene(int id, IEnumerable<Generation.ObjectInterfaces.IPlayer> players, ISceneGenerator generator,
+        public static IScene CreateNewScene(long id, IEnumerable<Generation.ObjectInterfaces.IPlayer> players, ISceneGenerator generator,
             INativeManager nativeManager, IVarManager varManager, int seed, EventHandler<ISyncEventArgs> eventHandler)
         {
             Scene scene = new Scene(id, players, generator, nativeManager, varManager, seed);

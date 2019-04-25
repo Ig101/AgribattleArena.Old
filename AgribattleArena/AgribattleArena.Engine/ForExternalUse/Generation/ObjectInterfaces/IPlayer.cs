@@ -6,7 +6,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces
 {
     public interface IPlayer
     {
-        int Id { get; }
+        long Id { get; }
         int? Team { get; }
         List<IActor> KeyActorsGen { get; }
     }

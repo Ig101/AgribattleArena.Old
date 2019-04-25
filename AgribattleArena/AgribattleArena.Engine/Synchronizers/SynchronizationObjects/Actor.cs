@@ -14,14 +14,14 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public IEnumerable<string> StartBuffs { get; }
 
         public int Id { get; }
-        public int? ExternalId { get; }
+        public long? ExternalId { get; }
         public string NativeId { get; }
         public ISkill AttackingSkill { get; }
         public int Strength { get; }
         public int Willpower { get; }
         public int Constitution { get; }
         public int Speed { get; }
-        public int? OwnerId { get; }
+        public long? OwnerId { get; }
         public List<ISkill> Skills { get; }
         public int ActionPointsIncome { get; }
         public List<IBuff> Buffs { get; }
@@ -70,7 +70,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
             this.AttackModifiers.AddRange(actor.AttackModifiers);
         }
 
-        public Actor(int externalId, string nativeId, string attackingSkillName, int strength, int willpower, int constitution,
+        public Actor(long externalId, string nativeId, string attackingSkillName, int strength, int willpower, int constitution,
             int speed, IEnumerable<string> skillNames, int actionPointsIncome, IEnumerable<string> startBuffs)
         {
             this.StartBuffs = startBuffs;

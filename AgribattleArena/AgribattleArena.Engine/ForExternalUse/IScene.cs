@@ -8,7 +8,7 @@ namespace AgribattleArena.Engine.ForExternalUse
     public interface IScene
     {
         int Version { get; }
-        IEnumerable<int> PlayerIds { get; }
+        IEnumerable<long> PlayerIds { get; }
 
         ISynchronizer GetFullSynchronizationData();
 

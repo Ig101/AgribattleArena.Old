@@ -6,7 +6,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces
 {
     public interface IActor
     {
-        int? ExternalId { get; }
+        long? ExternalId { get; }
         string NativeId { get; }
         string AttackingSkillName { get; }
         int Strength { get; }

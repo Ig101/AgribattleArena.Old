@@ -14,7 +14,7 @@ namespace AgribattleArena.Engine.Objects
     public class Actor : TileObject, IActorParentRef, IActorDamageModelRef
     {
         ActorNative native;
-        int? externalId;
+        long? externalId;
 
         IVarManager varManager;
 
@@ -39,7 +39,7 @@ namespace AgribattleArena.Engine.Objects
         public int SelfSpeed { get { return speed; } }
         public int SelfActionPointsIncome { get { return actionPointsIncome; } }
 
-        public int? ExternalId { get { return externalId; } }
+        public long? ExternalId { get { return externalId; } }
         public Skill AttackingSkill { get { return attackingSkill; } }
         public BuffManager BuffManager { get { return buffManager; } }
         public int Strength { get { return strength + buffManager.Strength; } }
@@ -60,7 +60,7 @@ namespace AgribattleArena.Engine.Objects
         public List<TagSynergy> Armor { get { return buffManager.Armor; } }
         public List<TagSynergy> AttackModifiers { get { return buffManager.Attack; } }
 
-        public Actor(ISceneParentRef parent, IPlayerParentRef owner, int? externalId, ITileParentRef tempTile, float? z, ActorNative native, RoleModelNative roleModelNative)
+        public Actor(ISceneParentRef parent, IPlayerParentRef owner, long? externalId, ITileParentRef tempTile, float? z, ActorNative native, RoleModelNative roleModelNative)
             : base(parent, owner, tempTile, z ?? native.DefaultZ, new DamageModel(), native)
         {
             this.varManager = parent.VarManager;

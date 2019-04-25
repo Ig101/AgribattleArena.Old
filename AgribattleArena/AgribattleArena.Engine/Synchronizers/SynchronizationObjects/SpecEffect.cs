@@ -8,7 +8,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
     class SpecEffect: ISpecEffect
     {
         public int Id { get; }
-        public int? OwnerId { get; }
+        public long? OwnerId { get; }
         public bool IsAlive { get; }
         public int X { get; }
         public int Y { get; }

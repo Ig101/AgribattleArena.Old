@@ -9,7 +9,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
     {
         public int X { get; }
         public int Y { get; }
-        public int? OwnerId { get; }
+        public long? OwnerId { get; }
         public int? TempActorId { get; }
         public float Height { get; }
         public string NativeId { get; }
