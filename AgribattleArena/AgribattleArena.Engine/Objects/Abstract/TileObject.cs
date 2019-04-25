@@ -32,7 +32,7 @@ namespace AgribattleArena.Engine.Objects.Abstract
             this.affected = true;
         }
 
-        public virtual bool Damage(float amount, string[] tags)
+        public virtual bool Damage(float amount, IEnumerable<string> tags)
         {
             this.Affected = true;
             this.IsAlive = this.IsAlive && !damageModel.Damage(amount, tags);

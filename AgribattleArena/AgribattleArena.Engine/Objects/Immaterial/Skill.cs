@@ -25,6 +25,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial
         public float Mod { get { return mod; } }
         public int Cost { get { return cost + parent.BuffManager.SkillCost; } }
         public float PreparationTime { get { return preparationTime; } set { preparationTime = value; } }
+        public IEnumerable<string> AggregatedTags { get { return native.Tags.Concat(parent.Tags); } }
 
         public Skill(IActorParentRef parent, SkillNative skill, float? cd, float? mod, int? cost, int? range)
             : base(parent.Parent)
@@ -58,7 +59,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial
         public float CalculateMod(string[] targetTags)
         {
             float tempMod = this.mod;
-            foreach (string attackTag in native.Tags.Concat(parent.Tags))
+            foreach (string attackTag in AggregatedTags)
             {
                 foreach (string defenceTag in targetTags)
                 {

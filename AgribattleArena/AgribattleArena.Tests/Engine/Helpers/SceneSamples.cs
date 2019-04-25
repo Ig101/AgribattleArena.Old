@@ -34,8 +34,11 @@ namespace AgribattleArena.Tests.Engine.Helpers
             nativeManager.AddTileNative("test_tile_h7", new string[] { }, false, -27, false, 1, new string[] { }, new string[] { });
             nativeManager.AddTileNative("test_tile_h8", new string[] { }, false, -36, false, 1, new string[] { }, new string[] { });
             nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { }, new string[] { });
-            nativeManager.AddActorNative("test_actor", new string[] { "living" }, 0, new TagSynergy[] { });
-            nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 1, new string[] { });
+            nativeManager.AddActorNative("test_actor", new string[] { "test_actor_tag" }, 0, new TagSynergy[] { new TagSynergy("test_skill_tag",0.5f)});
+            nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 75, new string[] { "DoDamageAttack" });
+            nativeManager.AddSkillNative("test_actor_attack_range", new string[] { }, 4, 1, 0, 12.5f, new string[] { "DoDamageAttack" });
+            nativeManager.AddSkillNative("test_actor_skill", new string[] { "test_skill_tag" }, 1, 2, 0, 60, new string[] { "DoDamageSkill" });
+            nativeManager.AddSkillNative("test_actor_skill_range", new string[] { }, 4, 2, 2, 25, new string[] { "DoDamageSkill" });
             string[,] tileSet = new string[20, 20];
             for (int x = 0; x < 20; x++)
             {
@@ -61,11 +64,13 @@ namespace AgribattleArena.Tests.Engine.Helpers
             }
             IActor[] firstPlayerActors = new IActor[]
             {
-                EngineHelper.CreateActorForGeneration(1,"test_actor","test_actor_attack",20,10,20,10,new string[0],5, new string[0])
+                EngineHelper.CreateActorForGeneration(1,"test_actor","test_actor_attack_range",20,10,20,10,new string[] {"test_actor_skill", "test_actor_skill_range"},
+                5, new string[0])
             };
             IActor[] secondPlayerActors = new IActor[]
             {
-                EngineHelper.CreateActorForGeneration(2,"test_actor","test_actor_attack",10,20,10,18,new string[0],4, new string[0])
+                EngineHelper.CreateActorForGeneration(2,"test_actor","test_actor_attack",10,20,10,18,new string[] {"test_actor_skill", "test_actor_skill_range"},
+                4, new string[0])
             };
             return SceneHelper.CreateNewScene(nativeManager, tileSet, firstPlayerActors, secondPlayerActors, eventHandler);
         }

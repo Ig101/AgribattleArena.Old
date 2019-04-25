@@ -276,6 +276,14 @@ namespace AgribattleArena.Engine
                         newObject = obj;
                     }
                 }
+                foreach (TileObject obj in decorations)
+                {
+                    if (obj.IsAlive && obj.InitiativePosition < minInitiativePosition)
+                    {
+                        minInitiativePosition = obj.InitiativePosition;
+                        newObject = obj;
+                    }
+                }
                 if (newObject != null)
                 {
                     this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped <= 0 ? varManager.TurnTimeLimit : varManager.TurnTimeLimitAfterSkip;
@@ -304,6 +312,10 @@ namespace AgribattleArena.Engine
         void Update(float time)
         {
             foreach (TileObject obj in actors)
+            {
+                obj.Update(time);
+            }
+            foreach (TileObject obj in decorations)
             {
                 obj.Update(time);
             }

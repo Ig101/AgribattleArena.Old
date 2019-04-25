@@ -39,7 +39,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial
             this.health = MaxHealth;
         }
 
-        public bool Damage(float amount, string[] tags)
+        public bool Damage(float amount, IEnumerable<string> tags)
         {
             if (tags != null && armor != null)
             {

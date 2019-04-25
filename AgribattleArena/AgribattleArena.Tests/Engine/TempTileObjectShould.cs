@@ -35,16 +35,28 @@ namespace AgribattleArena.Tests.Engine
             }
         }
 
-        void MoveCloseToEnemy()
+        void MoveCloseToEnemy(int x)
         {
             int step = 0;
-            do
+            if (_actor.ExternalId == 1)
             {
-                step++;
-                _actor.ActionPoints = 4;
-                Assert.That(_scene.ActorMove(_actor.Id, _actor.X - 1, 2), Is.True, "Move step " + step);
-            } while (_actor.X > 2);
-            Assert.That(_actor.X, Is.EqualTo(2), "Close to enemy X");
+                do
+                {
+                    step++;
+                    _actor.ActionPoints = 4;
+                    Assert.That(_scene.ActorMove(_actor.Id, _actor.X + 1, 2), Is.True, "Move step " + step);
+                } while (_actor.X < x);
+            }
+            else
+            {
+                do
+                {
+                    step++;
+                    _actor.ActionPoints = 4;
+                    Assert.That(_scene.ActorMove(_actor.Id, _actor.X - 1, 2), Is.True, "Move step " + step);
+                } while (_actor.X > x);
+            }
+            Assert.That(_actor.X, Is.EqualTo(x), "Close to enemy X");
             Assert.That(_actor.Y, Is.EqualTo(2), "Close to enemy Y");
         }
 
@@ -176,7 +188,7 @@ namespace AgribattleArena.Tests.Engine
         [TestCase(TestName = "MoveToPoint(TileObject)")]
         public void MoveToTileObject()
         {
-            MoveCloseToEnemy();
+            MoveCloseToEnemy(2);
             Assert.That(_scene.ActorMove(_actor.Id, _actor.X - 1, 2), Is.False, "Move to TileObject");
         }
 
@@ -195,7 +207,28 @@ namespace AgribattleArena.Tests.Engine
         #endregion
 
         #region Attacking
-
+        [Test]
+        [TestCase(2, 1, true, false, TestName = "ActorAttack(second player, reachable enemy)")]
+        [TestCase(3, 1, false, false, TestName = "ActorAttack(second player, not-reachable enemy)")]
+        [TestCase(17, 18, true, true, TestName = "ActorAttack(first player, reachable enemy 1 cell)")]
+        [TestCase(14, 18, true, true, TestName = "ActorAttack(first player, reachable enemy 4 cells)")]
+        [TestCase(13, 18, false, true, TestName = "ActorAttack(first player, not-reachable enemy 5 cells)")]
+        public void ActorAttack(int position, int targetX, bool success, bool firstPlayer)
+        {
+            if (firstPlayer)
+            {
+                _scene.ActorWait(_actor.Id);
+                _actor = (Actor)_scene.TempTileObject;
+            }
+            MoveCloseToEnemy(position);
+            _syncMessages.Clear();
+            Assert.That(_scene.Tiles[targetX][_actor.Y].TempObject, Is.Not.Null, "Target is existing");
+            Assert.That(_scene.ActorAttack(_actor.Id, targetX, _actor.Y), Is.EqualTo(success), "Attack succesion");
+            Assert.That(_syncMessages.Count, Is.EqualTo(success?1:0), "Amount of sync messages");
+            if(success) Assert.That(_syncMessages[0].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.Attack), "Attack action");
+            Assert.That(_actor.ActionPoints, Is.EqualTo(success?2:3), "Amount of action points after attack");
+            Assert.That(_scene.Tiles[targetX][_actor.Y].TempObject.DamageModel.Health, Is.EqualTo(success?25:_scene.Tiles[targetX][_actor.Y].TempObject.DamageModel.MaxHealth), "Target's health");
+        }
         #endregion
 
         #region Casting
