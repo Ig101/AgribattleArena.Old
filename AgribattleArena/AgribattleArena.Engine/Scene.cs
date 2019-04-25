@@ -278,7 +278,7 @@ namespace AgribattleArena.Engine
                 }
                 if (newObject != null)
                 {
-                    this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped > 0 ? varManager.TurnTimeLimit : varManager.TurnTimeLimitAfterSkip;
+                    this.remainedTurnTime = newObject.Owner == null || newObject.Owner.TurnsSkipped <= 0 ? varManager.TurnTimeLimit : varManager.TurnTimeLimitAfterSkip;
                     TileObject previousTempTileObject = this.tempTileObject;
                     this.tempTileObject = newObject;
                     Update(minInitiativePosition);

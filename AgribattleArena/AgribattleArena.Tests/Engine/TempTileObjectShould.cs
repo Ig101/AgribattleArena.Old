@@ -20,12 +20,19 @@ namespace AgribattleArena.Tests.Engine
         Actor _actor;
 
 
-        void EndTurnAssertion()
+        void EndTurnAssertion(int id, bool nextIsNotSame)
         {
             Assert.That(_syncMessages[_syncMessages.Count-1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn), "EndTurn message action");
-            Assert.That(_scene.TempTileObject, Is.Not.EqualTo(_actor), "Another actor is acting");
-            Assert.That(_actor.InitiativePosition, Is.GreaterThan(0), "Initiative of _actor");
-            Assert.That(_scene.TempTileObject.InitiativePosition, Is.EqualTo(0), "Initiative of tempTileObject");
+            if (nextIsNotSame)
+            {
+                Assert.That(_scene.TempTileObject.Id, Is.Not.EqualTo(id), "Another actor is acting ");
+                Assert.That(_scene.Actors.Find(x => x.Id == id).InitiativePosition, Is.GreaterThan(0), "Initiative of _actor");
+                Assert.That(_scene.TempTileObject.InitiativePosition, Is.EqualTo(0), "Initiative of tempTileObject");
+            }
+            else
+            {
+                Assert.That(_scene.TempTileObject.Id, Is.EqualTo(id), "Another actor is acting ");
+            }
         }
 
         void MoveCloseToEnemy()
@@ -86,10 +93,6 @@ namespace AgribattleArena.Tests.Engine
                 }
             }
         }
-
-        #region EndTurn
-
-        #endregion
 
         #region Moving
         [Test]
@@ -187,7 +190,7 @@ namespace AgribattleArena.Tests.Engine
             }
             Assert.That(_actor.ActionPoints, Is.EqualTo(0), "Action points after spending");
             Assert.That(_syncMessages.Count, Is.EqualTo(5), "SyncMessages count after action points spending");
-            EndTurnAssertion();
+            EndTurnAssertion(_actor.Id,true);
         }
         #endregion
 
@@ -201,16 +204,38 @@ namespace AgribattleArena.Tests.Engine
 
         #region Waiting
         [Test]
-        [TestCase(2, TestName = "Wait(2 points)")]
-        [TestCase(0, TestName = "Wait(4 points)")]
-        [TestCase(-2, TestName = "Wait(6 points)")]
+        [TestCase(2, TestName = "Wait(1 turn, 2 points)")]
+        [TestCase(0, TestName = "Wait(1 turn, 4 points)")]
+        [TestCase(-2, TestName = "Wait(1 turn, 6 points)")]
         public void Wait(int points)
         {
             _actor.SpendActionPoints(points);
             _scene.ActorWait(_actor.Id);
             Assert.That(_actor.ActionPoints, Is.EqualTo(4 - points), "Amount of action points after Wait");
             Assert.That(_syncMessages[0].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.Wait), "Action of Wait message");
-            EndTurnAssertion();
+            EndTurnAssertion(_actor.Id,true);
+        }
+
+        [Test]
+        [TestCase(2, TestName = "Wait(2 turns passed)")]
+        [TestCase(3, TestName = "Wait(3 turns passed)")]
+        [TestCase(4, TestName = "Wait(4 turns passed)")]
+        [TestCase(5, TestName = "Wait(5 turns passed)")]
+        [TestCase(6, TestName = "Wait(6 turns passed)")]
+        public void MultipleWait(int repetitions)
+        {
+            int[] expectedExternalIds = new int[] { 2, 1, 2, 2, 1, 2, 2};
+            int[] expectedActionPoints = new int[] { 0, 0 };
+            for(int i =0; i<repetitions;i++)
+            {
+                Actor expectedActor = _scene.Actors.Find(x => x.ExternalId == expectedExternalIds[i]);
+                expectedActionPoints[expectedExternalIds[i]-1] = Math.Min(expectedActionPoints[expectedExternalIds[i]-1] + expectedActor.ActionPointsIncome, 8);
+                Assert.That(((Actor)_scene.TempTileObject).ExternalId, Is.EqualTo(expectedExternalIds[i]), "ExternalId turn " + (i + 1));
+                Assert.That(((Actor)_scene.TempTileObject).ActionPoints, Is.EqualTo(expectedActionPoints[expectedExternalIds[i]-1]), "Action points turn " + (i + 1));
+                _scene.ActorWait(expectedActor.Id);
+                EndTurnAssertion(expectedActor.Id, expectedExternalIds[i+1]!=expectedExternalIds[i]);
+                _syncMessages.Clear();
+            }
         }
         #endregion
     }

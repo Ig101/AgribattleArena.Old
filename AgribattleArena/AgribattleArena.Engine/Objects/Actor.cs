@@ -79,7 +79,7 @@ namespace AgribattleArena.Engine.Objects
             }
             this.attackingSkill = new Skill(this, roleModelNative.AttackingSkill, 0, null, 1, null);
             this.buffManager = new BuffManager(this);
-            this.InitiativePosition += 1f / this.Initiative;
+            this.InitiativePosition += (1f / this.Initiative);
             this.DamageModel.SetupRoleModel(this);
         }
 
@@ -106,7 +106,6 @@ namespace AgribattleArena.Engine.Objects
 
         public bool Wait()
         {
-            EndTurn();
             return true;
         }
 
@@ -127,7 +126,7 @@ namespace AgribattleArena.Engine.Objects
         {
             if (Parent.TempTileObject == this)
             {
-                this.InitiativePosition += 1f / Initiative;
+                this.InitiativePosition += (1f / this.Initiative);
             }
         }
 
