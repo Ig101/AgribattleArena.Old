@@ -77,6 +77,8 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_actor.TempTile.Y, Is.EqualTo(2), "Y position");
             Assert.That(_actor.ActionPoints, Is.EqualTo(4), "Amount of actionPoints");
             Assert.That(_actor.InitiativePosition, Is.EqualTo(0), "Initiative position");
+            Assert.That(_actor.Skills.Count, Is.EqualTo(2), "Skills count");
+            Assert.That(_actor.DamageModel.Health, Is.EqualTo(50), "Health amount");
         }
 
         [Test]

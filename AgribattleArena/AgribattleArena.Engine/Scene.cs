@@ -452,7 +452,7 @@ namespace AgribattleArena.Engine
                 bool result = actor.Cast(skillId, tiles[targetX][targetY]);
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
+                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, skillId, targetX, targetY) && !actor.CheckActionAvailability())
                         EndTurn();
                 }
                 return result;
