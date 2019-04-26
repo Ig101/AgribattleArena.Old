@@ -173,6 +173,7 @@ namespace AgribattleArena.Engine.Objects
         {
             if (this.actionPoints < amount) throw new ArgumentException("Not enough action points", "amount");
             this.actionPoints -= amount;
+            this.Affected = true;
         }
 
         bool CheckStunnedState()

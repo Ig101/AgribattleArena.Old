@@ -213,9 +213,9 @@ namespace AgribattleArena.Engine
                 changedDecorations.ToList().ForEach(x => x.Affected = false);
                 changedEffects.ToList().ForEach(x => x.Affected = false);
                 changedTiles.ToList().ForEach(x => x.Affected = false);
-                this.deletedDecorations.Clear();
-                this.deletedActors.Clear();
-                this.deletedEffects.Clear();
+                this.deletedDecorations = new List<ActiveDecoration>();
+                this.deletedActors = new List<Actor>();
+                this.deletedEffects = new List<SpecEffect>();
             }
             return sync;
         }
