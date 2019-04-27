@@ -18,7 +18,7 @@ namespace AgribattleArena.Tests.Engine
         public void Prepare()
         {
             _syncMessages = new List<ISyncEventArgs>();
-            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
+            _scene = SceneSamples.CreateSimpleScene(this.EventHandler, false);
             _scene.Actors.Find(x => x.ExternalId == 1).Kill();
             _scene.ActorWait(_scene.TempTileObject.Id);
             _decoration = _scene.CreateDecoration(_scene.Players.First(), "test_decoration", _scene.Tiles[4][4], null, null, null, null);

@@ -64,7 +64,7 @@ namespace AgribattleArena.Tests.Engine
         public void Prepare ()
         {
             _syncMessages = new List<ISyncEventArgs>();
-            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
+            _scene = SceneSamples.CreateSimpleScene(this.EventHandler, false);
             _syncMessages.Clear();
             _actor = (Actor)_scene.TempTileObject;
         }

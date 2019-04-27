@@ -25,7 +25,7 @@ namespace AgribattleArena.Tests.Engine
         [Test]
         public void CreateSimpleScene ()
         {
-            _scene = SceneSamples.CreateSimpleScene(this.EventHandler);
+            _scene = SceneSamples.CreateSimpleScene(this.EventHandler, false);
 
             Assert.That(_scene, Is.Not.Null, "Check scene object existence");
             Assert.That(_syncMessages.Count, Is.EqualTo(2), "Check messages count");
