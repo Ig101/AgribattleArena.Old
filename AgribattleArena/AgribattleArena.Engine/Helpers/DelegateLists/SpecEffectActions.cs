@@ -1,4 +1,5 @@
 ﻿using AgribattleArena.Engine.Objects;
+using AgribattleArena.Engine.Objects.Abstract;
 
 namespace AgribattleArena.Engine.Helpers.DelegateLists
 {
@@ -6,5 +7,19 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
     {
         public delegate void Action(ISceneParentRef parent, SpecEffect effect, float time);
         public delegate void OnDeathAction(ISceneParentRef parent, SpecEffect effect);
+
+        public static void DoDamageTempTile (ISceneParentRef parent, SpecEffect effect, float time)
+        {
+            TileObject target = parent.Tiles[effect.X][effect.Y].TempObject;
+            if (target!=null)
+            {
+                target.Damage(effect.Mod, effect.Native.Tags);
+            }
+        }
+
+        public static void DoDamageTempTileDeath (ISceneParentRef parent, SpecEffect effect)
+        {
+            DoDamageTempTile(parent, effect, 1);
+        }
     }
 }
