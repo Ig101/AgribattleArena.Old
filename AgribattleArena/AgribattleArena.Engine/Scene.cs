@@ -401,9 +401,13 @@ namespace AgribattleArena.Engine
                     if (player != null)
                     {
                         player.SkipTurn();
-                        AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null);
+                        if(AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null))
+                            EndTurn();
                     }
-                    tempTileObject.EndTurn();
+                    else
+                    {
+                        EndTurn();
+                    }
                 }
             }
         }

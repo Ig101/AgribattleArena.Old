@@ -1,4 +1,5 @@
-﻿using AgribattleArena.Engine.ForExternalUse.Synchronization;
+﻿using AgribattleArena.Engine;
+using AgribattleArena.Engine.ForExternalUse.Synchronization;
 using AgribattleArena.Engine.Objects;
 using AgribattleArena.Tests.Engine.Helpers;
 using NUnit.Framework;
@@ -62,6 +63,95 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_syncMessages[1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndGame));
             Assert.That(_scene.Players.ToArray()[0].Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Victorious));
             Assert.That(_scene.Players.ToArray()[1].Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+        }
+
+        [Test]
+        [TestCase(1, TestName = "SkipTurn(1 turn)")]
+        [TestCase(5, TestName = "SkipTurn(10 turns)")]
+        public void SkipTurn (int amount)
+        {
+            Player tempPlayer = (Player)_scene.TempTileObject.Owner;
+            int skippedTurns = 0;
+            for (int t = 0; t < amount; t++)
+            {
+                if (_scene.TempTileObject.Owner != tempPlayer)
+                {
+                    _scene.ActorWait(_scene.TempTileObject.Id);
+                    t--;
+                }
+                else if (tempPlayer.Status == AgribattleArena.Engine.Helpers.PlayerStatus.Playing)
+                {
+                    {
+                        Assert.That(_scene.RemainedTurnTime, Is.EqualTo(t == 0 ? 80 : 20));
+                        int i = 0;
+                        while (tempPlayer.TurnsSkipped == skippedTurns && i < 100)
+                        {
+                            i++;
+                            _scene.UpdateTime(10);
+                        }
+                        skippedTurns = tempPlayer.TurnsSkipped;
+                        Assert.That(i > 98, Is.False, "Cycle error " + t);
+                        Assert.That(_syncMessages.Count, Is.EqualTo(2), "Count of syncMessages "+ t);
+                        Assert.That(_syncMessages[_syncMessages.Count - 2].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.SkipTurn), "SkipTurn message action "+t);
+                        Assert.That(_syncMessages[_syncMessages.Count - 1].Action, 
+                            tempPlayer.TurnsSkipped<3?Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn):
+                            Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndGame), "EndTurn message action "+ t);
+                        if (tempPlayer.TurnsSkipped >= 3)
+                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+                        else
+                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
+                    }
+                }
+                else
+                {
+                    Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+                }
+                _syncMessages.Clear();
+            }
+        }
+
+        [Test]
+        [TestCase(TestName = "SkipTurn (4 turns, Act on 2 turn)")]
+        public void RefreshSkippedTurnsTime()
+        {
+            _scene.Actors.Find(x => x.ExternalId == 1).ChangePosition(_scene.Tiles[16][2], true);
+            Player tempPlayer = (Player)_scene.TempTileObject.Owner;
+            int skippedTurns = 0;
+            for (int t = 0; t < 4; t++)
+            {
+                if (_scene.TempTileObject.Owner != tempPlayer)
+                {
+                    _scene.ActorWait(_scene.TempTileObject.Id);
+                    t--;
+                }
+                else
+                {
+                    {
+                        if (t == 2)
+                        {
+                            _scene.ActorMove(_scene.TempTileObject.Id,17,2);
+                            Assert.That(_syncMessages.Count, Is.EqualTo(1), "Count of move syncMessages " + t);
+                            Assert.That(tempPlayer.TurnsSkipped, Is.EqualTo(0), "Skipped turns after move");
+                            _syncMessages.Clear();
+                        }
+                        Assert.That(_scene.RemainedTurnTime, Is.EqualTo(t == 0 || t==2 ? 80 : 20));
+                        int i = 0;
+                        skippedTurns = tempPlayer.TurnsSkipped;
+                        while (tempPlayer.TurnsSkipped == skippedTurns && i < 100)
+                        {
+                            i++;
+                            _scene.UpdateTime(10);
+                        }
+                        Assert.That(i > 98, Is.False, "Cycle error "+ t);
+                        Assert.That(_syncMessages.Count, Is.EqualTo(2), "Count of syncMessages " + t);
+                        Assert.That(_syncMessages[_syncMessages.Count - 2].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.SkipTurn), "SkipTurn message action "+ t);
+                        Assert.That(_syncMessages[_syncMessages.Count - 1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn), "EndTurn message action "+ t);
+                        Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
+                    }
+                }
+                Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
+                _syncMessages.Clear();
+            }
         }
     }
 }
