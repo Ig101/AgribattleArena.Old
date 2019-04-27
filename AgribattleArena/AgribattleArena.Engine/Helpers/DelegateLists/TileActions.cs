@@ -16,7 +16,7 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
         {
             if(tile.TempObject!=null)
             {
-                tile.TempObject.Damage(tile.Native.DefaultMod, tile.Native.Tags);
+                tile.TempObject.Damage(tile.Native.DefaultMod * time, tile.Native.Tags);
             }
         }
     }

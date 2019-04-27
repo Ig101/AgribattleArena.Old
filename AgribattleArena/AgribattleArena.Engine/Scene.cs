@@ -338,6 +338,13 @@ namespace AgribattleArena.Engine
             {
                 eff.Update(time);
             }
+            for(int x = 0; x<tiles.Length;x++)
+            {
+                for(int y= 0; y<tiles[x].Length;y++)
+                {
+                    tiles[x][y].Update(time);
+                }
+            }
         }
 
         void AfterActionUpdate()
