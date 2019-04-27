@@ -25,6 +25,7 @@ namespace AgribattleArena.BackendServer
             if (!env.IsDevelopment())
                 services.Configure<MvcOptions>(o =>
                 o.Filters.Add(new RequireHttpsAttribute()));
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

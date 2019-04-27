@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace AgribattleArena.BackendServer
 {
@@ -19,6 +20,13 @@ namespace AgribattleArena.BackendServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging((hostingContext, logger) =>
+                {
+                    logger.AddConfiguration(hostingContext.Configuration.GetSection("logging"));
+                    logger.AddConsole();
+                    logger.AddDebug();
+                })
+                .UseNLog();
     }
 }
