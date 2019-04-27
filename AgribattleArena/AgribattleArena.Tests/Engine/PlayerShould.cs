@@ -29,14 +29,16 @@ namespace AgribattleArena.Tests.Engine
         }
 
         [Test]
-        [TestCase(false, TestName = "PlayerVictory(Second)")]
-        [TestCase(true, TestName = "PlayerVictory(First)")]
-        public void PlayerVictory(bool first)
+        [TestCase(false, false, TestName = "PlayerVictory(Second)")]
+        [TestCase(true, false, TestName = "PlayerVictory(First)")]
+        [TestCase(false, true, TestName = "PlayerVictory(Spawn)")]
+        public void PlayerVictory(bool first, bool spawn)
         {
             if (first) _scene.ActorWait(_scene.TempTileObject.Id);
             _syncMessages.Clear();
             int tileX = first ? 18 : 17;
             Actor deadMan = (Actor)_scene.Tiles[tileX][2].TempObject;
+            if (spawn) _scene.CreateActor(_scene.Players.ToArray()[0], "test_actor", "test_roleModel", _scene.Tiles[4][4], null);
             _scene.ActorAttack(_scene.TempTileObject.Id, tileX, 2);
             _scene.ActorAttack(_scene.TempTileObject.Id, tileX, 2);
             Assert.That(!deadMan.IsAlive, Is.True, "Actor killed");
@@ -44,6 +46,7 @@ namespace AgribattleArena.Tests.Engine
             Assert.That(_syncMessages[2].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndGame));
             Assert.That(_scene.Players.ToArray()[first ? 0 : 1].Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Victorious));
             Assert.That(_scene.Players.ToArray()[first ? 1 : 0].Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+            Assert.That(_scene.Actors.Count, Is.EqualTo(1), "Count of actors");
         }
 
         [Test]

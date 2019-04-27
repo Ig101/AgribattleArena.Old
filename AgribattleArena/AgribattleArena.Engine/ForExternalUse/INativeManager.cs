@@ -20,7 +20,7 @@ namespace AgribattleArena.Engine.ForExternalUse
         void AddEffectNative(string id, string idForFront, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions,
             IEnumerable<string> onDeathActions);
         void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed,
-            int defaultActionPointsIncome, SkillNative attackingSkill, SkillNative[] skills);
+            int defaultActionPointsIncome, string attackingSkill, string[] skills);
         void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions);
         void AddSkillNative(string id, string idForFront, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions);
         void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions,

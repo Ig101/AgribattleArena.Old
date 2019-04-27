@@ -82,6 +82,20 @@ namespace AgribattleArena.Tests.Engine
         }
 
         [Test]
+        public void CreateNewActor()
+        {
+            Actor actor = _scene.CreateActor(null, "test_actor", "test_roleModel", _scene.Tiles[4][4], null);
+            Assert.That(_scene.Actors.Count, Is.EqualTo(3), "Count of actors");
+            Assert.That(actor.Strength, Is.EqualTo(10), "Strength");
+            Assert.That(actor.Willpower, Is.EqualTo(10), "Willpower");
+            Assert.That(actor.Speed, Is.EqualTo(10), "Speed");
+            Assert.That(actor.Constitution, Is.EqualTo(10), "Constitution");
+            Assert.That(actor.ActionPointsIncome, Is.EqualTo(4), "Action points");
+            Assert.That(actor.AttackingSkill.Native.Id, Is.EqualTo("test_actor_attack"), "Attack");
+            Assert.That(actor.Skills.Count, Is.EqualTo(1), "Skills count");
+        }
+
+        [Test]
         public void Resurrection()
         {
             Actor resurrectionActor = _scene.Actors.Find(x => x.ExternalId == 1);

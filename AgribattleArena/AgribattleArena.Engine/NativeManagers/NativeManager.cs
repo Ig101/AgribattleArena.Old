@@ -75,9 +75,9 @@ namespace AgribattleArena.Engine.NativeManagers
         }
 
         public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
-            int defaultActionPointsIncome, SkillNative attackingSkill, SkillNative[] skills)
+            int defaultActionPointsIncome, string attackingSkill, string[] skills)
         {
-            roleModelNatives.Add(id, new RoleModelNative(id, defaultStrength, defaultWillpower, defaultConstitution, defaultSpeed, defaultActionPointsIncome,
+            roleModelNatives.Add(id, new RoleModelNative(this, id, defaultStrength, defaultWillpower, defaultConstitution, defaultSpeed, defaultActionPointsIncome,
                     attackingSkill, skills));
         }
 

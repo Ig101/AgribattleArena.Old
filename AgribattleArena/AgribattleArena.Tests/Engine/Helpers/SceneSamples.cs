@@ -49,6 +49,7 @@ namespace AgribattleArena.Tests.Engine.Helpers
                 new string[] { }, new string[] { "AddMaxHealth" }, new string[] { });
             nativeManager.AddBuffNative("test_debuff", new string[] { "debuff" }, false, false, false, null, 1,
                 new string[] { "DamageSelf"  }, new string[] { }, new string[] { "DamageSelfPurge" });
+            nativeManager.AddRoleModelNative("test_roleModel", 10, 10, 10, 10, 4, "test_actor_attack", new string[] { "test_actor_skill" });
         }
 
         /// <summary>
