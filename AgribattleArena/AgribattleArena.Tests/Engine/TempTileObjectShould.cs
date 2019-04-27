@@ -5,6 +5,7 @@ using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
 using AgribattleArena.Engine.ForExternalUse.Synchronization;
 using AgribattleArena.Engine.Helpers;
 using AgribattleArena.Engine.Objects;
+using AgribattleArena.Engine.Objects.Immaterial;
 using AgribattleArena.Tests.Engine.Helpers;
 using NUnit.Framework;
 using System;
@@ -18,7 +19,6 @@ namespace AgribattleArena.Tests.Engine
     public class TempTileObjectShould: BasicEngineTester
     {
         Actor _actor;
-
 
         void EndTurnAssertion(int id, bool nextIsNotSame)
         {
@@ -291,7 +291,73 @@ namespace AgribattleArena.Tests.Engine
         #endregion
 
         #region Casting
+        [Test]
+        [TestCase(2,true, TestName = "SkillCast(melee, success)")]
+        [TestCase(3,false, TestName = "SkillCast(melee, fail)")]
+        public void FirstSkillCast(int position, bool success)
+        {
+            MoveCloseToEnemy(position);
+            _syncMessages.Clear();
+            int skillId = _actor.Skills.Find(x => x.Native.Id == "test_actor_skill").Id;
+            Actor targetActor = (Actor)_scene.Tiles[1][_actor.Y].TempObject;
+            for (int i = 0; i < 4; i++)
+            {
+                Assert.That(_scene.Tiles[1][_actor.Y].TempObject, i<=1 || !success?Is.Not.Null:Is.Null, "Target is existing " + i);
+                Assert.That(_scene.ActorCast(_actor.Id, skillId, 1, _actor.Y), Is.EqualTo(success), "Cast succession "+i);
+                if (i <= 2 && success)
+                {
+                    if (i == 2) EndTurnAssertion(_actor.Id, false);
+                    Assert.That(_syncMessages.Count, Is.EqualTo(i<2?i+1:4), "Amount of sync messages "+i);
+                    if (i<=2)
+                    {
+                        Assert.That(_syncMessages[i].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.Cast), "Cast action "+i);
+                        Assert.That(_syncMessages[i].SkillActionId, Is.EqualTo(skillId), "Skill id "+i);
+                        Assert.That(_syncMessages[i].SyncInfo.ChangedActors.Count(), Is.EqualTo(i<1?2:1), "Amount of changed actors "+i);
+                    }
+                    Assert.That(_actor.ActionPoints, Is.EqualTo(i<2?2-i:4), "Amount of action points after attack "+i);
+                    if (i <= 1)
+                    {
+                        Assert.That(targetActor.DamageModel.Health, Is.EqualTo(40 - 60 * i), "Target's health "+i);
+                    }
+                }
+            }
+        }
 
+        [Test]
+        [TestCase(5, true, TestName = "SkillCast(ranged, success)")]
+        [TestCase(6, false, TestName = "SkillCast(ranged, fail)")]
+        public void SecondSkillCast(int position, bool success)
+        {
+            MoveCloseToEnemy(position);
+            _syncMessages.Clear();
+            Skill skill = _actor.Skills.Find(x => x.Native.Id == "test_actor_skill_range");
+            int skillId = skill.Id;
+            _actor.ActionPoints = 5;
+            Actor targetActor = (Actor)_scene.Tiles[1][_actor.Y].TempObject;
+            Assert.That(_scene.Tiles[1][_actor.Y].TempObject, Is.Not.Null, "Target is existing");
+            Assert.That(_scene.ActorCast(_actor.Id, skillId, 1, _actor.Y), Is.EqualTo(success), "Cast succession");
+            if (success)
+            {
+                Assert.That(_scene.Tiles[1][_actor.Y].TempObject.DamageModel.Health, Is.EqualTo(80), "Amount of target health after first cast");
+                Assert.That(_actor.ActionPoints, Is.EqualTo(3), "Action points after first cast");
+                Assert.That(_scene.ActorCast(_actor.Id, skillId, 1, _actor.Y), Is.False, "Another cast succession");
+                Assert.That(_scene.Tiles[1][_actor.Y].TempObject.DamageModel.Health, Is.EqualTo(80), "Amount of target health after second cast");
+                Assert.That(_actor.ActionPoints, Is.EqualTo(3), "Action points after second cast");
+                int i = 0;
+                float tempPreparationTime = skill.PreparationTime;
+                while (skill.PreparationTime > 0 && i < 100)
+                {
+                    i++;
+                    _scene.ActorWait(_scene.TempTileObject.Id);
+                    Assert.That(tempPreparationTime, Is.GreaterThan(skill.PreparationTime), "Preparation time diminishing");
+                }
+                Assert.That(i>98, Is.False, "Cycle error");
+                Assert.That(_actor.ActionPoints, Is.EqualTo(8), "Action points after waiting");
+                Assert.That(_scene.ActorCast(_actor.Id, skillId, 1, _actor.Y), Is.True, "Another cast succession");
+                Assert.That(_actor.ActionPoints, Is.EqualTo(6), "Action points after last cast");
+                Assert.That(_scene.Tiles[1][_actor.Y].TempObject.DamageModel.Health, Is.EqualTo(60), "Amount of target health after last cast");
+            }            
+        }
         #endregion
 
         #region Waiting

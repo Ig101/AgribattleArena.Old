@@ -41,7 +41,7 @@ namespace AgribattleArena.Engine.Objects.Immaterial
 
         public bool Damage(float amount, IEnumerable<string> tags)
         {
-            if (tags != null && armor != null)
+            if (tags != null && Armor != null)
             {
                 foreach (string atackerTag in tags)
                 {                

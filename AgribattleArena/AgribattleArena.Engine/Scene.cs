@@ -339,6 +339,7 @@ namespace AgribattleArena.Engine
             {
                 if (!actors[i].IsAlive)
                 {
+                    actors[i].TempTile.RemoveTempObject();
                     deletedActors.Add(actors[i]);
                     actors.RemoveAt(i);
                     i--;
@@ -348,6 +349,7 @@ namespace AgribattleArena.Engine
             {
                 if (!decorations[i].IsAlive)
                 {
+                    decorations[i].TempTile.RemoveTempObject();
                     deletedDecorations.Add(decorations[i]);
                     decorations.RemoveAt(i);
                     i--;

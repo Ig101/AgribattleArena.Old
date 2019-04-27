@@ -37,8 +37,8 @@ namespace AgribattleArena.Tests.Engine.Helpers
             nativeManager.AddActorNative("test_actor", new string[] { "test_actor_tag" }, 0, new TagSynergy[] { new TagSynergy("test_skill_tag",0.5f)});
             nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 75, new string[] { "DoDamageAttack" });
             nativeManager.AddSkillNative("test_actor_attack_range", new string[] { }, 4, 1, 0, 12.5f, new string[] { "DoDamageAttack" });
-            nativeManager.AddSkillNative("test_actor_skill", new string[] { "test_skill_tag" }, 1, 2, 0, 60, new string[] { "DoDamageSkill" });
-            nativeManager.AddSkillNative("test_actor_skill_range", new string[] { }, 4, 2, 2, 25, new string[] { "DoDamageSkill" });
+            nativeManager.AddSkillNative("test_actor_skill", new string[] { "test_skill_tag" }, 1, 1, 0, 60, new string[] { "DoDamageSkill" });
+            nativeManager.AddSkillNative("test_actor_skill_range", new string[] { }, 4, 2, 2, 10, new string[] { "DoDamageSkill" });
             string[,] tileSet = new string[20, 20];
             for (int x = 0; x < 20; x++)
             {
