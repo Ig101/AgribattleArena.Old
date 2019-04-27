@@ -43,5 +43,6 @@ namespace AgribattleArena.Engine.Objects
         List<TagSynergy> AttackModifiers { get; }
 
         void SpendActionPoints(int amount);
+        bool Damage(float amount, IEnumerable<string> tags);
     }
 }

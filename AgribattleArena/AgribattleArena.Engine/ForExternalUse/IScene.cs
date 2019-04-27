@@ -7,6 +7,7 @@ namespace AgribattleArena.Engine.ForExternalUse
 {
     public interface IScene
     {
+        float PassedTime { get; }
         int Version { get; }
         IEnumerable<long> PlayerIds { get; }
 

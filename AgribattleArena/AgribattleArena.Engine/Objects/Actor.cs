@@ -171,8 +171,7 @@ namespace AgribattleArena.Engine.Objects
 
         public void SpendActionPoints(int amount)
         {
-            if (this.actionPoints < amount) throw new ArgumentException("Not enough action points", "amount");
-            this.actionPoints -= amount;
+            this.ActionPoints -= amount;
             this.Affected = true;
         }
 

@@ -45,9 +45,11 @@ namespace AgribattleArena.Engine
         List<SpecEffect> deletedEffects;
         int idsCounter;
         int randomCounter;
+        float passedTime;
 
         public bool IsActive { get { return isActive; } }
 
+        public float PassedTime { get { return passedTime; } }
         public DefeatConditionMethod DefeatCondition { get { return defeatCondition; } }
         public WinConditionMethod WinCondition { get { return winCondition; } }
         public Random GameRandom { get { return gameRandom; } }
@@ -112,6 +114,18 @@ namespace AgribattleArena.Engine
         }
 
         #region Creation
+        public Actor ResurrectActor(Actor actor, Tile target, int health)
+        {
+            if (target.TempObject != null) return null;
+            actor.DamageModel.Health = health;
+            actor.TempTile = target;
+            target.ChangeTempObject(actor, true);
+            actor.IsAlive = true;
+            actor.Affected = true;
+            actors.Add(actor);
+            return actor;
+        }
+
         public Tile[][] SetupEmptyTileSet (int width, int height)
         {
             Tile[][] tiles= new Tile[width][];
@@ -311,6 +325,7 @@ namespace AgribattleArena.Engine
 
         void Update(float time)
         {
+            passedTime += time;
             foreach (TileObject obj in actors)
             {
                 obj.Update(time);

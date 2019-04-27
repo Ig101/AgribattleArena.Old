@@ -82,30 +82,30 @@ namespace AgribattleArena.Tests.Engine
         }
 
         [Test]
-        [TestCase(2, false, false, TestName = "SpendActionPoints(2 points, 4 temp)")]
-        [TestCase(4, false, true, TestName = "SpendActionPoints(4 points, 4 temp)")]
-        [TestCase(6, true, false, TestName = "SpendActionPoints(6 points, 4 temp)")]
-        public void SpendActionPoints(int points, bool exception, bool endTurn)
+        public void Resurrection()
         {
-            try
-            {
-                _actor.SpendActionPoints(points);
-                Assert.That(_actor.CheckActionAvailability(), Is.EqualTo(!endTurn), "End turn condition");
-                Assert.That(_actor.ActionPoints, Is.EqualTo(4 - points), "Amount of action points after spending");
-            }
-            catch (ArgumentException e)
-            {
-                if (exception)
-                {
-                    Assert.That(e.ParamName, Is.EqualTo("amount"), "Not enough action points condition");
-                    Assert.That(_actor.ActionPoints, Is.EqualTo(4), "Amount of action points after exception");
-                    return;
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            Actor resurrectionActor = _scene.Actors.Find(x => x.ExternalId == 1);
+            Assert.That(_scene.Tiles[1][2].TempObject, Is.EqualTo(resurrectionActor), "Position");
+            resurrectionActor.Kill();
+            _scene.ActorWait(_actor.Id);
+            Assert.That(_scene.Actors.Count, Is.EqualTo(1), "Actors count");
+            EndTurnAssertion(_actor.Id, false);
+            _scene.ResurrectActor(resurrectionActor, _scene.Tiles[2][2], 30);
+            Assert.That(_scene.Tiles[2][2].TempObject, Is.EqualTo(resurrectionActor), "Resurrection actor position");
+            Assert.That(_scene.Tiles[1][2].TempObject, Is.Null, "Previous position");
+            Assert.That(_scene.Actors.Count, Is.EqualTo(2), "Actors count");
+            Assert.That(resurrectionActor.DamageModel.Health, Is.EqualTo(30), "Health after resurrection");
+        }
+
+        [Test]
+        [TestCase(2, false, TestName = "SpendActionPoints(2 points, 4 temp)")]
+        [TestCase(4, true, TestName = "SpendActionPoints(4 points, 4 temp)")]
+        [TestCase(6, true, TestName = "SpendActionPoints(6 points, 4 temp)")]
+        public void SpendActionPoints(int points, bool endTurn)
+        {
+            _actor.SpendActionPoints(points);
+            Assert.That(_actor.CheckActionAvailability(), Is.EqualTo(!endTurn), "End turn condition");
+            Assert.That(_actor.ActionPoints, Is.EqualTo(Math.Max(0,4 - points)), "Amount of action points after spending");
         }
 
         #region Moving
@@ -350,6 +350,7 @@ namespace AgribattleArena.Tests.Engine
                     i++;
                     _scene.ActorWait(_scene.TempTileObject.Id);
                     Assert.That(tempPreparationTime, Is.GreaterThan(skill.PreparationTime), "Preparation time diminishing");
+                    tempPreparationTime = skill.PreparationTime;
                 }
                 Assert.That(i>98, Is.False, "Cycle error");
                 Assert.That(_actor.ActionPoints, Is.EqualTo(8), "Action points after waiting");

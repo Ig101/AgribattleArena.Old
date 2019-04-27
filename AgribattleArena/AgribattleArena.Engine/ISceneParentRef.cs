@@ -32,5 +32,6 @@ namespace AgribattleArena.Engine
         SpecEffect CreateEffect(Player owner, string nativeName, Tile target, float? z, float? duration, float? mod);
         Tile ChangeTile(string nativeName, int x, int y, int? height, Player initiator);
         List<Actor> GetPlayerActors(Player player);
+        Actor ResurrectActor(Actor actor, Tile target, int health);
     }
 }

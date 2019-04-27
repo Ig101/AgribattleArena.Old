@@ -31,22 +31,87 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
         int skillCost;
         int skillRange;
 
-        public float AdditionStrength { get { return strength; } }
-        public float AdditionWillpower { get { return willpower; } }
-        public float AdditionConstitution { get { return constitution; } }
-        public float AdditionSpeed { get { return speed; } }
-        public float AdditionActionPointsIncome { get { return actionPointsIncome; } }
-        public float AdditionMaxHealth { get { return maxHealth; } }
-        public float AdditionInitiative { get { return initiative; } }
-
-        public int SkillCd { get { return skillCd; } set { skillCd = value; } }
-        public int SkillCost { get { return skillCost; } set { skillCost = value; } }
-        public int SkillRange { get { return skillRange; } set { skillRange = value; } }
-        public bool CanMove { get { return canMove; } set { canMove = value; } }
-        public bool CanAct { get { return canAct; } set { canAct = value; } }
-        public IActorParentRef Parent { get { return parent; } set { parent = value; } }
-        public float Initiative
-        {
+        public float AdditionStrength {
+            get { return strength; }
+            set
+            {
+                strength = value; if (parent.Strength <= 0)
+                {
+                    parent.DamageModel.Health = 0;
+                    parent.IsAlive = false;
+                }
+            }
+        }
+        public float AdditionWillpower {
+            get { return willpower; }
+            set
+            {
+                willpower = value; if (parent.Willpower <= 0)
+                {
+                    parent.DamageModel.Health = 0;
+                    parent.IsAlive = false;
+                }
+            }
+        }
+        public float AdditionConstitution {
+            get { return constitution; }
+            set
+            {
+                float oldHealth = parent.MaxHealth;
+                constitution = value;
+                float newHealth = parent.MaxHealth;
+                if (parent.Constitution <= 0)
+                {
+                    parent.DamageModel.Health = 0;
+                    parent.IsAlive = false;
+                }
+                else
+                {
+                    parent.DamageModel.Health *= newHealth / oldHealth;
+                }
+            }
+        }
+        public float AdditionSpeed {
+            get { return speed; }
+            set
+            {
+                float oldInitiative = parent.Initiative;
+                speed = value;
+                float newInitiative = parent.Initiative;
+                if (parent.Speed <= 0)
+                {
+                    parent.DamageModel.Health = 0;
+                    parent.IsAlive = false;
+                }
+                else
+                {
+                    parent.InitiativePosition *= oldInitiative / newInitiative;
+                }
+            }
+        }
+        public float AdditionActionPointsIncome {
+            get { return actionPointsIncome; }
+            set { actionPointsIncome = value; }
+        }
+        public float AdditionMaxHealth {
+            get { return maxHealth; }
+            set
+            {
+                float oldHealth = parent.MaxHealth;
+                maxHealth = value;
+                float newHealth = parent.MaxHealth;
+                if (parent.Constitution <= 0)
+                {
+                    parent.DamageModel.Health = 0;
+                    parent.IsAlive = false;
+                }
+                else
+                {
+                    parent.DamageModel.Health *= newHealth / oldHealth;
+                }
+            }
+        }
+        public float AdditionInitiative {
             get { return initiative; }
             set
             {
@@ -64,89 +129,39 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
                 }
             }
         }
+
+        public int SkillCd { get { return skillCd; } set { skillCd = value; } }
+        public int SkillCost { get { return skillCost; } set { skillCost = value; } }
+        public int SkillRange { get { return skillRange; } set { skillRange = value; } }
+        public bool CanMove { get { return canMove; } set { canMove = value; } }
+        public bool CanAct { get { return canAct; } set { canAct = value; } }
+        public IActorParentRef Parent { get { return parent; } set { parent = value; } }
+        public float Initiative
+        {
+            get { return initiative; }
+        }
         public float AttackPower { get { return attackPower; } set { attackPower = value; } }
         public float SkillPower { get { return skillPower; } set { skillPower = value; } }
         public int MaxHealth
         {
             get { return (int)maxHealth; }
-            set
-            {
-                float oldHealth = parent.MaxHealth;
-                maxHealth = value;
-                float newHealth = parent.MaxHealth;
-                if (parent.Constitution <= 0)
-                {
-                    parent.DamageModel.Health = 0;
-                    parent.IsAlive = false;
-                }
-                else
-                {
-                    parent.DamageModel.Health *= newHealth / oldHealth;
-                }
-            }
         }
-        public int ActionPointsIncome { get { return (int)actionPointsIncome; } set { actionPointsIncome = value; } }
+        public int ActionPointsIncome { get { return (int)actionPointsIncome; } }
         public int Strength
         {
             get { return (int)strength; }
-            set
-            {
-                strength = value; if (parent.Strength <= 0)
-                {
-                    parent.DamageModel.Health = 0;
-                    parent.IsAlive = false;
-                }
-            }
         }
         public int Willpower
         {
             get { return (int)willpower; }
-            set
-            {
-                willpower = value; if (parent.Willpower <= 0)
-                {
-                    parent.DamageModel.Health = 0;
-                    parent.IsAlive = false;
-                }
-            }
         }
         public int Constitution
         {
             get { return (int)constitution; }
-            set
-            {
-                float oldHealth = parent.MaxHealth;
-                constitution = value;
-                float newHealth = parent.MaxHealth;
-                if (parent.Constitution <= 0)
-                {
-                    parent.DamageModel.Health = 0;
-                    parent.IsAlive = false;
-                }
-                else
-                {
-                    parent.DamageModel.Health *= newHealth / oldHealth;
-                }
-            }
         }
         public int Speed
         {
             get { return (int)speed; }
-            set
-            {
-                float oldInitiative = parent.Initiative;
-                speed = value;
-                float newInitiative = parent.Initiative;
-                if (parent.Speed <= 0)
-                {
-                    parent.DamageModel.Health = 0;
-                    parent.IsAlive = false;
-                }
-                else
-                {
-                    parent.InitiativePosition *= oldInitiative / newInitiative;
-                }
-            }
         }
         public List<TagSynergy> Armor { get { return armor; } }
         public List<TagSynergy> Attack { get { return attack; } }
@@ -197,18 +212,18 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             SkillRange = 0;
             CanMove = true;
             CanAct = true;
-            Strength = 0;
-            Willpower = 0;
-            Constitution = 0;
-            Speed = 0;
+            AdditionStrength = 0;
+            AdditionWillpower = 0;
+            AdditionConstitution = 0;
+            AdditionSpeed = 0;
             Armor.Clear();
             Armor.AddRange(parent.DefaultArmor);
             Attack.Clear();
-            ActionPointsIncome = 0;
-            MaxHealth = 0;
+            AdditionActionPointsIncome = 0;
+            AdditionMaxHealth = 0;
             SkillPower = 0;
             AttackPower = 0;
-            Initiative = 0;
+            AdditionInitiative = 0;
             foreach (Buff buff in buffs)
             {
                 buff.Native.Applier?.Invoke(this, buff);
@@ -221,13 +236,16 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             Buff tempVersion;
             if (!buff.Native.Repeatable && (tempVersion = buffs.Find(x => x.Native.Id == buff.Native.Id)) != null)
             {
-                if (buff.Native.SummarizeLength)
+                if (buff.Duration != null)
                 {
-                    tempVersion.Duration += buff.Duration;
-                }
-                else
-                {
-                    tempVersion.Duration = buff.Duration;
+                    if (buff.Native.SummarizeLength)
+                    {
+                        tempVersion.Duration += buff.Duration;
+                    }
+                    else
+                    {
+                        tempVersion.Duration = buff.Duration;
+                    }
                 }
                 tempVersion.Mod = Math.Max(tempVersion.Mod, buff.Mod);
                 buff = tempVersion;
@@ -276,14 +294,21 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
 
         public void Update(float time)
         {
+            int changedBuffs = 0;
             for (int i = 0; i < buffs.Count; i++)
             {
                 buffs[i].Update(time);
                 if (buffs[i].Duration != null && buffs[i].Duration <= 0)
                 {
+                    changedBuffs++;
                     buffs.RemoveAt(i);
                     i--;
                 }
+            }
+            if(changedBuffs>0)
+            {
+                parent.Affected = true;
+                RecalculateBuffs();
             }
         }
     }
