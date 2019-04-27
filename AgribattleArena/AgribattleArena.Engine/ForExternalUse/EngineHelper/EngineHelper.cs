@@ -16,9 +16,9 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
         /// </summary>
         /// <param name="tileSet"></param>
         /// <returns></returns>
-        public static ISceneGenerator CreateTestSceneGenerator(string[,] tileSet)
+        public static ISceneGenerator CreateTestSceneGenerator(string[,] tileSet, bool winConditions)
         {
-            return new SceneGenerators.TestSceneGenerator(tileSet);
+            return new SceneGenerators.TestSceneGenerator(tileSet, winConditions);
         }
         #endregion
 

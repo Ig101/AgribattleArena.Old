@@ -12,14 +12,25 @@ namespace AgribattleArena.Engine.SceneGenerators
 {
     public class TestSceneGenerator : ISceneGenerator, ForExternalUse.Generation.ISceneGenerator
     {
-        public Scene.DefeatConditionMethod DefeatCondition { get { return DefeatConditionTest; } }
-        public Scene.WinConditionMethod WinCondition { get { return WinConditionTest; } }
+
+        public Scene.DefeatConditionMethod DefeatCondition { get; set; }
+        public Scene.WinConditionMethod WinCondition { get; set; }
         public string Definition { get { return "TestScene"; } }
 
         string[,] tileSet;
 
-        public TestSceneGenerator(string[,] tileSet)
+        public TestSceneGenerator(string[,] tileSet, bool winConditions)
         {
+            if (winConditions)
+            {
+                WinCondition = WinConditionTest;
+                DefeatCondition = DefeatConditionTest;
+            }
+            else
+            {
+                WinCondition = WinConditionDummy;
+                DefeatCondition = DefeatConditionDummy;
+            }
             if (tileSet.GetLength(0) != 20) throw new ArgumentException("Number of rows doesn't equal to 20");
             if (tileSet.GetLength(1) != 20) throw new ArgumentException("Number of columns doesn't equal to 20");
             this.tileSet = tileSet;
@@ -50,12 +61,34 @@ namespace AgribattleArena.Engine.SceneGenerators
             }
         }
 
-        public static bool DefeatConditionTest (ISceneParentRef scene, IPlayerParentRef player)
+        public static bool DefeatConditionTest(ISceneParentRef scene, IPlayerParentRef player)
+        {
+            foreach(Actor actor in player.KeyActors)
+            {
+                if (actor.IsAlive) return false;
+            }
+            return true;
+        }
+
+        public static bool WinConditionTest(ISceneParentRef scene)
+        {
+            int countOfRemainedPlayers = 0;
+            foreach(Player player in scene.Players)
+            {
+                if(player.Status == PlayerStatus.Playing)
+                {
+                    countOfRemainedPlayers++;
+                }
+            }
+            return countOfRemainedPlayers <= 1;
+        }
+
+        public static bool DefeatConditionDummy (ISceneParentRef scene, IPlayerParentRef player)
         {
             return false;
         }
 
-        public static bool WinConditionTest (ISceneParentRef scene)
+        public static bool WinConditionDummy (ISceneParentRef scene)
         {
             return false;
         }

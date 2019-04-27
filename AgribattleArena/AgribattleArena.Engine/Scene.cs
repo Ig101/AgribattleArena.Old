@@ -384,17 +384,20 @@ namespace AgribattleArena.Engine
         //TODO Lock
         public void UpdateTime(float time)
         {
-            this.remainedTurnTime -= time;
-            if(remainedTurnTime<=0)
+            if (IsActive)
             {
-                IPlayerParentRef player = tempTileObject.Owner;
-                TileObject previousTempTileObject = tempTileObject;
-                if (player!=null)
+                this.remainedTurnTime -= time;
+                if (remainedTurnTime <= 0)
                 {
-                    player.SkipTurn();
-                    AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null);
+                    IPlayerParentRef player = tempTileObject.Owner;
+                    TileObject previousTempTileObject = tempTileObject;
+                    if (player != null)
+                    {
+                        player.SkipTurn();
+                        AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null);
+                    }
+                    tempTileObject.EndTurn();
                 }
-                tempTileObject.EndTurn();
             }
         }
 
@@ -439,7 +442,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorMove(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId)
+            if (tempTileObject.Id == actorId && IsActive)
             {
                 Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
@@ -459,7 +462,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorCast(int actorId, int skillId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId)
+            if (tempTileObject.Id == actorId && IsActive)
             {
                 Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
@@ -479,7 +482,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorAttack(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId)
+            if (tempTileObject.Id == actorId && IsActive)
             {
                 Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)
@@ -499,7 +502,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorWait(int actorId)
         {
-            if (tempTileObject.Id == actorId)
+            if (tempTileObject.Id == actorId && IsActive)
             {
                 Actor actor = (Actor)tempTileObject;
                 if (actor.Owner?.ActThisTurn() ?? false)

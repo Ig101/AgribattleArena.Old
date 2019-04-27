@@ -9,6 +9,7 @@ namespace AgribattleArena.Engine.ForExternalUse
     {
         float PassedTime { get; }
         int Version { get; }
+        bool IsActive { get; }
         IEnumerable<long> PlayerIds { get; }
 
         ISynchronizer GetFullSynchronizationData();

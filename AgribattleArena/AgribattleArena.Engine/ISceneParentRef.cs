@@ -19,6 +19,7 @@ namespace AgribattleArena.Engine
         List<Actor> Actors { get; }
         List<ActiveDecoration> Decorations { get; }
         List<SpecEffect> SpecEffects { get; }
+        IEnumerable<Player> Players { get; }
 
         int GetNextId();
         float GetNextRandom();

@@ -27,10 +27,10 @@ namespace AgribattleArena.Tests.Engine.Helpers
             return players;
         }
 
-        public static Scene CreateNewScene (INativeManager nativeManager, string[,] tileSet, IEnumerable<IActor> firstPlayer, IEnumerable<IActor> secondPlayer, 
+        public static Scene CreateNewScene (INativeManager nativeManager, string[,] tileSet, bool winConditions, IEnumerable<IActor> firstPlayer, IEnumerable<IActor> secondPlayer, 
             EventHandler<ISyncEventArgs> eventHandler)
         {
-            Scene scene = (Scene)EngineHelper.CreateNewScene(0, CreatePlayers(firstPlayer, secondPlayer), EngineHelper.CreateTestSceneGenerator(tileSet), nativeManager,
+            Scene scene = (Scene)EngineHelper.CreateNewScene(0, CreatePlayers(firstPlayer, secondPlayer), EngineHelper.CreateTestSceneGenerator(tileSet, winConditions), nativeManager,
                 CreateVarManagerWithDefaultVars(), 0, eventHandler);
 
             return scene;
