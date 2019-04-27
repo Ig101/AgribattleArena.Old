@@ -97,14 +97,15 @@ namespace AgribattleArena.Tests.Engine
                             tempPlayer.TurnsSkipped<3?Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn):
                             Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndGame), "EndTurn message action "+ t);
                         if (tempPlayer.TurnsSkipped >= 3)
-                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated), "Player status "+t);
                         else
-                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
+                            Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing), "Player status " + t);
                     }
                 }
                 else
                 {
-                    Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated));
+                    Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Defeated), "Player status");
+                    Assert.That(_scene.Actors.Count, Is.EqualTo(1), "Amount of actors after defeat");
                 }
                 _syncMessages.Clear();
             }
@@ -146,7 +147,7 @@ namespace AgribattleArena.Tests.Engine
                         Assert.That(_syncMessages.Count, Is.EqualTo(2), "Count of syncMessages " + t);
                         Assert.That(_syncMessages[_syncMessages.Count - 2].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.SkipTurn), "SkipTurn message action "+ t);
                         Assert.That(_syncMessages[_syncMessages.Count - 1].Action, Is.EqualTo(AgribattleArena.Engine.Helpers.Action.EndTurn), "EndTurn message action "+ t);
-                        Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
+                        Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing), "Player status " + t);
                     }
                 }
                 Assert.That(tempPlayer.Status, Is.EqualTo(AgribattleArena.Engine.Helpers.PlayerStatus.Playing));
