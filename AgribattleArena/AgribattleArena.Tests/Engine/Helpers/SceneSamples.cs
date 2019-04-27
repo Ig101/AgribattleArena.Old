@@ -9,6 +9,7 @@ using AgribattleArena.Tests.Engine.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AgribattleArena.Tests.Engine.Helpers
 {
@@ -28,7 +29,8 @@ namespace AgribattleArena.Tests.Engine.Helpers
             nativeManager.AddTileNative("test_tile_effects", new string[] { }, false, 0, false, 10, new string[] { "DoDamage" }, new string[] { "DoDamageOnStep" });
             nativeManager.AddTileNative("test_tile", new string[] { }, false, 0, false, 1, new string[] { }, new string[] { });
             nativeManager.AddActorNative("test_actor", new string[] { "test_actor_tag" }, 0, new TagSynergy[] { new TagSynergy("test_skill_tag", 0.5f) });
-            nativeManager.AddEffectNative("test_effect", new string[] { }, 0, null, 10, new string[] { "DoDamageTempTile" }, new string[] { "DoDamageTempTileDeath" });
+            nativeManager.AddEffectNative("test_effect", new string[] { }, 0, null, 10, new string[] { "DoDamageTempTile" }, 
+                new string[] { "DoDamageTempTileDeath" });
             nativeManager.AddDecorationNative("test_decoration", new string[] { }, new TagSynergy[] { }, 100, 0, 10, new string[] { "DoSelfDamage" },
                 new string[] { "DoSelfDamage" });
             nativeManager.AddSkillNative("test_actor_attack", new string[] { }, 1, 1, 0, 75, new string[] { "DoDamageAttack" });

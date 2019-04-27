@@ -13,7 +13,7 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
             TileObject target = parent.Tiles[effect.X][effect.Y].TempObject;
             if (target!=null)
             {
-                target.Damage(effect.Mod, effect.Native.Tags);
+                target.Damage(effect.Mod * time, effect.Native.Tags);
             }
         }
 

@@ -29,9 +29,10 @@ namespace AgribattleArena.Engine.Objects
 
         public override void Update(float time)
         {
-            this.native.Action?.Invoke(Parent, this, time);
-            if (this.duration <= 0) IsAlive = false;
-            else this.duration -= time;
+            this.native.Action?.Invoke(Parent, this, duration!=null?Math.Min(duration.Value,time):time);
+            this.duration -= time;
+            if (this.duration <= 0)
+                IsAlive = false;
         }
 
         public override void OnDeathAction()
