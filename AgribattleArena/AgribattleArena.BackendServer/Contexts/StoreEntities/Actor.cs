@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.BackendServer.Contexts.ProfileEntities
+namespace AgribattleArena.BackendServer.Contexts.StoreEntities
 {
     public class Actor
     {
         [Key]
-        public long Id { get; set; }
+        public int Id { get; set; }
         [MaxLength(30)]
         [Required]
         public string Name { get; set; }
@@ -26,12 +26,9 @@ namespace AgribattleArena.BackendServer.Contexts.ProfileEntities
         public int Constitution { get; set; }
         public int Speed { get; set; }
         public int ActionPointsIncome { get; set; }
+        public int Cost { get; set; }
 
-        public bool InParty { get; set; }
-        public DateTime? DeletedDate { get; set; }
-
-        public string ProfileId { get; set; }
-        [ForeignKey("ProfileId")]
-        public Profile Profile { get; set; }
+        List<OfferItem> Offers { get; set; }
+        List<ActorTransaction> Transactions { get; set; }
     }
 }

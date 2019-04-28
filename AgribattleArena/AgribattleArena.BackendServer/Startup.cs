@@ -1,10 +1,14 @@
 ﻿using AgribattleArena.BackendServer.Contexts;
+using AgribattleArena.BackendServer.Services;
+using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace AgribattleArena.BackendServer
 {
@@ -27,22 +31,50 @@ namespace AgribattleArena.BackendServer
             if (!env.IsDevelopment())
                 services.Configure<MvcOptions>(o =>
                 o.Filters.Add(new RequireHttpsAttribute()));
+            services.Configure<ConstantsConfig>(Configuration.GetSection("Constants"));
             //DbContexts
             services.AddDbContext<NativesContext>(o => o.UseMySql(Configuration["ConnectionStrings:NativesDB"]));
+            services.AddDbContext<ProfilesContext>(o => o.UseMySql(Configuration["ConnectionStrings:ProfilesDB"]));
+            services.AddDbContext<StoreContext>(o => o.UseMySql(Configuration["ConnectionStrings:StoreDB"]));
             //
             services.AddSignalR();
+            services.AddIdentity<Contexts.ProfileEntities.Profile, IdentityRole>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                })
+                 .AddEntityFrameworkStores<ProfilesContext>()
+                 .AddUserManager<ProfilesService>()
+                 .AddDefaultTokenProviders();
+            services.AddScoped<IProfilesService, ProfilesService>();
+            services.AddTransient<IStoreRepository, StoreRepository>();
+            services.AddSingleton<Random>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>();
+                cfg.CreateMap<Contexts.ProfileEntities.Profile, Models.Profile.ProfileWithActorsDto>();
+                cfg.CreateMap<Contexts.ProfileEntities.Actor, Models.Profile.ActorDto>();
+                cfg.CreateMap<Contexts.ProfileEntities.Skill, string>()
+                    .ConvertUsing(c => c.Native);
+                cfg.CreateMap<Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
+                cfg.CreateMap<Contexts.StoreEntities.OfferItem, Contexts.StoreEntities.Actor>()
+                    .ConstructUsing(c => c.Actor);
+                cfg.CreateMap<Contexts.StoreEntities.Actor, Models.Store.ActorDto>();
+                cfg.CreateMap<Contexts.StoreEntities.Skill, string>()
+                    .ConstructUsing(c => c.Native);
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             app.UseHttpsRedirection();
-            app.UseMvc();
             app.UseAuthentication();
+            app.UseMvc();
         }
     }
 }

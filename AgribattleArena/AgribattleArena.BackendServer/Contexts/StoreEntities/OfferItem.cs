@@ -5,17 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.BackendServer.Contexts.ProfileEntities
+namespace AgribattleArena.BackendServer.Contexts.StoreEntities
 {
-    public class Skill
+    public class OfferItem
     {
         [Key]
-        public long Id { get; set; }
-        [MaxLength(30)]
-        [Required]
-        public string Native { get; set; }
+        public int Id { get; set; }
+        public int OfferId { get; set; }
+        [ForeignKey("OfferId")]
+        public Offer Offer { get; set; }
 
-        public long ActorId { get; set; }
+        public int ActorId { get; set; }
         [ForeignKey("ActorId")]
         public Actor Actor { get; set; }
     }

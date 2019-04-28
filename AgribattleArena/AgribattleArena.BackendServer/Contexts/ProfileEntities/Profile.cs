@@ -10,6 +10,7 @@ namespace AgribattleArena.BackendServer.Contexts.ProfileEntities
     {
         public int Resources { get; set; }
         public int DonationResources { get; set; }
+
         public List<Actor> Actors { get; set; }
     }
 }

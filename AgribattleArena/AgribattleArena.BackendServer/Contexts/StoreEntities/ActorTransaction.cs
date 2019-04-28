@@ -5,17 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.BackendServer.Contexts.ProfileEntities
+namespace AgribattleArena.BackendServer.Contexts.StoreEntities
 {
-
-    public class TagsArmor
+    public class ActorTransaction
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(15)]
-        public string Tag { get; set; }
-        public float Mod { get; set; }
+        public string ProfileId { get; set; }
+        public int Sum { get; set; }
 
         public int ActorId { get; set; }
         [ForeignKey("ActorId")]

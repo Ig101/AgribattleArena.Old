@@ -1,5 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.ProfileEntities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AgribattleArena.BackendServer.Contexts.StoreEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.BackendServer.Contexts
 {
-    public class ProfilesContext: IdentityDbContext<Profile>
+    public class StoreContext: DbContext
     {
         public DbSet<Actor> Actors { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<ActorTransaction> ActorTransactions { get; set; }
 
-        public ProfilesContext(DbContextOptions<ProfilesContext> options)
+        public StoreContext(DbContextOptions<StoreContext> options)
             : base(options)
         {
             Database.EnsureCreated();
@@ -25,7 +26,10 @@ namespace AgribattleArena.BackendServer.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Actor>().HasIndex(x => x.ProfileId);
+            modelBuilder.Entity<ActorTransaction>().ToTable("actor_transaction");
+            modelBuilder.Entity<ActorTransaction>().HasIndex(x => x.ProfileId);
+            modelBuilder.Entity<Offer>().HasIndex(x => x.ProfileId);
+            modelBuilder.Entity<OfferItem>().HasIndex(x => x.OfferId);
             modelBuilder.Entity<Skill>().HasIndex(x => x.ActorId);
             base.OnModelCreating(modelBuilder);
         }
