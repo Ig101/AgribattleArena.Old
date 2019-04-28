@@ -66,7 +66,7 @@ namespace AgribattleArena.Engine
         public INativeManager NativeManager { get { return nativeManager; } }
 
         public int Version { get { return version; } }
-        public IEnumerable<long> PlayerIds { get { return players.Select(x => x.Id); } }
+        public IEnumerable<string> PlayerIds { get { return players.Select(x => x.Id); } }
         public float RemainedTurnTime { get { return remainedTurnTime; } }
         public TileObject TempTileObject { get { return tempTileObject; } }
         public long Id { get { return id; } }
@@ -137,7 +137,7 @@ namespace AgribattleArena.Engine
             return tiles;
         }
 
-        public Player CreatePlayer (long id, int? team)
+        public Player CreatePlayer (string id, int? team)
         {
             Player player = new Player(this, id, team);
             players.Add(player);

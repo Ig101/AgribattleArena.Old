@@ -12,7 +12,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         float Mod { get; }
         float InitiativePosition { get; }
         float Health { get; }
-        long? OwnerId { get; }
+        string OwnerId { get; }
         bool IsAlive { get; }
         int X { get; }
         int Y { get; }

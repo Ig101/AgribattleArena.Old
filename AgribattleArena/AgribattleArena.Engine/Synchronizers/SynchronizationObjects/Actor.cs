@@ -21,7 +21,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public int Willpower { get; }
         public int Constitution { get; }
         public int Speed { get; }
-        public long? OwnerId { get; }
+        public string OwnerId { get; }
         public List<ISkill> Skills { get; }
         public int ActionPointsIncome { get; }
         public List<IBuff> Buffs { get; }

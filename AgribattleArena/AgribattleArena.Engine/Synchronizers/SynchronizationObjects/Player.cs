@@ -11,7 +11,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
     {
         public List<ForExternalUse.Generation.ObjectInterfaces.IActor> KeyActorsGen { get; }
 
-        public long Id { get; }
+        public string Id { get; }
         public int? Team { get; }
         public List<int> KeyActorsSync { get; }
         public int TurnsSkipped { get; }
@@ -26,7 +26,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
             this.Status = player.Status;
         }
 
-        public Player(long id, int? team, List<ForExternalUse.Generation.ObjectInterfaces.IActor> keyActors)
+        public Player(string id, int? team, List<ForExternalUse.Generation.ObjectInterfaces.IActor> keyActors)
         {
             this.Team = team;
             this.Id = id;

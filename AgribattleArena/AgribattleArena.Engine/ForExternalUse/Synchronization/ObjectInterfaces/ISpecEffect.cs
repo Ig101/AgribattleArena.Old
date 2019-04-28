@@ -7,7 +7,7 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
     public interface ISpecEffect
     {
         int Id { get; }
-        long? OwnerId { get; }
+        string OwnerId { get; }
         bool IsAlive { get; }
         int X { get; }
         int Y { get; }

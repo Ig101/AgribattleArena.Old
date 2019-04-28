@@ -29,7 +29,7 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
                 speed, skillNames, actionPointsIncome, startBuffs);
         }
 
-        public static IPlayer CreatePlayerForGeneration (long id, int? team, IEnumerable<IActor> keyActors)
+        public static IPlayer CreatePlayerForGeneration (string id, int? team, IEnumerable<IActor> keyActors)
         {
             return new Synchronizers.SynchronizationObjects.Player(id, team, keyActors.ToList());
         }

@@ -22,8 +22,8 @@ namespace AgribattleArena.Tests.Engine.Helpers
         public static IEnumerable<IPlayer> CreatePlayers(IEnumerable<IActor> firstActors, IEnumerable<IActor> secondActors)
         {
             List<IPlayer> players = new List<IPlayer>();
-            players.Add(EngineHelper.CreatePlayerForGeneration(1, null, firstActors));
-            players.Add(EngineHelper.CreatePlayerForGeneration(2, null, secondActors));
+            players.Add(EngineHelper.CreatePlayerForGeneration("1", null, firstActors));
+            players.Add(EngineHelper.CreatePlayerForGeneration("2", null, secondActors));
             return players;
         }
 

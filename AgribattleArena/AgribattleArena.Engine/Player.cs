@@ -8,7 +8,7 @@ namespace AgribattleArena.Engine
     {
         ISceneParentRef parent;
 
-        long id;
+        string id;
         int? team;
         List<Actor> keyActors;
         int turnsSkipped;
@@ -16,12 +16,12 @@ namespace AgribattleArena.Engine
 
         public int? Team { get { return team; } }
         public ISceneParentRef Parent { get { return parent; } }
-        public long Id { get { return id; } }
+        public string Id { get { return id; } }
         public List<Actor> KeyActors { get { return keyActors; } }
         public int TurnsSkipped { get { return turnsSkipped; } }
         public PlayerStatus Status { get { return status; } set { status = value; } }
 
-        public Player (ISceneParentRef parent, long id, int? team)
+        public Player (ISceneParentRef parent, string id, int? team)
         {
             this.team = team;
             this.parent = parent;
