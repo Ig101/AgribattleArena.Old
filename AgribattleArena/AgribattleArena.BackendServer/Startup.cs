@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 
 namespace AgribattleArena.BackendServer
 {
@@ -62,11 +63,23 @@ namespace AgribattleArena.BackendServer
                 cfg.CreateMap<Contexts.ProfileEntities.Skill, string>()
                     .ConvertUsing(c => c.Native);
                 cfg.CreateMap<Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
-                cfg.CreateMap<Contexts.StoreEntities.OfferItem, Contexts.StoreEntities.Actor>()
-                    .ConstructUsing(c => c.Actor);
-                cfg.CreateMap<Contexts.StoreEntities.Actor, Models.Store.ActorDto>();
                 cfg.CreateMap<Contexts.StoreEntities.Skill, string>()
                     .ConstructUsing(c => c.Native);
+                cfg.CreateMap<Contexts.StoreEntities.OfferItem, Models.Store.ActorDto>()
+                    .ConvertUsing(c => new Models.Store.ActorDto()
+                    {
+                        Id = c.Id,
+                        ActionPointsIncome = c.Actor.ActionPointsIncome,
+                        Strength = c.Actor.Strength,
+                        Willpower = c.Actor.Willpower,
+                        Constitution = c.Actor.Constitution,
+                        Speed = c.Actor.Speed,
+                        Cost = c.Actor.Cost,
+                        ActorNative = c.Actor.ActorNative,
+                        AttackingSkillNative = c.Actor.AttackingSkillNative,
+                        Name = c.Actor.Name,
+                        Skills = AutoMapper.Mapper.Map<List<string>>(c.Actor.Skills)
+                    });
             });
             if (env.IsDevelopment())
             {

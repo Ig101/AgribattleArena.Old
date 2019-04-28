@@ -9,7 +9,7 @@ namespace AgribattleArena.Engine.Natives
     public class BuffNative: TaggingNative
     {
         public bool Eternal { get; }
-        public bool Repeatable { get; }
+        public int Repeatable { get; }
         public bool SummarizeLength { get; }
         public BuffActions.Action Action { get; }
         public BuffActions.Applier Applier { get; }
@@ -17,7 +17,7 @@ namespace AgribattleArena.Engine.Natives
         public float? DefaultDuration { get; }
         public float DefaultMod { get; }
 
-        public BuffNative(string id, string idForFront, string[] tags, bool eternal, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, 
+        public BuffNative(string id, string idForFront, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, 
             IEnumerable<string> applierNames, IEnumerable<string> onPurgeActionNames)
             :this(id, idForFront, tags, eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
                  actionNames.Select(actionName => (BuffActions.Action)Delegate.CreateDelegate(typeof(BuffActions.Action), 
@@ -30,12 +30,12 @@ namespace AgribattleArena.Engine.Natives
 
         }
 
-        public BuffNative(string id, string idForFront, string[] tags, bool eternal, bool repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, 
+        public BuffNative(string id, string idForFront, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, 
             IEnumerable<BuffActions.Action> actions, IEnumerable<BuffActions.Applier> appliers, IEnumerable<BuffActions.OnPurgeAction> onPurgeActions)
             :base(id, idForFront, tags)
         {
             this.Eternal = eternal;
-            this.Repeatable = repeatable;
+            this.Repeatable = repeatable < 1 ? 1 : repeatable;
             this.SummarizeLength = summarizeLength;
             this.DefaultDuration = defaultDuration;
             this.DefaultMod = defaultMod;

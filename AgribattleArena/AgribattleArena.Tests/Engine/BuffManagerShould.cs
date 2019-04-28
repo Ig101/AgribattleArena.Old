@@ -88,9 +88,9 @@ namespace AgribattleArena.Tests.Engine
             {
                 _actor.BuffManager.AddBuff(name, 10, 1);
             }
-            Assert.That(_actor.Buffs.Count, Is.EqualTo(name == "test_buff_multiple" ? 5 : 1), "Buffs count");
+            Assert.That(_actor.Buffs.Count, Is.EqualTo(name == "test_buff_multiple" ? 4 : 1), "Buffs count");
             Assert.That(_actor.Buffs[0].Duration, Is.EqualTo(name == "test_buff_summarize" ? 5 : 1), "Buffs duration");
-            Assert.That(_actor.MaxHealth, Is.EqualTo(name == "test_buff_multiple" ? 100 : 60), "Actor health");
+            Assert.That(_actor.MaxHealth, Is.EqualTo(name == "test_buff_multiple" ? 90 : 60), "Actor health");
         }
         #endregion
 

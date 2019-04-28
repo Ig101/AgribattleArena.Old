@@ -37,17 +37,17 @@ namespace AgribattleArena.Tests.Engine.Helpers
             nativeManager.AddSkillNative("test_actor_attack_range", new string[] { }, 4, 1, 0, 12.5f, new string[] { "DoDamageAttack" });
             nativeManager.AddSkillNative("test_actor_skill", new string[] { "test_skill_tag" }, 1, 1, 0, 60, new string[] { "DoDamageSkill" });
             nativeManager.AddSkillNative("test_actor_skill_range", new string[] { }, 4, 2, 2, 10, new string[] { "DoDamageSkill" });
-            nativeManager.AddBuffNative("test_buff_default", new string[] { "buff" }, false, false, false, null, 1, 
+            nativeManager.AddBuffNative("test_buff_default", new string[] { "buff" }, false, 1, false, null, 1, 
                 new string[] { }, new string[] { "AddTestAttackAndArmor", "AddStrength", "AddMaxHealth" }, new string[] { "DamageSelfPurge" });
-            nativeManager.AddBuffNative("test_buff_duration", new string[] { "buff" }, false, false, false, 1, 1,
+            nativeManager.AddBuffNative("test_buff_duration", new string[] { "buff" }, false, 1, false, 1, 1,
                 new string[] { }, new string[] { }, new string[] { });
-            nativeManager.AddBuffNative("test_buff_eternal", new string[] { "item" }, true, false, false, null, 1,
+            nativeManager.AddBuffNative("test_buff_eternal", new string[] { "item" }, true, 1, false, null, 1,
                 new string[] { }, new string[] { "AddMaxHealth" }, new string[] { "DamageSelfPurge" });
-            nativeManager.AddBuffNative("test_buff_multiple", new string[] { "buff" }, false, true, false, null, 1,
+            nativeManager.AddBuffNative("test_buff_multiple", new string[] { "buff" }, false, 4, false, null, 1,
                 new string[] { }, new string[] { "AddMaxHealth" }, new string[] { });
-            nativeManager.AddBuffNative("test_buff_summarize", new string[] { "buff" }, false, false, true, null, 1,
+            nativeManager.AddBuffNative("test_buff_summarize", new string[] { "buff" }, false, 1, true, null, 1,
                 new string[] { }, new string[] { "AddMaxHealth" }, new string[] { });
-            nativeManager.AddBuffNative("test_debuff", new string[] { "debuff" }, false, false, false, null, 1,
+            nativeManager.AddBuffNative("test_debuff", new string[] { "debuff" }, false, 1, false, null, 1,
                 new string[] { "DamageSelf"  }, new string[] { }, new string[] { "DamageSelfPurge" });
             nativeManager.AddRoleModelNative("test_roleModel", 10, 10, 10, 10, 4, "test_actor_attack", new string[] { "test_actor_skill" });
         }

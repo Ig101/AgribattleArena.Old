@@ -233,9 +233,10 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
         public Buff AddBuff(Buff buff)
         {
             parent.Affected = true;
-            Buff tempVersion;
-            if (!buff.Native.Repeatable && (tempVersion = buffs.Find(x => x.Native.Id == buff.Native.Id)) != null)
+            List<Buff> neededBuffs = buffs.FindAll(x => x.Native.Id == buff.Native.Id);
+            if (buff.Native.Repeatable<=1 && neededBuffs.Count>0)
             {
+                Buff tempVersion = neededBuffs.First();
                 if (buff.Duration != null)
                 {
                     if (buff.Native.SummarizeLength)
@@ -252,6 +253,10 @@ namespace AgribattleArena.Engine.Objects.Immaterial.Buffs
             }
             else
             {
+                if(neededBuffs.Count >= buff.Native.Repeatable)
+                {
+                    buffs.Remove(neededBuffs.OrderBy(x => x.Duration).First());
+                }
                 buffs.Add(buff);
             }
             RecalculateBuffs();
