@@ -17,7 +17,7 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
 
         [InverseProperty("Action")]
         public List<Decoration> Decorations { get; set; }
-        [InverseProperty("OnDeath")]
+        [InverseProperty("OnDeathAction")]
         public List<Decoration> OnDeathDecorations { get; set; }
 
         [InverseProperty("Action")]

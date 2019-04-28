@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AgribattleArena.BackendServer.Contexts;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,9 @@ namespace AgribattleArena.BackendServer
             if (!env.IsDevelopment())
                 services.Configure<MvcOptions>(o =>
                 o.Filters.Add(new RequireHttpsAttribute()));
+            //DbContexts
+            services.AddDbContext<NativesContext>(o => o.UseMySql(Configuration["ConnectionStrings:NativesDB"]));
+            //
             services.AddSignalR();
         }
 
