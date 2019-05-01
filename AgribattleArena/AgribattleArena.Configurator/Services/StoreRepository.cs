@@ -1,14 +1,15 @@
-﻿using AgribattleArena.ConfigurationServer.Models;
+﻿using AgribattleArena.Configurator.Models;
 using AgribattleArena.DBProvider.Contexts;
 using AgribattleArena.DBProvider.Contexts.StoreEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.ConfigurationServer.Services
+namespace AgribattleArena.Configurator.Services
 {
-    public class StoreRepository: IStoreRepository
+    class StoreRepository
     {
         StoreContext _context;
 
@@ -17,9 +18,9 @@ namespace AgribattleArena.ConfigurationServer.Services
             _context = context;
         }
 
-        public async Task<bool> AddNewActor(ActorToAddDto actor)
+        public async Task<bool> AddNewActor(StoreActorDto actor)
         {
-            if(_context.Actor.Where(x => x.Name == actor.Name).Count()==0)
+            if (_context.Actor.Where(x => x.Name == actor.Name).Count() == 0)
             {
                 await _context.Actor.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
                 return true;
