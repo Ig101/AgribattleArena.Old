@@ -7,6 +7,7 @@ namespace AgribattleArena.Configurator.Models
 {
     class StoreActorDto: ActionObject
     {
+        [Required]
         [MaxLength(30)]
         public string Name { get; set; }
         [MaxLength(30)]

@@ -18,11 +18,66 @@ namespace AgribattleArena.Configurator.Services
             _context = context;
         }
 
-        public async Task<Response> AddNewActor(StoreActorDto actor)
+        public async Task<Response> AddActor(StoreActorDto actor)
         {
             if (_context.Actor.Where(x => x.Name == actor.Name).Count() == 0)
             {
-                await _context.Actor.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
+                if (actor.ActionPointsIncome != null &&
+                    actor.ActorNative != null &&
+                    actor.AttackingSkillNative != null &&
+                    actor.Constitution != null &&
+                    actor.Cost != null &&
+                    actor.Name != null &&
+                    actor.Speed != null &&
+                    actor.Strength != null &&
+                    actor.Willpower != null &&
+                    actor.Skills != null
+                    )
+                {
+                    await _context.Actor.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
+                    await _context.SaveChangesAsync();
+                    return Response.Success;
+                }
+                else
+                {
+                    return Response.Error;
+                }
+            }
+            return Response.NoChanges;
+        }
+
+        public async Task<Response> ChangeActor(StoreActorDto actor)
+        {
+            IEnumerable<Actor> actorsToChange;
+            if ((actorsToChange = _context.Actor.Where(x => x.Name == actor.Name)).Count() > 0)
+            {
+                var actorToChange = actorsToChange.First();
+                if (actor.ActionPointsIncome != null) actorToChange.ActionPointsIncome = actor.ActionPointsIncome.Value;
+                if (actor.ActorNative != null) actorToChange.ActorNative = actor.ActorNative;
+                if (actor.AttackingSkillNative != null) actorToChange.AttackingSkillNative = actor.AttackingSkillNative;
+                if (actor.Constitution != null) actorToChange.Constitution = actor.Constitution.Value;
+                if (actor.Willpower != null) actorToChange.Willpower = actor.Willpower.Value;
+                if (actor.Strength != null) actorToChange.Strength = actor.Strength.Value;
+                if (actor.Speed != null) actorToChange.Speed = actor.Speed.Value;
+                if (actor.Cost != null) actorToChange.Cost = actor.Cost.Value;
+                if (actor.Skills != null)
+                {
+                    actorToChange.Skills = AutoMapper.Mapper.Map<List<Skill>>(actor.Skills);
+                }
+                await _context.SaveChangesAsync();
+                return Response.Success;
+            }
+            return Response.NoChanges;
+        }
+
+        public async Task<Response> RemoveActor(string actorName)
+        {
+            if (actorName == null) return Response.Error;
+            IEnumerable<Actor> actorsToDelete;
+            if ((actorsToDelete = _context.Actor.Where(x => x.Name == actorName)).Count() > 0)
+            {
+                _context.Actor.RemoveRange(actorsToDelete);
+                await _context.SaveChangesAsync();
                 return Response.Success;
             }
             return Response.NoChanges;

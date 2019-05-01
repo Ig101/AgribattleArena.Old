@@ -16,8 +16,10 @@ namespace AgribattleArena.Configurator
         static DbContextOptionsBuilder<StoreContext> _storeOptions;
 
         static void Main(string[] args)
-        {
-            
+        { 
+            //Temporary parameter for tests
+            args = new string[] { "--update", "Documents/initialStoreActorsDocument.json" };
+            //
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
 #if DEBUG
@@ -37,10 +39,10 @@ namespace AgribattleArena.Configurator
                 cfg.CreateMap<StoreActorDto, DBProvider.Contexts.StoreEntities.Actor>();
             });
 
-                if (args.Length>1 && args[0] == "--update" && File.Exists(args[1]))
+            if (args.Length>1 && args[0] == "--update" && File.Exists(args[1]))
             {
                 ChangingDocumentDto document;
-                using (StreamReader file = File.OpenText(args[0]))
+                using (StreamReader file = File.OpenText(args[1]))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     document = (ChangingDocumentDto)serializer.Deserialize(file,typeof(ChangingDocumentDto));
@@ -52,6 +54,8 @@ namespace AgribattleArena.Configurator
                     );
                 processor.Process(document).Wait();
             }
+            Console.WriteLine("Completed");
+            Console.ReadLine();
         }
     }
 }

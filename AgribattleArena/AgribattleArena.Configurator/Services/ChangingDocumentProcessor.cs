@@ -19,18 +19,18 @@ namespace AgribattleArena.Configurator.Services
             _store = store;
         }
 
-        void ResponseToConsole(Response response, string name, string category)
+        void ResponseToConsole(Response response, string name, string category, Models.Action action)
         {
             switch(response)
             {
                 case Response.Success:
-                    Console.WriteLine("Object {1} {0} changed.", name, category);
+                    Console.WriteLine("{2}. Object {1} {0} changed.", name, category, action);
                     break;
                 case Response.NoChanges:
-                    Console.WriteLine("Object {1} {0} not changed.", name, category);
+                    Console.WriteLine("{2}. Object {1} {0} not changed.", name, category, action);
                     break;
                 case Response.Error:
-                    Console.WriteLine("Object {1} {0} not changed due to error.", name, category);
+                    Console.WriteLine("{2}. Object {1} {0} not changed due to an error.", name, category, action);
                     break;
             }
         }
@@ -43,13 +43,19 @@ namespace AgribattleArena.Configurator.Services
                 switch(storeActor.DocumentAction)
                 {
                     case Models.Action.Create:
-                        result = await _store.AddNewActor(storeActor);
+                        result = await _store.AddActor(storeActor);
+                        break;
+                    case Models.Action.Update:
+                        result = await _store.ChangeActor(storeActor);
+                        break;
+                    case Models.Action.Delete:
+                        result = await _store.RemoveActor(storeActor.Name);
                         break;
                     default:
                         result = Response.NoChanges;
                         break;
                 }
-                ResponseToConsole(result, storeActor.Name, "StoreActor");
+                ResponseToConsole(result, storeActor.Name, "StoreActor", storeActor.DocumentAction);
             }
         }
     }

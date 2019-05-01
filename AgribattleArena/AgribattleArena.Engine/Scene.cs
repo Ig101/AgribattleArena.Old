@@ -334,6 +334,13 @@ namespace AgribattleArena.Engine
         void Update(float time)
         {
             passedTime += time;
+            for (int x = 0; x < tiles.Length; x++)
+            {
+                for (int y = 0; y < tiles[x].Length; y++)
+                {
+                    tiles[x][y].Update(time);
+                }
+            }
             foreach (TileObject obj in actors)
             {
                 obj.Update(time);
@@ -345,13 +352,6 @@ namespace AgribattleArena.Engine
             foreach (SpecEffect eff in specEffects)
             {
                 eff.Update(time);
-            }
-            for(int x = 0; x<tiles.Length;x++)
-            {
-                for(int y= 0; y<tiles[x].Length;y++)
-                {
-                    tiles[x][y].Update(time);
-                }
             }
         }
 
