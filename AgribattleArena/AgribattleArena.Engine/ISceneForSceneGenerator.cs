@@ -13,6 +13,7 @@ namespace AgribattleArena.Engine
         VarManagers.IVarManager VarManager { get; }
         NativeManagers.INativeManager NativeManager { get; }
 
+        void SetupEnemyActorsPrefix(string prefix);
         Tile[][] SetupEmptyTileSet(int width, int height);
         Player CreatePlayer(string id, int? team);
         Actor CreateActor(Player owner, string nativeName, string roleNativeName, Tile target, float? z);

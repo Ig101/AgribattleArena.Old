@@ -40,7 +40,8 @@ namespace AgribattleArena.BackendServer.Controllers
                 UserName = registrationModel.Login,
                 Email = registrationModel.Email,
                 Resources = _constants.StartResourcesAmount,
-                DonationResources = _constants.StartDonationResourcesAmount
+                DonationResources = _constants.StartDonationResourcesAmount,
+                Revelations = 0
             };
             var result = await _userManager.CreateAsync(newUser, registrationModel.Password);
             if (result.Succeeded)

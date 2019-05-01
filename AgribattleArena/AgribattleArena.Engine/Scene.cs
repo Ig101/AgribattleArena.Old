@@ -46,10 +46,12 @@ namespace AgribattleArena.Engine
         int idsCounter;
         int randomCounter;
         float passedTime;
+        string enemyActorsPrefix;
 
         public bool IsActive { get { return isActive; } }
 
         public float PassedTime { get { return passedTime; } }
+        public string EnemyActorsPrefix { get { return enemyActorsPrefix; } }
         public DefeatConditionMethod DefeatCondition { get { return defeatCondition; } }
         public WinConditionMethod WinCondition { get { return winCondition; } }
         public Random GameRandom { get { return gameRandom; } }
@@ -84,6 +86,7 @@ namespace AgribattleArena.Engine
             ISceneGenerator tempGenerator = (ISceneGenerator)generator;
             this.winCondition = tempGenerator.WinCondition;
             this.defeatCondition = tempGenerator.DefeatCondition;
+            this.enemyActorsPrefix = String.Empty;
             this.idsCounter = 0;
             this.players = new List<Player>();
             this.actors = new List<Actor>();
@@ -111,6 +114,11 @@ namespace AgribattleArena.Engine
         public List<Actor> GetPlayerActors(Player player)
         {
             return actors.FindAll(x => x.Owner == player);
+        }
+
+        public void SetupEnemyActorsPrefix(string prefix)
+        {
+            this.enemyActorsPrefix = prefix;
         }
 
         #region Creation

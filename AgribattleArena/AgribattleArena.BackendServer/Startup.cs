@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AgribattleArena.BackendServer
 {
@@ -17,13 +18,39 @@ namespace AgribattleArena.BackendServer
     {
         IHostingEnvironment env;
 
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             this.env = env;
         }
 
-        public IConfiguration Configuration { get; }
+        async Task CreateAdminUserIsNotExists(UserManager<Contexts.ProfileEntities.Profile> userManager, RoleManager<IdentityRole> roleManager, 
+            string adminPassword)
+        {
+            if (!await roleManager.RoleExistsAsync("admin"))
+            {
+                var result = await roleManager.CreateAsync(new IdentityRole("admin"));
+            }
+            var user = userManager.FindByNameAsync("admin").Result;
+            if(user == null)
+            {
+                user = new Contexts.ProfileEntities.Profile()
+                {
+                    UserName = "admin",
+                    Email = "admin@noemail.com",
+                    Resources = 0,
+                    DonationResources = 0,
+                    Revelations = 0
+                };
+                var result = await userManager.CreateAsync(user,adminPassword);
+            }
+            if(!await userManager.IsInRoleAsync(user, "admin"))
+            {
+                var result = await userManager.AddToRoleAsync(user, "admin");
+            }
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -52,7 +79,7 @@ namespace AgribattleArena.BackendServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
 
             AutoMapper.Mapper.Initialize(cfg =>
@@ -88,6 +115,9 @@ namespace AgribattleArena.BackendServer
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+
+            CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<Contexts.ProfileEntities.Profile>>(),
+                services.GetRequiredService<RoleManager<IdentityRole>>(), Configuration["Global:AdminPassword"]).Wait();
         }
     }
 }

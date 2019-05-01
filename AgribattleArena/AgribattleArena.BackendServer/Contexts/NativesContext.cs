@@ -21,7 +21,7 @@ namespace AgribattleArena.BackendServer.Contexts
         public NativesContext(DbContextOptions<NativesContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
