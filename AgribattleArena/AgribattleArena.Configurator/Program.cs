@@ -17,11 +17,15 @@ namespace AgribattleArena.Configurator
 
         static void Main(string[] args)
         {
+            
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
+#if DEBUG
+                .AddJsonFile("appsettings.Development.json", false, true);
+#else
                 .AddJsonFile("appsettings.json", false, true);
+#endif
             IConfiguration configuration = builder.Build();
-
             _nativesOptions = new DbContextOptionsBuilder<NativesContext>().UseMySql(configuration["ConnectionStrings:NativesDB"]);
             _profilesOptions = new DbContextOptionsBuilder<ProfilesContext>().UseMySql(configuration["ConnectionStrings:ProfilesDB"]);
             _storeOptions = new DbContextOptionsBuilder<StoreContext>().UseMySql(configuration["ConnectionStrings:StoreDB"]);
