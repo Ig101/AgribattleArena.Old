@@ -19,28 +19,37 @@ namespace AgribattleArena.Configurator.Services
             _store = store;
         }
 
+        void ResponseToConsole(Response response, string name, string category)
+        {
+            switch(response)
+            {
+                case Response.Success:
+                    Console.WriteLine("Object {1} {0} changed.", name, category);
+                    break;
+                case Response.NoChanges:
+                    Console.WriteLine("Object {1} {0} not changed.", name, category);
+                    break;
+                case Response.Error:
+                    Console.WriteLine("Object {1} {0} not changed due to error.", name, category);
+                    break;
+            }
+        }
+
         public async Task Process(ChangingDocumentDto document)
         {
             foreach(var storeActor in document.StoreActors)
             {
-                bool result;
+                Response result;
                 switch(storeActor.DocumentAction)
                 {
                     case Models.Action.Create:
                         result = await _store.AddNewActor(storeActor);
                         break;
                     default:
-                        result = false;
+                        result = Response.NoChanges;
                         break;
                 }
-                if(result)
-                {
-                    Console.WriteLine("{0} processed.", storeActor.Name);
-                }
-                else
-                {
-                    Console.WriteLine("{0} not processed due to error.", storeActor.Name);
-                }
+                ResponseToConsole(result, storeActor.Name, "StoreActor");
             }
         }
     }

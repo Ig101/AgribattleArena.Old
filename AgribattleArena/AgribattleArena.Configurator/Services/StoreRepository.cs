@@ -18,14 +18,14 @@ namespace AgribattleArena.Configurator.Services
             _context = context;
         }
 
-        public async Task<bool> AddNewActor(StoreActorDto actor)
+        public async Task<Response> AddNewActor(StoreActorDto actor)
         {
             if (_context.Actor.Where(x => x.Name == actor.Name).Count() == 0)
             {
                 await _context.Actor.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
-                return true;
+                return Response.Success;
             }
-            return false;
+            return Response.NoChanges;
         }
     }
 }

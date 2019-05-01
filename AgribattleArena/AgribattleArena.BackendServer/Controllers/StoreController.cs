@@ -29,16 +29,7 @@ namespace AgribattleArena.BackendServer.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public IActionResult GetStoreInfo ()
-        {
-            return Ok(new StoreInfoDto
-            {
-                ActorOfferLink = Url.RouteUrl("GetActorOffers")
-            });
-        }
-
-        [HttpGet("actors", Name = "GetActorOffers")]
+        [HttpGet("actors/offer", Name = "GetActorOffers")]
         public async Task<IActionResult> GetActorOffers ()
         {
             string userId = _profilesService.GetUserID(User);

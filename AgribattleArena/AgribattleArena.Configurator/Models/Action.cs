@@ -4,8 +4,5 @@ using System.Text;
 
 namespace AgribattleArena.Configurator.Models
 {
-    class ActionObject
-    {
-        public Action DocumentAction { get; set; }
-    }
+    public enum Action { Create, Update, Delete };
 }
