@@ -3,9 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# DevelopmentConfig
-*.Development.json
-
 # Migrations
 [Mm]igrations/
 
@@ -334,3 +331,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# DevelopmentConfig
+*.Development.json
