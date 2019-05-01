@@ -12,5 +12,6 @@ namespace AgribattleArena.BackendServer.Models.Profile
         public string Email { get; set; }
         public int Resources { get; set; }
         public int DonationResources { get; set; }
+        public int Revelations { get; set; }
     }
 }

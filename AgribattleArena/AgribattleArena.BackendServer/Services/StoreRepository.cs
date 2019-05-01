@@ -1,5 +1,6 @@
 ﻿using AgribattleArena.BackendServer.Contexts;
 using AgribattleArena.BackendServer.Contexts.StoreEntities;
+using AgribattleArena.BackendServer.Models.Store;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -82,6 +83,11 @@ namespace AgribattleArena.BackendServer.Services
                 }
             }
             return null;
+        }
+
+        public Task<bool> AddNewActor(ActorToAddDto actor)
+        {
+            throw new NotImplementedException();
         }
     }
 }

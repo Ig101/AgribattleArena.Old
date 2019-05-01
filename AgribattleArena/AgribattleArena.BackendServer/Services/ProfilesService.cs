@@ -1,4 +1,5 @@
-﻿using AgribattleArena.BackendServer.Contexts.ProfileEntities;
+﻿using AgribattleArena.BackendServer.Contexts;
+using AgribattleArena.BackendServer.Contexts.ProfileEntities;
 using AgribattleArena.BackendServer.Models.Profile;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -12,15 +13,19 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.BackendServer.Services
 {
-    public class ProfilesService: UserManager<Profile>, IProfilesService
+    public class ProfilesService: UserManager<Profile>, IProfilesService, IProfilesServiceAggregated
     {
+        IStoredInfoService _storedInfoService;
+        ProfilesContext _context;
 
         public ProfilesService(IUserStore<Profile> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<Profile> passwordHasher,
             IEnumerable<IUserValidator<Profile>> userValidators, IEnumerable<IPasswordValidator<Profile>> passwordValidators, ILookupNormalizer keyNormalizer,
-            IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Profile>> logger)
+            IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Profile>> logger, IStoredInfoService storedInfoService,
+            ProfilesContext context)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-
+            _storedInfoService = storedInfoService;
+            _context = context;
         }
 
         public async Task<Profile> GetProfile(ClaimsPrincipal user, bool withActors)
@@ -72,15 +77,25 @@ namespace AgribattleArena.BackendServer.Services
             return profile;
         }
 
-        public async Task<Profile> ChangeResourcesAmount (ClaimsPrincipal user, int? resources, int? donationResources)
+        public async Task<Profile> ChangeResourcesAmount (ClaimsPrincipal user, int? resources, int? donationResources, int? revelations)
         {
             Profile profile = await GetUserAsync(user);
             if (resources != null) profile.Resources += resources.Value;
             if (donationResources != null) profile.DonationResources += resources.Value;
+            if (revelations != null)
+            {
+                profile.Revelations += revelations.Value;
+                _storedInfoService.RevelationsMemory += revelations.Value;
+            }
             var result = await UpdateAsync(profile);
             if (result.Succeeded)
                 return profile;
             return null;
+        }
+
+        public IEnumerable<ProfileDto> GetAllProfiles()
+        {
+            return AutoMapper.Mapper.Map<IEnumerable<ProfileDto>>(_context.Users);
         }
     }
 }

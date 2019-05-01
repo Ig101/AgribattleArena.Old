@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -73,9 +74,15 @@ namespace AgribattleArena.BackendServer
                  .AddEntityFrameworkStores<ProfilesContext>()
                  .AddUserManager<ProfilesService>()
                  .AddDefaultTokenProviders();
-            services.AddScoped<IProfilesService, ProfilesService>();
-            services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddSingleton<Random>();
+            services.AddSingleton<IStoredInfoService, StoredInfoService>();
+            services.AddSingleton<IStoredInfoServiceGenerator, StoredInfoService>();
+
+            services.AddTransient<IProfilesService, ProfilesService>();
+            services.AddTransient<IProfilesServiceAggregated, ProfilesService>();
+
+            services.AddTransient<IStoreRepository, StoreRepository>();
+            services.AddTransient<INativesRepository, NativesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -114,10 +121,12 @@ namespace AgribattleArena.BackendServer
             }
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseMvc();
 
+            services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
             CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<Contexts.ProfileEntities.Profile>>(),
                 services.GetRequiredService<RoleManager<IdentityRole>>(), Configuration["Global:AdminPassword"]).Wait();
+
+            app.UseMvc();
         }
     }
 }
