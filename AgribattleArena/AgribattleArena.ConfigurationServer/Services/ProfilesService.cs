@@ -13,12 +13,14 @@ namespace AgribattleArena.ConfigurationServer.Services
 {
     public class ProfilesService: UserManager<Profile>, IProfilesService
     {
+        ProfilesContext _context;
+
         public ProfilesService(IUserStore<Profile> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<Profile> passwordHasher,
             IEnumerable<IUserValidator<Profile>> userValidators, IEnumerable<IPasswordValidator<Profile>> passwordValidators, ILookupNormalizer keyNormalizer,
-            IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Profile>> logger)
+            IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<Profile>> logger, ProfilesContext context)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
-
+            _context = context;
         }
 
         public async Task<bool> IsAdmin(ClaimsPrincipal user)

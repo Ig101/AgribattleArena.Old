@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AgribattleArena.ConfigurationServer.Services
 {
-    public interface IProfilesService
+    public interface INativesRepository
     {
-        Task<bool> IsAdmin(ClaimsPrincipal user);
     }
 }

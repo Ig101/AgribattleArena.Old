@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AgribattleArena.ConfigurationServer.Services;
 using AgribattleArena.DBProvider.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -70,6 +71,9 @@ namespace AgribattleArena.ConfigurationServer
                 })
                  .AddEntityFrameworkStores<ProfilesContext>()
                  .AddDefaultTokenProviders();
+            services.AddTransient<IProfilesService, ProfilesService>();
+            services.AddTransient<IStoreRepository, StoreRepository>();
+            services.AddTransient<INativesRepository, NativesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +82,9 @@ namespace AgribattleArena.ConfigurationServer
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                
+                cfg.CreateMap<string, DBProvider.Contexts.StoreEntities.Skill>()
+                    .ConstructUsing(c => new DBProvider.Contexts.StoreEntities.Skill() { Native = c });
+                cfg.CreateMap<Models.ActorToAddDto, DBProvider.Contexts.StoreEntities.Actor>();
             });
             if (env.IsDevelopment())
             {
