@@ -21,7 +21,10 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
 
         public static void DamageSelf(ISceneParentRef scene, IActorParentRef actor, Buff buff, float time)
         {
-            actor.Damage(buff.Mod * time, buff.Native.Tags);
+            if (time > 0)
+            {
+                actor.Damage(buff.Mod * time, buff.Native.Tags);
+            }
         }
 
         public static void DamageSelfPurge(ISceneParentRef scene, IActorParentRef actor, Buff buff)

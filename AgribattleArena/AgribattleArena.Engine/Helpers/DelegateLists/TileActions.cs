@@ -14,9 +14,12 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
 
         public static void DoDamage (ISceneParentRef parent, Tile tile, float time)
         {
-            if(tile.TempObject!=null)
+            if (time > 0)
             {
-                tile.TempObject.Damage(tile.Native.DefaultMod * time, tile.Native.Tags);
+                if (tile.TempObject != null)
+                {
+                    tile.TempObject.Damage(tile.Native.DefaultMod * time, tile.Native.Tags);
+                }
             }
         }
     }

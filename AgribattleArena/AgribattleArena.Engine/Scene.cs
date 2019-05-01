@@ -471,7 +471,14 @@ namespace AgribattleArena.Engine
                 bool result = actor.Move(tiles[targetX][targetY]);
                 if (result)
                 {
-                    if(AfterUpdateSynchronization(Helpers.Action.Move, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
+                    bool actionAvailability = actor.CheckActionAvailability();
+                    if (actionAvailability)
+                    {
+                        Update(0);
+                        AfterActionUpdate();
+                    }
+                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Move, actor, null, targetX, targetY);
+                    if(afterActionUpdateSynchronization && !actionAvailability)
                         EndTurn();
                 }
                 return result;
@@ -491,7 +498,14 @@ namespace AgribattleArena.Engine
                 bool result = actor.Cast(skillId, tiles[targetX][targetY]);
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Cast, actor, skillId, targetX, targetY) && !actor.CheckActionAvailability())
+                    bool actionAvailability = actor.CheckActionAvailability();
+                    if (actionAvailability)
+                    {
+                        Update(0);
+                        AfterActionUpdate();
+                    }
+                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Cast, actor, skillId, targetX, targetY);
+                    if (afterActionUpdateSynchronization && !actionAvailability)
                         EndTurn();
                 }
                 return result;
@@ -511,7 +525,14 @@ namespace AgribattleArena.Engine
                 bool result = actor.Attack(tiles[targetX][targetY]);
                 if (result)
                 {
-                    if (AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, targetX, targetY) && !actor.CheckActionAvailability())
+                    bool actionAvailability = actor.CheckActionAvailability();
+                    if (actionAvailability)
+                    {
+                        Update(0);
+                        AfterActionUpdate();
+                    }
+                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, targetX, targetY);
+                    if (afterActionUpdateSynchronization && !actionAvailability)
                         EndTurn();
                 }
                 return result;

@@ -10,10 +10,13 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
 
         public static void DoDamageTempTile (ISceneParentRef parent, SpecEffect effect, float time)
         {
-            TileObject target = parent.Tiles[effect.X][effect.Y].TempObject;
-            if (target!=null)
+            if (time > 0)
             {
-                target.Damage(effect.Mod * time, effect.Native.Tags);
+                TileObject target = parent.Tiles[effect.X][effect.Y].TempObject;
+                if (target != null)
+                {
+                    target.Damage(effect.Mod * time, effect.Native.Tags);
+                }
             }
         }
 
