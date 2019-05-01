@@ -27,6 +27,34 @@ namespace AgribattleArena.BackendServer
             this.env = env;
         }
 
+
+
+        async Task CreateAdminUserIsNotExists(UserManager<DBProvider.Contexts.ProfileEntities.Profile> userManager, RoleManager<IdentityRole> roleManager,
+            string adminPassword)
+        {
+            if (!await roleManager.RoleExistsAsync("admin"))
+            {
+                var result = await roleManager.CreateAsync(new IdentityRole("admin"));
+            }
+            var user = userManager.FindByNameAsync("admin").Result;
+            if (user == null)
+            {
+                user = new DBProvider.Contexts.ProfileEntities.Profile()
+                {
+                    UserName = "admin",
+                    Email = "admin@noemail.com",
+                    Resources = 0,
+                    DonationResources = 0,
+                    Revelations = 0
+                };
+                var result = await userManager.CreateAsync(user, adminPassword);
+            }
+            if (!await userManager.IsInRoleAsync(user, "admin"))
+            {
+                var result = await userManager.AddToRoleAsync(user, "admin");            
+            }
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -119,6 +147,8 @@ namespace AgribattleArena.BackendServer
             app.UseAuthentication();
 
             services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
+            CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<DBProvider.Contexts.ProfileEntities.Profile>>(),
+                services.GetRequiredService<RoleManager<IdentityRole>>(), Configuration["Global:AdminPassword"]).Wait();
 
             app.UseMvc();
         }

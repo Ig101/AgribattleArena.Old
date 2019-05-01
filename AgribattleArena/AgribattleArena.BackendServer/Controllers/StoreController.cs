@@ -84,9 +84,11 @@ namespace AgribattleArena.BackendServer.Controllers
             if (addedActor == null)
             {
                 await _profilesService.ChangeResourcesAmount(profile, newActor.Actor.Cost, null, null);
+                await _storeRepository.DeclineTransaction(actor.OfferId);
                 ModelState.AddModelError("ProfileError", "Unexpected error");
                 return BadRequest(ModelState);
             }
+            await _storeRepository.AcceptTransaction(profile.Id, actor.ActorId, newActor.Actor.Cost);
             return CreatedAtRoute("GetProfileActor", new { id = addedActor.Id }, addedActor);
         }
     }

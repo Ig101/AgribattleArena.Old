@@ -15,8 +15,8 @@ namespace AgribattleArena.DBProvider.Contexts.StoreEntities
         public string ProfileId { get; set; }
         public int Sum { get; set; }
 
-        public int ActorId { get; set; }
-        [ForeignKey("ActorId")]
-        public Actor Actor { get; set; }
+        public int ItemId { get; set; }
+        [ForeignKey("ItemId")]
+        public OfferItem Item { get; set; }
     }
 }

@@ -40,7 +40,8 @@ namespace AgribattleArena.BackendServer.Services
                 ProfileId = profileId,
                 Items = new List<OfferItem>()
             };
-            IEnumerable<Actor> actors = _context.Actor.OrderBy(o => _random.Next()).Take(_constants.AmountOfOfferedActors);
+            IEnumerable<Actor> actors = (await _context.Actor.Include(x => x.Skills).ToArrayAsync())
+                .OrderBy(o => _random.Next()).Take(_constants.AmountOfOfferedActors);
             offer.Items.AddRange(actors.Select(actor => new OfferItem()
             {
                 Offer = offer,
@@ -89,12 +90,6 @@ namespace AgribattleArena.BackendServer.Services
                 if (money >= item.Actor.Cost)
                 {
                     offer.Closed = true;
-                    await _context.ActorTransaction.AddAsync(new ActorTransaction()
-                    {
-                        Actor = item.Actor,
-                        ProfileId = profileId,
-                        Sum = item.Actor.Cost
-                    });
                     await _context.SaveChangesAsync();
                     return new ActorBoughtDto(){
                         Actor = AutoMapper.Mapper.Map<ActorDto>(item.Actor)
@@ -112,6 +107,25 @@ namespace AgribattleArena.BackendServer.Services
             {
                 Error = "Offer not exists"
             };
+        }
+
+        public async Task AcceptTransaction(string profileId, int actorId, int actorCost)
+        {
+            await _context.ActorTransaction.AddAsync(new ActorTransaction()
+            {
+                ItemId = actorId,
+                ProfileId = profileId,
+                Sum = actorCost
+            });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeclineTransaction(int offerId)
+        {
+            Offer offer = _context.Offer
+                .FirstOrDefault(x => x.Id == offerId);
+            offer.Closed = false;
+            await _context.SaveChangesAsync();
         }
     }
 }

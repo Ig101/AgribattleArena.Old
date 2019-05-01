@@ -18,5 +18,6 @@ namespace AgribattleArena.DBProvider.Contexts.StoreEntities
         public int ActorId { get; set; }
         [ForeignKey("ActorId")]
         public Actor Actor { get; set; }
+        public List<ActorTransaction> Transactions { get; set; }
     }
 }
