@@ -13,6 +13,6 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
         Task<Offer> GetOffer(string profileId);
         Task<Actor> BuyActor(string profileId, int money, int offerId, int offerItemId);
 
-        Task<bool> AddNewActor(ActorToAddDto actor);
+        Task AddNewActor(ActorToAddDto actor);
     }
 }

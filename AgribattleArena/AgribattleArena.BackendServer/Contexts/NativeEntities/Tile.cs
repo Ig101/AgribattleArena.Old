@@ -18,11 +18,9 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public bool Unbearable { get; set; }
         public float Mod { get; set; }
 
-        public int ActionId { get; set; }
-        [ForeignKey("ActionId")]
-        public SceneAction Action { get; set; }
-        public int OnStepActionId { get; set; }
-        [ForeignKey("OnStepActionId")]
-        public SceneAction OnStepAction { get; set; }
+        [InverseProperty("TileAction")]
+        public List<SceneAction> Action { get; set; }
+        [InverseProperty("TileOnStepAction")]
+        public List<SceneAction> OnStepAction { get; set; }
     }
 }

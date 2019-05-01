@@ -72,7 +72,7 @@ namespace AgribattleArena.BackendServer.Services
                 if (item != null && money >= item.Actor.Cost)
                 {
                     offer.Closed = true;
-                    _context.ActorTransactions.Add(new ActorTransaction()
+                    await _context.ActorTransactions.AddAsync(new ActorTransaction()
                     {
                         Actor = item.Actor,
                         ProfileId = profileId,
@@ -85,9 +85,9 @@ namespace AgribattleArena.BackendServer.Services
             return null;
         }
 
-        public Task<bool> AddNewActor(ActorToAddDto actor)
+        public async Task AddNewActor(ActorToAddDto actor)
         {
-            throw new NotImplementedException();
+            await _context.Actors.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
         }
     }
 }

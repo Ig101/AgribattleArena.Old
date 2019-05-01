@@ -13,7 +13,7 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public string Id { get; set; }
 
         public List<Tag> Tags { get; set; }
-        public float DefaultZ { get; set; }
+        public float Z { get; set; }
         public List<TagSynergy> Armor { get; set; }
     }
 }

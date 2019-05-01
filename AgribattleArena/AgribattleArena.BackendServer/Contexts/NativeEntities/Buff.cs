@@ -19,14 +19,11 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public float? Duration { get; set; }
         public float Mod { get; set; }
 
-        public int ActionId { get; set; }
-        [ForeignKey("ActionId")]
-        public SceneAction Action { get; set; }
-        public int BuffApplierId { get; set; }
-        [ForeignKey("BuffApplierId")]
-        public SceneAction BuffApplier { get; set; }
-        public int OnPurgeActionId { get; set; }
-        [ForeignKey("OnPurgeActionId")]
-        public SceneAction OnPurgeAction { get; set; }
+        [InverseProperty("BuffAction")]
+        public List<SceneAction> Action { get; set; }
+        [InverseProperty("BuffApplier")]
+        public List<SceneAction> BuffApplier { get; set; }
+        [InverseProperty("BuffOnPurgeAction")]
+        public List<SceneAction> OnPurgeAction { get; set; }
     }
 }

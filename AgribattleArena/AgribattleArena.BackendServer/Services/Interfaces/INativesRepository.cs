@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.BackendServer.Services.Interfaces
 {
-    interface INativesRepository
+    public interface INativesRepository
     {
     }
 }

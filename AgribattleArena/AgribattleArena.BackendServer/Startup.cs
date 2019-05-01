@@ -99,6 +99,9 @@ namespace AgribattleArena.BackendServer
                 cfg.CreateMap<Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
                 cfg.CreateMap<Contexts.StoreEntities.Skill, string>()
                     .ConstructUsing(c => c.Native);
+                cfg.CreateMap<string, Contexts.StoreEntities.Skill>()
+                    .ConstructUsing(c => new Contexts.StoreEntities.Skill() { Native = c });
+                cfg.CreateMap<Models.Store.ActorToAddDto, Contexts.StoreEntities.Actor>();
                 cfg.CreateMap<Contexts.StoreEntities.OfferItem, Models.Store.ActorDto>()
                     .ConvertUsing(c => new Models.Store.ActorDto()
                     {

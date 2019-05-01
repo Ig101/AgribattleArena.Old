@@ -15,28 +15,40 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         [MaxLength(50)]
         public string Name { get; set; }
 
-        [InverseProperty("Action")]
-        public List<Decoration> Decorations { get; set; }
-        [InverseProperty("OnDeathAction")]
-        public List<Decoration> OnDeathDecorations { get; set; }
 
-        [InverseProperty("Action")]
-        public List<Buff> Buffs { get; set; }
-        [InverseProperty("BuffApplier")]
-        public List<Buff> ApplierBuffs { get; set; }
-        [InverseProperty("OnPurgeAction")]
-        public List<Buff> PurgeBuffs { get; set; }
+        public string DecorationActionId { get; set; }
+        [ForeignKey("DecorationActionId")]
+        public Decoration DecorationAction { get; set; }
+        public string DecorationOnDeathActionId { get; set; }
+        [ForeignKey("DecorationOnDeathActionId")]
+        public Decoration DecorationOnDeathAction { get; set; }
 
-        public List<Skill> Skills { get; set; }
+        public string BuffActionId { get; set; }
+        [ForeignKey("BuffActionId")]
+        public Buff BuffAction { get; set; }
+        public string BuffApplierId { get; set; }
+        [ForeignKey("BuffApplierId")]
+        public Buff BuffApplier { get; set; }
+        public string BuffOnPurgeActionId { get; set; }
+        [ForeignKey("BuffOnPurgeActionId")]
+        public Buff BuffOnPurgeAction { get; set; }
 
-        [InverseProperty("Action")]
-        public List<SpecEffect> Effects { get; set; }
-        [InverseProperty("OnDeathAction")]
-        public List<SpecEffect> OnDeathEffects { get; set; }
+        public string SkillActionId { get; set; }
+        [ForeignKey("SkillActionId")]
+        public Skill SkillAction { get; set; }
 
-        [InverseProperty("Action")]
-        public List<Tile> Tiles { get; set; }
-        [InverseProperty("OnStepAction")]
-        public List<Tile> OnStepTiles { get; set; }
+        public string EffectActionId { get; set; }
+        [ForeignKey("EffectActionId")]
+        public SpecEffect EffectAction { get; set; }
+        public string EffectOnDeathActionId { get; set; }
+        [ForeignKey("EffectOnDeathActionId")]
+        public SpecEffect EffectOnDeathAction { get; set; }
+
+        public string TileActionId { get; set; }
+        [ForeignKey("TileActionId")]
+        public Tile TileAction { get; set; }
+        public string TileOnStepActionId { get; set; }
+        [ForeignKey("TileOnStepActionId")]
+        public Tile TileOnStepAction { get; set; }
     }
 }

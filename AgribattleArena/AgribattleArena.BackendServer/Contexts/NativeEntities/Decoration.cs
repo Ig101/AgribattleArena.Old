@@ -19,11 +19,9 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public float Mod { get; set; }
         public List<TagSynergy> Armor { get; set; }
 
-        public int ActionId { get; set; }
-        [ForeignKey("ActionId")]
-        public SceneAction Action { get; set; }
-        public int OnDeathActionId { get; set; }
-        [ForeignKey("OnDeathActionId")]
-        public SceneAction OnDeathAction { get; set; }
+        [InverseProperty("DecorationAction")]
+        public List<SceneAction> Action { get; set; }
+        [InverseProperty("DecorationOnDeathAction")]
+        public List<SceneAction> OnDeathAction { get; set; }
     }
 }

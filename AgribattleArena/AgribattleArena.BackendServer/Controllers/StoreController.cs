@@ -16,11 +16,14 @@ namespace AgribattleArena.BackendServer.Controllers
     public class StoreController: ControllerBase
     {
         IProfilesService _profilesService;
+        INativesRepository _nativesRepository;
         IStoreRepository _storeRepository;
         ILogger<StoreController> _logger;
 
-        public StoreController(IProfilesService profilesService, IStoreRepository storeRepository, ILogger<StoreController> logger)
+        public StoreController(IProfilesService profilesService, IStoreRepository storeRepository, ILogger<StoreController> logger,
+            INativesRepository nativesRepository)
         {
+            _nativesRepository = nativesRepository;
             _storeRepository = storeRepository;
             _profilesService = profilesService;
             _logger = logger;

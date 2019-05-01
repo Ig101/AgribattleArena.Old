@@ -17,11 +17,9 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public float Duration { get; set; }
         public float Mod { get; set; }
 
-        public int ActionId { get; set; }
-        [ForeignKey("ActionId")]
-        public SceneAction Action { get; set; }
-        public int OnDeathActionId { get; set; }
-        [ForeignKey("OnDeathActionId")]
-        public SceneAction OnDeathAction { get; set; }
+        [InverseProperty("EffectAction")]
+        public List<SceneAction> Action { get; set; }
+        [InverseProperty("EffectOnDeathAction")]
+        public List<SceneAction> OnDeathAction { get; set; }
     }
 }

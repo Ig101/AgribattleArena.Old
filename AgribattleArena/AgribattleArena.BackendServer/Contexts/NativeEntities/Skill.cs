@@ -21,8 +21,6 @@ namespace AgribattleArena.BackendServer.Contexts.NativeEntities
         public List<RoleModel> RoleModels { get; set; }
         public List<RoleModelSkill> RoleModelSkills { get; set; }
 
-        public int ActionId { get; set; }
-        [ForeignKey("ActionId")]
-        public SceneAction Action { get; set; }
+        public List<SceneAction> Action { get; set; }
     }
 }
