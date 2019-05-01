@@ -333,4 +333,4 @@ ASALocalRun/
 .mfractor/
 
 # DevelopmentConfig
-*.Development.json
+**/appsettings.Development.json
