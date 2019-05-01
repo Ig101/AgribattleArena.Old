@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts;
+﻿using AgribattleArena.DBProvider.Contexts;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

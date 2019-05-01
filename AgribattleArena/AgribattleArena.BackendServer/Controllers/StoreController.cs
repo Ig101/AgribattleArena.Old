@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.StoreEntities;
+﻿using AgribattleArena.DBProvider.Contexts.StoreEntities;
 using AgribattleArena.BackendServer.Models.Store;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -42,10 +42,10 @@ namespace AgribattleArena.BackendServer.Controllers
         public async Task<IActionResult> GetActorOffers ()
         {
             string userId = _profilesService.GetUserID(User);
-            Offer offer = await _storeRepository.GetOffer(userId);
+            var offer = await _storeRepository.GetOffer(userId);
             if(offer!=null)
             {
-                return Ok(AutoMapper.Mapper.Map<OfferDto>(offer));
+                return Ok(offer);
             }
             return StatusCode(500);
         }

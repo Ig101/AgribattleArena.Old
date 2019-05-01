@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.ProfileEntities;
+﻿using AgribattleArena.DBProvider.Contexts.ProfileEntities;
 using AgribattleArena.BackendServer.Models.Profile;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,6 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
 {
     interface IProfilesServiceAggregated
     {
-        IEnumerable<ProfileDto> GetAllProfiles();
+        IEnumerable<ProfileInfoDto> GetAllProfiles();
     }
 }

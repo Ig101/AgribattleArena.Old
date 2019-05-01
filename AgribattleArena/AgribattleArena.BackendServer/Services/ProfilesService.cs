@@ -1,5 +1,5 @@
-﻿using AgribattleArena.BackendServer.Contexts;
-using AgribattleArena.BackendServer.Contexts.ProfileEntities;
+﻿using AgribattleArena.DBProvider.Contexts;
+using AgribattleArena.DBProvider.Contexts.ProfileEntities;
 using AgribattleArena.BackendServer.Models.Profile;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -28,20 +28,20 @@ namespace AgribattleArena.BackendServer.Services
             _context = context;
         }
 
-        public async Task<Profile> GetProfile(ClaimsPrincipal user, bool withActors)
+        public async Task<ProfileDto> GetProfile(ClaimsPrincipal user, bool withActors)
         {
             Profile profile = await GetUserAsync(user);
             if (withActors)
             {
                 profile.Actors?.RemoveAll(x => x.DeletedDate != null);
             }
-            return profile;
+            return AutoMapper.Mapper.Map<ProfileDto>(profile);
         }
 
-        public async Task<Actor> GetActor(ClaimsPrincipal user, long actorId)
+        public async Task<ActorDto> GetActor(ClaimsPrincipal user, long actorId)
         {
             Profile profile = await GetUserAsync(user);
-            return profile.Actors?.Find(x => x.Id == actorId && x.DeletedDate == null);
+            return AutoMapper.Mapper.Map<ActorDto>(profile.Actors?.Find(x => x.Id == actorId && x.DeletedDate == null));
         }
 
         public async Task<bool> DeleteActor(ClaimsPrincipal user, long actorId)
@@ -63,7 +63,7 @@ namespace AgribattleArena.BackendServer.Services
             return GetUserId(user);
         }
 
-        public async Task<Profile> UpdateProfile(ClaimsPrincipal user, ProfileUpdateDto changing)
+        public async Task<ProfileDto> UpdateProfile(ClaimsPrincipal user, ProfileUpdateDto changing)
         {
             Profile profile = await GetUserAsync(user);
             if (changing.Email != null && changing.EmailToken!=null)
@@ -74,10 +74,10 @@ namespace AgribattleArena.BackendServer.Services
             {
                 await ChangePasswordAsync(profile, changing.OldPassword, changing.Password);
             }
-            return profile;
+            return AutoMapper.Mapper.Map<ProfileDto>(profile);
         }
 
-        public async Task<Profile> ChangeResourcesAmount (ClaimsPrincipal user, int? resources, int? donationResources, int? revelations)
+        public async Task<ProfileDto> ChangeResourcesAmount (ClaimsPrincipal user, int? resources, int? donationResources, int? revelations)
         {
             Profile profile = await GetUserAsync(user);
             if (resources != null) profile.Resources += resources.Value;
@@ -89,13 +89,20 @@ namespace AgribattleArena.BackendServer.Services
             }
             var result = await UpdateAsync(profile);
             if (result.Succeeded)
-                return profile;
+                return AutoMapper.Mapper.Map<ProfileDto>(profile);
             return null;
         }
 
-        public IEnumerable<ProfileDto> GetAllProfiles()
+        public IEnumerable<ProfileInfoDto> GetAllProfiles()
         {
-            return AutoMapper.Mapper.Map<IEnumerable<ProfileDto>>(_context.Users);
+            return AutoMapper.Mapper.Map<IEnumerable<ProfileInfoDto>>(_context.Users);
+        }
+
+        public async Task<bool> IsAdmin(ClaimsPrincipal user)
+        {
+            Profile profile = await GetUserAsync(user);
+            var roles = await GetRolesAsync(profile);
+            return roles.Contains("admin");
         }
     }
 }

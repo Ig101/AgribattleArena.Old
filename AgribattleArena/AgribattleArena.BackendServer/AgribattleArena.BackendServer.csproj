@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AgribattleArena.DBProvider\AgribattleArena.DBProvider.csproj" />
     <ProjectReference Include="..\AgribattleArena.Engine\AgribattleArena.Engine.csproj" />
   </ItemGroup>
 

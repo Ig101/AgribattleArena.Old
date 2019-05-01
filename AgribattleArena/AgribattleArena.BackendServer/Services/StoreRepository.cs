@@ -1,5 +1,5 @@
-﻿using AgribattleArena.BackendServer.Contexts;
-using AgribattleArena.BackendServer.Contexts.StoreEntities;
+﻿using AgribattleArena.DBProvider.Contexts;
+using AgribattleArena.DBProvider.Contexts.StoreEntities;
 using AgribattleArena.BackendServer.Models.Store;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -26,7 +26,7 @@ namespace AgribattleArena.BackendServer.Services
             _constants = constants.Value;
         }
 
-        public async Task<Offer> CreateNewOffer (string profileId)
+        public async Task<OfferDto> CreateNewOffer (string profileId)
         {
             DateTime offerExpirationDate = DateTime.Today.AddHours(_constants.OfferUpdateHour);
             if (DateTime.Now.Hour >= _constants.OfferUpdateHour - 1)
@@ -38,23 +38,23 @@ namespace AgribattleArena.BackendServer.Services
                 Closed = false,
                 ProfileId = profileId
             };
-            IEnumerable<Actor> actors = _context.Actors.OrderBy(o => _random.Next()).Take(_constants.AmountOfOfferedActors);
+            IEnumerable<Actor> actors = _context.Actor.OrderBy(o => _random.Next()).Take(_constants.AmountOfOfferedActors);
             offer.Items.AddRange(actors.Select(actor => new OfferItem()
             {
                 Offer = offer,
                 Actor = actor
             }));
-            await _context.Offers.AddAsync(offer);
+            await _context.Offer.AddAsync(offer);
             await _context.SaveChangesAsync();
-            return offer;
+            return AutoMapper.Mapper.Map<OfferDto>(offer);
         }
 
-        public async Task<Offer> GetOffer (string profileId)
+        public async Task<OfferDto> GetOffer (string profileId)
         {
-            IEnumerable<Offer> offers = _context.Offers.Where(x => x.DateTo > DateTime.Now && !x.Closed);
+            IEnumerable<Offer> offers = _context.Offer.Where(x => x.DateTo > DateTime.Now && !x.Closed);
             if(offers.Count() == 1)
             {
-                return offers.First();
+                return AutoMapper.Mapper.Map<OfferDto>(offers.First());
             }
             else if(offers.Count() == 0)
             {
@@ -63,31 +63,26 @@ namespace AgribattleArena.BackendServer.Services
             throw new ArgumentOutOfRangeException();
         }
 
-        public async Task<Actor> BuyActor (string profileId, int money, int offerId, int offerItemId)
+        public async Task<ActorDto> BuyActor (string profileId, int money, int offerId, int offerItemId)
         {
-            Offer offer = _context.Offers.Find(offerId);
+            Offer offer = _context.Offer.Find(offerId);
             if (!offer.Closed && offer.DateTo > DateTime.Now)
             {
                 OfferItem item = offer.Items.Find(x => x.Id == offerItemId);
                 if (item != null && money >= item.Actor.Cost)
                 {
                     offer.Closed = true;
-                    await _context.ActorTransactions.AddAsync(new ActorTransaction()
+                    await _context.ActorTransaction.AddAsync(new ActorTransaction()
                     {
                         Actor = item.Actor,
                         ProfileId = profileId,
                         Sum = item.Actor.Cost
                     });
                     await _context.SaveChangesAsync();
-                    return item.Actor;
+                    return AutoMapper.Mapper.Map<ActorDto>(item.Actor);
                 }
             }
             return null;
-        }
-
-        public async Task AddNewActor(ActorToAddDto actor)
-        {
-            await _context.Actors.AddAsync(AutoMapper.Mapper.Map<Actor>(actor));
         }
     }
 }

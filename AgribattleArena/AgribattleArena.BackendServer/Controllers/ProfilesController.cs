@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.ProfileEntities;
+﻿using AgribattleArena.DBProvider.Contexts.ProfileEntities;
 using AgribattleArena.BackendServer.Models.Profile;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -25,23 +25,12 @@ namespace AgribattleArena.BackendServer.Controllers
         }
 
         [HttpGet(Name = "GetProfile")]
-        public async Task<IActionResult> GetProfile()
-        {
-            Profile user = (await _profilesService.GetProfile(User, false));
-            if(user != null)
-            {
-                return Ok(AutoMapper.Mapper.Map<ProfileDto>(user));
-            }
-            return NotFound();
-        }
-
-        [HttpGet("actors")]
         public async Task<IActionResult> GetProfileWithActors()
         {
-            Profile user = (await _profilesService.GetProfile(User, true));
+            var user = (await _profilesService.GetProfile(User, true));
             if (user != null)
             {
-                return Ok(AutoMapper.Mapper.Map<ProfileWithActorsDto>(user));
+                return Ok(user);
             }
             return NotFound();
         }
@@ -49,10 +38,10 @@ namespace AgribattleArena.BackendServer.Controllers
         [HttpGet("actors/{id}")]
         public async Task<IActionResult> GetProfileActor(long id)
         {
-            Actor actor = await _profilesService.GetActor(User, id);
+            var actor = await _profilesService.GetActor(User, id);
             if(actor!=null)
             {
-                return Ok(AutoMapper.Mapper.Map<ActorDto>(actor));
+                return Ok(actor);
             }
             return NotFound();
         }

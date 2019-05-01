@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.ProfileEntities;
+﻿using AgribattleArena.DBProvider.Contexts.ProfileEntities;
 using AgribattleArena.BackendServer.Models.Profile;
 using System;
 using System.Collections.Generic;

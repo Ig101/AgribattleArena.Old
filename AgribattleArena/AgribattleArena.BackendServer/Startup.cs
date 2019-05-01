@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts;
+﻿using AgribattleArena.DBProvider.Contexts;
 using AgribattleArena.BackendServer.Services;
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -27,32 +27,6 @@ namespace AgribattleArena.BackendServer
             this.env = env;
         }
 
-        async Task CreateAdminUserIsNotExists(UserManager<Contexts.ProfileEntities.Profile> userManager, RoleManager<IdentityRole> roleManager, 
-            string adminPassword)
-        {
-            if (!await roleManager.RoleExistsAsync("admin"))
-            {
-                var result = await roleManager.CreateAsync(new IdentityRole("admin"));
-            }
-            var user = userManager.FindByNameAsync("admin").Result;
-            if(user == null)
-            {
-                user = new Contexts.ProfileEntities.Profile()
-                {
-                    UserName = "admin",
-                    Email = "admin@noemail.com",
-                    Resources = 0,
-                    DonationResources = 0,
-                    Revelations = 0
-                };
-                var result = await userManager.CreateAsync(user,adminPassword);
-            }
-            if(!await userManager.IsInRoleAsync(user, "admin"))
-            {
-                var result = await userManager.AddToRoleAsync(user, "admin");
-            }
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -67,7 +41,7 @@ namespace AgribattleArena.BackendServer
             services.AddDbContext<StoreContext>(o => o.UseMySql(Configuration["ConnectionStrings:StoreDB"]));
             //
             services.AddSignalR();
-            services.AddIdentity<Contexts.ProfileEntities.Profile, IdentityRole>(options =>
+            services.AddIdentity<DBProvider.Contexts.ProfileEntities.Profile, IdentityRole>(options =>
                 {
                     options.User.RequireUniqueEmail = true;
                 })
@@ -91,18 +65,18 @@ namespace AgribattleArena.BackendServer
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>();
-                cfg.CreateMap<Contexts.ProfileEntities.Profile, Models.Profile.ProfileWithActorsDto>();
-                cfg.CreateMap<Contexts.ProfileEntities.Actor, Models.Profile.ActorDto>();
-                cfg.CreateMap<Contexts.ProfileEntities.Skill, string>()
+                //Profile
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>();
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileInfoDto>();
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Actor, Models.Profile.ActorDto>();
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Skill, string>()
                     .ConvertUsing(c => c.Native);
-                cfg.CreateMap<Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
-                cfg.CreateMap<Contexts.StoreEntities.Skill, string>()
+
+                //Store
+                cfg.CreateMap<DBProvider.Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
+                cfg.CreateMap<DBProvider.Contexts.StoreEntities.Skill, string>()
                     .ConstructUsing(c => c.Native);
-                cfg.CreateMap<string, Contexts.StoreEntities.Skill>()
-                    .ConstructUsing(c => new Contexts.StoreEntities.Skill() { Native = c });
-                cfg.CreateMap<Models.Store.ActorToAddDto, Contexts.StoreEntities.Actor>();
-                cfg.CreateMap<Contexts.StoreEntities.OfferItem, Models.Store.ActorDto>()
+                cfg.CreateMap<DBProvider.Contexts.StoreEntities.OfferItem, Models.Store.ActorDto>()
                     .ConvertUsing(c => new Models.Store.ActorDto()
                     {
                         Id = c.Id,
@@ -117,6 +91,9 @@ namespace AgribattleArena.BackendServer
                         Name = c.Actor.Name,
                         Skills = AutoMapper.Mapper.Map<List<string>>(c.Actor.Skills)
                     });
+
+                cfg.CreateMap<string, DBProvider.Contexts.StoreEntities.Skill>()
+                    .ConstructUsing(c => new DBProvider.Contexts.StoreEntities.Skill() { Native = c });
             });
             if (env.IsDevelopment())
             {
@@ -126,8 +103,6 @@ namespace AgribattleArena.BackendServer
             app.UseAuthentication();
 
             services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
-            CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<Contexts.ProfileEntities.Profile>>(),
-                services.GetRequiredService<RoleManager<IdentityRole>>(), Configuration["Global:AdminPassword"]).Wait();
 
             app.UseMvc();
         }

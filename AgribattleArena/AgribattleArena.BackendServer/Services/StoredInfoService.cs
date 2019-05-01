@@ -20,11 +20,11 @@ namespace AgribattleArena.BackendServer.Services
             _logger = logger;
         }
 
-        void SetupRevelationsMemory(IEnumerable<ProfileDto> profiles)
+        void SetupRevelationsMemory(IEnumerable<ProfileInfoDto> profiles)
         {
             _logger.Log(LogLevel.Information, "Setup revelations memory");
             RevelationsMemory = 0;
-            foreach(ProfileDto profile in profiles)
+            foreach(var profile in profiles)
             {
                 RevelationsMemory += profile.Revelations;
             }
@@ -32,7 +32,7 @@ namespace AgribattleArena.BackendServer.Services
 
         public void SetupNew(IServiceProvider services)
         {
-            IEnumerable<ProfileDto> profiles = services.GetRequiredService<IProfilesServiceAggregated>().GetAllProfiles();
+            IEnumerable<ProfileInfoDto> profiles = services.GetRequiredService<IProfilesServiceAggregated>().GetAllProfiles();
             SetupRevelationsMemory(profiles);
         }
     }

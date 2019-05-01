@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Contexts.StoreEntities;
+﻿using AgribattleArena.DBProvider.Contexts.StoreEntities;
 using AgribattleArena.BackendServer.Models.Store;
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,8 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
 {
     public interface IStoreRepository
     {
-        Task<Offer> CreateNewOffer(string profileId);
-        Task<Offer> GetOffer(string profileId);
-        Task<Actor> BuyActor(string profileId, int money, int offerId, int offerItemId);
-
-        Task AddNewActor(ActorToAddDto actor);
+        Task<OfferDto> CreateNewOffer(string profileId);
+        Task<OfferDto> GetOffer(string profileId);
+        Task<ActorDto> BuyActor(string profileId, int money, int offerId, int offerItemId);
     }
 }
