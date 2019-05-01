@@ -11,6 +11,6 @@ namespace AgribattleArena.BackendServer.Models.Store
         public string ProfileId { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public List<ActorDto> Actors { get; set; }
+        public List<ActorDto> Items { get; set; }
     }
 }

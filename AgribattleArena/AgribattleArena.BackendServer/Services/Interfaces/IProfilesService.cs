@@ -12,9 +12,16 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
     {
         string GetUserID(ClaimsPrincipal user);
         Task<bool> IsAdmin(ClaimsPrincipal user);
-        Task<ProfileDto> GetProfile(ClaimsPrincipal user, bool withActors);
+        Task<Profile> GetProfile(ClaimsPrincipal user);
+        Task<Profile> GetProfileWithInfo(ClaimsPrincipal user);
         Task<ActorDto> GetActor(ClaimsPrincipal user, long actorId);
         Task<bool> DeleteActor(ClaimsPrincipal user, long actorId);
+        Task<ActorDto> AddActor(ClaimsPrincipal user, ActorDto actor);
+        ActorDto GetActor(Profile profile, long actorId);
+        Task<bool> DeleteActor(Profile profile, long actorId);
+        Task<ActorDto> AddActor(Profile profile, ActorDto actor);
         Task<ProfileDto> UpdateProfile(ClaimsPrincipal user, ProfileUpdateDto changing);
+        Task<ProfileDto> ChangeResourcesAmount(ClaimsPrincipal user, int? resources, int? donationResources, int? revelations);
+        Task<ProfileDto> ChangeResourcesAmount(Profile profile, int? resources, int? donationResources, int? revelations);
     }
 }

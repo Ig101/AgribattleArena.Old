@@ -11,6 +11,6 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
     {
         Task<OfferDto> CreateNewOffer(string profileId);
         Task<OfferDto> GetOffer(string profileId);
-        Task<ActorDto> BuyActor(string profileId, int money, int offerId, int offerItemId);
+        Task<ActorBoughtDto> BuyActor(string profileId, int money, int offerId, int offerItemId);
     }
 }

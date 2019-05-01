@@ -28,7 +28,7 @@ namespace AgribattleArena.DBProvider.Contexts.StoreEntities
         public int ActionPointsIncome { get; set; }
         public int Cost { get; set; }
 
-        List<OfferItem> Offers { get; set; }
-        List<ActorTransaction> Transactions { get; set; }
+        public List<OfferItem> Offers { get; set; }
+        public List<ActorTransaction> Transactions { get; set; }
     }
 }

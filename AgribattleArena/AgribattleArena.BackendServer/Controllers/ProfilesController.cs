@@ -25,17 +25,29 @@ namespace AgribattleArena.BackendServer.Controllers
         }
 
         [HttpGet(Name = "GetProfile")]
-        public async Task<IActionResult> GetProfileWithActors()
+        public async Task<IActionResult> GetProfile()
         {
-            var user = (await _profilesService.GetProfile(User, true));
+            var user = (await _profilesService.GetProfile(User));
             if (user != null)
             {
-                return Ok(user);
+                return Ok(AutoMapper.Mapper.Map<ProfileInfoDto>(user));
             }
             return NotFound();
         }
 
-        [HttpGet("actors/{id}")]
+        [HttpGet("actors", Name = "GetProfileWithInfo")]
+        public async Task<IActionResult> GetProfileWithActors()
+        {
+            var user = (await _profilesService.GetProfileWithInfo(User));
+            user.Actors.RemoveAll(x => x.DeletedDate != null);
+            if (user != null)
+            {
+                return Ok(AutoMapper.Mapper.Map<ProfileDto>(user));
+            }
+            return NotFound();
+        }
+
+        [HttpGet("actors/{id}", Name = "GetProfileActor")]
         public async Task<IActionResult> GetProfileActor(long id)
         {
             var actor = await _profilesService.GetActor(User, id);

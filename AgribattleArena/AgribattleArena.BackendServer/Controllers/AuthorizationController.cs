@@ -46,7 +46,7 @@ namespace AgribattleArena.BackendServer.Controllers
             var result = await _userManager.CreateAsync(newUser, registrationModel.Password);
             if (result.Succeeded)
             {
-                return CreatedAtRoute("GetProfile", AutoMapper.Mapper.Map<ProfileDto>(newUser));
+                return CreatedAtRoute("GetProfileWithInfo", AutoMapper.Mapper.Map<ProfileDto>(newUser));
             }
             foreach (var error in result.Errors)
             {

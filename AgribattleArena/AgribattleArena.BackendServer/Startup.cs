@@ -72,6 +72,22 @@ namespace AgribattleArena.BackendServer
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Skill, string>()
                     .ConvertUsing(c => c.Native);
 
+                cfg.CreateMap<Models.Profile.ActorDto, DBProvider.Contexts.ProfileEntities.Actor>()
+                .ConvertUsing(c => new DBProvider.Contexts.ProfileEntities.Actor()
+                {
+                    ActionPointsIncome = c.ActionPointsIncome,
+                    ActorNative = c.ActorNative,
+                    AttackingSkillNative = c.AttackingSkillNative,
+                    Constitution = c.Constitution,
+                    Name = c.Name,
+                    Skills = AutoMapper.Mapper.Map<List<DBProvider.Contexts.ProfileEntities.Skill>>(c.Skills),
+                    Speed = c.Speed,
+                    Strength = c.Strength,
+                    Willpower =c.Willpower
+                });
+                cfg.CreateMap<string, DBProvider.Contexts.ProfileEntities.Skill>()
+                    .ConvertUsing(c => new DBProvider.Contexts.ProfileEntities.Skill() { Native = c });
+
                 //Store
                 cfg.CreateMap<DBProvider.Contexts.StoreEntities.Offer, Models.Store.OfferDto>();
                 cfg.CreateMap<DBProvider.Contexts.StoreEntities.Skill, string>()
