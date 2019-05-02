@@ -176,9 +176,7 @@ namespace AgribattleArena.DesktopClient
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\loadingWheel.xnb"))
                 content.Add("loadingWheel", Content.Load<Texture2D>("loadingWheel"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\main_cursor.xnb"))
-            {
                 content.Add("cursor", Content.Load<Texture2D>("main_cursor"));
-            }
         }
 
         public void LoadEngineContent()
