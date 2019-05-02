@@ -18,6 +18,7 @@ namespace AgribattleArena.DesktopClient
 
         string profileFilePath;
         string loginCookie;
+        bool savePassword;
 
         public Game1Shell()
             : base(new Vector2(0, 0), 64, 0, new Point(2560, 1600))
@@ -58,8 +59,11 @@ namespace AgribattleArena.DesktopClient
             //TODO Authorize and save profile
             if (loginCookie != null)
             {
-                string str = login + "\n" + password;
-                Magic.Act(profileFilePath + @"\profile.mrc", Encoding.UTF8.GetBytes(str));
+                if (savePassword)
+                {
+                    string str = login + "\n" + password;
+                    Magic.Act(profileFilePath + @"\profile.mrc", Encoding.UTF8.GetBytes(str));
+                }
                 return true;
             }
             return false;
@@ -113,6 +117,15 @@ namespace AgribattleArena.DesktopClient
             {
                 languageName = line[1];
             }
+            if (reader.EndOfStream)
+            {
+                return;
+            }
+            line = reader.ReadLine().Split(new char[] { '=' });
+            if (line.Length > 1 && int.TryParse(line[1], out result))
+            {
+                fullScreen = result == 1;
+            }
         }
 
         protected override object LoadNativeParser(string type, string name, string[] parametres)
@@ -128,12 +141,13 @@ namespace AgribattleArena.DesktopClient
                 byte[] bytes = Magic.Restore(profileFilePath + @"\profile.mrc");
                 string str = Encoding.UTF8.GetString(bytes);
                 string[] strs = str.Split(new char[] { '\n' });
-                if(strs.Length!=2 || !Authorize(strs[0],strs[1]))
+                if(strs.Length!=2 || !Authorize(strs[0],strs[1]) || !savePassword)
                 {
                     File.Delete(path);
                     return;
                 }
-                ((LoadingWheelElement)((Mode)modes["loadingScreen"]).Elements[2]).TargetMode = "main";
+                Mode mode = (Mode)modes["loadingScreen"];
+                ((LoadingWheelElement)(mode).Elements[mode.Elements.Length-1]).TargetMode = "main";
             }
         }
 
@@ -145,6 +159,7 @@ namespace AgribattleArena.DesktopClient
             soundVolume = 50;
             languageName = "eng";
             fullScreen = true;
+            savePassword = true;
         }
 
         protected override bool SaveConfigCore(StreamWriter writer)
@@ -154,6 +169,7 @@ namespace AgribattleArena.DesktopClient
             writer.WriteLine("fullscreen=" + (fullScreen ? "1" : "0"));
             writer.WriteLine("volume=" + volume.ToString());
             writer.WriteLine("language=" + languageName);
+            writer.WriteLine("savePassword=" + (savePassword? "1" : "0"));
             return true;
         }
 
