@@ -163,8 +163,7 @@ namespace AgribattleArena.DesktopClient
         #region loading
         void LoadLoadingContent()
         {
-            //TODO Fonts
-            if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "NewSpriteFont" + ".xnb"))
+            if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "large" + ".xnb"))
                 content.Add("largeFont", Content.Load<SpriteFont>("NewSpriteFont"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "lesser" + ".xnb"))
                 content.Add("mediumFont", Content.Load<SpriteFont>("lesser"));
@@ -172,7 +171,10 @@ namespace AgribattleArena.DesktopClient
                 content.Add("smallFont", Content.Load<SpriteFont>("small"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "smallest" + ".xnb"))
                 content.Add("systemFont", Content.Load<SpriteFont>("smallest"));
-            //TODO LoadingInfo
+            if (File.Exists(Environment.CurrentDirectory + "\\Content\\loadingScreen.xnb"))
+                content.Add("loadingScreen", Content.Load<Texture2D>("loadingScreen"));
+            if (File.Exists(Environment.CurrentDirectory + "\\Content\\loadingWheel.xnb"))
+                content.Add("loadingWheel", Content.Load<Texture2D>("loadingWheel"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\main_cursor.xnb"))
             {
                 content.Add("cursor", Content.Load<Texture2D>("main_cursor"));
