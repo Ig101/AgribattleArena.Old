@@ -14,11 +14,17 @@ namespace AgribattleArena.Engine.ForExternalUse.EngineHelper
         /// <summary>
         /// 2 players, less than 5 actors per player, 20x20 tileSet, actors will be at 2 and 17 X tile and 2+i*2 Y tile
         /// </summary>
-        /// <param name="tileSet"></param>
-        /// <returns></returns>
         public static ISceneGenerator CreateTestSceneGenerator(string[,] tileSet, bool winConditions)
         {
             return new SceneGenerators.TestSceneGenerator(tileSet, winConditions);
+        }
+
+        /// <summary>
+        /// 2 players, 5 actors per player, prerendered maps
+        /// </summary>
+        public static ISceneGenerator CreateDuelSceneGenerator()
+        {
+            return new SceneGenerators.DuelSceneGenerator();
         }
         #endregion
 

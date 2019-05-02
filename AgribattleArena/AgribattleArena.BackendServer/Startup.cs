@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AgribattleArena.BackendServer.Hubs;
 
 namespace AgribattleArena.BackendServer
 {
@@ -85,6 +86,9 @@ namespace AgribattleArena.BackendServer
 
             services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddTransient<INativesRepository, NativesRepository>();
+
+            services.AddHostedService<HostedBattleService>();
+            services.AddSingleton<IBattleService, BattleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,6 +149,9 @@ namespace AgribattleArena.BackendServer
             }
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseSignalR(routes => {
+                routes.MapHub<BattleHub>("/hubs/battle");
+            });
 
             services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
             CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<DBProvider.Contexts.ProfileEntities.Profile>>(),

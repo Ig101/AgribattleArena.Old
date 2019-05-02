@@ -17,11 +17,14 @@ namespace AgribattleArena.BackendServer.Controllers
     {
         IProfilesService _profilesService;
         ILogger<ProfilesController> _logger;
+        IBattleService _battleService;
 
-        public ProfilesController(IProfilesService profilesService, ILogger<ProfilesController> logger)
+        public ProfilesController(IProfilesService profilesService, ILogger<ProfilesController> logger,
+            IBattleService battleService)
         {
             _profilesService = profilesService;
             _logger = logger;
+            _battleService = battleService;
         }
 
         [HttpGet(Name = "GetProfile")]
@@ -33,6 +36,14 @@ namespace AgribattleArena.BackendServer.Controllers
                 return Ok(AutoMapper.Mapper.Map<ProfileInfoDto>(user));
             }
             return NotFound();
+        }
+
+        [HttpGet("status", Name = "GetProfileStatus")]
+        public IActionResult GetProfileStatus()
+        {
+            var userId = _profilesService.GetUserID(User);
+            var info = _battleService.GetProfileBattleStatus(userId);
+            return Ok(info);
         }
 
         [HttpGet("actors", Name = "GetProfileWithInfo")]
