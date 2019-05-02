@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.BackendServer.Models.Battle
+namespace AgribattleArena.BackendServer.Models.Enum
 {
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum ProfileBattleStatus

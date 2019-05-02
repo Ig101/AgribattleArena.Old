@@ -33,7 +33,9 @@ namespace AgribattleArena.BackendServer.Controllers
             var user = (await _profilesService.GetProfile(User));
             if (user != null)
             {
-                return Ok(AutoMapper.Mapper.Map<ProfileInfoDto>(user));
+                ProfileInfoDto profile = AutoMapper.Mapper.Map<ProfileInfoDto>(user);
+                profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
+                return Ok(profile);
             }
             return NotFound();
         }
@@ -53,7 +55,9 @@ namespace AgribattleArena.BackendServer.Controllers
             user.Actors.RemoveAll(x => x.DeletedDate != null);
             if (user != null)
             {
-                return Ok(AutoMapper.Mapper.Map<ProfileDto>(user));
+                ProfileDto profile = AutoMapper.Mapper.Map<ProfileDto>(user);
+                profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
+                return Ok(profile);
             }
             return NotFound();
         }

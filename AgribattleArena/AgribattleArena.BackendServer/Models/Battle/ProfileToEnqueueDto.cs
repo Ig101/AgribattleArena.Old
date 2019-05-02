@@ -7,8 +7,6 @@ namespace AgribattleArena.BackendServer.Models.Battle
 {
     public class ProfileToEnqueueDto
     {
-        public string ProfileId { get; set; }
-        public int Revelations { get; set; }
         public string Mode { get; set; }
     }
 }

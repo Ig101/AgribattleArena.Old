@@ -8,7 +8,6 @@ namespace AgribattleArena.DBProvider.Contexts.ProfileEntities
 {
     public class RevelationLevel
     {
-        [Key]
         public int Level { get; set; } 
         public int Revelations { get; set; }
     }

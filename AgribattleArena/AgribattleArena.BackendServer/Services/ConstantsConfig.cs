@@ -13,5 +13,9 @@ namespace AgribattleArena.BackendServer.Services
 
         public int AmountOfOfferedActors { get; set; }
         public int OfferUpdateHour { get; set; }
+
+        public int QueueTimeout { get; set; }
+        public int QueueRevelationLevelCompareLimit { get; set; }
+        public int QueueRevelationLevelCompareLimitAfterTimeout { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
 {
     public interface IBattleService
     { 
-        bool Enqueue(ProfileToEnqueueDto profile);
+        bool Enqueue(ProfileToEnqueueEnrichedDto profile);
         bool Dequeue(string profileId);
         ProfileBattleInfoDto GetProfileBattleStatus(string profileId);
 

@@ -37,25 +37,51 @@ namespace AgribattleArena.Configurator.Services
 
         public async Task Process(ChangingDocumentDto document)
         {
-            foreach(var storeActor in document.StoreActors)
+            if (document.StoreActors != null)
             {
-                Response result;
-                switch(storeActor.DocumentAction)
+                foreach (var storeActor in document.StoreActors)
                 {
-                    case Models.Action.Create:
-                        result = await _store.AddActor(storeActor);
-                        break;
-                    case Models.Action.Update:
-                        result = await _store.ChangeActor(storeActor);
-                        break;
-                    case Models.Action.Delete:
-                        result = await _store.RemoveActor(storeActor.Name);
-                        break;
-                    default:
-                        result = Response.NoChanges;
-                        break;
+                    Response result;
+                    switch (storeActor.DocumentAction)
+                    {
+                        case Models.Action.Create:
+                            result = await _store.AddActor(storeActor);
+                            break;
+                        case Models.Action.Update:
+                            result = await _store.ChangeActor(storeActor);
+                            break;
+                        case Models.Action.Delete:
+                            result = await _store.RemoveActor(storeActor.Name);
+                            break;
+                        default:
+                            result = Response.NoChanges;
+                            break;
+                    }
+                    ResponseToConsole(result, storeActor.Name, "StoreActor", storeActor.DocumentAction);
                 }
-                ResponseToConsole(result, storeActor.Name, "StoreActor", storeActor.DocumentAction);
+            }
+            if (document.RevelationLevels != null)
+            {
+                foreach (var level in document.RevelationLevels)
+                {
+                    Response result;
+                    switch (level.DocumentAction)
+                    {
+                        case Models.Action.Create:
+                            result = await _profiles.AddRevelationLevel(level);
+                            break;
+                        case Models.Action.Update:
+                            result = await _profiles.ChangeRevelationLevel(level);
+                            break;
+                        case Models.Action.Delete:
+                            result = await _profiles.RemoveRevelationLevel(level.Level);
+                            break;
+                        default:
+                            result = Response.NoChanges;
+                            break;
+                    }
+                    ResponseToConsole(result, level.Level.ToString(), "RevelationLevel", level.DocumentAction);
+                }
             }
         }
     }

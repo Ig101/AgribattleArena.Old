@@ -11,6 +11,7 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
     public interface IProfilesService
     {
         string GetUserID(ClaimsPrincipal user);
+        int GetRevelationLevel(int revelations);
         Task<bool> IsAdmin(ClaimsPrincipal user);
         Task<Profile> GetProfile(ClaimsPrincipal user);
         Task<Profile> GetProfileWithInfo(ClaimsPrincipal user);

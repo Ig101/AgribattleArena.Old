@@ -28,8 +28,6 @@ namespace AgribattleArena.BackendServer
             this.env = env;
         }
 
-
-
         async Task CreateAdminUserIsNotExists(UserManager<DBProvider.Contexts.ProfileEntities.Profile> userManager, RoleManager<IdentityRole> roleManager,
             string adminPassword)
         {
@@ -98,8 +96,10 @@ namespace AgribattleArena.BackendServer
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 //Profile
-                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>();
-                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileInfoDto>();
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>()
+                    .ForMember(d => d.RevelationLevel, o => o.UseDestinationValue());
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileInfoDto>()
+                    .ForMember(d => d.RevelationLevel, o => o.UseDestinationValue());
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Actor, Models.Profile.ActorDto>();
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Skill, string>()
                     .ConvertUsing(c => c.Native);

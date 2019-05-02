@@ -31,6 +31,13 @@ namespace AgribattleArena.BackendServer.Services
             _constants = constants.Value;
         }
 
+        public int GetRevelationLevel(int revelations)
+        {
+            return _context.RevelationLevel
+                .OrderByDescending(x => x.Level)
+                .FirstOrDefault(x => x.Revelations <= revelations).Level;
+        }
+
         public async Task<Profile> GetProfile(ClaimsPrincipal user)
         {
             Profile profile = await GetUserAsync(user);

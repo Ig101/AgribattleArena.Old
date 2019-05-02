@@ -2,6 +2,7 @@
 using AgribattleArena.BackendServer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,9 @@ namespace AgribattleArena.BackendServer.Hubs
     {
         IBattleService _battleService;
 
-        public BattleHub(IBattleService battleService)
+        public BattleHub(IBattleService battleService, ILogger<BattleHub> logger)
         {
             _battleService = battleService;
-        }
-
-        public void SendQueueMessage()
-        {
-
-        }
-
-        public void SendEngineMessage()
-        {
-
         }
 
         public override Task OnConnectedAsync()

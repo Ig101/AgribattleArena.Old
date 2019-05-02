@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.BackendServer.Models.Battle
 {
-    public class ProfileQueueDto
+    public class ProfileToEnqueueEnrichedDto
     {
         public string ProfileId { get; set; }
         public int RevelationLevel { get; set; }
-        public int Time { get; set; }
+        public string Mode { get; set; }
     }
 }

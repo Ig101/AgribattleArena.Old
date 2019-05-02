@@ -12,6 +12,9 @@ using AgribattleArena.BackendServer.Helpers;
 using AgribattleArena.BackendServer.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using AgribattleArena.Engine.ForExternalUse;
+using AgribattleArena.BackendServer.Models.Enum;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace AgribattleArena.BackendServer.Services
 {
@@ -19,17 +22,21 @@ namespace AgribattleArena.BackendServer.Services
     {
         IServiceScopeFactory _serviceScopeFactory;
         IHubContext<BattleHub> _battleHub;
+        ILogger<BattleService> _logger;
 
         Dictionary<string, SceneModeQueueDto> _queues;
         INativeManager _nativeManager;
+        ConstantsConfig _constants;
 
-        public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub)
+        public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub,
+            IOptions<ConstantsConfig> constants, ILogger<BattleService> logger)
         {
+            _constants = constants.Value;
             _serviceScopeFactory = serviceScopeFactory;
             _battleHub = battleHub;
             _queues = BattleHelper.GetNewModeQueue();
             _nativeManager = SetupNativeManager();
-
+            _logger = logger;
         }
 
         public INativeManager SetupNativeManager()
@@ -74,10 +81,50 @@ namespace AgribattleArena.BackendServer.Services
         #region Queue
         public void QueueProcessing(int time)
         {
-
+            foreach(var queue in _queues.Values)
+            {
+                List<List<ProfileQueueDto>> complectingActors = new List<List<ProfileQueueDto>>();
+                List<List<ProfileQueueDto>> complectedActors = new List<List<ProfileQueueDto>>();
+                foreach(var profile in queue.Queue)
+                {
+                    int difference = profile.Time >= _constants.QueueTimeout ?
+                        _constants.QueueRevelationLevelCompareLimitAfterTimeout :
+                        _constants.QueueRevelationLevelCompareLimit;
+                    bool added = false;
+                    for(int j = 0; j<complectingActors.Count;j++)
+                    {
+                        List<ProfileQueueDto> complect = complectingActors[j];
+                        if(Math.Abs(complect.First().RevelationLevel - profile.RevelationLevel)<=difference)
+                        {
+                            complect.Add(profile);
+                            if (complect.Count >= queue.Mode.MaxPlayers)
+                            {
+                                complectedActors.Add(complect);
+                                complectingActors.RemoveAt(j);
+                            }
+                            added = true;
+                            break;
+                        }
+                    }
+                    if(!added)
+                    {
+                        complectingActors.Add(new List<ProfileQueueDto>() { profile });
+                    }
+                    profile.Time += time;
+                }
+                foreach(List<ProfileQueueDto> complect in complectedActors)
+                {
+                    foreach(ProfileQueueDto profile in complect)
+                    {
+                        queue.Queue.Remove(profile);
+                    }
+                    _logger.LogInformation("Start new Scene");
+                    //TODO SceneCreation
+                }
+            }
         }
 
-        public bool Enqueue(ProfileToEnqueueDto profile)
+        public bool Enqueue(ProfileToEnqueueEnrichedDto profile)
         {
             if (_queues.Keys.Contains(profile.Mode) && 
                 GetProfileBattleStatus(profile.ProfileId).Status==ProfileBattleStatus.Lobby)
@@ -86,7 +133,7 @@ namespace AgribattleArena.BackendServer.Services
                 targetQueue.Queue.Add(new ProfileQueueDto()
                 {
                     ProfileId = profile.ProfileId,
-                    Revelations = profile.Revelations
+                    RevelationLevel = profile.RevelationLevel
                 });
                 return true;
             }
@@ -109,6 +156,20 @@ namespace AgribattleArena.BackendServer.Services
 
         ProfileQueueInfoDto IsUserInQueue(string profileId)
         {
+            foreach(var queue in _queues)
+            {
+                foreach(var profile in queue.Value.Queue)
+                {
+                    if(profileId == profile.ProfileId)
+                    {
+                        return new ProfileQueueInfoDto()
+                        {
+                            Mode = queue.Key,
+                            Time = profile.Time
+                        };
+                    }
+                }
+            }
             return null;
         }
         #endregion

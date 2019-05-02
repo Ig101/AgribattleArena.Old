@@ -1,0 +1,54 @@
+{
+  "RevelationLevels": [
+    {
+      "Action": "Create",
+      "Level": 1,
+      "Revelations": 0
+    },
+    {
+      "Action": "Create",
+      "Level": 2,
+      "Revelations": 50
+    },
+    {
+      "Action": "Create",
+      "Level": 3,
+      "Revelations": 100
+    },
+    {
+      "Action": "Create",
+      "Level": 4,
+      "Revelations": 150
+    },
+    {
+      "Action": "Create",
+      "Level": 5,
+      "Revelations": 250
+    },
+    {
+      "Action": "Create",
+      "Level": 6,
+      "Revelations": 350
+    },
+    {
+      "Action": "Create",
+      "Level": 7,
+      "Revelations": 500
+    },
+    {
+      "Action": "Create",
+      "Level": 8,
+      "Revelations": 650
+    },
+    {
+      "Action": "Create",
+      "Level": 9,
+      "Revelations": 800
+    },
+    {
+      "Action": "Create",
+      "Level": 10,
+      "Revelations": 1000
+    }
+  ]
+}

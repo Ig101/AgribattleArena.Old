@@ -18,7 +18,7 @@ namespace AgribattleArena.Configurator
         static void Main(string[] args)
         { 
             //Temporary parameter for tests
-            args = new string[] { "--update", "Documents/initialStoreActorsDocument.json" };
+            args = new string[] { "--update", "Documents/InitialRevelationLevelDocument.json" };
             //
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

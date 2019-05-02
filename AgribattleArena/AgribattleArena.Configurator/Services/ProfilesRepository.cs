@@ -1,7 +1,11 @@
-﻿using AgribattleArena.DBProvider.Contexts;
+﻿using AgribattleArena.Configurator.Models;
+using AgribattleArena.DBProvider.Contexts;
+using AgribattleArena.DBProvider.Contexts.ProfileEntities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AgribattleArena.Configurator.Services
 {
@@ -12,6 +16,44 @@ namespace AgribattleArena.Configurator.Services
         public ProfilesRepository(ProfilesContext context)
         {
             _context = context;
+        }
+
+        public async Task<Response> AddRevelationLevel(RevelationLevelDto level)
+        {
+            if (_context.RevelationLevel.Where(x => x.Level == level.Level).Count() == 0)
+            {
+                await _context.RevelationLevel.AddAsync(AutoMapper.Mapper.Map<RevelationLevel>(level));
+                await _context.SaveChangesAsync();
+                return Response.Success;
+            }
+            return Response.NoChanges;
+        }
+
+        public async Task<Response> ChangeRevelationLevel(RevelationLevelDto level)
+        {
+            IEnumerable<RevelationLevel> levelsToChange;
+            if ((levelsToChange = _context.RevelationLevel.Where(x => x.Level == level.Level)).Count() > 0)
+            {
+                foreach(var levelToChange in levelsToChange)
+                { 
+                    levelToChange.Revelations = level.Revelations;
+                }
+                await _context.SaveChangesAsync();
+                return Response.Success;
+            }
+            return Response.NoChanges;
+        }
+
+        public async Task<Response> RemoveRevelationLevel(int level)
+        {
+            IEnumerable<RevelationLevel> levelsToDelete;
+            if ((levelsToDelete = _context.RevelationLevel.Where(x => x.Level == level)).Count() > 0)
+            {
+                _context.RevelationLevel.RemoveRange(levelsToDelete);
+                await _context.SaveChangesAsync();
+                return Response.Success;
+            }
+            return Response.NoChanges;
         }
     }
 }
