@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.Tests", "Ag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.Engine", "AgribattleArena.Engine\AgribattleArena.Engine.csproj", "{8605839C-DA6E-4713-8CA2-A366CCBFEF84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArena.DBProvider", "AgribattleArena.DBProvider\AgribattleArena.DBProvider.csproj", "{E5EF7BB2-981D-4A4D-B7FF-E8DAA8BEC757}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.DBProvider", "AgribattleArena.DBProvider\AgribattleArena.DBProvider.csproj", "{E5EF7BB2-981D-4A4D-B7FF-E8DAA8BEC757}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArena.Configurator", "AgribattleArena.Configurator\AgribattleArena.Configurator.csproj", "{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.Configurator", "AgribattleArena.Configurator\AgribattleArena.Configurator.csproj", "{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArena.DesktopClient", "AgribattleArena.DesktopClient\AgribattleArena.DesktopClient.csproj", "{A9E0B05D-F061-499F-A03B-CF01880BC12C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E0B05D-F061-499F-A03B-CF01880BC12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E0B05D-F061-499F-A03B-CF01880BC12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E0B05D-F061-499F-A03B-CF01880BC12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E0B05D-F061-499F-A03B-CF01880BC12C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
