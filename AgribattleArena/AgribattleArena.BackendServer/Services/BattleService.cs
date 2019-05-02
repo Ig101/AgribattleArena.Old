@@ -119,13 +119,14 @@ namespace AgribattleArena.BackendServer.Services
                         queue.Queue.Remove(profile);
                     }
                     _logger.LogInformation("Start new Scene");
-                    //TODO SceneCreation
+                    StartNewBattle(queue.Mode, complect);
                 }
             }
         }
 
         public bool Enqueue(ProfileToEnqueueEnrichedDto profile)
         {
+            //TODO Connect to hub
             if (_queues.Keys.Contains(profile.Mode) && 
                 GetProfileBattleStatus(profile.ProfileId).Status==ProfileBattleStatus.Lobby)
             {
@@ -142,6 +143,7 @@ namespace AgribattleArena.BackendServer.Services
 
         public bool Dequeue(string profileId)
         {
+            //TODO Disconnect hub
             foreach (SceneModeQueueDto queue in _queues.Values)
             {
                 ProfileQueueDto user;
@@ -176,6 +178,11 @@ namespace AgribattleArena.BackendServer.Services
 
         #region Engine
         public void EngineTimeProcessing(int seconds)
+        {
+
+        }
+
+        void StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles)
         {
 
         }
