@@ -9,5 +9,6 @@ namespace AgribattleArena.BackendServer.Models.Battle
     {
         public string ProfileId { get; set; }
         public int Revelations { get; set; }
+        public int Time { get; set; }
     }
 }

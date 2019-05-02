@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using AgribattleArena.BackendServer.Helpers;
 using AgribattleArena.BackendServer.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using AgribattleArena.Engine.ForExternalUse;
 
 namespace AgribattleArena.BackendServer.Services
 {
@@ -20,25 +21,28 @@ namespace AgribattleArena.BackendServer.Services
         IHubContext<BattleHub> _battleHub;
 
         Dictionary<string, SceneModeQueueDto> _queues;
+        INativeManager _nativeManager;
 
         public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _battleHub = battleHub;
-            _queues = new Dictionary<string, SceneModeQueueDto>()
+            _queues = BattleHelper.GetNewModeQueue();
+            _nativeManager = SetupNativeManager();
+
+        }
+
+        public INativeManager SetupNativeManager()
+        {
+            INativeManager manager = EngineHelper.CreateNativeManager();
+            using (var scope = _serviceScopeFactory.CreateScope())
             {
-                { "main_duel", new SceneModeQueueDto()
-                    {
-                        Queue = new List<ProfileQueueDto>(),
-                        Mode = new SceneModeDto()
-                        {
-                            Generator = EngineHelper.CreateDuelSceneGenerator(),
-                            BattleResultProcessor = BattleResultDelegates.ProcessMainDuelBattleResult,
-                            MaxPlayers = 2
-                        }
-                    }
-                }
-            };
+                var scopedProcessingService =
+                    scope.ServiceProvider
+                        .GetRequiredService<INativesRepository>();
+                //TODO NativeService
+            }
+            return manager;
         }
 
         public ProfileBattleInfoDto GetProfileBattleStatus(string profileId)
@@ -68,7 +72,7 @@ namespace AgribattleArena.BackendServer.Services
         }
 
         #region Queue
-        public void QueueProcessing()
+        public void QueueProcessing(int time)
         {
 
         }

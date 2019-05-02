@@ -31,12 +31,12 @@ namespace AgribattleArena.BackendServer.Services
         void QueueProcessing(object state)
         {
             _logger.LogTrace("Queue time processing");
-            _battleService.QueueProcessing();
+            _battleService.QueueProcessing((int)state);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _queueTimer = new Timer(QueueProcessing, null, TimeSpan.Zero,
+            _queueTimer = new Timer(QueueProcessing, 5, TimeSpan.Zero,
             TimeSpan.FromSeconds(5));
             _engineTimer = new Timer(EngineProcessing, 5, TimeSpan.Zero,
             TimeSpan.FromSeconds(5));
