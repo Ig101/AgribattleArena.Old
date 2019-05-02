@@ -10,7 +10,7 @@ namespace AgribattleArena.DesktopClient
 {
     public class Game1Shell : IgnitusGame
     {
-        const int loadingTime = 5;
+        const int loadingTime = 0;
 
         Color c_color = new Color(200, 200, 200, 200);
         Color c_selected_color = new Color(240, 240, 240, 255);
@@ -35,12 +35,12 @@ namespace AgribattleArena.DesktopClient
             modes.Add("loadingScreen", new Mode(null, new HudElement[]{
                     new SpriteElement("loadingScreen", -160,-100,2880,1800,"loadingScreen",Color.White,new Rectangle(0,0,1415,849),
                         false,false),
+                    new LabelElement("loading_name",40,1420,2560,"loading",true,false,new Color(255,243,113),"largeFont",false,false),
                     new LoadingWheelElement("loading", 2400, 1460, 200, 200, "loadingWheel", loadingTime, true, Color.White, 1,
-                        Game1Shell.PreLoadingMethodBeforeStart, Game1Shell.PreLoadingMethodBeforeStart, false, false),
-                    new LabelElement("loading_name",40,1420,2560,"loading",true,false,new Color(255,243,113),"largeFont",false,false)
+                        Game1Shell.PreLoadingMethodBeforeStart, Game1Shell.PreLoadingMethodBeforeStart, false, false)
                 }, 5, "loadingScreen",
                 Mode.BlackGlow, null, false));
-
+            GoToLoadingMode(new object[] { this }, PreLoadingMethodBeforeStart, LoadingMethodBeforeStart, "authorize");
         }
 
         protected override void Update(GameTime gameTime)
@@ -131,7 +131,9 @@ namespace AgribattleArena.DesktopClient
                 if(strs.Length!=2 || !Authorize(strs[0],strs[1]))
                 {
                     File.Delete(path);
+                    return;
                 }
+                ((LoadingWheelElement)((Mode)modes["loadingScreen"]).Elements[2]).TargetMode = "main";
             }
         }
 
@@ -164,7 +166,7 @@ namespace AgribattleArena.DesktopClient
         void LoadLoadingContent()
         {
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "large" + ".xnb"))
-                content.Add("largeFont", Content.Load<SpriteFont>("NewSpriteFont"));
+                content.Add("largeFont", Content.Load<SpriteFont>("large"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "lesser" + ".xnb"))
                 content.Add("mediumFont", Content.Load<SpriteFont>("lesser"));
             if (File.Exists(Environment.CurrentDirectory + "\\Content\\" + "small" + ".xnb"))
@@ -198,7 +200,6 @@ namespace AgribattleArena.DesktopClient
             game.LoadEngineContent();
             game.LoadMainContent();
             game.LoadMainInformation();
-            game.LoadTexturePack("game");
         }
 
         protected override void LoadModes()
