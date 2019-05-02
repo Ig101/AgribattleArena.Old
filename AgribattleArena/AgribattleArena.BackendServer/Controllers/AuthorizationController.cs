@@ -41,7 +41,8 @@ namespace AgribattleArena.BackendServer.Controllers
                 Email = registrationModel.Email,
                 Resources = _constants.StartResourcesAmount,
                 DonationResources = _constants.StartDonationResourcesAmount,
-                Revelations = 0
+                Revelations = 0,
+                BarracksSize = _constants.StartProfileActorsLimit
             };
             var result = await _userManager.CreateAsync(newUser, registrationModel.Password);
             if (result.Succeeded)

@@ -78,7 +78,6 @@ namespace AgribattleArena.BackendServer.Services
 
         public async Task<ActorDto> AddActor(Profile profile, ActorDto actor)
         {
-            if (profile.Actors.Count >= _constants.ProfileActorsLimit) return null;
             Actor newActor = AutoMapper.Mapper.Map<Actor>(actor);
             profile.Actors.Add(newActor);
             await UpdateAsync(profile);

@@ -11,6 +11,7 @@ namespace AgribattleArena.DBProvider.Contexts.ProfileEntities
         public int Resources { get; set; }
         public int DonationResources { get; set; }
         public int Revelations { get; set; }
+        public int BarracksSize { get; set; }
 
         public List<Actor> Actors { get; set; }
     }

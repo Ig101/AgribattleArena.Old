@@ -9,7 +9,7 @@ namespace AgribattleArena.BackendServer.Services
     {
         public int StartResourcesAmount { get; set; }
         public int StartDonationResourcesAmount { get; set; }
-        public int ProfileActorsLimit { get; set; }
+        public int StartProfileActorsLimit { get; set; }
 
         public int AmountOfOfferedActors { get; set; }
         public int OfferUpdateHour { get; set; }

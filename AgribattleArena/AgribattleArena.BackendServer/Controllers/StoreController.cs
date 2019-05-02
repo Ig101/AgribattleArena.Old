@@ -54,7 +54,7 @@ namespace AgribattleArena.BackendServer.Controllers
                 return BadRequest(ModelState);
             }
             var profile = await _profilesService.GetProfileWithInfo(User);
-            if(profile.Actors.Count() > _constants.ProfileActorsLimit)
+            if(profile.Actors.Where(x => x.DeletedDate == null).Count() >= profile.BarracksSize)
             {
                 ModelState.AddModelError("ProfileError", "Too many actors");
                 return BadRequest(ModelState);

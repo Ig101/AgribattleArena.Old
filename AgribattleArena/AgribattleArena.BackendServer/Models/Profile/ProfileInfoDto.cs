@@ -13,5 +13,6 @@ namespace AgribattleArena.BackendServer.Models.Profile
         public int Resources { get; set; }
         public int DonationResources { get; set; }
         public int Revelations { get; set; }
+        public int BarracksSize { get; set; }
     }
 }
