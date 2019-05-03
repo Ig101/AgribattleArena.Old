@@ -33,6 +33,7 @@ namespace AgribattleArena.DesktopClient.Elements
         int? activeTextbox;
 
         float stepInterval;
+        int elementPos;
 
         public TextBox TempTextbox { get { return activeTextbox == null ? null : textBoxes[activeTextbox.Value]; } }
         public TextBox[] TextBoxes { get { return textBoxes; } set { textBoxes = value; } }
@@ -49,7 +50,7 @@ namespace AgribattleArena.DesktopClient.Elements
 
         public TextBoxFormElement(string name, int x, int y, TextBox[] textBoxes, string spriteName, Color color,
             string font, string cursorSpriteName, int textShift, Color textColor, int sourceSide, Rectangle cursorSource, Game1Shell game, string modeName,
-            bool ignoreAnimation, bool ignoreBackAnimation, GameWindow window) 
+            bool ignoreAnimation, bool ignoreBackAnimation, GameWindow window, int elementPos) 
             :base(name, x, y, -1, -1, false, ignoreAnimation, ignoreBackAnimation)
         {
             this.textBoxes = textBoxes;
@@ -68,6 +69,7 @@ namespace AgribattleArena.DesktopClient.Elements
             this.cursorSpriteName = cursorSpriteName;
             this.textColor = textColor;
             activeTextbox = 0;
+            this.elementPos = elementPos;
         }
 
         void SetStepInterval()
@@ -79,8 +81,10 @@ namespace AgribattleArena.DesktopClient.Elements
         {
             if (activeTextbox!=null)
             {
-                if (game.GetTempMode() == game.GetMode(modeName))
+                Mode tempMode = game.GetTempMode();
+                if (tempMode == game.GetMode(modeName))
                 {
+                    tempMode.TempElement = elementPos;
                     bool regexMatch = Regex.Match(e.Character.ToString(), TempTextbox.RegExp).Success;
                     if (TempTextbox.MaxLength > TempTextbox.Text.Length && regexMatch)
                     {
@@ -145,6 +149,7 @@ namespace AgribattleArena.DesktopClient.Elements
                 }
                 if ((stepInterval <= 0 && state.KeysState[2]) || (state.KeysState[2] && !prevState.KeysState[2]))
                 {
+                    mode.TempElement = elementPos;
                     if (tempTextbox.CursorPosition > 0)
                     {
                         tempTextbox.CursorPosition--;
@@ -153,6 +158,7 @@ namespace AgribattleArena.DesktopClient.Elements
                 }
                 if ((stepInterval <= 0 && state.KeysState[3]) || (state.KeysState[3] && !prevState.KeysState[3]))
                 {
+                    mode.TempElement = elementPos;
                     if (tempTextbox.CursorPosition < tempTextbox.Text.Length)
                     {
                         tempTextbox.CursorPosition++;
@@ -161,6 +167,7 @@ namespace AgribattleArena.DesktopClient.Elements
                 }
                 if ((stepInterval <= 0 && state.KeysState[6]) || (state.KeysState[6] && !prevState.KeysState[6]))
                 {
+                    mode.TempElement = elementPos;
                     if (tempTextbox.CursorPosition > 0)
                     {
                         tempTextbox.Text.Remove(tempTextbox.CursorPosition - 1, 1);
@@ -170,6 +177,7 @@ namespace AgribattleArena.DesktopClient.Elements
                 }
                 if ((stepInterval <= 0 && state.KeysState[7]) || (state.KeysState[7] && !prevState.KeysState[7]))
                 {
+                    mode.TempElement = elementPos;
                     if (tempTextbox.CursorPosition < tempTextbox.Text.Length)
                     {
                         tempTextbox.Text.Remove(tempTextbox.CursorPosition, 1);
