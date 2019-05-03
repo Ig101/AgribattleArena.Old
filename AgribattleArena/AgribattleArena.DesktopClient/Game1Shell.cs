@@ -1,21 +1,24 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using AgribattleArena.DesktopClient.Elements;
+using AgribattleArena.DesktopClient.Helpers;
 using Ignitus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AgribattleArena.DesktopClient
 {
     public class Game1Shell : IgnitusGame
     {
-        const int loadingTime = 0;
+        const int loadingTime = 1000;
 
-        Color c_color = new Color(200, 200, 200, 200);
-        Color c_selected_color = new Color(240, 240, 240, 255);
-        Color c_pressed_color = new Color(120, 120, 120, 255);
-
+        Color c_color = new Color(255, 255, 255);
+        Color c_selected_color = new Color(255, 243, 113, 255);
+        Color c_pressed_color = new Color(255, 243, 0, 255);
         string profileFilePath;
         string loginCookie;
         bool savePassword;
@@ -38,9 +41,29 @@ namespace AgribattleArena.DesktopClient
                         false,false),
                     new LabelElement("loading_name",40,1420,2560,"loading",true,false,new Color(255,243,113),"largeFont",false,false),
                     new LoadingWheelElement("loading", 2400, 1460, 200, 200, "loadingWheel", loadingTime, true, Color.White, 1,
-                        Game1Shell.PreLoadingMethodBeforeStart, Game1Shell.PreLoadingMethodBeforeStart, false, false)
+                        Game1Shell.PreLoadingMethodBeforeStart, Game1Shell.PreLoadingMethodBeforeStart, false, false),
                 }, 5, "loadingScreen",
                 Mode.BlackGlow, null, false));
+            List<Keys> textBoxKeys = ((Keys[])Enum.GetValues(typeof(Keys))).ToList();
+            for (int i = 0; i < textBoxKeys.Count; i++)
+            {
+                char ch;
+                if (!char.TryParse(textBoxKeys[i].ToString(), out ch))
+                {
+                    textBoxKeys.RemoveAt(i);
+                    i--;
+                }
+            }
+            keys = new Keys[9];
+            keys[0] = Keys.Enter;
+            keys[1] = Keys.Escape;
+            keys[2] = Keys.Left;
+            keys[3] = Keys.Right;
+            keys[4] = Keys.LeftShift;
+            keys[5] = Keys.Tab;
+            keys[6] = Keys.Back;
+            keys[7] = Keys.Delete;
+            keys[8] = Keys.RightShift;
             GoToLoadingMode(new object[] { this }, PreLoadingMethodBeforeStart, LoadingMethodBeforeStart, "authorize");
         }
 
@@ -56,7 +79,7 @@ namespace AgribattleArena.DesktopClient
 
         public bool Authorize(string login, string password)
         {
-            //TODO Authorize and save profile
+            
             if (loginCookie != null)
             {
                 if (savePassword)
@@ -158,7 +181,7 @@ namespace AgribattleArena.DesktopClient
             volume = 50;
             soundVolume = 50;
             languageName = "eng";
-            fullScreen = true;
+            fullScreen = false;
             savePassword = true;
         }
 
@@ -200,6 +223,10 @@ namespace AgribattleArena.DesktopClient
         public void LoadEngineContent()
         {
             //TODO MenuContent
+            content.Add("border", Content.Load<Texture2D>("main\\border"));
+            content.Add("pattern", Content.Load<Texture2D>("main\\pattern"));
+            content.Add("title", Content.Load<Texture2D>("main\\title"));
+            content.Add("message_screen", Content.Load<Texture2D>("main\\message_screen"));
         }
 
         public static void PreLoadingMethodBeforeStart(object[] objs)
@@ -220,8 +247,43 @@ namespace AgribattleArena.DesktopClient
 
         protected override void LoadModes()
         {
-            this.modes.Clear();
-            //TODO Modes
+            modes.Add("authorize", new Mode((Mode)modes["loadingScreen"], new HudElement[]{
+                new SpriteElement("fon", 580, 750, 1400, 610, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
+                new BorderElement("border", 570,740,1420,630, "border", new Color(255,243,113), 0.5f, false,false),
+                new LabelElement("login", 620, 820, 1000, "login", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new LabelElement("pass", 620, 940, 1000, "pass", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new TextBoxFormElement("authorization_field", 980, 800, new TextBox[]{
+                    new TextBox(0,0,"login",950,100, false, "[A-Za-z0-9]", 24, false),
+                    new TextBox(0,120,"pass",950,100,true, "[a-zA-Z0-9!@#$%^&*()_+-=|\\}{\":; '?.>,<]", 24, false)
+                    }, "pattern", new Color(40,40,80,240), "mediumFont", "pattern", 20, new Color(200,200,200), 8, new Rectangle(0,0,8,8),this,
+                    "authorize",false,false,Window),
+                new ButtonElement("login", 620, 1080, 1320, 100, Id2Str("authorize"), "largeFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.Authorize,false,false),
+                new ButtonElement("register", 620, 1220, 1320, 100, Id2Str("register"), "mediumFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.GoToRegister,false,false)
+                }, 5, "authorize", ModeHelper.FromAboveGlow, null, true));
+            modes.Add("register", new Mode((Mode)modes["loadingScreen"], new HudElement[]{
+                new EscapeElement("escape", ActionsHelper.GoToAuth),
+                new SpriteElement("fon", 580, 650, 1400, 830, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
+                new BorderElement("border", 570,640,1420,850, "border", new Color(255,243,113), 0.5f, false,false),
+                new LabelElement("login", 620, 720, 1000, "login", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new LabelElement("email", 620, 840, 1000, "email", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new LabelElement("pass", 620, 960, 1000, "pass", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new LabelElement("repeat_pass", 620, 1080, 1000, "confirm_pass", true, true, new Color(255,255,100), "mediumFont", false, false),
+                new TextBoxFormElement("authorization_field", 980, 700, new TextBox[]{
+                    new TextBox(0,0,"login",950,100, false, "[A-Za-z0-9]", 24, false),
+                    new TextBox(0,120,"email",950,100,false, "[a-zA-Z0-9!@#$%^&*()_+-=|\\}{\":; '?.>,<]", 100, true),
+                    new TextBox(0,240,"pass",950,100,true, "[a-zA-Z0-9!@#$%^&*()_+-=|\\}{\":; '?.>,<]", 24, false),
+                    new TextBox(0,360,"repeat_pass",950,100,true, "[a-zA-Z0-9!@#$%^&*()_+-=|\\}{\":; '?.>,<]", 24, false),
+                    }, "pattern", new Color(40,40,80,240), "mediumFont", "pattern", 20, new Color(200,200,200), 8, new Rectangle(0,0,8,8),this,
+                    "register",false,false,Window),
+                new ButtonElement("register", 620, 1200, 1320, 100, Id2Str("register"), "largeFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.Register,false,false),
+                new ButtonElement("exit", 620, 1340, 1320, 100, Id2Str("back"), "mediumFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.GoToAuth,false,false)
+            }, 5, "register", ModeHelper.FromAboveGlow, null, true));
+          //  modes.Add("main", new Mode(null, new HudElement[]{
+          //      }, 5, "main", Mode.BlackGlow, null, false));
         }
 
         protected override void LoadNatives()
@@ -230,5 +292,17 @@ namespace AgribattleArena.DesktopClient
             //TODO Natives
         }
         #endregion
+
+        public bool GetCapsState()
+        {
+            var state = Keyboard.GetState();
+            return state.CapsLock ^ (state.IsKeyDown(Keys.LeftShift) || state.IsKeyDown(Keys.RightShift));
+            
+        }
+
+        public Mode GetMode(string name)
+        {
+            return (Mode)modes[name];
+        }
     }
 }
