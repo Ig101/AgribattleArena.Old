@@ -13,7 +13,7 @@ namespace AgribattleArena.BackendServer.Controllers
 {
     [Authorize]
     [Route("api/profile")]
-    public class ProfilesController: ControllerBase
+    public class ProfilesController : ControllerBase
     {
         IProfilesService _profilesService;
         ILogger<ProfilesController> _logger;
@@ -66,7 +66,7 @@ namespace AgribattleArena.BackendServer.Controllers
         public async Task<IActionResult> GetProfileActor(long id)
         {
             var actor = await _profilesService.GetActor(User, id);
-            if(actor!=null)
+            if (actor != null)
             {
                 return Ok(actor);
             }
@@ -76,7 +76,7 @@ namespace AgribattleArena.BackendServer.Controllers
         [HttpDelete("actors/{id}")]
         public async Task<IActionResult> DeleteProfileActor(long id)
         {
-            if(await _profilesService.DeleteActor(User, id))
+            if (await _profilesService.DeleteActor(User, id))
             {
                 return NoContent();
             }

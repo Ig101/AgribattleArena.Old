@@ -33,9 +33,9 @@ namespace AgribattleArena.DesktopClient.Helpers
             }
             else
             {
-                LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["authorize_error"]).Elements[4]);
+                LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["authorize_status"]).Elements[4]);
                 errorDescr.Text = error;
-                game.GoToMode("authorize_error");
+                game.GoToMode("authorize_status");
             }
         }
 
@@ -50,7 +50,7 @@ namespace AgribattleArena.DesktopClient.Helpers
             {
                 LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["register_error"]).Elements[4]);
                 errorDescr.Text = "no_same_passes";
-                game.GoToMode("register_error");
+                game.GoToMode("register_status");
                 return;
             }
             string error;
@@ -68,14 +68,14 @@ namespace AgribattleArena.DesktopClient.Helpers
                 {
                     LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["authorize_error"]).Elements[4]);
                     errorDescr.Text = error;
-                    game.GoToMode("authorize_error");
+                    game.GoToMode("authorize_status");
                 }
             }
             else
             {
                 LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["register_error"]).Elements[4]);
                 errorDescr.Text = error;
-                game.GoToMode("register_error");
+                game.GoToMode("register_status");
             }
         }
 
@@ -88,6 +88,12 @@ namespace AgribattleArena.DesktopClient.Helpers
         {
             game.SaveConfig();
             game.Exit();
+        }
+
+        public static void ChangeVisibility(IgnitusGame game, Mode mode)
+        {
+            //Mode lMode = (Mode)game.Modes["loadingScreen"];
+           // lMode.Elements[1].Visible = false;
         }
     }
 }

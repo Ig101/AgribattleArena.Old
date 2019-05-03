@@ -18,7 +18,7 @@ namespace AgribattleArena.DesktopClient.Helpers
 
         public static MatrixColorCombo FromAboveGlow(IgnitusGame game, float animationProgress, Color color)
         {
-            return new MatrixColorCombo(Matrix.CreateTranslation(new Vector3(0,(-(1-animationProgress)*500),0)), color);
+            return new MatrixColorCombo(Matrix.CreateTranslation(new Vector3(0,((1-animationProgress)*500),0)), color);
             /*return new MatrixColorCombo(new Matrix(), Color.Multiply(color, animationProgress));*/
         }
     }
