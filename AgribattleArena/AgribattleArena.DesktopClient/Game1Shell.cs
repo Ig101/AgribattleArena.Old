@@ -36,7 +36,7 @@ namespace AgribattleArena.DesktopClient
         Queue<Mode> goToModeQueue = new Queue<Mode>();
 
         public ExternalCallManager ExternalCallManager { get { return externalCallManager; } }
-        public string LoginCookie { get { return loginCookie; } set { loginCookie = value; } }
+        public string LoginCookie { get { return loginCookie; } set { loginCookie = value; externalCallManager.SetAuthorizeCookie(value); } }
 
         public Game1Shell()
             : base(new Vector2(0, 0), 64, 0, new Point(2560, 1600))
@@ -212,7 +212,7 @@ namespace AgribattleArena.DesktopClient
                         });
                     if (authResult.Error == null)
                     {
-                        loginCookie = authResult.Cookie;
+                        LoginCookie = authResult.Cookie;
                         var profileResult = (GetProfileResultDto)externalCallManager
                             .GetProfileInfo(new GetProfileTaskDto() { Cookie = loginCookie });
                         if (profileResult.Error == null)

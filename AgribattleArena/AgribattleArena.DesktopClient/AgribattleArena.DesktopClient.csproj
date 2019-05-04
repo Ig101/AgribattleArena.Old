@@ -70,6 +70,8 @@
     <Compile Include="Models\ExternalTaskDto.cs" />
     <Compile Include="Models\GetProfileResultDto.cs" />
     <Compile Include="Models\GetProfileTaskDto.cs" />
+    <Compile Include="Models\RegisterResultDto.cs" />
+    <Compile Include="Models\RegisterTaskDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

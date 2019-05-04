@@ -15,7 +15,8 @@ namespace AgribattleArena.DesktopClient.ExternalCall
 
     public class ExternalCallManager
     {
-        HttpClient client = new HttpClient();
+        #region ClassInfo
+        HttpClient client;
         JsonSerializer serializer = new JsonSerializer();
         Thread thread;
 
@@ -32,6 +33,7 @@ namespace AgribattleArena.DesktopClient.ExternalCall
             thread = new Thread(new ThreadStart(TaskComputer));
             thread.IsBackground = true;
             thread.Start();
+            client = new HttpClient();
         }
 
         public void InsertTask(ProcessTask method, ExternalTaskDto inObject, ProcessCallback callbackMethod)
@@ -47,7 +49,7 @@ namespace AgribattleArena.DesktopClient.ExternalCall
                 {
                     var task = taskQueue.Dequeue();
                     var callbackResult = task.TaskMethod(task.InObject);
-                    if (task.CallbackMethod != null)
+                    if (task.CallbackMethod != null && callbackResult!=null)
                     {
                         var callbackTask = new ExternalCallbackTask(task.CallbackMethod, callbackResult);
                         callbackQueue.Enqueue(callbackTask);
@@ -56,45 +58,135 @@ namespace AgribattleArena.DesktopClient.ExternalCall
             }
         }
 
+        public void SetAuthorizeCookie(string cookie)
+        {
+            client.DefaultRequestHeaders.Add("Cookie", cookie);
+        }
+        #endregion
+
         public ExternalResultDto Authorize (ExternalTaskDto inObject)
         {
-            //Thread.Sleep(2000);
+            AuthorizeTaskDto authObject = (AuthorizeTaskDto)inObject;
+            AuthorizeDto auth = new AuthorizeDto()
+            {
+                Login = authObject.Login,
+                Password = authObject.Password
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json");
+            HttpResponseMessage callResult;
+            try
+            {             
+                callResult = client.PostAsync(callAddress + "/api/auth/login", content).Result;
+            }
+            catch
+            {
+                return new ExternalResultDto()
+                {
+                    Version = inObject.Version,
+                    Error = "external_server_error"
+                };
+            }
+            if (callResult.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                var cookie = callResult.Headers.FirstOrDefault(x => x.Key == "Set-Cookie").Value;
+                return new AuthorizeResultDto()
+                {
+                    Cookie = String.Concat(cookie),
+                    Version = inObject.Version
+                };
+            }
             return new ExternalResultDto()
             {
                 Version = inObject.Version,
-                Error = "Not implemented"
+                Error = "wrong_login"
             };
-            //return new ExternalCallbackTask(;// new AuthorizeResultDto() { Error = "Not Implemented" };
-            /* ((LabelElement)(((Mode)game.Modes["authorize_status"]).Elements[3])).Text = "";
-             ((LabelElement)(((Mode)game.Modes["register_status"]).Elements[3])).Text = "";
-             AuthorizeDto auth = new AuthorizeDto()
-             {
-                 Login = login,
-                 Password = password
-             };
-             var content = new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json");
-             HttpResponseMessage callResult;
-             try
-             {
-                 callResult = await client.PostAsync(callAddress + "/api/auth/login", content);
-             }
-             catch (AggregateException e)
-             {
-             }
-             var result = new AuthorizeResultDto() { Error = "Not Implemented" };
-             ((LabelElement)(((Mode)game.Modes["authorize_status"]).Elements[3])).Text = result.Error;
-             ((LabelElement)(((Mode)game.Modes["register_status"]).Elements[3])).Text = result.Error;
-             return null;*/
         }
 
 
 
         public ExternalResultDto Register(ExternalTaskDto inObject)
         {
-            return new ExternalResultDto()
+            RegisterTaskDto regObject = (RegisterTaskDto)inObject;
+            if (regObject.Password != regObject.ConfirmPassword)
             {
-                Version = inObject.Version,
-                Error = "Not implemented"
+                return new ExternalResultDto()
+                {
+                    Error = "password_not_confirmed",
+                    Version = inObject.Version
+                };
+            }
+            RegisterDto register = new RegisterDto()
+            {
+                Login = regObject.Login,
+                Password = regObject.Password,
+                Email = regObject.Email
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(register), Encoding.UTF8, "application/json");
+            HttpResponseMessage callResult;
+            try
+            {
+                callResult = client.PostAsync(callAddress + "/api/auth/register", content).Result;
+            }
+            catch
+            {
+                return new ExternalResultDto()
+                {
+                    Version = inObject.Version,
+                    Error = "external_server_error"
+                };
+            }
+            if (callResult.StatusCode == System.Net.HttpStatusCode.Created)
+            {
+                return new RegisterResultDto()
+                {
+                    Version = inObject.Version,
+                    Login = regObject.Login,
+                    Password = regObject.Password
+                };
+            }
+            string jsonError = callResult.Content.ReadAsStringAsync().Result;
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(jsonError);
+            var error = dict.Values.First().First();
+            string errorToSend = null;
+            if(error.Contains("already taken"))
+            {
+                if(error.Contains("User name"))
+                {
+                    errorToSend = "login_already_taken";
+                }
+                if(error.Contains("Email"))
+                {
+                    errorToSend = "email_already_taken";
+                }
+            }
+            if(error.Contains("letters or digits") && error.Contains("User name"))
+            {
+                errorToSend = "incorrect login";
+            }
+            if (error.Contains("Passwords must have at least one digit")) errorToSend = "password_one_digit";
+            if (error.Contains("Passwords must have at least one uppercase")) errorToSend = "password_one_uppercase";
+            if (error.Contains("Passwords must have at least one lowercase")) errorToSend = "password_one_lowercase";
+            if (errorToSend == null)
+            {
+                switch (error)
+                {
+                    case "The Email field is not a valid e-mail address.":
+                        errorToSend = "not_valid_email";
+                        break;
+                    case "Passwords must be at least 6 characters.":
+                        errorToSend = "password_too_short";
+                        break;
+                    case "Passwords must have at least one non alphanumeric character.":
+                        errorToSend = "password_one_non_alphanumeric";
+                        break;
+                    default:
+                        errorToSend = "wrong_input";
+                        break;
+                }
+            }
+            return new ExternalResultDto(){
+                Error = errorToSend,
+                Version = inObject.Version
             };
         }
 

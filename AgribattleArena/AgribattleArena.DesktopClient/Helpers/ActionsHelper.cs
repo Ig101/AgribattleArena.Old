@@ -36,47 +36,26 @@ namespace AgribattleArena.DesktopClient.Helpers
                     Password = form.TextBoxes[1].StringText,
                     Version = ((SyncInfoElement)(targetMode.Elements[5])).GetNextVersion()
                 }, CallbacksStore.AuthorizeCallbackReceiver);
-            game.GoToMode("authorize_status");
+            game.GoToMode(targetMode);
         }
 
         public static void Register(IgnitusGame game, Mode mode, HudElement element)
         {
-          /*  TextBoxFormElement form = (TextBoxFormElement)mode.Elements[7];
-            string login = form.TextBoxes[0].StringText;
-            string email = form.TextBoxes[1].StringText;
-            string pass = form.TextBoxes[2].StringText;
-            string pass2 = form.TextBoxes[3].StringText;
-            if(pass!=pass2)
-            {
-                LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["register_error"]).Elements[4]);
-                errorDescr.Text = "no_same_passes";
-                game.GoToMode("register_status");
-                return;
-            }
-            string error;
-            bool success = ExternalOperationsHelper.Register((Game1Shell)game,login, email, pass, out error);
-            if (success)
-            {
-                success = ExternalOperationsHelper.Authorize((Game1Shell)game,form.TextBoxes[0].StringText, form.TextBoxes[2].StringText, out error);
-                if (success)
+            Game1Shell gameShell = (Game1Shell)game;
+            TextBoxFormElement form = (TextBoxFormElement)mode.Elements[7];
+            Mode targetMode = (Mode)game.Modes["register_status"];
+            ((LabelElement)(targetMode.Elements[3])).Text = "connecting";
+            ((ButtonElement)(targetMode.Elements[4])).Visible = false;
+            gameShell.ExternalCallManager.InsertTask(
+                gameShell.ExternalCallManager.Register, new RegisterTaskDto()
                 {
-                    var profile = ExternalOperationsHelper.GetProfile((Game1Shell)game);
-                    ((Game1Shell)game).ProcessMainInfo(profile);
-                    game.GoToMode("main");
-                }
-                else
-                {
-                    LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["authorize_error"]).Elements[4]);
-                    errorDescr.Text = error;
-                    game.GoToMode("authorize_status");
-                }
-            }
-            else
-            {
-                LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["register_error"]).Elements[4]);
-                errorDescr.Text = error;
-                game.GoToMode("register_status");
-            }*/
+                    Login = form.TextBoxes[0].StringText,
+                    Email = form.TextBoxes[1].StringText,
+                    Password = form.TextBoxes[2].StringText,
+                    ConfirmPassword = form.TextBoxes[3].StringText,
+                    Version = ((SyncInfoElement)(targetMode.Elements[5])).GetNextVersion()
+                }, CallbacksStore.RegisterCallbackReceiver);
+            game.GoToMode(targetMode);
         }
 
         public static void GoToAuth(IgnitusGame game, Mode mode, HudElement element)
