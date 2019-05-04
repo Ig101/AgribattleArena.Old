@@ -33,7 +33,8 @@ namespace AgribattleArena.DesktopClient.Helpers
                 gameShell.ExternalCallManager.Authorize, new AuthorizeTaskDto()
                 {
                     Login = form.TextBoxes[0].StringText,
-                    Password = form.TextBoxes[1].StringText
+                    Password = form.TextBoxes[1].StringText,
+                    Version = ((SyncInfoElement)(targetMode.Elements[5])).GetNextVersion()
                 }, CallbacksStore.AuthorizeCallbackReceiver);
             game.GoToMode("authorize_status");
         }
@@ -87,6 +88,11 @@ namespace AgribattleArena.DesktopClient.Helpers
         {
             game.SaveConfig();
             game.Exit();
+        }
+
+        public static void GoToSettings(IgnitusGame game, Mode mode, HudElement element)
+        {
+
         }
     }
 }

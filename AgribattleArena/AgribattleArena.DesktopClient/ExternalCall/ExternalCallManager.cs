@@ -30,10 +30,11 @@ namespace AgribattleArena.DesktopClient.ExternalCall
             this.callbackQueue = callbackQueue;
             this.callAddress = callAddress;
             thread = new Thread(new ThreadStart(TaskComputer));
+            thread.IsBackground = true;
             thread.Start();
         }
 
-        public void InsertTask(ProcessTask method, object inObject, ProcessCallback callbackMethod)
+        public void InsertTask(ProcessTask method, ExternalTaskDto inObject, ProcessCallback callbackMethod)
         {
             taskQueue.Enqueue(new ExternalTask(method, inObject, callbackMethod));
         }
@@ -55,11 +56,12 @@ namespace AgribattleArena.DesktopClient.ExternalCall
             }
         }
 
-        public ExternalResultDto Authorize (object inObject)
+        public ExternalResultDto Authorize (ExternalTaskDto inObject)
         {
-            Thread.Sleep(2000);
+            //Thread.Sleep(2000);
             return new ExternalResultDto()
             {
+                Version = inObject.Version,
                 Error = "Not implemented"
             };
             //return new ExternalCallbackTask(;// new AuthorizeResultDto() { Error = "Not Implemented" };
@@ -87,18 +89,20 @@ namespace AgribattleArena.DesktopClient.ExternalCall
 
 
 
-        public ExternalResultDto Register(object inObject)
+        public ExternalResultDto Register(ExternalTaskDto inObject)
         {
             return new ExternalResultDto()
             {
+                Version = inObject.Version,
                 Error = "Not implemented"
             };
         }
 
-        public ExternalResultDto GetProfileInfo (object inObject)
+        public ExternalResultDto GetProfileInfo (ExternalTaskDto inObject)
         {
             return new ExternalResultDto()
             {
+                Version = inObject.Version,
                 Error = "Not implemented"
             };
         }

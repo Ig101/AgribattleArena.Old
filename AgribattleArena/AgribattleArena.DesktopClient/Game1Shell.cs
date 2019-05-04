@@ -33,6 +33,7 @@ namespace AgribattleArena.DesktopClient
         bool savePassword;
 
         Queue<ExternalCallbackTask> callbackQueue = new Queue<ExternalCallbackTask>();
+        Queue<Mode> goToModeQueue = new Queue<Mode>();
 
         public ExternalCallManager ExternalCallManager { get { return externalCallManager; } }
         public string LoginCookie { get { return loginCookie; } set { loginCookie = value; } }
@@ -46,6 +47,11 @@ namespace AgribattleArena.DesktopClient
             profileFilePath = Environment.CurrentDirectory;
             loginCookie = null;
             externalCallManager = new ExternalCallManager(callbackQueue, "https://localhost:444");
+        }
+
+        public override void GoToMode(Mode mode)
+        {
+            goToModeQueue.Enqueue(mode);
         }
 
         protected override void Initialize()
@@ -112,6 +118,10 @@ namespace AgribattleArena.DesktopClient
         #region GameInfo
         protected override void Update(GameTime gameTime)
         {
+            if(goToModeQueue.Count>0 && (tempMode == null || tempMode.AnimationProgress >= 1))
+            {
+                base.GoToMode(goToModeQueue.Dequeue());
+            }
             CallbackQueueProcess();
             base.Update(gameTime);
         }
@@ -203,7 +213,8 @@ namespace AgribattleArena.DesktopClient
                     if (authResult.Error == null)
                     {
                         loginCookie = authResult.Cookie;
-                        var profileResult = (GetProfileResultDto)externalCallManager.GetProfileInfo(loginCookie);
+                        var profileResult = (GetProfileResultDto)externalCallManager
+                            .GetProfileInfo(new GetProfileTaskDto() { Cookie = loginCookie });
                         if (profileResult.Error == null)
                         {
                             ProcessMainInfo(profileResult.Profile);
@@ -272,6 +283,7 @@ namespace AgribattleArena.DesktopClient
             content.Add("message_screen", Content.Load<Texture2D>("main\\message_screen"));
             content.Add("map", Content.Load<Texture2D>("map\\capital_map"));
             content.Add("back_button", Content.Load<Texture2D>("main\\back_button"));
+            content.Add("settings_button", Content.Load<Texture2D>("main\\settings_button"));
         }
 
         public static void PreLoadingMethodBeforeStart(object[] objs)
@@ -308,10 +320,13 @@ namespace AgribattleArena.DesktopClient
                 ActionsHelper.GoToRegister,false,false),
                 new SpriteButtonElement("exit", 20, 1460, 120, 120, "", "largeFont", Color.White,
                     new Color(175,175,175), new Color(100,100,100),
-                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, false,true)
+                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true),
+                new SpriteButtonElement("settings", 150, 1460, 120, 120, "", "largeFont", Color.White,
+                    new Color(175,175,175), new Color(100,100,100),
+                    Color.White, "settings_button", "settings_button", "settings_button", new Rectangle(0,0,128,128), ActionsHelper.GoToSettings, true,true)
                 }, 5, "authorize", ModeHelper.FromAboveGlow, null, true));
             modes.Add("register", new Mode((Mode)modes["loadingScreen"], new HudElement[]{
-                new EscapeElement("escape", ActionsHelper.GoToAuth),
+                new KeyElement("escape", ActionsHelper.GoToAuth,1),
                 new SpriteElement("fon", 755, 550, 1050, 1050, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
                 new BorderElement("border", 745,540,1070,1070, "border", new Color(40,40,140), 0.5f, false,false),
                 new LabelElement("login", 805, 600, 950, "login", true, false, new Color(255,255,100), "mediumFont", false, false),
@@ -331,26 +346,36 @@ namespace AgribattleArena.DesktopClient
                 ActionsHelper.GoToAuth,false,false),
                new SpriteButtonElement("exit", 20, 1460, 120, 120, "", "largeFont", Color.White,
                     new Color(175,175,175), new Color(100,100,100),
-                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true)
+                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true),
+                new SpriteButtonElement("settings", 150, 1460, 120, 120, "", "largeFont", Color.White,
+                    new Color(175,175,175), new Color(100,100,100),
+                    Color.White, "settings_button", "settings_button", "settings_button", new Rectangle(0,0,128,128), ActionsHelper.GoToSettings, true,true)
             }, 5, "register", ModeHelper.FromAboveGlow, null, true));
+            SyncInfoElement authSyncElement = new SyncInfoElement("sync");
             modes.Add("authorize_status", new Mode((Mode)modes["loadingScreen"], new HudElement[]
             {
-                new EscapeElement("escape", ActionsHelper.GoToAuth),
+                new KeyElement("escape", ActionsHelper.GoToAuth,1),
                 new SpriteElement("fon", 380, 550, 1800, 320, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
                 new BorderElement("border", 370,540,1820,340, "border", new Color(40,40,140), 0.5f, false,false),
                 new LabelElement("error", 420, 610, 1720, "error", true, false, new Color(255,255,255), "largeFont", false, false),
                 new ButtonElement("exit", 620, 760, 1320, 100, Id2Str("ok"), "mediumFont", false, c_color, c_selected_color, c_pressed_color,
-                ActionsHelper.GoToAuth,false,false)
+                ActionsHelper.GoToAuth,false,false),
+                authSyncElement,
+                new SpriteElement("exit", 20, 1460, 120, 120, "back_button", Color.White, new Rectangle(0,0,128,128), true,true),
+                new SpriteElement("settings", 150, 1460, 120, 120, "settings_button", Color.White, new Rectangle(0,0,128,128), true,true)
             }, 5, "auth_status", ModeHelper.FromAboveGlow, null, true));
             modes.Add("register_status", new Mode((Mode)modes["loadingScreen"], new HudElement[]
             {
-                new EscapeElement("escape", ActionsHelper.GoToRegister),
-                new SpriteElement("fon", 380, 550, 1800, 810, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
-                new BorderElement("border", 370,540,1820,830, "border", new Color(255,243,113), 0.5f, false,false),
-                new LabelElement("error", 420, 620, 1720, "error", true, false, new Color(255,255,100), "largeFont", false, false),
-                new ButtonElement("exit", 620, 1210, 1320, 100, Id2Str("ok"), "largeFont", false, c_color, c_selected_color, c_pressed_color,
-                ActionsHelper.GoToRegister,false,false)
-            }, 5, "auth_status", ModeHelper.FromAboveGlow, null, true));
+                new KeyElement("escape", ActionsHelper.GoToRegister,1),
+                new SpriteElement("fon", 380, 550, 1800, 320, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
+                new BorderElement("border", 370,540,1820,340, "border", new Color(40,40,140), 0.5f, false,false),
+                new LabelElement("error", 420, 610, 1720, "error", true, false, new Color(255,255,255), "largeFont", false, false),
+                new ButtonElement("exit", 620, 760, 1320, 100, Id2Str("ok"), "mediumFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.GoToRegister,false,false),
+                authSyncElement,
+                new SpriteElement("exit", 20, 1460, 120, 120, "back_button", Color.White, new Rectangle(0,0,128,128), true,true),
+                new SpriteElement("settings", 150, 1460, 120, 120, "settings_button", Color.White, new Rectangle(0,0,128,128), true,true)
+         }, 5, "auth_status", ModeHelper.FromAboveGlow, null, true));
             modes.Add("main", new Mode(null, new HudElement[]{
                 new SpriteElement("map", 130, 20, 2080, 1560, "map", Color.White, new Rectangle(0,0,2080,1560), false, false),
                 new BorderElement("border", 120,10,2100,1580,"border",new Color(210,210,210),1.5f,false,false),

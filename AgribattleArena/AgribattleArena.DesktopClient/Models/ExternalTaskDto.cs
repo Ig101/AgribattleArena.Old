@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.DesktopClient.Models
 {
-    class AuthorizeTaskDto: ExternalTaskDto
+    public class ExternalTaskDto
     {
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public int Version { get; set; }
     }
 }

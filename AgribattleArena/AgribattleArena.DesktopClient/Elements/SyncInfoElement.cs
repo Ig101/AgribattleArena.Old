@@ -8,32 +8,38 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.DesktopClient.Elements
 {
-    class EscapeElement : HudElement
+    class SyncInfoElement : HudElement
     {
-        PressButtonAction action;
+        int version;
 
-        public PressButtonAction Action { get { return action; } set { action = value; } }
+        public int Version { get { return version; } }
 
-        public EscapeElement(string name, PressButtonAction action)
-            :base(name,0,0,-1,-1,true,true,true)
+        public SyncInfoElement(string name)
+            : base(name, 0, 0, -1, -1, true, true, true)
         {
-            this.action = action;
+            version = 0;
+        }
+
+        public int GetNextVersion()
+        {
+            version++;
+            if (version == int.MaxValue) version = 0;
+            return version;
         }
 
         public override void Draw(IgnitusGame game, Matrix animation, Color fonColor, float milliseconds)
         {
+
         }
 
         public override void DrawPreActionsUpdate(IgnitusGame game, Color fonColor)
         {
+
         }
 
         public override void PassiveUpdate(IgnitusGame game, Mode mode, ControlsState state, ControlsState prevState, float milliseconds)
         {
-            if(!state.KeysState[1] && prevState.KeysState[1])
-            {
-                action?.Invoke(game, mode, this);
-            }
+
         }
 
         public override void Update(IgnitusGame game, Mode mode, ControlsState state, ControlsState prevState, float milliseconds)

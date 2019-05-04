@@ -46,7 +46,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Elements\EscapeElement.cs" />
+    <Compile Include="Elements\KeyElement.cs" />
+    <Compile Include="Elements\SyncInfoElement.cs" />
     <Compile Include="Elements\TextBox.cs" />
     <Compile Include="Elements\TextBoxFormElement.cs" />
     <Compile Include="ExternalCall\CallbacksStore.cs" />
@@ -66,7 +67,9 @@
     <Compile Include="Models\AuthorizeTaskDto.cs" />
     <Compile Include="Models\ExternalResultDto.cs" />
     <Compile Include="ExternalCall\ExternalTask.cs" />
+    <Compile Include="Models\ExternalTaskDto.cs" />
     <Compile Include="Models\GetProfileResultDto.cs" />
+    <Compile Include="Models\GetProfileTaskDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,6 +8,7 @@ namespace AgribattleArena.DesktopClient.Models
 {
     public class ExternalResultDto
     {
+        public int Version { get; set; }
         public string Error { get; set; }
     }
 }

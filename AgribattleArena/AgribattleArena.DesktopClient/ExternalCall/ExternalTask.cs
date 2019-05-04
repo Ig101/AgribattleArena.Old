@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.DesktopClient.ExternalCall
 {
-    public delegate ExternalResultDto ProcessTask(object inObject);
+    public delegate ExternalResultDto ProcessTask(ExternalTaskDto inObject);
 
     public class ExternalTask
     {
         public ProcessTask TaskMethod { get; }
         public ProcessCallback CallbackMethod { get; }
-        public object InObject { get; }
+        public ExternalTaskDto InObject { get; }
 
-        public ExternalTask(ProcessTask taskMethod, object inObject, ProcessCallback callbackMethod)
+        public ExternalTask(ProcessTask taskMethod, ExternalTaskDto inObject, ProcessCallback callbackMethod)
         {
             CallbackMethod = callbackMethod;
             TaskMethod = taskMethod;
