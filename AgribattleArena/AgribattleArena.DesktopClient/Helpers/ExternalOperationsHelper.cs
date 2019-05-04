@@ -1,4 +1,4 @@
-﻿using AgribattleArena.BackendServer.Models.Authorization;
+﻿/*using AgribattleArena.BackendServer.Models.Authorization;
 using AgribattleArena.BackendServer.Models.Profile;
 using Ignitus;
 using Newtonsoft.Json;
@@ -131,3 +131,4 @@ namespace AgribattleArena.DesktopClient.Helpers
         }
     }
 }
+*/

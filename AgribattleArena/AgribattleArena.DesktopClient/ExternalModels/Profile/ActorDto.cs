@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AgribattleArena.BackendServer.Models.Profile
+namespace AgribattleArena.DesktopClient.ExternalModels.Profile
 {
     public class ActorDto
     {

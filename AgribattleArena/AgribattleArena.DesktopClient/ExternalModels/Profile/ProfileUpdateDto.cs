@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgribattleArena.BackendServer.Models.Profile
+namespace AgribattleArena.DesktopClient.ExternalModels.Profile
 {
     public class ProfileUpdateDto
     {

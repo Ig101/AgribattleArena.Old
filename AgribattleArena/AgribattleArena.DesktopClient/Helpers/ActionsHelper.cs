@@ -1,4 +1,6 @@
 ﻿using AgribattleArena.DesktopClient.Elements;
+using AgribattleArena.DesktopClient.ExternalCall;
+using AgribattleArena.DesktopClient.Models;
 using Ignitus;
 using System;
 using System.Collections.Generic;
@@ -22,26 +24,23 @@ namespace AgribattleArena.DesktopClient.Helpers
 
         public static void Authorize(IgnitusGame game, Mode mode, HudElement element)
         {
+            Game1Shell gameShell = (Game1Shell)game;
             TextBoxFormElement form = (TextBoxFormElement)mode.Elements[4];
-            string error;
-            bool success = ExternalOperationsHelper.Authorize((Game1Shell)game,form.TextBoxes[0].StringText, form.TextBoxes[1].StringText, out error);
-            if (success)
-            {
-                var profile = ExternalOperationsHelper.GetProfile((Game1Shell)game);
-                ((Game1Shell)game).ProcessMainInfo(profile);
-                game.GoToMode("main");
-            }
-            else
-            {
-                LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["authorize_status"]).Elements[4]);
-                errorDescr.Text = error;
-                game.GoToMode("authorize_status");
-            }
+            Mode targetMode = (Mode)game.Modes["authorize_status"];
+            ((LabelElement)(targetMode.Elements[3])).Text = "connecting";
+            ((ButtonElement)(targetMode.Elements[4])).Text = game.Id2Str("cancel");
+            gameShell.ExternalCallManager.InsertTask(
+                gameShell.ExternalCallManager.Authorize, new AuthorizeTaskDto()
+                {
+                    Login = form.TextBoxes[0].StringText,
+                    Password = form.TextBoxes[1].StringText
+                }, CallbacksStore.AuthorizeCallbackReceiver);
+            game.GoToMode("authorize_status");
         }
 
         public static void Register(IgnitusGame game, Mode mode, HudElement element)
         {
-            TextBoxFormElement form = (TextBoxFormElement)mode.Elements[7];
+          /*  TextBoxFormElement form = (TextBoxFormElement)mode.Elements[7];
             string login = form.TextBoxes[0].StringText;
             string email = form.TextBoxes[1].StringText;
             string pass = form.TextBoxes[2].StringText;
@@ -76,7 +75,7 @@ namespace AgribattleArena.DesktopClient.Helpers
                 LabelElement errorDescr = (LabelElement)(((Mode)game.Modes["register_error"]).Elements[4]);
                 errorDescr.Text = error;
                 game.GoToMode("register_status");
-            }
+            }*/
         }
 
         public static void GoToAuth(IgnitusGame game, Mode mode, HudElement element)
@@ -88,12 +87,6 @@ namespace AgribattleArena.DesktopClient.Helpers
         {
             game.SaveConfig();
             game.Exit();
-        }
-
-        public static void ChangeVisibility(IgnitusGame game, Mode mode)
-        {
-            //Mode lMode = (Mode)game.Modes["loadingScreen"];
-           // lMode.Elements[1].Visible = false;
         }
     }
 }

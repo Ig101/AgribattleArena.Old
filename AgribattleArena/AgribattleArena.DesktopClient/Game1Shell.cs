@@ -10,16 +10,18 @@ using Microsoft.Xna.Framework.Input;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
-using AgribattleArena.BackendServer.Models.Authorization;
 using Newtonsoft.Json;
 using System.Net.Sockets;
-using AgribattleArena.BackendServer.Models.Profile;
+using AgribattleArena.DesktopClient.Models;
+using AgribattleArena.DesktopClient.ExternalModels.Profile;
+using System.Threading.Tasks;
+using AgribattleArena.DesktopClient.ExternalCall;
 
 namespace AgribattleArena.DesktopClient
 {
     public class Game1Shell : IgnitusGame
     {
-        HttpClient client = new HttpClient();
+        ExternalCallManager externalCallManager;
 
         const int loadingTime = 1000;
 
@@ -30,7 +32,9 @@ namespace AgribattleArena.DesktopClient
         string loginCookie;
         bool savePassword;
 
-        public HttpClient Client { get { return client; } }
+        Queue<ExternalCallbackTask> callbackQueue = new Queue<ExternalCallbackTask>();
+
+        public ExternalCallManager ExternalCallManager { get { return externalCallManager; } }
         public string LoginCookie { get { return loginCookie; } set { loginCookie = value; } }
 
         public Game1Shell()
@@ -41,6 +45,7 @@ namespace AgribattleArena.DesktopClient
             Window.Title = "Agribattle";
             profileFilePath = Environment.CurrentDirectory;
             loginCookie = null;
+            externalCallManager = new ExternalCallManager(callbackQueue, "https://localhost:444");
         }
 
         protected override void Initialize()
@@ -77,6 +82,18 @@ namespace AgribattleArena.DesktopClient
             GoToLoadingMode(new object[] { this }, PreLoadingMethodBeforeStart, LoadingMethodBeforeStart, "authorize");
         }
 
+        #region CallbackOperations
+        void CallbackQueueProcess()
+        {
+            if(callbackQueue.Count>0)
+            {
+                var task = callbackQueue.Dequeue();
+                task.CallbackMethod(this, task.Result);
+            }
+        }
+        #endregion
+
+        #region ActionHelpers
         public void ProcessMainInfo(ProfileDto profile)
         {
             Mode main = (Mode)modes["main"];
@@ -90,9 +107,12 @@ namespace AgribattleArena.DesktopClient
                 Magic.Act(profileFilePath + @"\profile.mrc", Encoding.UTF8.GetBytes(str));
             }
         }
+        #endregion
 
+        #region GameInfo
         protected override void Update(GameTime gameTime)
         {
+            CallbackQueueProcess();
             base.Update(gameTime);
         }
 
@@ -174,15 +194,26 @@ namespace AgribattleArena.DesktopClient
                 byte[] bytes = Magic.Restore(profileFilePath + @"\profile.mrc");
                 string str = Encoding.UTF8.GetString(bytes);
                 string[] strs = str.Split(new char[] { '\n' });
-                string error;
-                if(strs.Length!=2 || !ExternalOperationsHelper.Authorize(this, strs[0],strs[1], out error) || !savePassword)
+                if (strs.Length == 2 && savePassword)
                 {
-                    File.Delete(path);
-                    return;
+                    var authResult = (AuthorizeResultDto)externalCallManager.Authorize(new AuthorizeTaskDto(){
+                        Login = strs[0],
+                        Password = strs[1]
+                        });
+                    if (authResult.Error == null)
+                    {
+                        loginCookie = authResult.Cookie;
+                        var profileResult = (GetProfileResultDto)externalCallManager.GetProfileInfo(loginCookie);
+                        if (profileResult.Error == null)
+                        {
+                            ProcessMainInfo(profileResult.Profile);
+                            Mode mode = (Mode)modes["loadingScreen"];
+                            ((LoadingWheelElement)(mode).Elements[mode.Elements.Length - 1]).TargetMode = "main";
+                            return;
+                        }
+                    }
                 }
-                ProcessMainInfo(ExternalOperationsHelper.GetProfile(this));
-                Mode mode = (Mode)modes["loadingScreen"];
-                ((LoadingWheelElement)(mode).Elements[mode.Elements.Length-1]).TargetMode = "main";
+                File.Delete(path);
             }
         }
 
@@ -279,7 +310,7 @@ namespace AgribattleArena.DesktopClient
                     new Color(175,175,175), new Color(100,100,100),
                     Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, false,true)
                 }, 5, "authorize", ModeHelper.FromAboveGlow, null, true));
-            modes.Add("register", new Mode((Mode)modes["authorize"], new HudElement[]{
+            modes.Add("register", new Mode((Mode)modes["loadingScreen"], new HudElement[]{
                 new EscapeElement("escape", ActionsHelper.GoToAuth),
                 new SpriteElement("fon", 755, 550, 1050, 1050, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
                 new BorderElement("border", 745,540,1070,1070, "border", new Color(40,40,140), 0.5f, false,false),
@@ -302,32 +333,24 @@ namespace AgribattleArena.DesktopClient
                     new Color(175,175,175), new Color(100,100,100),
                     Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true)
             }, 5, "register", ModeHelper.FromAboveGlow, null, true));
-            modes.Add("authorize_status", new Mode((Mode)modes["authorize"], new HudElement[]
+            modes.Add("authorize_status", new Mode((Mode)modes["loadingScreen"], new HudElement[]
             {
-                new EscapeElement("escape", MenuActions.GoBack),
+                new EscapeElement("escape", ActionsHelper.GoToAuth),
+                new SpriteElement("fon", 380, 550, 1800, 320, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
+                new BorderElement("border", 370,540,1820,340, "border", new Color(40,40,140), 0.5f, false,false),
+                new LabelElement("error", 420, 610, 1720, "error", true, false, new Color(255,255,255), "largeFont", false, false),
+                new ButtonElement("exit", 620, 760, 1320, 100, Id2Str("ok"), "mediumFont", false, c_color, c_selected_color, c_pressed_color,
+                ActionsHelper.GoToAuth,false,false)
+            }, 5, "auth_status", ModeHelper.FromAboveGlow, null, true));
+            modes.Add("register_status", new Mode((Mode)modes["loadingScreen"], new HudElement[]
+            {
+                new EscapeElement("escape", ActionsHelper.GoToRegister),
                 new SpriteElement("fon", 380, 550, 1800, 810, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
                 new BorderElement("border", 370,540,1820,830, "border", new Color(255,243,113), 0.5f, false,false),
                 new LabelElement("error", 420, 620, 1720, "error", true, false, new Color(255,255,100), "largeFont", false, false),
-                new LabelElement("error_descr", 420, 760, 1720, "error", true, false, new Color(255,255,255), "mediumFont", false, false),
                 new ButtonElement("exit", 620, 1210, 1320, 100, Id2Str("ok"), "largeFont", false, c_color, c_selected_color, c_pressed_color,
-                MenuActions.GoBack,false,false),
-                                new SpriteButtonElement("exit", 20, 1460, 120, 120, "", "largeFont", Color.White,
-                    new Color(175,175,175), new Color(100,100,100),
-                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true)
-            }, 5, "error", ModeHelper.FromAboveGlow, null, true));
-            modes.Add("register_status", new Mode((Mode)modes["register"], new HudElement[]
-            {
-                new EscapeElement("escape", MenuActions.GoBack),
-                new SpriteElement("fon", 380, 550, 1800, 810, "pattern", new Color(0,0,40,240), new Rectangle(0,0,8,8),false,false ),
-                new BorderElement("border", 370,540,1820,830, "border", new Color(255,243,113), 0.5f, false,false),
-                new LabelElement("error", 420, 620, 1720, "error", true, false, new Color(255,255,100), "largeFont", false, false),
-                new LabelElement("error_descr", 420, 760, 1720, "error", true, false, new Color(255,255,255), "mediumFont", false, false),
-                new ButtonElement("exit", 620, 1210, 1320, 100, Id2Str("ok"), "largeFont", false, c_color, c_selected_color, c_pressed_color,
-                MenuActions.GoBack,false,false),
-                                new SpriteButtonElement("exit", 20, 1460, 120, 120, "", "largeFont", Color.White,
-                    new Color(175,175,175), new Color(100,100,100),
-                    Color.White, "back_button", "back_button", "back_button", new Rectangle(0,0,128,128), ActionsHelper.Exit, true,true)
-            }, 5, "error", ModeHelper.FromAboveGlow, null, true));
+                ActionsHelper.GoToRegister,false,false)
+            }, 5, "auth_status", ModeHelper.FromAboveGlow, null, true));
             modes.Add("main", new Mode(null, new HudElement[]{
                 new SpriteElement("map", 130, 20, 2080, 1560, "map", Color.White, new Rectangle(0,0,2080,1560), false, false),
                 new BorderElement("border", 120,10,2100,1580,"border",new Color(210,210,210),1.5f,false,false),
@@ -352,5 +375,6 @@ namespace AgribattleArena.DesktopClient
         {
             return (Mode)modes[name];
         }
+        #endregion
     }
 }

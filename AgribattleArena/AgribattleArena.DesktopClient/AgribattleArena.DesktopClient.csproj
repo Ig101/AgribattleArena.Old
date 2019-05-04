@@ -49,6 +49,8 @@
     <Compile Include="Elements\EscapeElement.cs" />
     <Compile Include="Elements\TextBox.cs" />
     <Compile Include="Elements\TextBoxFormElement.cs" />
+    <Compile Include="ExternalCall\CallbacksStore.cs" />
+    <Compile Include="ExternalCall\ExternalCallManager.cs" />
     <Compile Include="ExternalModels\Profile\ActorDto.cs" />
     <Compile Include="ExternalModels\Profile\ProfileDto.cs" />
     <Compile Include="ExternalModels\Profile\ProfileInfoDto.cs" />
@@ -59,6 +61,12 @@
     <Compile Include="Helpers\ModeHelper.cs" />
     <Compile Include="ExternalModels\Authorization\AuthorizeDto.cs" />
     <Compile Include="ExternalModels\Authorization\RegisterDto.cs" />
+    <Compile Include="Models\AuthorizeResultDto.cs" />
+    <Compile Include="ExternalCall\ExternalCallbackTask.cs" />
+    <Compile Include="Models\AuthorizeTaskDto.cs" />
+    <Compile Include="Models\ExternalResultDto.cs" />
+    <Compile Include="ExternalCall\ExternalTask.cs" />
+    <Compile Include="Models\GetProfileResultDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
