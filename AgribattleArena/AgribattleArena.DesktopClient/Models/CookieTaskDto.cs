@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.DesktopClient.Models
 {
-    class GetProfileTaskDto: ExternalTaskDto
+    class CookieTaskDto: ExternalTaskDto
     {
         public string Cookie { get; set; }
     }

@@ -73,9 +73,9 @@ namespace AgribattleArena.DesktopClient.ExternalCall
                 Password = authObject.Password
             };
             var content = new StringContent(JsonConvert.SerializeObject(auth), Encoding.UTF8, "application/json");
-            HttpResponseMessage callResult;
+            HttpResponseMessage callResult=null;
             try
-            {             
+            {
                 callResult = client.PostAsync(callAddress + "/api/auth/login", content).Result;
             }
             catch

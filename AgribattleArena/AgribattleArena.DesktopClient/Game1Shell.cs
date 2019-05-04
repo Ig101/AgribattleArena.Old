@@ -214,7 +214,7 @@ namespace AgribattleArena.DesktopClient
                     {
                         LoginCookie = authResult.Cookie;
                         var profileResult = (GetProfileResultDto)externalCallManager
-                            .GetProfileInfo(new GetProfileTaskDto() { Cookie = loginCookie });
+                            .GetProfileInfo(new CookieTaskDto() { Cookie = loginCookie });
                         if (profileResult.Error == null)
                         {
                             ProcessMainInfo(profileResult.Profile);
