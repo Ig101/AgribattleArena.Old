@@ -20,6 +20,7 @@ namespace AgribattleArena.Engine
 
         public event EventHandler<ForExternalUse.Synchronization.ISyncEventArgs> ReturnAction;
 
+        object m_lock = new object();
         bool isActive;
 
         long id;
@@ -396,25 +397,30 @@ namespace AgribattleArena.Engine
             }
         }
 
-        //TODO Lock
         public void UpdateTime(float time)
         {
             if (IsActive)
             {
-                this.remainedTurnTime -= time;
-                if (remainedTurnTime <= 0)
+                lock (m_lock)
                 {
-                    IPlayerParentRef player = tempTileObject.Owner;
-                    TileObject previousTempTileObject = tempTileObject;
-                    if (player != null)
+                    if (isActive)
                     {
-                        player.SkipTurn();
-                        if(AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null))
-                            EndTurn();
-                    }
-                    else
-                    {
-                        EndTurn();
+                        this.remainedTurnTime -= time;
+                        if (remainedTurnTime <= 0)
+                        {
+                            IPlayerParentRef player = tempTileObject.Owner;
+                            TileObject previousTempTileObject = tempTileObject;
+                            if (player != null)
+                            {
+                                player.SkipTurn();
+                                if (AfterUpdateSynchronization(Helpers.Action.SkipTurn, tempTileObject, null, null, null))
+                                    EndTurn();
+                            }
+                            else
+                            {
+                                EndTurn();
+                            }
+                        }
                     }
                 }
             }
@@ -463,25 +469,31 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject.Id == actorId && IsActive)
             {
-                Actor actor = (Actor)tempTileObject;
-                if (actor.Owner?.ActThisTurn() ?? false)
+                lock (m_lock)
                 {
-                    ApplyActionAfterSkipping();
-                }
-                bool result = actor.Move(tiles[targetX][targetY]);
-                if (result)
-                {
-                    bool actionAvailability = actor.CheckActionAvailability();
-                    if (actionAvailability)
+                    if (tempTileObject.Id == actorId && IsActive)
                     {
-                        Update(0);
-                        AfterActionUpdate();
+                        Actor actor = (Actor)tempTileObject;
+                        if (actor.Owner?.ActThisTurn() ?? false)
+                        {
+                            ApplyActionAfterSkipping();
+                        }
+                        bool result = actor.Move(tiles[targetX][targetY]);
+                        if (result)
+                        {
+                            bool actionAvailability = actor.CheckActionAvailability();
+                            if (actionAvailability)
+                            {
+                                Update(0);
+                                AfterActionUpdate();
+                            }
+                            bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Move, actor, null, targetX, targetY);
+                            if (afterActionUpdateSynchronization && !actionAvailability)
+                                EndTurn();
+                        }
+                        return result;
                     }
-                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Move, actor, null, targetX, targetY);
-                    if(afterActionUpdateSynchronization && !actionAvailability)
-                        EndTurn();
                 }
-                return result;
             }
             return false;
         }
@@ -490,25 +502,31 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject.Id == actorId && IsActive)
             {
-                Actor actor = (Actor)tempTileObject;
-                if (actor.Owner?.ActThisTurn() ?? false)
+                lock (m_lock)
                 {
-                    ApplyActionAfterSkipping();
-                }
-                bool result = actor.Cast(skillId, tiles[targetX][targetY]);
-                if (result)
-                {
-                    bool actionAvailability = actor.CheckActionAvailability();
-                    if (actionAvailability)
+                    if (tempTileObject.Id == actorId && IsActive)
                     {
-                        Update(0);
-                        AfterActionUpdate();
+                        Actor actor = (Actor)tempTileObject;
+                        if (actor.Owner?.ActThisTurn() ?? false)
+                        {
+                            ApplyActionAfterSkipping();
+                        }
+                        bool result = actor.Cast(skillId, tiles[targetX][targetY]);
+                        if (result)
+                        {
+                            bool actionAvailability = actor.CheckActionAvailability();
+                            if (actionAvailability)
+                            {
+                                Update(0);
+                                AfterActionUpdate();
+                            }
+                            bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Cast, actor, skillId, targetX, targetY);
+                            if (afterActionUpdateSynchronization && !actionAvailability)
+                                EndTurn();
+                        }
+                        return result;
                     }
-                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Cast, actor, skillId, targetX, targetY);
-                    if (afterActionUpdateSynchronization && !actionAvailability)
-                        EndTurn();
                 }
-                return result;
             }
             return false;
         }
@@ -517,25 +535,31 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject.Id == actorId && IsActive)
             {
-                Actor actor = (Actor)tempTileObject;
-                if (actor.Owner?.ActThisTurn() ?? false)
+                lock (m_lock)
                 {
-                    ApplyActionAfterSkipping();
-                }
-                bool result = actor.Attack(tiles[targetX][targetY]);
-                if (result)
-                {
-                    bool actionAvailability = actor.CheckActionAvailability();
-                    if (actionAvailability)
+                    if (tempTileObject.Id == actorId && IsActive)
                     {
-                        Update(0);
-                        AfterActionUpdate();
+                        Actor actor = (Actor)tempTileObject;
+                        if (actor.Owner?.ActThisTurn() ?? false)
+                        {
+                            ApplyActionAfterSkipping();
+                        }
+                        bool result = actor.Attack(tiles[targetX][targetY]);
+                        if (result)
+                        {
+                            bool actionAvailability = actor.CheckActionAvailability();
+                            if (actionAvailability)
+                            {
+                                Update(0);
+                                AfterActionUpdate();
+                            }
+                            bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, targetX, targetY);
+                            if (afterActionUpdateSynchronization && !actionAvailability)
+                                EndTurn();
+                        }
+                        return result;
                     }
-                    bool afterActionUpdateSynchronization = AfterUpdateSynchronization(Helpers.Action.Attack, actor, null, targetX, targetY);
-                    if (afterActionUpdateSynchronization && !actionAvailability)
-                        EndTurn();
                 }
-                return result;
             }
             return false;
         }
@@ -544,18 +568,24 @@ namespace AgribattleArena.Engine
         {
             if (tempTileObject.Id == actorId && IsActive)
             {
-                Actor actor = (Actor)tempTileObject;
-                if (actor.Owner?.ActThisTurn() ?? false)
+                lock (m_lock)
                 {
-                    ApplyActionAfterSkipping();
+                    if (tempTileObject.Id == actorId && IsActive)
+                    {
+                        Actor actor = (Actor)tempTileObject;
+                        if (actor.Owner?.ActThisTurn() ?? false)
+                        {
+                            ApplyActionAfterSkipping();
+                        }
+                        bool result = actor.Wait();
+                        if (result)
+                        {
+                            if (AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null))
+                                EndTurn();
+                        }
+                        return result;
+                    }
                 }
-                bool result = actor.Wait();
-                if (result)
-                {
-                    if (AfterUpdateSynchronization(Helpers.Action.Wait, actor, null, null, null))
-                        EndTurn();
-                }
-                return result;
             }
             return false;
         }

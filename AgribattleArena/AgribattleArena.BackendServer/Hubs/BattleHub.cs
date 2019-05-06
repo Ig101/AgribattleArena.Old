@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace AgribattleArena.BackendServer.Hubs
 {
    [Authorize]
-    public class GameHub : Hub
+    public class BattleHub : Hub
     {
         IBattleService _battleService;
 
-        public GameHub(IBattleService battleService, ILogger<GameHub> logger)
+        public BattleHub(IBattleService battleService, ILogger<BattleHub> logger)
         {
             _battleService = battleService;
         }
