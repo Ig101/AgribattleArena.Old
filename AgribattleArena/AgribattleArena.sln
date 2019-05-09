@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.DBProvider"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgribattleArena.Configurator", "AgribattleArena.Configurator\AgribattleArena.Configurator.csproj", "{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgribattleArena.BrowserClient", "AgribattleArena.BrowserClient\AgribattleArena.BrowserClient.csproj", "{047EABE6-8C20-43A3-9DDD-4BAAF9755CA5}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71EEAF87-B674-4869-BD4B-F8AB75DFD85E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{047EABE6-8C20-43A3-9DDD-4BAAF9755CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{047EABE6-8C20-43A3-9DDD-4BAAF9755CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{047EABE6-8C20-43A3-9DDD-4BAAF9755CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{047EABE6-8C20-43A3-9DDD-4BAAF9755CA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
