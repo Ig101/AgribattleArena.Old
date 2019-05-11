@@ -21,14 +21,14 @@ namespace AgribattleArena.BackendServer.Services
     public class BattleService : IBattleService
     {
         IServiceScopeFactory _serviceScopeFactory;
-        IHubContext<BattleHub> _battleHub;
+        IHubContext<GameHub> _battleHub;
         ILogger<BattleService> _logger;
 
         Dictionary<string, SceneModeQueueDto> _queues;
         INativeManager _nativeManager;
         ConstantsConfig _constants;
 
-        public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub,
+        public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<GameHub> battleHub,
             IOptions<ConstantsConfig> constants, ILogger<BattleService> logger)
         {
             _constants = constants.Value;

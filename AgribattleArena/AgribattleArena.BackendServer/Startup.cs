@@ -151,7 +151,7 @@ namespace AgribattleArena.BackendServer
             app.UseAuthentication();
             app.UseSignalR(configure =>
             {
-                configure.MapHub<BattleHub>("/hubs/battle");
+                configure.MapHub<GameHub>("/hub");
             });
 
             services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
