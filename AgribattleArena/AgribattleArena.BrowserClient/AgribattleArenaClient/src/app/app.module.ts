@@ -1,23 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { TOASTR_TOKEN, JQ_TOKEN } from './common/index';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from './routes';
 
-// tslint:disable-next-line: no-string-literal
-const toastr = window['toastr'];
-// tslint:disable-next-line: no-string-literal
-const jQuery = window['$'];
 @NgModule({
   declarations: [
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [
-    {provide: TOASTR_TOKEN, useValue: toastr},
-    {provide: JQ_TOKEN, useValue: jQuery}
   ],
   bootstrap: [
-
+    AppComponent
   ]
 })
 export class AppModule { }

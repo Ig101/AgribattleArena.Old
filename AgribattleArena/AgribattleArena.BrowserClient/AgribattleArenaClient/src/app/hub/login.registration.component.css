@@ -1,0 +1,42 @@
+.bg {
+    background-image: url("/assets/images/loading/loadingScreen.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .title{
+    max-width: 100%;
+  }
+
+  .login-label{
+    -webkit-text-stroke-color: black;
+    font-size: 40px;
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .login-input{
+    color: white;
+    background-color: rgba(0.1,0.1,0.1,0.5) !important;
+  }
+
+  .login-button{
+    width: 90%;
+    border-color: black;
+    background-color: #202060;
+    margin-top: 40px;
+  }
+
+  .login-extra-button{
+    widows: 100%;
+    margin-top: 10px;
+  }
+
+  .login-button:hover{
+    background-color: #2020B0;
+  }
+
+  .login-button:active{
+    background-color: #101030 !important;
+    border-color: black !important;
+  }
