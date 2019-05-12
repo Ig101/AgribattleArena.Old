@@ -11,7 +11,7 @@
 
   .login-label{
     -webkit-text-stroke-color: black;
-    font-size: 40px;
+    font-size: 35px;
     -webkit-text-stroke-width: 1px;
   }
 
@@ -24,7 +24,7 @@
     width: 90%;
     border-color: black;
     background-color: #202060;
-    margin-top: 40px;
+    margin-top: 30px;
   }
 
   .login-extra-button{
