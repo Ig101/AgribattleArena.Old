@@ -6,7 +6,6 @@ import { TOASTR_TOKEN, JQ_TOKEN } from './common/index';
 const toastr = window['toastr'];
 // tslint:disable-next-line: no-string-literal
 const jQuery = window['$'];
-
 @NgModule({
   declarations: [
   ],
