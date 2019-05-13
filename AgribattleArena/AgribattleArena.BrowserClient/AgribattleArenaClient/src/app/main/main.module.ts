@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { TOASTR_TOKEN, JQ_TOKEN } from '../common/index';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HubComponent } from './hub.component';
-import { hubRoutes } from './hub.routes';
+import { MainComponent } from './main.component';
+import { mainRoutes } from './main.routes';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -12,11 +12,11 @@ const jQuery = window['$'];
 
 @NgModule({
   declarations: [
-      HubComponent
+      MainComponent
   ],
   imports: [
       CommonModule,
-      RouterModule.forChild(hubRoutes)
+      RouterModule.forChild(mainRoutes)
   ],
   providers: [
     {provide: TOASTR_TOKEN, useValue: toastr},
@@ -25,4 +25,4 @@ const jQuery = window['$'];
   bootstrap: [
   ]
 })
-export class HubModule { }
+export class MainModule { }

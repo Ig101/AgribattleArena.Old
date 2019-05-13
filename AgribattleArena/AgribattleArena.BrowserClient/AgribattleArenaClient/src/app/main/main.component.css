@@ -28,8 +28,12 @@
   }
 
   .login-extra-button{
-    widows: 100%;
+    width: 100%;
     margin-top: 10px;
+  }
+
+  @media screen and (min-height: 0px) and (max-height: 670px) {
+   .login-extra-button {    display: none;  }
   }
 
   .login-button:hover{
