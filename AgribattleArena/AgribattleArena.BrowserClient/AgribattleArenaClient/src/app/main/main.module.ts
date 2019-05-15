@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 import { mainRoutes } from './main.routes';
+import { LoginComponent, RegisterComponent, ProfileComponent} from './authorize/index';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -12,7 +13,10 @@ const jQuery = window['$'];
 
 @NgModule({
   declarations: [
-      MainComponent
+      MainComponent,
+      LoginComponent,
+      RegisterComponent,
+      ProfileComponent
   ],
   imports: [
       CommonModule,

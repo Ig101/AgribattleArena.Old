@@ -1,46 +1,145 @@
 .bg {
-    background-image: url("/assets/images/loading/loadingScreen.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
+  background-image: url("/assets/images/loading/loadingScreen.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
-  .title{
-    max-width: 100%;
+@media (min-width: 400px)
+{
+  .authorization-container{
+    flex: 0 0 400px;
   }
+}
 
-  .login-label{
-    -webkit-text-stroke-color: black;
-    font-size: 35px;
-    -webkit-text-stroke-width: 1px;
-  }
-
-  .login-input{
-    color: white;
-    background-color: rgba(0.1,0.1,0.1,0.5) !important;
-  }
-
-  .login-button{
-    width: 90%;
-    border-color: black;
-    background-color: #202060;
-    margin-top: 30px;
-  }
-
-  .login-extra-button{
+@media(max-width: 400px)
+{
+  .authorization-container{
     width: 100%;
-    margin-top: 10px;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px)
+{
+  @media(min-height: 440px)
+  {
+    .title{
+      width: 506px;
+    }
+  }
+  @media(max-height: 440px)
+  {
+    .title{
+      height: 30vh;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px)
+{
+  @media(min-height: 540px)
+  {
+    .title{
+      width: 680px;
+    }
+  }
+  @media(max-height: 540px)
+  {
+    .title{
+      height: 30vh;
+    }
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px)
+{
+  @media(min-height: 640px)
+  {
+    .title{
+      width: 900px;
+    }
+  }
+  @media(max-height: 640px)
+  {
+    .title{
+      height: 30vh;
+    }
+  }
+}
+
+@media screen and (min-width: 1200px)
+{
+  @media (min-height: 730px){
+    .title{
+      width: 1024px;
+    }
+  }
+  @media(max-height: 730px)
+  {
+    .title{
+      height: 30vh;
+    }
+  }
+}
+
+.authorize-size{
+  align-self: center;
+  height: 75%;
+  min-height: 400px;
+}
+
+.main-page-border{
+  border-color: #202060 !important;
+}
+
+.main-page-container{
+  background-color: rgba(20,20,50,0.99);
+  margin-top: 20px;
+}
+
+@media(max-width: 576px)
+{
+  .title{
+    width: 90%;
   }
 
-  @media screen and (min-height: 0px) and (max-height: 670px) {
-   .login-extra-button {    display: none;  }
+  .authorize-size{
+    height: 100%;
   }
+}
 
-  .login-button:hover{
-    background-color: #2020B0;
-  }
+.login-label{
+  -webkit-text-stroke-color: black;
+  font-size: 35px;
+  -webkit-text-stroke-width: 1px;
+}
 
-  .login-button:active{
-    background-color: #101030 !important;
-    border-color: black !important;
-  }
+.login-input{
+  color: white;
+  background-color: rgba(0.1,0.1,0.1,0.5) !important;
+}
+
+.login-button{
+  width: 90%;
+  border-color: black;
+  background-color: #202060;
+  margin-top: 30px;
+}
+
+.login-extra-button{
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media screen and (min-height: 0px) and (max-height: 670px) {
+  .login-extra-button {    display: none;  }
+}
+
+.login-button:hover{
+  background-color: #2020B0;
+}
+
+.login-button:active{
+  background-color: #101030 !important;
+  border-color: black !important;
+}
