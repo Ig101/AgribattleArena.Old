@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 import { mainRoutes } from './main.routes';
 import { LoginComponent, RegisterComponent, ProfileComponent} from './authorize/index';
+import { StartPageComponent } from './start-page.component';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -16,7 +17,8 @@ const jQuery = window['$'];
       MainComponent,
       LoginComponent,
       RegisterComponent,
-      ProfileComponent
+      ProfileComponent,
+      StartPageComponent
   ],
   imports: [
       CommonModule,
@@ -27,6 +29,7 @@ const jQuery = window['$'];
     {provide: JQ_TOKEN, useValue: jQuery}
   ],
   bootstrap: [
+      MainComponent
   ]
 })
 export class MainModule { }
