@@ -16,8 +16,6 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        setTimeout(() => {
-            this.loadingService.loadingEnd();
-        }, 10);
+        this.loadingService.loadingEnd();
     }
 }
