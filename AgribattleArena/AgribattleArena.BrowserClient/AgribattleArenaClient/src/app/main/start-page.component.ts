@@ -13,4 +13,16 @@ export class StartPageComponent {
     constructor() {
         this.authorizeSwitch = AuthorizeSwitchEnum.Login;
     }
+
+    goToRegister(){
+        this.authorizeSwitch = AuthorizeSwitchEnum.Register;
+    }
+
+    goToLogin(){
+        this.authorizeSwitch = AuthorizeSwitchEnum.Login;
+    }
+
+    goToProfile(){
+        this.authorizeSwitch = AuthorizeSwitchEnum.Profile;
+    }
 }

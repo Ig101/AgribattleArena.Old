@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
 
+    playButtonPress(){
+
+    }
+
+    logOutButtonPress(){
+        
+    }
 }
