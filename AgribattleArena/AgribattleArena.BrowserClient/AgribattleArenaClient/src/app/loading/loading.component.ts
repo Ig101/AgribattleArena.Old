@@ -10,8 +10,9 @@ import { Subscription } from 'rxjs';
 })
 export class LoadingComponent implements OnInit, OnDestroy {
 
-    loading = true;
+    loading = 1;
     loadingMessage = 'Loading...';
+    loadingOpaque = 1;
     loadingState: Subscription;
 
     constructor(private loadingService: LoadingService) {
@@ -22,7 +23,7 @@ export class LoadingComponent implements OnInit, OnDestroy {
         this.loadingState = this.loadingService.getState().subscribe((value) => {
             this.loadingMessage = value.message;
             this.loading = value.loading;
-            console.log(value);
+            this.loadingOpaque = value.opaque;
         });
     }
 

@@ -1,13 +1,16 @@
 .loading-mask{
+    background-color: black;
+    position: fixed;
+    cursor: default;
+}
+
+.loading-container{
     position: absolute;
-    height: 100%;
-    width: 100%; 
-    background-color: rgba(0,0,0,0.5);
     top: 0;
     left: 0;
-    position: fixed;
     z-index: 9999;
-    cursor: default;
+    height: 100%;
+    width: 100%; 
 }
 
 .loading-wheel{

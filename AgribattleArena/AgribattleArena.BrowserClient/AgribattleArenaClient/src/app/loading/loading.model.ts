@@ -1,4 +1,5 @@
 export interface ILoadingModel {
-    loading: boolean;
+    loading: number;
     message?: string;
+    opaque: number;
 }
