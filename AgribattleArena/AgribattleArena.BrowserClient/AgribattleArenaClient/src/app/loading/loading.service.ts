@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ILoadingModel } from './loading.model';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { IRouteLink } from '../common';
 
 @Injectable()
 export class LoadingService {
@@ -14,7 +16,7 @@ export class LoadingService {
         opaque: 1
     };
 
-    loadingStart(incomingMessage: string, incomingOpaque: number) {
+    loadingStart(incomingMessage: string, incomingOpaque: number, routeLink?: IRouteLink) {
         this.loadingState = {
             loading: this.loadingState.loading,
             message: incomingMessage,
@@ -31,7 +33,7 @@ export class LoadingService {
         this.loadingAnimation(false);
     }
 
-    private loadingAnimation(side: boolean) {
+    private loadingAnimation(side: boolean, routeLink?: IRouteLink) {
         const newLoading = this.loadingState.loading + this.speed * (side ? 1 : -1);
         const newMessage = this.loadingState.message;
         const newOpaque = this.loadingState.opaque;
@@ -52,6 +54,8 @@ export class LoadingService {
             setTimeout(() => {
                 this.loadingAnimation(side);
             }, 20);
+        } else if (routeLink !== undefined) {
+            routeLink.router.navigate([routeLink.route]);
         }
     }
 
