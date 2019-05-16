@@ -1,5 +1,6 @@
 export enum AuthorizeSwitchEnum {
     Login,
     Register,
-    Profile
+    Profile,
+    ForgotPassword
 }

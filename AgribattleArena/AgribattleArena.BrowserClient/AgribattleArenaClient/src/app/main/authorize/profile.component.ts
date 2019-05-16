@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../share';
+import { LoadingService } from 'src/app/loading';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile',
@@ -7,11 +10,15 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
 
-    playButtonPress(){
+    constructor(private authService: AuthService, private loadingService: LoadingService, private router: Router) {
 
     }
 
-    logOutButtonPress(){
-        
+    playButtonPress() {
+
+    }
+
+    logOutButtonPress() {
+
     }
 }

@@ -11,9 +11,10 @@
             <div class="startup-row-size">
             <div class="col-lg-5 col-md-6 col-xl-4 col-sm-8 main-page-container border main-page-border h-100" [ngSwitch]="authorizeSwitch">
                 <div class="main-page-container-center h-100">
-                    <app-login *ngSwitchCase="authorizeSwitchEnum.Login"></app-login>
-                    <app-register *ngSwitchCase="authorizeSwitchEnum.Register"></app-register>
+                    <app-login *ngSwitchCase="authorizeSwitchEnum.Login" (registerEmitter)="goToRegister()" (forgotPasswordEmitter)="goToForgotPassword()"></app-login>
+                    <app-register *ngSwitchCase="authorizeSwitchEnum.Register" (cancelEmitter)="goToLogin()"></app-register>
                     <app-profile *ngSwitchCase="authorizeSwitchEnum.Profile"></app-profile>
+                    <app-forgot-password *ngSwitchCase="authorizeSwitchEnum.ForgotPassword"></app-forgot-password>
                 </div>
             </div>
         </div>

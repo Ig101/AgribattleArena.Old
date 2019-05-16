@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { AuthService} from '../../share/index';
+import { LoadingService } from 'src/app/loading';
 
 @Component({
     selector: 'app-login',
@@ -7,15 +9,29 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
-    loginButtonPress(formValue){
+    @Output() registerEmitter = new EventEmitter();
+    @Output() forgotPasswordEmitter = new EventEmitter();
+
+    private userName;
+    private password;
+
+    constructor(private authService: AuthService, private loadingService: LoadingService) {
 
     }
 
-    registerButtonPress(){
-
+    loginButtonPress(formValue) {
+        this.loadingService.loadingStart('Authorization...');
+        this.authService.login(formValue).subscribe((error: string) => {
+            console.log(error);
+            this.loadingService.loadingEnd();
+        });
     }
 
-    forgotPasswordButtonPress(){
+    registerButtonPress() {
+        this.registerEmitter.emit();
+    }
 
+    forgotPasswordButtonPress() {
+        this.forgotPasswordEmitter.emit();
     }
 }

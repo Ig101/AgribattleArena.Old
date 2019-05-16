@@ -14,15 +14,19 @@ export class StartPageComponent {
         this.authorizeSwitch = AuthorizeSwitchEnum.Login;
     }
 
-    goToRegister(){
+    goToRegister() {
         this.authorizeSwitch = AuthorizeSwitchEnum.Register;
     }
 
-    goToLogin(){
+    goToLogin() {
         this.authorizeSwitch = AuthorizeSwitchEnum.Login;
     }
 
-    goToProfile(){
+    goToProfile() {
         this.authorizeSwitch = AuthorizeSwitchEnum.Profile;
+    }
+
+    goToForgotPassword() {
+        alert('Coming soon');
     }
 }

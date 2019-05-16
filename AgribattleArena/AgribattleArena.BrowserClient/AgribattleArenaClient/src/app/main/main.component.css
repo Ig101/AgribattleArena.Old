@@ -113,12 +113,12 @@
   border-radius: 0;
   outline-color: #303090;
 }
-.main-page-button:hover{
+.main-page-button:hover:enabled{
   background-color: #303090;
   color: #FFFF80;
 }
 
-.main-page-button:active{
+.main-page-button:active:enabled{
   background-color: #101030;
   color: #999940;
 }
@@ -157,11 +157,11 @@
   user-select: none;
 }
 
-.main-page-hyperlink:hover{
+.main-page-hyperlink:hover:enabled{
   text-decoration: underline !important;
 }
 
-.main-page-hyperlink:active{
+.main-page-hyperlink:active:enabled{
   text-decoration: underline !important;
   color: #999940 !important;
 }

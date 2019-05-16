@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { AuthService } from '../../share/index';
+import { LoadingService } from 'src/app/loading';
 
 @Component({
     selector: 'app-register',
@@ -7,11 +9,26 @@ import { Component } from '@angular/core';
 })
 export class RegisterComponent {
 
-    registerButtonPress(formValue){
+    @Output() cancelEmitter = new EventEmitter();
+
+    private userName;
+    private email;
+    private password;
+    private confirmPassword;
+
+    constructor(private authService: AuthService, private loadingService: LoadingService) {
 
     }
 
-    cancelButtonPress(formValue){
-        
+    registerButtonPress(formValue) {
+        this.loadingService.loadingStart('Registration...');
+        this.authService.register(formValue).subscribe((error: string) => {
+            console.log(error);
+            this.loadingService.loadingEnd();
+        });
+    }
+
+    cancelButtonPress() {
+        this.cancelEmitter.emit();
     }
 }

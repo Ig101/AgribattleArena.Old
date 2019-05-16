@@ -1,19 +1,19 @@
-<form autocomplete="on">
+<form #registerForm="ngForm" (ngSubmit)="registerButtonPress(registerForm.value)" autocomplete="off">
     <div class="form-group" >
         <label for="userName" class="main-page-label">User Name:</label>
-        <input name="userName" required id="userName" type="text" class="form-control main-page-input" placeholder="User Name..."/>
+        <input (ngModel)="userName" name="userName" id="userName" type="text" class="form-control main-page-input" placeholder="User Name..."/>
     </div>
     <div class="form-group" >
         <label for="email" class="main-page-label">Email:</label>
-        <input name="email" required id="email" type="text" class="form-control main-page-input" placeholder="Email..."/>
+        <input (ngModel)="email" name="email" id="email" type="text" class="form-control main-page-input" placeholder="Email..."/>
     </div>
     <div class="form-group">
         <label for="password" class="main-page-label">Password:</label>
-        <input name="password" required id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
+        <input (ngModel)="password" name="password" id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
     </div>  
-    <input name="confirm-password" required id="confirm-password" type="password" class="form-control main-page-input" placeholder="Confirm password..."/>
+    <input (ngModel)="confirmPassword" name="confirmPassword" id="confirmPassword" type="password" class="form-control main-page-input" placeholder="Confirm password..."/>
     <div class="row" style="margin-top: 5px !important;">         
-        <button type="submit" class="btn main-page-button main-page-small-button">Register</button>
-        <button type="button" class="btn main-page-button main-page-small-button">Cancel</button>
+        <button type="submit" [disabled]=registerForm.invalid class="btn main-page-button main-page-small-button">Register</button>
+        <button type="button" (click)="cancelButtonPress()" class="btn main-page-button main-page-small-button">Cancel</button>
     </div>
 </form>
