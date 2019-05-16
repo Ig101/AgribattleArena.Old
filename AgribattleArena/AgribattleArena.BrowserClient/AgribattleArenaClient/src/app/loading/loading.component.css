@@ -1,0 +1,27 @@
+.loading-mask{
+    position: absolute;
+    height: 100%;
+    width: 100%; 
+    background-color: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 9999;
+    cursor: default;
+}
+
+.loading-wheel{
+    background-image: url("/assets/images/loading/loadingWheel.png");
+    background-size: cover;
+    height: 12vh;
+    width: 12vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+    animation: spinner-border 2s linear infinite;
+}
+
+.loading-text{
+    margin-top: 1vh;
+    color: #ffff40;
+    font-size: 3vh;
+}

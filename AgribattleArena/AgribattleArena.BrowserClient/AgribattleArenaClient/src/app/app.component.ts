@@ -4,17 +4,12 @@ import { LoadingService, ILoadingModel } from './loading';
 @Component({
     selector: 'app-root',
     template: `
-        <div *ngIf="loadingState.loading">Loading</div>
         <router-outlet>
         </router-outlet>
+        <app-loading>
+        </app-loading>
     `,
     styles: []
 })
 export class AppComponent {
-    loadingState: ILoadingModel;
-
-    constructor(private loadingService: LoadingService) {
-        this.loadingState = loadingService.loadingState;
-    }
-
 }

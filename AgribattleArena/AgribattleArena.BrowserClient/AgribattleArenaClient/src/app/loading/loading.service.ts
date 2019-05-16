@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ILoadingModel } from './loading.model';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class LoadingService {
 
-    loadingState: ILoadingModel = {
-        loading: false
-    };
+    private loadingState: Subject<ILoadingModel> = new Subject<ILoadingModel>();
 
-    loadingStart(message: string) {
-        this.loadingState.loading = true;
-        this.loadingState.message = message;
-        console.log(message);
+    loadingStart(incomingMessage: string) {
+        this.loadingState.next({
+            loading: true,
+            message: incomingMessage
+        });
+    }
+
+    getState() {
+        return this.loadingState;
     }
 
     loadingEnd() {
-        this.loadingState.loading = false;
+        this.loadingState.next({
+            loading: false
+        });
     }
 
     loadingStatus() {
