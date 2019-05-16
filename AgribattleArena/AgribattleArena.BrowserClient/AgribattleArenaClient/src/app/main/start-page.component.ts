@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthorizeSwitchEnum } from './authorize';
 
 @Component({
     selector: 'app-start',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
     styleUrls: ['./main.component.css']
 })
 export class StartPageComponent {
+    private authorizeSwitchEnum = AuthorizeSwitchEnum;
+    public authorizeSwitch: AuthorizeSwitchEnum;
 
+    constructor() {
+        this.authorizeSwitch = AuthorizeSwitchEnum.Login;
+    }
 }

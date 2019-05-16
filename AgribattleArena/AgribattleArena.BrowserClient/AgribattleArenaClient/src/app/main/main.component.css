@@ -1,8 +1,10 @@
 .bg {
   background-image: url("/assets/images/loading/loadingScreen.png");
-  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center center;
+  height: 100%;
+  overflow-y:scroll;
 }
 
 @media (min-width: 400px)
@@ -82,10 +84,12 @@
   }
 }
 
-.authorize-size{
-  align-self: center;
+.startup-row-size{
+  align-self: center !important;
   height: 75%;
   min-height: 400px;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .main-page-border{
@@ -103,7 +107,7 @@
     width: 90%;
   }
 
-  .authorize-size{
+  .startup-row-size{
     height: 100%;
   }
 }
