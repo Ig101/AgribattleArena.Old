@@ -19,6 +19,6 @@
     color: #999940;
 }
 
-button, input:focus{
+button:focus, input:focus{
     box-shadow: 0 0 0 0.2rem rgba(34,34,102, 0.8) !important;
 }
