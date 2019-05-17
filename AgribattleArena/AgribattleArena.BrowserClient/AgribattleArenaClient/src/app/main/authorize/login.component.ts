@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService} from '../../share/index';
 import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper, IProfile } from 'src/app/share/models';
+import { checkServiceResponseError, checkServiceResponseErrorContent } from 'src/app/common';
 
 @Component({
     selector: 'app-login',
@@ -24,7 +25,11 @@ export class LoginComponent {
     loginButtonPress(formValue) {
         const ver = this.loadingService.loadingStart('Authorization...', 0.5);
         this.authService.login(formValue).subscribe((resObject: IExternalWrapper<IProfile>) => {
-            this.loadingService.loadingEnd(ver, resObject.errors[0]);
+            if (checkServiceResponseError(resObject)) {
+                this.loadingService.loadingEnd(ver, checkServiceResponseErrorContent(resObject) ? resObject.errors[0] : '');
+                return;
+            }
+            // TODO login_logic
             this.loginEmitter.emit();
         });
     }

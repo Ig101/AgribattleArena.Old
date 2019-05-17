@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../share/index';
 import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper } from 'src/app/share/models';
+import { checkServiceResponseError, checkServiceResponseErrorContent } from 'src/app/common';
 
 @Component({
     selector: 'app-register',
@@ -25,7 +26,11 @@ export class RegisterComponent {
     registerButtonPress(formValue) {
         const ver = this.loadingService.loadingStart('Registration...', 0.5);
         this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
-            this.loadingService.loadingEnd(ver, resObject.errors[0]);
+            if (checkServiceResponseError(resObject)) {
+                this.loadingService.loadingEnd(ver, checkServiceResponseErrorContent(resObject) ? resObject.errors[0] : '');
+                return;
+            }
+            // TODO register_logic
             this.registerEmitter.emit();
         });
     }
