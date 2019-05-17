@@ -18,3 +18,7 @@
     background-color: #101030;
     color: #999940;
 }
+
+button, input:focus{
+    box-shadow: 0 0 0 0.2rem rgba(34,34,102, 0.8) !important;
+}

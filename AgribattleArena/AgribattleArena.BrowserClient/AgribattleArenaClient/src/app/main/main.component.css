@@ -137,11 +137,11 @@
   user-select: none;
 }
 
-.main-page-hyperlink:hover:enabled{
+.main-page-hyperlink:hover{
   text-decoration: underline !important;
 }
 
-.main-page-hyperlink:active:enabled{
+.main-page-hyperlink:active{
   text-decoration: underline !important;
   color: #999940 !important;
 }
