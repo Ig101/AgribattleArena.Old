@@ -21,10 +21,9 @@ export class RegisterComponent {
     }
 
     registerButtonPress(formValue) {
-        this.loadingService.loadingStart('Registration...', 0.5);
+        const ver = this.loadingService.loadingStart('Registration...', 0.5);
         this.authService.register(formValue).subscribe((error: string) => {
-            console.log(error);
-            this.loadingService.loadingEnd();
+            this.loadingService.loadingEnd(ver, error);
         });
     }
 

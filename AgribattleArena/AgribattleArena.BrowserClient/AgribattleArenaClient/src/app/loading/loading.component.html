@@ -1,8 +1,14 @@
 <div *ngIf="loading>0">
     <div *ngIf="loading > 0" class="loading-mask loading-container" [ngStyle]="{'opacity':loading * loadingOpaque}">
     </div>
-    <div class="d-flex flex-column justify-content-center align-items-center loading-container" [ngStyle]="{'opacity':loading}" >
-        <div class="loading-wheel" role="status"></div>
-        <div class="loading-text">{{loadingMessage}}</div>
+    <div class="loading-container" [ngStyle]="{'opacity':loading}" [ngSwitch]="loadingStatus">
+        <div class="d-flex flex-column justify-content-center align-items-center h-100" *ngSwitchCase="loadingStatusEnum.Loading">
+            <div class="loading-wheel" role="status"></div>
+            <div class="loading-text">{{loadingMessage}}</div>
+        </div>
+        <div class="d-flex flex-column justify-content-center align-items-center h-100" *ngSwitchCase="loadingStatusEnum.Error">
+            <div class="loading-text loading-error">{{loadingMessage}}</div>
+            <button class="btn arena-button loading-button" (click)="errorOkButtonPress()">Ok</button>
+        </div>
     </div>
 </div>

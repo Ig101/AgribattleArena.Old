@@ -14,7 +14,7 @@ export class AuthService {
         setTimeout(() => {
             subject.next('Not Implemented');
             subject.complete();
-        }, 2000);
+        }, 40000);
         return subject;
     }
 

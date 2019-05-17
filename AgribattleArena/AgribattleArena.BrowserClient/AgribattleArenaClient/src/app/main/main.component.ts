@@ -16,6 +16,6 @@ export class MainComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.loadingService.loadingEnd();
+        this.loadingService.loadingEnd(this.loadingService.tempVersion);
     }
 }

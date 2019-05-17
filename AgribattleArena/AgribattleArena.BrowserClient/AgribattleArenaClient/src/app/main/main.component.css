@@ -103,26 +103,6 @@
   margin-left: 2px;
 }
 
-.main-page-button{
-  font-weight: bold;
-  margin-top:10px;
-  margin-bottom: 10px;
-  background-color: #202060;
-  color: #DDDD60;
-  width: 100%;
-  border-radius: 0;
-  outline-color: #303090;
-}
-.main-page-button:hover:enabled{
-  background-color: #303090;
-  color: #FFFF80;
-}
-
-.main-page-button:active:enabled{
-  background-color: #101030;
-  color: #999940;
-}
-
 .main-page-small-button{
   flex: 40%;
   margin: 15px;

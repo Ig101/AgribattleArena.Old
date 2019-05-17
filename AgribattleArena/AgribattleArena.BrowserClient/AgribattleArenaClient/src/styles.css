@@ -1,0 +1,20 @@
+.arena-button{
+    font-weight: bold;
+    margin-top:10px;
+    margin-bottom: 10px;
+    background-color: #202060;
+    color: #DDDD60;
+    width: 100%;
+    border-radius: 0;
+    outline-color: #303090;
+}
+
+.arena-button:hover:enabled{
+    background-color: #303090;
+    color: #FFFF80;
+}
+
+.arena-button:active:enabled{
+    background-color: #101030;
+    color: #999940;
+}

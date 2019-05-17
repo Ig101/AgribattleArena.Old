@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Output } from '@angular/core';
-import { ILoadingModel } from './loading.model';
-import { LoadingService } from './loading.service';
 import { Subscription } from 'rxjs';
+import { LoadingStatusEnum } from './loading-status.enum';
+import { LoadingService } from './loading.service';
 
 @Component({
     selector: 'app-loading',
@@ -10,9 +10,12 @@ import { Subscription } from 'rxjs';
 })
 export class LoadingComponent implements OnInit, OnDestroy {
 
-    loading = 1;
-    loadingMessage = 'Loading...';
-    loadingOpaque = 1;
+    private loadingStatusEnum = LoadingStatusEnum;
+    private loadingStatus: LoadingStatusEnum = LoadingStatusEnum.Loading;
+    private loading = 1;
+    private loadingMessage = 'Loading...';
+    private loadingOpaque = 1;
+
     loadingState: Subscription;
 
     constructor(private loadingService: LoadingService) {
@@ -24,10 +27,15 @@ export class LoadingComponent implements OnInit, OnDestroy {
             this.loadingMessage = value.message;
             this.loading = value.loading;
             this.loadingOpaque = value.opaque;
+            this.loadingStatus = value.loadingStatus;
         });
     }
 
     ngOnDestroy() {
         this.loadingState.unsubscribe();
+    }
+
+    errorOkButtonPress() {
+        this.loadingService.loadingEnd();
     }
 }

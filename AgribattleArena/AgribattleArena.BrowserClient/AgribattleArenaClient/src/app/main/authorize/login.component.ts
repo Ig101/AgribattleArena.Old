@@ -20,10 +20,9 @@ export class LoginComponent {
     }
 
     loginButtonPress(formValue) {
-        this.loadingService.loadingStart('Authorization...', 0.5);
+        const ver = this.loadingService.loadingStart('Authorization...', 0.5);
         this.authService.login(formValue).subscribe((error: string) => {
-            console.log(error);
-            this.loadingService.loadingEnd();
+            this.loadingService.loadingEnd(ver, error);
         });
     }
 
