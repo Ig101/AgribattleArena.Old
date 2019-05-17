@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../share/index';
 import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper } from 'src/app/share/models';
-import { checkServiceResponseError, checkServiceResponseErrorContent } from 'src/app/common';
+import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
 
 @Component({
     selector: 'app-register',
@@ -27,7 +27,7 @@ export class RegisterComponent {
         const ver = this.loadingService.loadingStart('Registration...', 0.5);
         this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
             if (checkServiceResponseError(resObject)) {
-                this.loadingService.loadingEnd(ver, checkServiceResponseErrorContent(resObject) ? resObject.errors[0] : '');
+                this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
                 return;
             }
             // TODO register_logic
