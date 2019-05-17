@@ -8,7 +8,6 @@ namespace AgribattleArena.BackendServer.Models.Profile
 {
     public class ProfileDto
     {
-        public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public int Resources { get; set; }

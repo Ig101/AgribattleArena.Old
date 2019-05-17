@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../share/index';
 import { LoadingService } from 'src/app/loading';
+import { IExternalWrapper } from 'src/app/share/models';
 
 @Component({
     selector: 'app-register',
@@ -23,8 +24,8 @@ export class RegisterComponent {
 
     registerButtonPress(formValue) {
         const ver = this.loadingService.loadingStart('Registration...', 0.5);
-        this.authService.register(formValue).subscribe((error: string) => {
-            this.loadingService.loadingEnd(ver, error);
+        this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
+            this.loadingService.loadingEnd(ver, resObject.error);
             this.registerEmitter.emit();
         });
     }
