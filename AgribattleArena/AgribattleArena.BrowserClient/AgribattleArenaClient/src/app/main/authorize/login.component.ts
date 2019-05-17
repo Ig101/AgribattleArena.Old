@@ -11,6 +11,7 @@ export class LoginComponent {
 
     @Output() registerEmitter = new EventEmitter();
     @Output() forgotPasswordEmitter = new EventEmitter();
+    @Output() loginEmitter = new EventEmitter();
 
     private userName;
     private password;
@@ -23,6 +24,7 @@ export class LoginComponent {
         const ver = this.loadingService.loadingStart('Authorization...', 0.5);
         this.authService.login(formValue).subscribe((error: string) => {
             this.loadingService.loadingEnd(ver, error);
+            this.loginEmitter.emit();
         });
     }
 

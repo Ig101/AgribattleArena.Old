@@ -15,7 +15,7 @@ export class LoadingService {
 
     tempVersion = 0;
 
-    runtimeTimer: NodeJS.Timer;
+    runtimeTimer: any;
 
     private loadingStateSubject: Subject<ILoadingModel> = new Subject<ILoadingModel>();
 
@@ -69,6 +69,7 @@ export class LoadingService {
     }
 
     loadingStart(incomingMessage: string, incomingOpaque: number, routeLink?: IRouteLink, timeout?: number): number {
+        focus();
         clearTimeout(this.runtimeTimer);
         this.loadingIncrement();
         this.loadingState = {

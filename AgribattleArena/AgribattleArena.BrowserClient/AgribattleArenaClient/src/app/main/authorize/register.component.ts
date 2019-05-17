@@ -10,6 +10,7 @@ import { LoadingService } from 'src/app/loading';
 export class RegisterComponent {
 
     @Output() cancelEmitter = new EventEmitter();
+    @Output() registerEmitter = new EventEmitter();
 
     private userName;
     private email;
@@ -24,6 +25,7 @@ export class RegisterComponent {
         const ver = this.loadingService.loadingStart('Registration...', 0.5);
         this.authService.register(formValue).subscribe((error: string) => {
             this.loadingService.loadingEnd(ver, error);
+            this.registerEmitter.emit();
         });
     }
 

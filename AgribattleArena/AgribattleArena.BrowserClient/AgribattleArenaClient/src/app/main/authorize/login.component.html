@@ -7,7 +7,7 @@
         <label for="password" class="main-page-label">Password:</label>
         <input (ngModel)="password" name="password" id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
     </div>           
-    <button type="submit" [disabled] = "loginForm.invalid" class="btn arena-button main-page-large-button">Login</button>
+    <button type="submit" appFocusRemover [disabled] = "loginForm.invalid" class="btn arena-button main-page-large-button">Login</button>
     <button type="button" (click)="registerButtonPress()" class="btn arena-button">Register</button>
     <a class="main-page-hyperlink" (click)="forgotPasswordButtonPress()">Forgot password?</a>
 </form>

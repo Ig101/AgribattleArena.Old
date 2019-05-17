@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { TOASTR_TOKEN, JQ_TOKEN } from '../common';
+import { TOASTR_TOKEN, JQ_TOKEN, FocusRemoverDirective } from '../common';
 import { AuthService } from '../share';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -21,7 +21,8 @@ const jQuery = window['$'];
     RegisterComponent,
     ProfileComponent,
     StartPageComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    FocusRemoverDirective
   ],
   imports: [
     CommonModule,

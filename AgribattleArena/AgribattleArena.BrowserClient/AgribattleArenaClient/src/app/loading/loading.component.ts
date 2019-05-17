@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, ElementRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingStatusEnum } from './loading-status.enum';
 import { LoadingService } from './loading.service';
@@ -9,6 +9,8 @@ import { LoadingService } from './loading.service';
     styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent implements OnInit, OnDestroy {
+
+    @ViewChild('okButton') okButton: ElementRef;
 
     private loadingStatusEnum = LoadingStatusEnum;
     private loadingStatus: LoadingStatusEnum = LoadingStatusEnum.Loading;
@@ -22,12 +24,19 @@ export class LoadingComponent implements OnInit, OnDestroy {
 
     }
 
+    changeLoadingValue(value: LoadingStatusEnum) {
+        if (value === LoadingStatusEnum.Error && this.loading > 0) {
+            setTimeout(() => this.okButton.nativeElement.focus());
+        }
+        this.loadingStatus = value;
+    }
+
     ngOnInit() {
         this.loadingState = this.loadingService.getState().subscribe((value) => {
             this.loadingMessage = value.message;
             this.loading = value.loading;
             this.loadingOpaque = value.opaque;
-            this.loadingStatus = value.loadingStatus;
+            this.changeLoadingValue(value.loadingStatus);
         });
     }
 
