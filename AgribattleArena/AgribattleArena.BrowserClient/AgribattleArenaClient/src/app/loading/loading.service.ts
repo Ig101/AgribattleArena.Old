@@ -108,4 +108,9 @@ export class LoadingService {
             }
         }
     }
+
+    loadingChangeMessage(incomingMessage: string) {
+        this.loadingState.message = incomingMessage;
+        this.updateLoadingState();
+    }
 }
