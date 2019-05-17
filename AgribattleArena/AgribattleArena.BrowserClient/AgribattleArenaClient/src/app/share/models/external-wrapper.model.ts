@@ -1,5 +1,5 @@
 export interface IExternalWrapper<T> {
     statusCode: number;
-    error?: string;
+    errors?: string[];
     resObject?: T;
 }

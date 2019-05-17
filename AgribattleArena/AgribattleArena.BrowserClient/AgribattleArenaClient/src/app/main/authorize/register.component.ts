@@ -25,7 +25,7 @@ export class RegisterComponent {
     registerButtonPress(formValue) {
         const ver = this.loadingService.loadingStart('Registration...', 0.5);
         this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
-            this.loadingService.loadingEnd(ver, resObject.error);
+            this.loadingService.loadingEnd(ver, resObject.errors[0]);
             this.registerEmitter.emit();
         });
     }

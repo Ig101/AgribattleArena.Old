@@ -13,7 +13,7 @@ export class ProfileService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                error: 'Not implemented'
+                errors: ['Not implemented']
             });
             subject.complete();
         }, 50);

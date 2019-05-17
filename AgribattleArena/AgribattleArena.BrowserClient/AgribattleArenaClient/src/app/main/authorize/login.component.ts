@@ -24,7 +24,7 @@ export class LoginComponent {
     loginButtonPress(formValue) {
         const ver = this.loadingService.loadingStart('Authorization...', 0.5);
         this.authService.login(formValue).subscribe((resObject: IExternalWrapper<IProfile>) => {
-            this.loadingService.loadingEnd(ver, resObject.error);
+            this.loadingService.loadingEnd(ver, resObject.errors[0]);
             this.loginEmitter.emit();
         });
     }

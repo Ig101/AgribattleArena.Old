@@ -13,7 +13,7 @@ export class AuthService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                error: 'Not implemented'
+                errors: ['Not implemented']
             });
             subject.complete();
         }, 2000);
@@ -26,7 +26,7 @@ export class AuthService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                error: 'Not implemented'
+                errors: ['Not implemented']
             });
             subject.complete();
         }, 2000);
@@ -39,7 +39,7 @@ export class AuthService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                error: 'Not implemented'
+                errors: ['Not implemented']
             });
             subject.complete();
         }, 50);
