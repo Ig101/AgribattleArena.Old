@@ -14,6 +14,11 @@
     color: #FFFF80;
 }
 
+.arena-button:hover:disabled{
+    background-color: #202060;
+    color: #DDDD60;
+}
+
 .arena-button:active:enabled{
     background-color: #101030;
     color: #999940;

@@ -1,11 +1,11 @@
 <form #loginForm="ngForm" (ngSubmit)="loginButtonPress(loginForm.value)" autocomplete="on">
     <div class="form-group" >
         <label for="userName" class="main-page-label">User Name:</label>
-        <input (ngModel)="userName" name="userName" id="userName" type="text" class="form-control main-page-input" placeholder="User Name..."/>
+        <input (ngModel)="userName" required name="userName" id="userName" type="text" class="form-control main-page-input" placeholder="User Name..."/>
     </div>
     <div class="form-group">
         <label for="password" class="main-page-label">Password:</label>
-        <input (ngModel)="password" name="password" id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
+        <input (ngModel)="password" required name="password" id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
     </div>           
     <button type="submit" appFocusRemover [disabled] = "loginForm.invalid" class="btn arena-button main-page-large-button">Login</button>
     <button type="button" (click)="registerButtonPress()" class="btn arena-button">Register</button>
