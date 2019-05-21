@@ -1,19 +1,10 @@
 <form [formGroup]="registerForm" (ngSubmit)="registerButtonPress(registerForm.value)" autocomplete="off">
-    <div class="form-group" >
-        <label for="userName" class="main-page-label">User Name:</label>
-        <input formControlName="userName" name="userName" id="userName" type="text" class="form-control main-page-input" placeholder="User Name..."/>
-    </div>
-    <div class="form-group" >
-        <label for="email" class="main-page-label">Email:</label>
-        <input formControlName="email" name="email" id="email" type="text" class="form-control main-page-input" placeholder="Email..."/>
-    </div>
-    <div class="form-group">
-        <label for="password" class="main-page-label">Password:</label>
-        <input formControlName="password" name="password" id="password" type="password" class="form-control main-page-input" placeholder="Password..."/>
-    </div>  
-    <input formControlName="confirmPassword" name="confirmPassword" id="confirmPassword" type="password" class="form-control main-page-input" placeholder="Confirm password..."/>
-    <div class="row" style="margin-top: 5px !important;">         
-        <button type="submit"  appFocusRemover [disabled]=registerForm.invalid class="btn arena-button main-page-small-button">Register</button>
-        <button type="button" (click)="cancelButtonPress()" class="btn arena-button main-page-small-button">Cancel</button>
+    <app-textbox-wrapper [parentForm]="registerForm" label="User Name:" inputName="userName" inputType="text" inputPlaceholder="User Name..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" label="Email:" inputName="email" inputType="email" inputPlaceholder="Email..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" label="Password:" inputName="password" inputType="password" inputPlaceholder="Password..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" inputName="confirmPassword" inputType="password" inputPlaceholder="Confirm Password..."></app-textbox-wrapper>
+    <div class="row" style="margin-top: -15px !important;">         
+        <app-button-wrapper [parentForm]="registerForm" buttonType="submit" buttonLabel="Register" buttonValidate="true" class="main-page-small-button"></app-button-wrapper>
+        <app-button-wrapper (clickEmitter)="cancelButtonPress()" [parentForm]="registerForm" buttonType="button" buttonLabel="Cancel" class="main-page-small-button"></app-button-wrapper>
     </div>
 </form>

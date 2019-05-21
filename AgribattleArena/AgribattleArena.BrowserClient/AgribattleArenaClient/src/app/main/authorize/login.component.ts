@@ -1,25 +1,36 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { AuthService} from '../../share/index';
 import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper, IProfile } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['../main.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
     @Output() registerEmitter = new EventEmitter();
     @Output() forgotPasswordEmitter = new EventEmitter();
     @Output() loginEmitter = new EventEmitter();
 
-    private userName;
-    private password;
+    private loginForm: FormGroup;
+    private userName: FormControl;
+    private password: FormControl;
 
     constructor(private authService: AuthService, private loadingService: LoadingService) {
 
+    }
+
+    ngOnInit() {
+        this.userName = new FormControl('', [Validators.required]);
+        this.password = new FormControl('', [Validators.required]);
+        this.loginForm = new FormGroup({
+          userName: this.userName,
+          password: this.password
+        });
     }
 
     loginButtonPress(formValue) {

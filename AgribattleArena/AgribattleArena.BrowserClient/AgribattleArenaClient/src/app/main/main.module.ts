@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TOASTR_TOKEN, JQ_TOKEN, FocusRemoverDirective } from '../common';
 import { AuthService } from '../share';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 import { mainRoutes } from './main.routes';
 import { StartPageComponent } from './start-page.component';
 import { LoginComponent, RegisterComponent, ProfileComponent, ForgotPasswordComponent} from './authorize';
+import { WrappersModule } from '../share/wrappers/wrappers.module';
+import { CommonModule } from '@angular/common';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -27,8 +27,7 @@ const jQuery = window['$'];
   imports: [
     CommonModule,
     RouterModule.forChild(mainRoutes),
-    FormsModule,
-    ReactiveFormsModule
+    WrappersModule
   ],
   providers: [
     AuthService,

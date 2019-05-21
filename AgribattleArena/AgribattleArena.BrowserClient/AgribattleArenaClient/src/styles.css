@@ -27,3 +27,24 @@
 button:focus, input:focus{
     box-shadow: 0 0 0 0.2rem rgba(34,34,102, 0.8) !important;
 }
+
+.arena-input{
+    border-radius: 0rem;
+    border: none;
+}
+
+.arena-label{
+    font-size: 18px;
+    margin-left: 2px;
+}
+
+.arena-border{
+    border-color: #202060 !important;
+}
+
+.arena-container{
+    display: block;
+    background-color: rgba(20,20,50,0.99);
+    margin-top: 20px;
+    padding: 20px;
+}

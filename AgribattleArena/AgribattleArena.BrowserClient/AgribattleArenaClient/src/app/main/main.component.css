@@ -78,49 +78,34 @@
   margin-bottom: 30px;
 }
 
-.main-page-border{
-  border-color: #202060 !important;
-}
-
-.main-page-container{
-  display: block;
-  background-color: rgba(20,20,50,0.99);
-  margin-top: 20px;
-  padding: 20px;
-}
-
 .main-page-container-center{
   width:100%;
 }
 
-.main-page-input{
-  border-radius: 0rem;
-  border: none;
-}
-
-.main-page-label{
-  font-size: 18px;
-  margin-left: 2px;
-}
-
-.main-page-small-button{
+:host ::ng-deep .main-page-small-button {
   flex: 40%;
   margin: 15px;
+  margin-top: 5px;
   margin-bottom: 0px;
 }
 
-.main-page-large-button{
+:host ::ng-deep .main-page-large-button{
   height: 80px;
   font-size: 34px;
 }
 
-.main-page-whole-button{
+:host ::ng-deep .main-page-whole-button-flex{
   flex:1;
-  font-size: 44px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
 }
 
-.main-page-back-button{
+:host ::ng-deep .main-page-whole-button{
+  font-size: 44px;
+  margin-bottom: 0px;
+  height: 100%;
+}
+
+:host ::ng-deep .main-page-back-button{
   margin-bottom: 0px;
 }
 
