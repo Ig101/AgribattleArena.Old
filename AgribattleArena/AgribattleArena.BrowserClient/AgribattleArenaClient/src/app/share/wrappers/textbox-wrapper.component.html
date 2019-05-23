@@ -1,4 +1,4 @@
 <div class="form-group" [formGroup]="parentForm" [ngClass]="divClass">
     <label *ngIf="label!==undefined" [for]="inputName" class="arena-label" [ngClass]="labelClass">{{label}}</label>
-    <input [formControlName]="inputName" [name]="inputName" [id]="inputName" class="form-control arena-input" [type]="inputType" [placeholder]="inputPlaceholder" [ngClass]="inputClass"/>
+    <input (input)="changeElement()" [formControlName]="inputName" [name]="inputName" [id]="inputName" class="form-control arena-input" [type]="inputType" [placeholder]="inputPlaceholder" [ngClass]="inputClass"/>
 </div>

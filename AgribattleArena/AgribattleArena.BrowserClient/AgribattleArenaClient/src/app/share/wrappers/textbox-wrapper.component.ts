@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-textbox-wrapper',
-    templateUrl: './textbox-wrapper.component.html'
+    templateUrl: './textbox-wrapper.component.html',
+    changeDetection: ChangeDetectionStrategy.Default
 })
 export class TextboxWrapperComponent {
 
@@ -17,4 +18,9 @@ export class TextboxWrapperComponent {
     @Input() inputType: string;
     @Input() inputClass: string;
 
+    @Output() changeEmitter = new EventEmitter();
+
+    changeElement() {
+        this.changeEmitter.emit();
+    }
 }

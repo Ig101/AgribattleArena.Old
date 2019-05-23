@@ -4,6 +4,7 @@ import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { confirmPasswordValidator } from './confirm-password.validator';
 
 @Component({
     selector: 'app-register',
@@ -24,13 +25,29 @@ export class RegisterComponent implements OnInit {
     constructor(private authService: AuthService, private loadingService: LoadingService) {
 
     }
-
     ngOnInit() {
-        this.userName = new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+[A-Za-z0-9]*.{2,}$')]);
-        this.email = new FormControl('', [Validators.required, Validators.email]);
-        this.password = new FormControl('', [Validators.required,
-            Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z0-9$@$!%*?&].{5,}')]);
-        this.confirmPassword = new FormControl('', [Validators.required]);
+        this.userName = new FormControl('', [
+            Validators.required,
+            Validators.pattern('^[A-Za-z]+[A-Za-z0-9]*$'),
+            Validators.minLength(3),
+            Validators.maxLength(20)
+        ]);
+        this.email = new FormControl('', [
+            Validators.required,
+            Validators.email
+        ]);
+        this.password = new FormControl('', [
+            Validators.required,
+            Validators.pattern('(?=.*[0-9]).{0,}'),
+            Validators.pattern('(?=.*[a-z]).{0,}'),
+            Validators.pattern('(?=.*[A-Z]).{0,}'),
+            Validators.pattern('(?=.*[$@$!%*?&]).{0,}'),
+            Validators.minLength(6)
+        ]);
+        this.confirmPassword = new FormControl('', [
+            Validators.required,
+            confirmPasswordValidator
+        ]);
         this.registerForm = new FormGroup({
           userName: this.userName,
           email: this.email,
