@@ -1,6 +1,6 @@
 <form [formGroup]="loginForm" (ngSubmit)="loginButtonPress(loginForm.value)" autocomplete="on">
-    <app-textbox-wrapper [parentForm]="loginForm" label="User Name:" inputName="userName" inputType="text" inputPlaceholder="User Name..."></app-textbox-wrapper>
-    <app-textbox-wrapper [parentForm]="loginForm" label="Password:" inputName="password" inputType="password" inputPlaceholder="Password..."></app-textbox-wrapper>   
+    <app-textbox-wrapper [parentForm]="loginForm" name="User Name" label="User Name:" inputName="userName" inputType="text" inputPlaceholder="User Name..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="loginForm" name="Password" label="Password:" inputName="password" inputType="password" inputPlaceholder="Password..."></app-textbox-wrapper>   
     <app-button-wrapper [parentForm]="loginForm" buttonType="submit" buttonLabel="Login" buttonValidate="true" buttonClass="main-page-large-button" ></app-button-wrapper>
     <app-button-wrapper (clickEmitter)="registerButtonPress()" [parentForm]="loginForm" buttonType="button" buttonLabel="Register"></app-button-wrapper>
     <a class="main-page-hyperlink" (click)="forgotPasswordButtonPress()">Forgot password?</a>

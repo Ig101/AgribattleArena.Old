@@ -1,8 +1,8 @@
 <form [formGroup]="registerForm" (ngSubmit)="registerButtonPress(registerForm.value)" autocomplete="off">
-    <app-textbox-wrapper [parentForm]="registerForm" label="User Name:" inputName="userName" inputType="text" inputPlaceholder="User Name..."></app-textbox-wrapper>
-    <app-textbox-wrapper [parentForm]="registerForm" label="Email:" inputName="email" inputType="email" inputPlaceholder="Email..."></app-textbox-wrapper>
-    <app-textbox-wrapper [parentForm]="registerForm" label="Password:" inputName="password" inputType="password" inputPlaceholder="Password..." (changeEmitter)="registerForm.controls.confirmPassword.updateValueAndValidity()"></app-textbox-wrapper>
-    <app-textbox-wrapper [parentForm]="registerForm" inputName="confirmPassword" inputType="password" inputPlaceholder="Confirm Password..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" name="User Name" label="User Name:" inputName="userName" inputType="text" inputPlaceholder="User Name..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" name="Email" label="Email:" inputName="email" inputType="email" inputPlaceholder="Email..."></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" name="Password" label="Password:" inputName="password" inputType="password" inputPlaceholder="Password..." (changeEmitter)="registerForm.controls.confirmPassword.updateValueAndValidity()"></app-textbox-wrapper>
+    <app-textbox-wrapper [parentForm]="registerForm" name="Confirm Password" inputName="confirmPassword" inputType="password" inputPlaceholder="Confirm Password..."></app-textbox-wrapper>
     <div class="row" style="margin-top: -15px !important;">         
         <app-button-wrapper [parentForm]="registerForm" buttonType="submit" buttonLabel="Register" buttonValidate="true" class="main-page-small-button"></app-button-wrapper>
         <app-button-wrapper (clickEmitter)="cancelButtonPress()" [parentForm]="registerForm" buttonType="button" buttonLabel="Cancel" class="main-page-small-button"></app-button-wrapper>

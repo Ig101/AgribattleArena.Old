@@ -4,6 +4,7 @@ import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper, IProfile } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { controlRequiredValidator } from 'src/app/share/validators';
 
 @Component({
     selector: 'app-login',
@@ -25,8 +26,8 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userName = new FormControl('', [Validators.required]);
-        this.password = new FormControl('', [Validators.required]);
+        this.userName = new FormControl('', controlRequiredValidator);
+        this.password = new FormControl('', controlRequiredValidator);
         this.loginForm = new FormGroup({
           userName: this.userName,
           password: this.password
