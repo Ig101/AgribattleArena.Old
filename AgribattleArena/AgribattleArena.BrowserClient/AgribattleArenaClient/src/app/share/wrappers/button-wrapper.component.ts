@@ -17,7 +17,6 @@ export class ButtonWrapperComponent {
     @Input() buttonValidate: boolean;
     @Input() buttonType: string;
     @Input() buttonClass: string;
-    @Input() name: string;
 
     @Output() clickEmitter = new EventEmitter();
 

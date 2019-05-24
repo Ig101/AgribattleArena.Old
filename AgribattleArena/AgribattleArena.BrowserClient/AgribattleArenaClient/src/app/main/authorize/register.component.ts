@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { controlRequiredValidator, passwordDigitsValidator, passwordLowercaseValidator, passwordUppercaseValidator,
     passwordSpecialValidator, controlMinLengthValidator, confirmPasswordValidator, controlLettersDigitsValidator,
     controlfirstLetterValidator, controlMaxLengthValidator, emailValidator } from 'src/app/share/validators';
+import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
 
 @Component({
     selector: 'app-register',
@@ -28,18 +29,18 @@ export class RegisterComponent implements OnInit {
 
     }
     ngOnInit() {
-        this.userName = new FormControl('', [
+        this.userName = new FormControlWrapper('User Name', '', [
             controlRequiredValidator,
             controlLettersDigitsValidator,
             controlfirstLetterValidator,
             controlMinLengthValidator(3),
             controlMaxLengthValidator(20)
         ]);
-        this.email = new FormControl('', [
+        this.email = new FormControlWrapper('Email', '', [
             controlRequiredValidator,
             emailValidator
         ]);
-        this.password = new FormControl('', [
+        this.password = new FormControlWrapper('Password', '', [
             controlRequiredValidator,
             passwordDigitsValidator,
             passwordLowercaseValidator,
@@ -47,7 +48,7 @@ export class RegisterComponent implements OnInit {
             passwordSpecialValidator,
             controlMinLengthValidator(6)
         ]);
-        this.confirmPassword = new FormControl('', [
+        this.confirmPassword = new FormControlWrapper('Confirm Password', '', [
             confirmPasswordValidator
         ]);
         this.registerForm = new FormGroup({
