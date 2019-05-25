@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../share';
 import { LoadingService } from 'src/app/loading';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
+import { IProfile, IExternalWrapper } from 'src/app/share/models';
+import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
 
 @Component({
     selector: 'app-profile',
@@ -10,6 +12,10 @@ import { FormGroup } from '@angular/forms';
     styleUrls: ['../main.component.css']
 })
 export class ProfileComponent implements OnInit {
+
+    @Input() profile: IProfile;
+
+    @Output() logOutEmitter = new EventEmitter();
 
     private profileForm: FormGroup;
 
@@ -26,6 +32,13 @@ export class ProfileComponent implements OnInit {
     }
 
     logOutButtonPress() {
-
+        const ver = this.loadingService.loadingStart('Logging out...', 0.5);
+        this.authService.logout().subscribe((resObject: IExternalWrapper<any>) => {
+            if (checkServiceResponseError(resObject)) {
+                this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
+                return;
+            }
+            this.logOutEmitter.emit();
+        });
     }
 }

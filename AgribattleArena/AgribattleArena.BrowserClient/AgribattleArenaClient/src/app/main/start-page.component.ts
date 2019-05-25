@@ -34,5 +34,6 @@ export class StartPageComponent {
 
     login(profile: IProfile) {
         this.profile = profile;
+        this.goToProfile();
     }
 }

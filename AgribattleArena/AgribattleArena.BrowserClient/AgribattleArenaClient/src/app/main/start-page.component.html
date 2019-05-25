@@ -12,8 +12,8 @@
             <div class="col-lg-5 col-md-6 col-xl-4 col-sm-8 arena-container border arena-border h-100" [ngSwitch]="authorizeSwitch">
                 <div class="main-page-container-center h-100">
                     <app-login *ngSwitchCase="authorizeSwitchEnum.Login" (registerEmitter)="goToRegister()" (forgotPasswordEmitter)="goToForgotPassword()" (loginEmitter)="login($event)"></app-login>
-                    <app-register *ngSwitchCase="authorizeSwitchEnum.Register" (cancelEmitter)="goToLogin()" (registerEmitter)="goToLogin"></app-register>
-                    <app-profile *ngSwitchCase="authorizeSwitchEnum.Profile"></app-profile>
+                    <app-register *ngSwitchCase="authorizeSwitchEnum.Register" (cancelEmitter)="goToLogin()" (registerEmitter)="goToLogin()"></app-register>
+                    <app-profile *ngSwitchCase="authorizeSwitchEnum.Profile" [profile]="profile" (logOutEmitter)="goToLogin()"></app-profile>
                     <app-forgot-password *ngSwitchCase="authorizeSwitchEnum.ForgotPassword"></app-forgot-password>
                 </div>
             </div>
