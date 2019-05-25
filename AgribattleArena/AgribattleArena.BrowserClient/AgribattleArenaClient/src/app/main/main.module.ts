@@ -8,6 +8,8 @@ import { StartPageComponent } from './start-page.component';
 import { LoginComponent, RegisterComponent, ProfileComponent, ForgotPasswordComponent} from './authorize';
 import { WrappersModule } from '../share/wrappers/wrappers.module';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ProfileService } from '../share/profile.service';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -27,10 +29,12 @@ const jQuery = window['$'];
   imports: [
     CommonModule,
     RouterModule.forChild(mainRoutes),
-    WrappersModule
+    WrappersModule,
+    HttpClientModule
   ],
   providers: [
     AuthService,
+    ProfileService,
     {provide: TOASTR_TOKEN, useValue: toastr},
     {provide: JQ_TOKEN, useValue: jQuery}
   ],

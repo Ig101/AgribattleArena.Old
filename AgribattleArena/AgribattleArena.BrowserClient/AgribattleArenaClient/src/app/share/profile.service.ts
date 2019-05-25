@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IProfile, IExternalWrapper, IProfileActor } from './models';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { getParseErrors } from '@angular/compiler';
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +11,24 @@ import { Subject, Observable } from 'rxjs';
 export class ProfileService {
 
     tempProfile: IProfileActor;
+
+    constructor(private http: HttpClient) { }
+
+    private errorHandler(errorResult: HttpErrorResponse) {
+        let errorMessage: string;
+        switch (errorResult.status) {
+            case 404:
+                errorMessage = 'Unauthorized';
+                break;
+            default:
+                errorMessage = 'Server error';
+                break;
+        }
+        return of({
+            statusCode: errorResult.status,
+            errors: [errorMessage]
+        });
+    }
 
     isAuthenticated(): Observable<IExternalWrapper<boolean>> {
         console.log(false);
@@ -22,16 +43,20 @@ export class ProfileService {
         return subject;
     }
 
-    getProfile(): Observable<IExternalWrapper<IProfileActor>> {
-        console.log(false);
-        const subject = new Subject<IExternalWrapper<IProfileActor>>();
-        setTimeout(() => {
-            subject.next({
-                statusCode: 501,
-                errors: ['Not implemented']
+    getProfile(): Observable<IExternalWrapper<IProfile>> {
+        const subject = new Subject<IExternalWrapper<IProfile>>();
+        this.http.get('/api/profile')
+            .pipe(map((result: IProfile) => {
+                return {
+                    statusCode: 200,
+                    resObject: result
+                } as IExternalWrapper<IProfile>;
+            }))
+            .pipe(catchError(this.errorHandler))
+            .subscribe((profileResult: IExternalWrapper<IProfile>) => {
+                subject.next(profileResult);
+                subject.complete();
             });
-            subject.complete();
-        }, 50);
         return subject;
     }
 }

@@ -6,7 +6,7 @@ import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/a
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { controlRequiredValidator, passwordDigitsValidator, passwordLowercaseValidator, passwordUppercaseValidator,
     passwordSpecialValidator, controlMinLengthValidator, confirmPasswordValidator, controlLettersDigitsValidator,
-    controlfirstLetterValidator, controlMaxLengthValidator, emailValidator } from 'src/app/share/validators';
+    controlfirstLetterValidator, controlMaxLengthValidator, emailValidator } from 'src/app/common/validators';
 import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
 
 @Component({

@@ -35,9 +35,10 @@ export class ProfileComponent implements OnInit {
         const ver = this.loadingService.loadingStart('Logging out...', 0.5);
         this.authService.logout().subscribe((resObject: IExternalWrapper<any>) => {
             if (checkServiceResponseError(resObject)) {
-                this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
+                this.loadingService.loadingError(getServiceResponseErrorContent(resObject), 0.5);
                 return;
             }
+            this.loadingService.loadingEnd(ver);
             this.logOutEmitter.emit();
         });
     }

@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { LoadingService, LoadingComponent } from './loading';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [

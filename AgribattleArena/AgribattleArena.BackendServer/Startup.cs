@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AgribattleArena.BackendServer.Hubs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace AgribattleArena.BackendServer
 {

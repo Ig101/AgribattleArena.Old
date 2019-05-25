@@ -4,7 +4,7 @@ import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper, IProfile } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { controlRequiredValidator } from 'src/app/share/validators';
+import { controlRequiredValidator } from 'src/app/common/validators';
 import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
 
 @Component({

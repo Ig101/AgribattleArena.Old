@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgribattleArena.BackendServer.Controllers
 {
@@ -62,9 +63,23 @@ namespace AgribattleArena.BackendServer.Controllers
             var result = await _signInManager.PasswordSignInAsync(authorizationModel.Login, authorizationModel.Password, false, false);
             if(result.Succeeded)
             {
-                return NoContent();
+                return Ok();
             }
             return Unauthorized();
+        }
+
+        [HttpDelete("login")]
+        public IActionResult LogOff()
+        {
+            Response.Cookies.Delete(".AspNetCore.Identity.Application");
+            return Ok();
+        }
+
+        [HttpGet()]
+        [Authorize]
+        public IActionResult IsAuthorized()
+        {
+            return NoContent();
         }
     }
 }

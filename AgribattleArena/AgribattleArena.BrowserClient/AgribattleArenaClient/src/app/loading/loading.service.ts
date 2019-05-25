@@ -11,7 +11,7 @@ import { Version } from '@angular/compiler';
 export class LoadingService {
 
     speed = 0.1;
-    defaultTimeout = 30000;
+    defaultTimeout = 10000;
 
     tempVersion = 0;
 
@@ -42,25 +42,27 @@ export class LoadingService {
         this.loadingState.message = error;
     }
 
-    private loadingAnimation(side: boolean, routeLink?: IRouteLink) {
-        const newLoading = this.loadingState.loading + this.speed * (side ? 1 : -1);
-        const newMessage = this.loadingState.message;
-        const newOpaque = this.loadingState.opaque;
+    private loadingAnimation(ver: number, side: boolean, routeLink?: IRouteLink) {
+        if (this.tempVersion === ver) {
+            const newLoading = this.loadingState.loading + this.speed * (side ? 1 : -1);
+            const newMessage = this.loadingState.message;
+            const newOpaque = this.loadingState.opaque;
 
-        this.loadingState. loading = newLoading;
+            this.loadingState. loading = newLoading;
 
-        let end = false;
-        if ((side && newLoading >= 1) || (!side && newLoading <= 0)) {
-            this.loadingState.loading = side ? 1 : 0;
-            end = true;
-        }
-        this.updateLoadingState();
-        if (!end) {
-            setTimeout(() => {
-                this.loadingAnimation(side);
-            }, 20);
-        } else if (routeLink !== undefined) {
-            routeLink.router.navigate([routeLink.route]);
+            let end = false;
+            if ((side && newLoading >= 1) || (!side && newLoading <= 0)) {
+                this.loadingState.loading = side ? 1 : 0;
+                end = true;
+            }
+            this.updateLoadingState();
+            if (!end) {
+                setTimeout(() => {
+                    this.loadingAnimation(ver, side);
+                }, 20);
+            } else if (routeLink !== undefined) {
+                routeLink.router.navigate([routeLink.route]);
+            }
         }
     }
 
@@ -81,7 +83,7 @@ export class LoadingService {
         this.runtimeTimer = setTimeout(() => {
             this.loadingEnd(this.tempVersion, 'Loading process timeout');
         }, timeout === undefined ? this.defaultTimeout : timeout);
-        this.loadingAnimation(true);
+        this.loadingAnimation(this.tempVersion, true);
         return this.tempVersion;
     }
 
@@ -93,7 +95,7 @@ export class LoadingService {
             message: incomingError,
             opaque: incomingOpaque
         };
-        this.loadingAnimation(true);
+        this.loadingAnimation(this.tempVersion, true);
         return this.tempVersion;
     }
 
@@ -102,7 +104,7 @@ export class LoadingService {
             this.loadingIncrement();
             clearTimeout(this.runtimeTimer);
             if (error === undefined) {
-                this.loadingAnimation(false);
+                this.loadingAnimation(this.tempVersion, false);
             } else {
                 this.setupLoadingError(error);
                 this.updateLoadingState();
