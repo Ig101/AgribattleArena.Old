@@ -26,13 +26,15 @@ export class ButtonWrapperComponent {
 
     buttonPress() {
         if (this.buttonValidate && this.parentForm.invalid) {
-            let error: string;
+            let error: string = null;
             // tslint:disable-next-line: forin
             for (const field in this.parentForm.controls) {
                 const control = this.parentForm.get(field) as FormControlWrapper;
-                if (control.errors) {
+                if (control.errors && error === null) {
                     error = control.name + ' ' + Object.values(control.errors)[0];
-                    break;
+                }
+                if (control.removeOnClick) {
+                    control.setValue('');
                 }
             }
             this.loadingService.loadingError(error, 0.5);

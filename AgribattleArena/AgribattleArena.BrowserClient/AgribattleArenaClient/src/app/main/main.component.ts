@@ -19,15 +19,16 @@ export class MainComponent implements OnInit, AfterViewInit {
     ngOnInit() { }
 
     ngAfterViewInit() {
+        const version = this.loadingService.tempVersion;
         const subscription: Subscription = this.profileService.getProfile().subscribe((resObject: IExternalWrapper<IProfile>) => {
             if (resObject.statusCode === 200) {
                 this.startPage.login(resObject.resObject);
             }
-            this.loadingService.loadingEnd(this.loadingService.tempVersion);
+            this.loadingService.loadingEnd(version);
         });
         setTimeout(() => {
             subscription.unsubscribe();
-            this.loadingService.loadingEnd(this.loadingService.tempVersion);
+            this.loadingService.loadingEnd(version);
         }, 5000);
     }
 }

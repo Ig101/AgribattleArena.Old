@@ -14,5 +14,6 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
         Task<ActorBoughtDto> BuyActor(string profileId, int money, int offerId, int offerItemId);
         Task AcceptTransaction(string profileId, int actorId, int actorCost);
         Task DeclineTransaction(int offerId);
+        Task<ActorBoughtDto> GetActorByName(string unitName);
     }
 }

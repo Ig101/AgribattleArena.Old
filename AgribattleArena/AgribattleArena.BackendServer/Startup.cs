@@ -116,7 +116,8 @@ namespace AgribattleArena.BackendServer
                     Skills = AutoMapper.Mapper.Map<List<DBProvider.Contexts.ProfileEntities.Skill>>(c.Skills),
                     Speed = c.Speed,
                     Strength = c.Strength,
-                    Willpower =c.Willpower
+                    Willpower =c.Willpower,
+                    InParty = c.InParty
                 });
                 cfg.CreateMap<string, DBProvider.Contexts.ProfileEntities.Skill>()
                     .ConvertUsing(c => new DBProvider.Contexts.ProfileEntities.Skill() { Native = c });

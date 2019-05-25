@@ -8,6 +8,7 @@ import { controlRequiredValidator, passwordDigitsValidator, passwordLowercaseVal
     passwordSpecialValidator, controlMinLengthValidator, confirmPasswordValidator, controlLettersDigitsValidator,
     controlfirstLetterValidator, controlMaxLengthValidator, emailValidator } from 'src/app/common/validators';
 import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
+import { identifierModuleUrl } from '@angular/compiler';
 
 @Component({
     selector: 'app-register',
@@ -29,18 +30,18 @@ export class RegisterComponent implements OnInit {
 
     }
     ngOnInit() {
-        this.userName = new FormControlWrapper('User Name', '', [
+        this.userName = new FormControlWrapper('User Name', false, '', [
             controlRequiredValidator,
             controlLettersDigitsValidator,
             controlfirstLetterValidator,
             controlMinLengthValidator(3),
             controlMaxLengthValidator(20)
         ]);
-        this.email = new FormControlWrapper('Email', '', [
+        this.email = new FormControlWrapper('Email', false, '', [
             controlRequiredValidator,
             emailValidator
         ]);
-        this.password = new FormControlWrapper('Password', '', [
+        this.password = new FormControlWrapper('Password', true, '', [
             controlRequiredValidator,
             passwordDigitsValidator,
             passwordLowercaseValidator,
@@ -48,7 +49,7 @@ export class RegisterComponent implements OnInit {
             passwordSpecialValidator,
             controlMinLengthValidator(6)
         ]);
-        this.confirmPassword = new FormControlWrapper('Confirm Password', '', [
+        this.confirmPassword = new FormControlWrapper('Confirm Password', true, '', [
             confirmPasswordValidator
         ]);
         this.registerForm = new FormGroup({
@@ -64,10 +65,12 @@ export class RegisterComponent implements OnInit {
         this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
             if (checkServiceResponseError(resObject)) {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
-                return;
+            } else {
+                this.loadingService.loadingEnd(ver);
+                this.registerEmitter.emit();
             }
-            this.loadingService.loadingEnd(ver);
-            this.registerEmitter.emit();
+            this.password.setValue('');
+            this.confirmPassword.setValue('');
         });
     }
 

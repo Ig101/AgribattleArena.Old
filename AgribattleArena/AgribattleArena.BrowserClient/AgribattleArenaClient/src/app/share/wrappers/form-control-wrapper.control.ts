@@ -2,10 +2,13 @@ import { FormControl, ValidatorFn, AbstractControlOptions, AsyncValidatorFn } fr
 
 export class FormControlWrapper extends FormControl {
     name: string;
+    removeOnClick: boolean;
 
-    constructor(name: string, defaultValue?: string, validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions,
+    constructor(name: string, removeOnClick: boolean, defaultValue?: string,
+                validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions,
                 asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[]) {
         super(defaultValue, validatorOrOpts, asyncValidator);
         this.name = name;
+        this.removeOnClick = removeOnClick;
     }
 }

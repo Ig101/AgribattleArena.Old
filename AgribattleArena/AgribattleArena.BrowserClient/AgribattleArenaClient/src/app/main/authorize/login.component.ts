@@ -27,8 +27,8 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.userName = new FormControlWrapper('User Name', '', controlRequiredValidator);
-        this.password = new FormControlWrapper('Password', '', controlRequiredValidator);
+        this.userName = new FormControlWrapper('User Name', false, '', controlRequiredValidator);
+        this.password = new FormControlWrapper('Password', true, '', controlRequiredValidator);
         this.loginForm = new FormGroup({
           userName: this.userName,
           password: this.password
@@ -40,10 +40,11 @@ export class LoginComponent implements OnInit {
         this.authService.login(formValue).subscribe((resObject: IExternalWrapper<IProfile>) => {
             if (checkServiceResponseError(resObject)) {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
-                return;
+            } else {
+                this.loadingService.loadingEnd(ver);
+                this.loginEmitter.emit(resObject.resObject);
             }
-            this.loadingService.loadingEnd(ver);
-            this.loginEmitter.emit(resObject.resObject);
+            this.password.setValue('');
         });
     }
 

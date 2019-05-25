@@ -127,5 +127,14 @@ namespace AgribattleArena.BackendServer.Services
             offer.Closed = false;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ActorBoughtDto> GetActorByName (string unitName)
+        {
+            Actor actor = (await _context.Actor.Include(x => x.Skills).ToArrayAsync()).FirstOrDefault(x => x.Name == unitName);
+            return new ActorBoughtDto()
+            {
+                Actor = AutoMapper.Mapper.Map<ActorDto>(actor)
+            };
+        }
     }
 }

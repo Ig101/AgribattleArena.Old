@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using AgribattleArena.BackendServer.Models.Store;
 
 namespace AgribattleArena.BackendServer.Controllers
 {
@@ -20,10 +21,15 @@ namespace AgribattleArena.BackendServer.Controllers
         UserManager<Profile> _userManager;
         SignInManager<Profile> _signInManager;
         ConstantsConfig _constants;
+        IStoreRepository _storeRepository;
+        IProfilesService _profilesService;
 
         public AuthorizationController(ProfilesService userManager,
-            SignInManager<Profile> signInManager, IOptions<ConstantsConfig> constants)
+            SignInManager<Profile> signInManager, IOptions<ConstantsConfig> constants,
+            IStoreRepository storeRepository, IProfilesService profilesService)
         {
+            _profilesService = profilesService;
+            _storeRepository = storeRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _constants = constants.Value;
@@ -48,6 +54,27 @@ namespace AgribattleArena.BackendServer.Controllers
             var result = await _userManager.CreateAsync(newUser, registrationModel.Password);
             if (result.Succeeded)
             {
+                #region Add start squad
+                var profile = newUser;
+                for (int i = 0; i < 5; i++)
+                {
+                    ActorBoughtDto newActor = await _storeRepository.GetActorByName("sorcerer");
+                    var actorToAdd = new Models.Profile.ActorDto()
+                    {
+                        Name = "sorc_" + i,
+                        ActionPointsIncome = newActor.Actor.ActionPointsIncome,
+                        ActorNative = newActor.Actor.ActorNative,
+                        AttackingSkillNative = newActor.Actor.AttackingSkillNative,
+                        Constitution = newActor.Actor.Constitution,
+                        InParty = true,
+                        Skills = newActor.Actor.Skills,
+                        Speed = newActor.Actor.Speed,
+                        Strength = newActor.Actor.Strength,
+                        Willpower = newActor.Actor.Willpower
+                    };
+                    var addedActor = await _profilesService.AddActor(profile, actorToAdd);
+                }
+                #endregion
                 return CreatedAtRoute("GetProfileWithInfo", AutoMapper.Mapper.Map<ProfileDto>(newUser));
             }
             foreach (var error in result.Errors)
