@@ -60,7 +60,7 @@ namespace AgribattleArena.BackendServer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]AuthorizeDto authorizationModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(authorizationModel.Login, authorizationModel.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(authorizationModel.Login, authorizationModel.Password, true, false);
             if(result.Succeeded)
             {
                 return Ok();

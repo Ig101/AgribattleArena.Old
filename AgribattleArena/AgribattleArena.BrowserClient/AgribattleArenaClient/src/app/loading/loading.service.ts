@@ -101,9 +101,9 @@ export class LoadingService {
 
     loadingEnd(ver?: number, error?: string) {
         if (ver === undefined || this.tempVersion === ver) {
-            this.loadingIncrement();
             clearTimeout(this.runtimeTimer);
             if (error === undefined) {
+                this.loadingIncrement();
                 this.loadingAnimation(this.tempVersion, false);
             } else {
                 this.setupLoadingError(error);
