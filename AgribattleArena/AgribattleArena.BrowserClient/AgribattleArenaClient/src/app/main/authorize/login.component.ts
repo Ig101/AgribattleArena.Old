@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
                 return;
             }
+            this.loadingService.loadingEnd(ver);
             this.loginEmitter.emit(resObject.resObject);
         });
     }
