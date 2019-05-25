@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { LoadingService } from 'src/app/loading';
+import { FormControlWrapper } from './form-control-wrapper.control';
 
 @Component({
     selector: 'app-button-wrapper',
@@ -20,7 +22,33 @@ export class ButtonWrapperComponent {
 
     @Output() clickEmitter = new EventEmitter();
 
+    constructor(private loadingService: LoadingService) { }
+
     buttonPress() {
-        this.clickEmitter.emit();
+        if (this.buttonValidate && this.parentForm.invalid) {
+            let error: string;
+            // tslint:disable-next-line: forin
+            for (const field in this.parentForm.controls) {
+                const control = this.parentForm.get(field) as FormControlWrapper;
+                if (control.errors) {
+                    error = control.name + ' ' + Object.values(control.errors)[0];
+                    break;
+                }
+            }
+            this.loadingService.loadingError(error, 0.5);
+        } else {
+            this.clickEmitter.emit();
+        }
+    }
+
+    validateAll() {
+        if (this.buttonValidate) {
+            // tslint:disable-next-line: forin
+            for (const field in this.parentForm.controls) {
+                const control = this.parentForm.get(field);
+                control.markAsDirty();
+                control.markAsTouched();
+            }
+        }
     }
 }

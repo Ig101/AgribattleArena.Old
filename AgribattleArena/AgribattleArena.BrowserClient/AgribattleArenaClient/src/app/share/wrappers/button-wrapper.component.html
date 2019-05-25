@@ -1,3 +1,5 @@
 <div [formGroup]="parentForm" [ngClass]="divClass">
-    <button (click)="buttonPress()" [type]="buttonType" appFocusRemover [disabled]="buttonValidate && parentForm.invalid" class="btn arena-button" [ngClass]="buttonClass">{{buttonLabel}}</button>
+    <span (mouseenter)="validateAll()">
+        <button (click)="buttonPress()" [type]="buttonType" appFocusRemover class="btn arena-button" [ngClass]="buttonClass">{{buttonLabel}}</button>
+    </span>
 </div>

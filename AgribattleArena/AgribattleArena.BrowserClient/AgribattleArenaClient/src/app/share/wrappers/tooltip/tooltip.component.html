@@ -1,0 +1,9 @@
+<div *ngIf="control.errors && controlFocus" class="arena-tooltip">
+    <div class="arena-tooltip-text">
+        <ul class="list" style="margin-bottom: 0; padding-left: 20px;">
+            <li *ngFor="let item of getErrorsList()">
+                {{item}}
+            </li>
+        </ul>
+    </div>
+</div>

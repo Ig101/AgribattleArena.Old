@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormControlWrapper } from './form-control-wrapper.control';
 
@@ -8,9 +8,9 @@ import { FormControlWrapper } from './form-control-wrapper.control';
     changeDetection: ChangeDetectionStrategy.Default
 })
 export class TextboxWrapperComponent implements OnInit {
-
     @Input() parentForm: FormGroup;
     private control: FormControlWrapper;
+    private focusState: boolean;
 
     @Input() divClass: string;
     @Input() label: string;
@@ -28,6 +28,9 @@ export class TextboxWrapperComponent implements OnInit {
 
     changeElement() {
         this.changeEmitter.emit();
-        console.log(this.control);
+    }
+
+    checkValidity() {
+        return this.control.invalid && this.control.touched && this.control.dirty;
     }
 }

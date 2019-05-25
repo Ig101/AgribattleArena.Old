@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextboxWrapperComponent } from './textbox-wrapper.component';
 import { ButtonWrapperComponent } from './button-wrapper.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { LoadingService } from 'src/app/loading';
 
 @NgModule({
 imports: [
@@ -12,7 +14,8 @@ imports: [
 ],
 declarations: [
     TextboxWrapperComponent,
-    ButtonWrapperComponent
+    ButtonWrapperComponent,
+    TooltipComponent
 ],
 exports: [
     TextboxWrapperComponent,

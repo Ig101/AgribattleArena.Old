@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthorizeSwitchEnum } from './authorize';
+import { IProfile } from '../share/models';
 
 @Component({
     selector: 'app-start',
@@ -9,6 +10,7 @@ import { AuthorizeSwitchEnum } from './authorize';
 export class StartPageComponent {
     private authorizeSwitchEnum = AuthorizeSwitchEnum;
     public authorizeSwitch: AuthorizeSwitchEnum;
+    private profile: IProfile;
 
     constructor() {
         this.authorizeSwitch = AuthorizeSwitchEnum.Login;
@@ -28,5 +30,9 @@ export class StartPageComponent {
 
     goToForgotPassword() {
         alert('Coming soon');
+    }
+
+    login(profile: IProfile) {
+        this.profile = profile;
     }
 }

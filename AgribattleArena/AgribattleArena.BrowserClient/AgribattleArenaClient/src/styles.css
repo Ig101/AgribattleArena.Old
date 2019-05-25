@@ -25,12 +25,24 @@
 }
 
 button:focus, input:focus{
-    box-shadow: 0 0 0 0.2rem rgba(34,34,102, 0.8) !important;
+    box-shadow: 0 0 0 0.2rem rgba(34,34,102, 0.5) !important;
 }
 
 .arena-input{
+    border: 1px solid rgb(34,34,102);
     border-radius: 0rem;
     border: none;
+}
+
+.arena-input-error{
+    border: 1px solid #FF0000;
+    background-color: #FFEFEF;
+}
+
+.arena-input-error:focus{
+    border: 1px solid #FF0000;
+    background-color: #FFEFEF;
+    box-shadow: 0 0 0 0.1rem rgba(255,0,0, 0.5) !important;
 }
 
 .arena-label{
@@ -47,4 +59,15 @@ button:focus, input:focus{
     background-color: rgba(20,20,50,0.99);
     margin-top: 20px;
     padding: 20px;
+}
+
+.arena-row{
+    display: inherit;
+}
+
+@media(min-width: 576px)
+{
+    .arena-row{
+        display: flex;
+    }
 }

@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
                 return;
             }
-            // TODO register_logic
+            this.loadingService.loadingEnd(ver);
             this.registerEmitter.emit();
         });
     }
