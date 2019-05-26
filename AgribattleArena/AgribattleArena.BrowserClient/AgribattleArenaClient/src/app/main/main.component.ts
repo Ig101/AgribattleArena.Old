@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { LoadingService } from '../loading';
-import { ProfileService } from '../share/profile.service';
-import { IExternalWrapper, IProfile } from '../share/models';
 import { StartPageComponent } from './start-page.component';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ENVIRONMENT } from '../environment';
 
 @Component({
     selector: 'app-main',
@@ -14,21 +13,16 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     @ViewChild(StartPageComponent) startPage: StartPageComponent;
 
-    constructor(private loadingService: LoadingService, private profileService: ProfileService) { }
+    constructor(private loadingService: LoadingService, private route: ActivatedRoute) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        const profile = this.route.snapshot.data.profile;
+        if (profile) {
+            this.startPage.login(profile);
+        }
+    }
 
     ngAfterViewInit() {
-        const version = this.loadingService.tempVersion;
-        const subscription: Subscription = this.profileService.getProfile().subscribe((resObject: IExternalWrapper<IProfile>) => {
-            if (resObject.statusCode === 200) {
-                this.startPage.login(resObject.resObject);
-            }
-            this.loadingService.loadingEnd(version);
-        });
-        setTimeout(() => {
-            subscription.unsubscribe();
-            this.loadingService.loadingEnd(version);
-        }, 5000);
+        setTimeout(() => this.loadingService.loadingEnd(), ENVIRONMENT.afterLoadingDelay);
     }
 }

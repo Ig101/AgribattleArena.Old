@@ -9,6 +9,7 @@ import { controlRequiredValidator, passwordDigitsValidator, passwordLowercaseVal
     controlfirstLetterValidator, controlMaxLengthValidator, emailValidator } from 'src/app/common/validators';
 import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
 import { identifierModuleUrl } from '@angular/compiler';
+import { ENVIRONMENT } from 'src/app/environment';
 
 @Component({
     selector: 'app-register',
@@ -61,7 +62,7 @@ export class RegisterComponent implements OnInit {
     }
 
     registerButtonPress(formValue) {
-        const ver = this.loadingService.loadingStart('Registration...', 0.5);
+        const ver = this.loadingService.loadingStart('Registration...', ENVIRONMENT.defaultLoadingOpacity);
         this.authService.register(formValue).subscribe((resObject: IExternalWrapper<any>) => {
             if (checkServiceResponseError(resObject)) {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));

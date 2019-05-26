@@ -10,6 +10,7 @@ import { WrappersModule } from '../share/wrappers/wrappers.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileService } from '../share/profile.service';
+import { MainResolver } from './main.resolver';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -35,6 +36,7 @@ const jQuery = window['$'];
   providers: [
     AuthService,
     ProfileService,
+    MainResolver,
     {provide: TOASTR_TOKEN, useValue: toastr},
     {provide: JQ_TOKEN, useValue: jQuery}
   ],

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LoadingService } from 'src/app/loading';
 import { FormControlWrapper } from './form-control-wrapper.control';
+import { ENVIRONMENT } from 'src/app/environment';
 
 @Component({
     selector: 'app-button-wrapper',
@@ -37,7 +38,7 @@ export class ButtonWrapperComponent {
                     control.setValue('');
                 }
             }
-            this.loadingService.loadingError(error, 0.5);
+            this.loadingService.loadingError(error, ENVIRONMENT.defaultLoadingOpacity);
         } else {
             this.clickEmitter.emit();
         }

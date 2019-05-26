@@ -6,6 +6,7 @@ import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/a
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { controlRequiredValidator } from 'src/app/common/validators';
 import { FormControlWrapper } from 'src/app/share/wrappers/form-control-wrapper.control';
+import { ENVIRONMENT } from 'src/app/environment';
 
 @Component({
     selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
     }
 
     loginButtonPress(formValue) {
-        const ver = this.loadingService.loadingStart('Authorization...', 0.5);
+        const ver = this.loadingService.loadingStart('Authorization...', ENVIRONMENT.defaultLoadingOpacity);
         this.authService.login(formValue).subscribe((resObject: IExternalWrapper<IProfile>) => {
             if (checkServiceResponseError(resObject)) {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));

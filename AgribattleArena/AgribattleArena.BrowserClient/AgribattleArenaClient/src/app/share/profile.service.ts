@@ -1,5 +1,5 @@
 import { Injectable, ErrorHandler } from '@angular/core';
-import { IProfile, IExternalWrapper, IProfileActor } from './models';
+import { IProfile, IExternalWrapper } from './models';
 import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 })
 export class ProfileService {
 
-    tempProfile: IProfileActor;
+    tempProfile: IProfile;
 
     constructor(private http: HttpClient) { }
 

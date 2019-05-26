@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { IProfile, IExternalWrapper } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
+import { ENVIRONMENT } from 'src/app/environment';
 
 @Component({
     selector: 'app-profile',
@@ -32,10 +33,10 @@ export class ProfileComponent implements OnInit {
     }
 
     logOutButtonPress() {
-        const ver = this.loadingService.loadingStart('Logging out...', 0.5);
+        const ver = this.loadingService.loadingStart('Logging out...', ENVIRONMENT.defaultLoadingOpacity);
         this.authService.logout().subscribe((resObject: IExternalWrapper<any>) => {
             if (checkServiceResponseError(resObject)) {
-                this.loadingService.loadingError(getServiceResponseErrorContent(resObject), 0.5);
+                this.loadingService.loadingError(getServiceResponseErrorContent(resObject), ENVIRONMENT.defaultLoadingOpacity);
             } else {
                 this.loadingService.loadingEnd(ver);
                 this.logOutEmitter.emit();

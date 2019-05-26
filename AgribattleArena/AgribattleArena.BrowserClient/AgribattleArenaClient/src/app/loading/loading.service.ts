@@ -6,12 +6,10 @@ import { IRouteLink } from '../common';
 import { LoadingStatusEnum } from './loading-status.enum';
 import { version } from 'punycode';
 import { Version } from '@angular/compiler';
+import { ENVIRONMENT } from '../environment';
 
 @Injectable()
 export class LoadingService {
-
-    speed = 0.1;
-    defaultTimeout = 10000;
 
     tempVersion = 0;
 
@@ -44,7 +42,7 @@ export class LoadingService {
 
     private loadingAnimation(ver: number, side: boolean, routeLink?: IRouteLink) {
         if (this.tempVersion === ver) {
-            const newLoading = this.loadingState.loading + this.speed * (side ? 1 : -1);
+            const newLoading = this.loadingState.loading + ENVIRONMENT.loadingSpeed * (side ? 1 : -1);
             const newMessage = this.loadingState.message;
             const newOpaque = this.loadingState.opaque;
 
@@ -82,7 +80,7 @@ export class LoadingService {
         };
         this.runtimeTimer = setTimeout(() => {
             this.loadingEnd(this.tempVersion, 'Loading process timeout');
-        }, timeout === undefined ? this.defaultTimeout : timeout);
+        }, timeout === undefined ? ENVIRONMENT.loadingTimeout : timeout);
         this.loadingAnimation(this.tempVersion, true);
         return this.tempVersion;
     }
