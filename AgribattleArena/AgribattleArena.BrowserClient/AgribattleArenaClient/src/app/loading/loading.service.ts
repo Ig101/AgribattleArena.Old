@@ -56,9 +56,10 @@ export class LoadingService {
             this.updateLoadingState();
             if (!end) {
                 setTimeout(() => {
-                    this.loadingAnimation(ver, side);
+                    this.loadingAnimation(ver, side, routeLink);
                 }, 20);
             } else if (routeLink !== undefined) {
+                console.log('route');
                 routeLink.router.navigate([routeLink.route]);
             }
         }
@@ -81,7 +82,7 @@ export class LoadingService {
         this.runtimeTimer = setTimeout(() => {
             this.loadingEnd(this.tempVersion, 'Loading process timeout');
         }, timeout === undefined ? ENVIRONMENT.loadingTimeout : timeout);
-        this.loadingAnimation(this.tempVersion, true);
+        this.loadingAnimation(this.tempVersion, true, routeLink);
         return this.tempVersion;
     }
 
