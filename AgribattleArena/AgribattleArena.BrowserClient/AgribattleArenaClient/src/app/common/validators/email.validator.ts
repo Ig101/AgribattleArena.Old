@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 export function emailValidator(control: FormControl) {
     const error = Validators.email(control);
     if (error) {
-        return {email: 'should have email format'};
+        return {email: 'should be valid.'};
     }
     return null;
 }

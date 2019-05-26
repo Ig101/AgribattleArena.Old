@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using AgribattleArena.BackendServer.Models.Store;
+using Microsoft.Extensions.Logging;
 
 namespace AgribattleArena.BackendServer.Controllers
 {
@@ -22,17 +23,17 @@ namespace AgribattleArena.BackendServer.Controllers
         SignInManager<Profile> _signInManager;
         ConstantsConfig _constants;
         IStoreRepository _storeRepository;
-        IProfilesService _profilesService;
+        ILogger<AuthorizationController> _logger;
 
-        public AuthorizationController(ProfilesService userManager,
+        public AuthorizationController(ProfilesService userManager, ILogger<AuthorizationController> logger,
             SignInManager<Profile> signInManager, IOptions<ConstantsConfig> constants,
-            IStoreRepository storeRepository, IProfilesService profilesService)
+            IStoreRepository storeRepository)
         {
-            _profilesService = profilesService;
             _storeRepository = storeRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _constants = constants.Value;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -49,32 +50,36 @@ namespace AgribattleArena.BackendServer.Controllers
                 Resources = _constants.StartResourcesAmount,
                 DonationResources = _constants.StartDonationResourcesAmount,
                 Revelations = 0,
-                BarracksSize = _constants.StartProfileActorsLimit
+                BarracksSize = _constants.StartProfileActorsLimit,
             };
+            #region Add start squad
+            newUser.Actors = new List<Actor>();
+            newUser.Resources = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                _logger.LogInformation("Buy password");
+                ActorBoughtDto newActor = await _storeRepository.GetActorByName("sorcerer");
+                _logger.LogInformation(newActor.ToString());
+                var actorToAdd = new Actor()
+                {
+                    Name = "sorc_" + i,
+                    ActionPointsIncome = newActor.Actor.ActionPointsIncome,
+                    ActorNative = newActor.Actor.ActorNative,
+                    AttackingSkillNative = newActor.Actor.AttackingSkillNative,
+                    Constitution = newActor.Actor.Constitution,
+                    InParty = true,
+                    Skills = AutoMapper.Mapper.Map<List<DBProvider.Contexts.ProfileEntities.Skill>>(newActor.Actor.Skills),
+                    Speed = newActor.Actor.Speed,
+                    Strength = newActor.Actor.Strength,
+                    Willpower = newActor.Actor.Willpower
+                };
+                _logger.LogInformation("lalala");
+                newUser.Actors.Add(actorToAdd);
+            }
+            #endregion
             var result = await _userManager.CreateAsync(newUser, registrationModel.Password);
             if (result.Succeeded)
             {
-                #region Add start squad
-                var profile = newUser;
-                for (int i = 0; i < 5; i++)
-                {
-                    ActorBoughtDto newActor = await _storeRepository.GetActorByName("sorcerer");
-                    var actorToAdd = new Models.Profile.ActorDto()
-                    {
-                        Name = "sorc_" + i,
-                        ActionPointsIncome = newActor.Actor.ActionPointsIncome,
-                        ActorNative = newActor.Actor.ActorNative,
-                        AttackingSkillNative = newActor.Actor.AttackingSkillNative,
-                        Constitution = newActor.Actor.Constitution,
-                        InParty = true,
-                        Skills = newActor.Actor.Skills,
-                        Speed = newActor.Actor.Speed,
-                        Strength = newActor.Actor.Strength,
-                        Willpower = newActor.Actor.Willpower
-                    };
-                    var addedActor = await _profilesService.AddActor(profile, actorToAdd);
-                }
-                #endregion
                 return CreatedAtRoute("GetProfileWithInfo", AutoMapper.Mapper.Map<ProfileDto>(newUser));
             }
             foreach (var error in result.Errors)

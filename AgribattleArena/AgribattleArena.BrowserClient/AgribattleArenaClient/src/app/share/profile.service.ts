@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ErrorHandler } from '@angular/core';
 import { IProfile, IExternalWrapper, IProfileActor } from './models';
 import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { getParseErrors } from '@angular/compiler';
+import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -18,10 +19,10 @@ export class ProfileService {
         let errorMessage: string;
         switch (errorResult.status) {
             case 404:
-                errorMessage = 'Unauthorized';
+                errorMessage = ErrorHandleHelper.getUnauthorizedError(errorResult.error);
                 break;
             default:
-                errorMessage = 'Server error';
+                errorMessage = ErrorHandleHelper.getInternalServerError(errorResult.error);
                 break;
         }
         return of({

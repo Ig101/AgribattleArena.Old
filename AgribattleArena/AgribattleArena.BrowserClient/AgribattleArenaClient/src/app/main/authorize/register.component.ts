@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit {
             if (checkServiceResponseError(resObject)) {
                 this.loadingService.loadingEnd(ver, getServiceResponseErrorContent(resObject));
             } else {
-                this.loadingService.loadingEnd(ver);
+                this.loadingService.loadingEnd(ver, 'Registration is completed.');
                 this.registerEmitter.emit();
             }
             this.password.setValue('');

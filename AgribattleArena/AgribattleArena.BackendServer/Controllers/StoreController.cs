@@ -33,7 +33,7 @@ namespace AgribattleArena.BackendServer.Controllers
             _constants = constants.Value;
         }
 
-        [HttpGet("actors", Name = "GetActorOffers")]
+        //[HttpGet("actors", Name = "GetActorOffers")]
         public async Task<IActionResult> GetActorOffers ()
         {
             string userId = _profilesService.GetUserID(User);
@@ -45,7 +45,7 @@ namespace AgribattleArena.BackendServer.Controllers
             return StatusCode(500);
         }
 
-        [HttpPost("actors")]
+        //[HttpPost("actors")]
         public async Task<IActionResult> BuyActor([FromBody]ActorToBuyDto actor)
         {
             //TODO Lock

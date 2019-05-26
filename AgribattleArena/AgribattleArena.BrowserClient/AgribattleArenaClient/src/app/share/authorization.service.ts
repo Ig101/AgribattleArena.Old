@@ -3,6 +3,7 @@ import { IUserForRegistration, IUserForLogin, IProfile, IExternalWrapper } from 
 import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
+import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -14,14 +15,17 @@ export class AuthService {
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
         switch (errorResult.status) {
+            case 400:
+                errorMessage = ErrorHandleHelper.getBadRequestError(errorResult.error);
+                break;
             case 401:
-                    errorMessage = 'Incorrect login or password';
-                    break;
+                errorMessage = 'Incorrect login or password';
+                break;
             case 404:
-                errorMessage = 'Unauthorized';
+                errorMessage = ErrorHandleHelper.getUnauthorizedError(errorResult.error);
                 break;
             default:
-                errorMessage = 'Server error';
+                errorMessage = ErrorHandleHelper.getInternalServerError(errorResult.error);
                 break;
         }
         return of({
@@ -66,15 +70,21 @@ export class AuthService {
     }
 
     register(user: IUserForRegistration): Observable<IExternalWrapper<any>> {
-        console.log(user);
         const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
-            subject.next({
-                statusCode: 501,
-                errors: ['Not implemented']
+        this.http.post('/api/auth/register', {
+            login: user.userName,
+            email: user.email,
+            password: user.password
+        })
+            .pipe(map((result: any) => {
+                return {
+                    statusCode: 200
+                } as IExternalWrapper<any>;
+            }))
+            .pipe(catchError(this.errorHandler))
+            .subscribe((logoutResult: IExternalWrapper<any>) => {
+                subject.next(logoutResult);
             });
-            subject.complete();
-        }, 2000);
         return subject;
     }
 
