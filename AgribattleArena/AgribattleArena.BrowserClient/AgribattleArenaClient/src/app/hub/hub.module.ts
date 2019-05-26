@@ -4,23 +4,18 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HubComponent } from './hub.component';
 import { hubRoutes } from './hub.routes';
-
-// tslint:disable-next-line: no-string-literal
-const toastr = window['toastr'];
-// tslint:disable-next-line: no-string-literal
-const jQuery = window['$'];
+import { QueueComponent } from './queue';
 
 @NgModule({
   declarations: [
-      HubComponent
+      HubComponent,
+      QueueComponent
   ],
   imports: [
       CommonModule,
       RouterModule.forChild(hubRoutes)
   ],
   providers: [
-    {provide: TOASTR_TOKEN, useValue: toastr},
-    {provide: JQ_TOKEN, useValue: jQuery}
   ],
   bootstrap: [
   ]

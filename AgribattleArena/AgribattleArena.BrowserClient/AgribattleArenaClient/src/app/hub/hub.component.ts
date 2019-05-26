@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-    templateUrl: './hub.component.html'
+    selector: 'app-hub',
+    templateUrl: './hub.component.html',
+    styleUrls: ['./hub.component.css']
 })
 export class HubComponent {
 

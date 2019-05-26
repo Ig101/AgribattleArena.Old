@@ -1,0 +1,8 @@
+.bg {
+    background: url("/assets/images/map/capital_map.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    height: 100%;
+    overflow-y:auto;
+  }
