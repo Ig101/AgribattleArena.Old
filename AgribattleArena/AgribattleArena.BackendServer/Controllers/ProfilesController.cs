@@ -40,6 +40,18 @@ namespace AgribattleArena.BackendServer.Controllers
             return NotFound();
         }
 
+        [HttpGet("credentials", Name = "GetProfileCredentials")]
+        public async Task<IActionResult> GetProfileCredentials()
+        {
+            var user = (await _profilesService.GetProfile(User));
+            if (user != null)
+            {
+                ProfileCredentialsDto profile = AutoMapper.Mapper.Map<ProfileCredentialsDto>(user);
+                return Ok(profile);
+            }
+            return NotFound();
+        }
+
         [HttpGet("status", Name = "GetProfileStatus")]
         public IActionResult GetProfileStatus()
         {
