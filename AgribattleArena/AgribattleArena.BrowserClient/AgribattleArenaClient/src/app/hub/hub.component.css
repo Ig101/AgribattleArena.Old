@@ -33,5 +33,27 @@
 }
 
 .hub-side-bar-userinfo {
-    flex: 0 0 200px;
+    flex: 0 0 90px;
+}
+
+.hub-side-bar-main {
+    flex: 1;
+}
+
+.hub-side-bar-exit {
+    flex: 0 0 90px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.hub-exit-panel-button{
+    flex:20%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+:host ::ng-deep .hub-exit-button{
+    height: 50px;
+    font-size: 22px;
+    margin: 0;
 }

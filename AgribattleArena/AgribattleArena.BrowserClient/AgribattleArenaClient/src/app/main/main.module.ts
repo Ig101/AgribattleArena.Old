@@ -35,7 +35,6 @@ const jQuery = window['$'];
   ],
   providers: [
     AuthService,
-    ProfileService,
     MainResolver,
     {provide: TOASTR_TOKEN, useValue: toastr},
     {provide: JQ_TOKEN, useValue: jQuery}

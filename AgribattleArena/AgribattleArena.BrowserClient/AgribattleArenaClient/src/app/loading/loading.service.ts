@@ -59,7 +59,6 @@ export class LoadingService {
                     this.loadingAnimation(ver, side, routeLink);
                 }, 20);
             } else if (routeLink !== undefined) {
-                console.log('route');
                 routeLink.router.navigate([routeLink.route]);
             }
         }

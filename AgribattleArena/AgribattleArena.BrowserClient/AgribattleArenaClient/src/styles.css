@@ -78,8 +78,8 @@ button:focus, input:focus{
 
 .arena-profile-image{
     height: 50px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 3px;
+    margin-right: 6px;
 }
 
 .arena-profile-name{
@@ -87,12 +87,13 @@ button:focus, input:focus{
     font-size: 22px;
     align-self: flex-end;
     margin: 4px;
-    margin-left: 5px;
+    margin-right: 0px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
   
 .arena-revelation-level {
-    flex: 1;
+    flex-shrink: 20px;
+    flex-grow: 1;
 }

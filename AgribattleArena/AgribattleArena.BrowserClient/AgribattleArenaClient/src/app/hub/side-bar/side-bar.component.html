@@ -2,8 +2,16 @@
     <div class="arena-container border arena-border hub-side-bar hub-side-bar-userinfo">
         <div class="row row-nomargin">
             <img src="/assets/images/main/crusader.png" class="arena-profile-image"/>
-            <div class="arena-profile-name">username</div>
-            <div class="arena-profile-name arena-revelation-level">(1)</div>
+            <div class="arena-profile-name">{{profileService.tempProfile.userName}}</div>
+            <div class="arena-profile-name arena-revelation-level">({{profileService.tempProfile.revelationLevel}})</div>
+        </div>
+    </div>
+    <div class="hub-side-bar-main">
+    </div>
+    <div class="arena-container border arena-border hub-side-bar hub-side-bar-exit">
+        <div class="row row-nomargin"> 
+            <app-button-wrapper-noform (clickEmitter)="settingsButtonPress()" buttonType="button" buttonLabel="Settings" class="hub-exit-panel-button" buttonClass="hub-exit-button"></app-button-wrapper-noform>
+            <app-button-wrapper-noform (clickEmitter)="exitButtonPress()" buttonType="button" buttonLabel="Exit" class="hub-exit-panel-button" buttonClass="hub-exit-button"></app-button-wrapper-noform>
         </div>
     </div>
 </div>

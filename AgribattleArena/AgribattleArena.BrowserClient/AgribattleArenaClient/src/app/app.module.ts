@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { LoadingService, LoadingComponent } from './loading';
+import { ProfileService } from './share/profile.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,10 +14,12 @@ import { LoadingService, LoadingComponent } from './loading';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule
   ],
   providers: [
-    LoadingService
+    LoadingService,
+    ProfileService
   ],
   bootstrap: [
     AppComponent

@@ -5,6 +5,7 @@ import { TextboxWrapperComponent } from './textbox-wrapper.component';
 import { ButtonWrapperComponent } from './button-wrapper.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { LoadingService } from 'src/app/loading';
+import { ButtonWrapperNoformComponent } from './button-wrapper-noform.component';
 
 @NgModule({
 imports: [
@@ -15,11 +16,13 @@ imports: [
 declarations: [
     TextboxWrapperComponent,
     ButtonWrapperComponent,
+    ButtonWrapperNoformComponent,
     TooltipComponent
 ],
 exports: [
     TextboxWrapperComponent,
     ButtonWrapperComponent,
+    ButtonWrapperNoformComponent,
     FormsModule,
     ReactiveFormsModule
 ]

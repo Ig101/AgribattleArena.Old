@@ -5,6 +5,8 @@ import { HubComponent } from './hub.component';
 import { hubRoutes } from './hub.routes';
 import { SideBarComponent } from './side-bar';
 import { StartPageComponent } from './start-page.component';
+import { HubResolver } from './hub.resolver';
+import { WrappersModule } from '../share/wrappers/wrappers.module';
 
 @NgModule({
   declarations: [
@@ -14,9 +16,11 @@ import { StartPageComponent } from './start-page.component';
   ],
   imports: [
       CommonModule,
-      RouterModule.forChild(hubRoutes)
+      RouterModule.forChild(hubRoutes),
+      WrappersModule
   ],
   providers: [
+      HubResolver
   ],
   bootstrap: [
   ]
