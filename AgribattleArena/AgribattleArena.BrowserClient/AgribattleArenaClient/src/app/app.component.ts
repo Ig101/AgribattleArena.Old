@@ -12,4 +12,5 @@ import { LoadingService, ILoadingModel } from './loading';
     styles: []
 })
 export class AppComponent {
+    title = 'Agribattle';
 }
