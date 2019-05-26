@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, EventEmitter } from '@angular/core';
 import { LoadingService } from '../loading';
 import { StartPageComponent } from './start-page.component';
 import { ActivatedRoute } from '@angular/router';
@@ -11,14 +11,14 @@ import { ENVIRONMENT } from '../environment';
 })
 export class MainComponent implements OnInit, AfterViewInit {
 
-    @ViewChild(StartPageComponent) startPage: StartPageComponent;
+    loginAction = new EventEmitter();
 
     constructor(private loadingService: LoadingService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         const profile = this.route.snapshot.data.profile;
         if (profile) {
-            this.startPage.login(profile);
+            this.loginAction.emit(profile);
         }
     }
 

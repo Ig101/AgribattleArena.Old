@@ -4,7 +4,7 @@ import { LoadingService } from 'src/app/loading';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { IProfile, IExternalWrapper } from 'src/app/share/models';
-import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';
+import { checkServiceResponseError, getServiceResponseErrorContent, IRouteLink } from 'src/app/common';
 import { ENVIRONMENT } from 'src/app/environment';
 
 @Component({
@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
     }
 
     playButtonPress() {
-
+        this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
     }
 
     logOutButtonPress() {

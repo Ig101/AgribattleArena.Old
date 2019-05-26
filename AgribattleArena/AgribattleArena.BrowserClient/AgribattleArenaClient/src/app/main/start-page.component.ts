@@ -1,18 +1,22 @@
 import { Component } from '@angular/core';
-import { AuthorizeSwitchEnum } from './authorize';
+import { AuthorizeSwitchEnum, LoginComponent } from './authorize';
 import { IProfile } from '../share/models';
+import { MainComponent } from './main.component';
+import { IParentActionComponent } from '../common/interfaces/parent-action-component.interface';
+import { ParentEventEmitterHelper } from '../common/helpers/parent-event-emitter.helper';
 
 @Component({
     selector: 'app-start',
     templateUrl: './start-page.component.html',
     styleUrls: ['./main.component.css']
 })
-export class StartPageComponent {
+export class StartPageComponent implements IParentActionComponent {
     private authorizeSwitchEnum = AuthorizeSwitchEnum;
     public authorizeSwitch: AuthorizeSwitchEnum;
     private profile: IProfile;
 
-    constructor() {
+    constructor(mainComponent: MainComponent) {
+        ParentEventEmitterHelper.subscribe(mainComponent.loginAction, this);
         this.authorizeSwitch = AuthorizeSwitchEnum.Login;
     }
 
@@ -35,5 +39,9 @@ export class StartPageComponent {
     login(profile: IProfile) {
         this.profile = profile;
         this.goToProfile();
+    }
+
+    parentAction(profile: any) {
+        this.login(profile as IProfile);
     }
 }
