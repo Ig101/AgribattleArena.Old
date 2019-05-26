@@ -60,4 +60,24 @@ export class ProfileService {
             });
         return subject;
     }
+
+    getFullProfile(setupTempProfile: boolean): Observable<IExternalWrapper<IProfile>> {
+        const subject = new Subject<IExternalWrapper<IProfile>>();
+        this.http.get('/api/profile/actors')
+            .pipe(map((result: IProfile) => {
+                if(setupTempProfile) {
+                    this.tempProfile = result;
+                }
+                return {
+                    statusCode: 200,
+                    resObject: result
+                } as IExternalWrapper<IProfile>;
+            }))
+            .pipe(catchError(this.errorHandler))
+            .subscribe((profileResult: IExternalWrapper<IProfile>) => {
+                subject.next(profileResult);
+                subject.complete();
+            });
+        return subject;
+    }
 }

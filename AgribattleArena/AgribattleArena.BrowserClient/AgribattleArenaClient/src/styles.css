@@ -71,3 +71,28 @@ button:focus, input:focus{
         display: flex;
     }
 }
+
+.row-nomargin{
+    margin:0px !important;
+}
+
+.arena-profile-image{
+    height: 50px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.arena-profile-name{
+    font-weight: bold;
+    font-size: 22px;
+    align-self: flex-end;
+    margin: 4px;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+  
+.arena-revelation-level {
+    flex: 1;
+}

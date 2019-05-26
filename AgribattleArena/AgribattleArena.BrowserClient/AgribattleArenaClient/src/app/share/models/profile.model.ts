@@ -5,7 +5,7 @@ export interface IProfile {
     resources: number;
     donationResources: number;
     revelations: number;
-    revelationsLevel: number;
+    revelationLevel: number;
     barracksSize: number;
     actors?: IProfileActor[];
 }

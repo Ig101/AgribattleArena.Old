@@ -2,7 +2,36 @@
     background: url("/assets/images/map/capital_map.png");
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center top;
+    background-position: right top;
     height: 100%;
     overflow-y:auto;
-  }
+}
+
+.hub-row {
+    margin: 0;
+    height: 100%;
+}
+
+.hub-column {
+    margin: 0;
+    flex-direction: column;
+    height: 100%;
+}
+
+.hub-main-window {
+    flex: 1;
+    height: 100%;
+}
+
+.hub-side-window {
+    flex: 0 0 380px;
+    height: 100%;
+}
+
+.hub-side-bar {
+    margin: 20px;
+}
+
+.hub-side-bar-userinfo {
+    flex: 0 0 200px;
+}
