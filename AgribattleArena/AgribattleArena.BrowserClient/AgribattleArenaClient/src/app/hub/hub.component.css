@@ -1,10 +1,21 @@
 .bg {
-    background: url("/assets/images/map/capital_map.png");
+    background-color: #6CDFF8;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: right top;
     height: 100%;
     overflow-y:auto;
+}
+
+.hub-map {
+    background-image: url("/assets/images/map/capital_map.png");
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+}
+
+.hub-main-container {
+    margin: 10px;
+    flex: 1;
 }
 
 .hub-row {
@@ -19,17 +30,21 @@
 }
 
 .hub-main-window {
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 0;
+    min-width: 70vh;
+    max-width: 133vh;
     height: 100%;
 }
 
 .hub-side-window {
-    flex: 0 0 380px;
+    flex: 1;
     height: 100%;
+    min-width: 300px;
 }
 
 .hub-side-bar {
-    margin: 20px;
+    margin: 10px;
 }
 
 .hub-side-bar-userinfo {
@@ -56,4 +71,42 @@
     height: 50px;
     font-size: 22px;
     margin: 0;
+}
+
+.hub-start-game-button{
+    background-image: url("/assets/images/map/hero_selector.png");
+}
+
+.hub-map-button{
+    background-color: transparent !important;
+    border: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+:host ::ng-deep .hub-map-string-start-game-button {
+    margin: 0;
+    margin-top: 1vh;
+    padding: 0px;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 3vh;
+    height: 16vh;
+    width: 14vh;
+    padding-top: 11vh;
+}
+
+.hub-map-string-button-container {
+    position: absolute;
+    z-index: 1;
+}
+
+.hub-start-game-panel{
+    position: absolute;
+    top: calc(23.4% - 3vh);
+    left: calc(51.2% - 7vh);
+    width: 14vh;
+    height: 14vh;
 }
