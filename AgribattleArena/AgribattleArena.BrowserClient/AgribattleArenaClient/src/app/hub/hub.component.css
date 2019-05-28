@@ -86,7 +86,7 @@
     background-position: center center;
 }
 
-:host ::ng-deep .hub-map-string-start-game-button {
+:host ::ng-deep .hub-map-string-button {
     margin: 0;
     margin-top: 1vh;
     padding: 0px;
@@ -104,10 +104,13 @@
     z-index: 1;
 }
 
-.hub-start-game-panel{
+.hub-map-button-panel{
     position: absolute;
-    top: calc(23.4% - 3vh);
-    left: calc(51.2% - 7vh);
     width: 14vh;
     height: 14vh;
+}
+
+.hub-start-game-panel{
+    top: calc(23.4% - 3vh);
+    left: calc(51.2% - 7vh);
 }
