@@ -7,6 +7,7 @@ import { SideBarComponent } from './side-bar';
 import { StartPageComponent } from './start-page.component';
 import { HubResolver } from './hub.resolver';
 import { WrappersModule } from '../share/wrappers/wrappers.module';
+import { BattleHubService } from '../share/battle-hub.service';
 
 @NgModule({
   declarations: [

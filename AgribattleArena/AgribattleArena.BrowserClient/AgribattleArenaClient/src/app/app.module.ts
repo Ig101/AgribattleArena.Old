@@ -6,6 +6,7 @@ import { appRoutes } from './routes';
 import { LoadingService, LoadingComponent } from './loading';
 import { ProfileService } from './share/profile.service';
 import { HttpClientModule } from '@angular/common/http';
+import { BattleHubService } from './share/battle-hub.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     LoadingService,
-    ProfileService
+    ProfileService,
+    BattleHubService
   ],
   bootstrap: [
     AppComponent
