@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { AuthService } from '../../share/index';
+import { AuthService } from '../../share/authorization.service';
 import { LoadingService } from 'src/app/loading';
 import { IExternalWrapper } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent } from 'src/app/common';

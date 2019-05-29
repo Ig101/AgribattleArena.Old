@@ -1,5 +1,5 @@
 import { Injectable, ErrorHandler } from '@angular/core';
-import { IProfile, IExternalWrapper } from './models';
+import { IProfile, IExternalWrapper, IProfileStatus } from './models';
 import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
@@ -44,10 +44,13 @@ export class ProfileService {
         return subject;
     }
 
-    getProfile(): Observable<IExternalWrapper<IProfile>> {
+    getProfile(setupTempProfile: boolean): Observable<IExternalWrapper<IProfile>> {
         const subject = new Subject<IExternalWrapper<IProfile>>();
         this.http.get('/api/profile')
             .pipe(map((result: IProfile) => {
+                if (setupTempProfile) {
+                    this.tempProfile = result;
+                }
                 return {
                     statusCode: 200,
                     resObject: result
@@ -65,7 +68,7 @@ export class ProfileService {
         const subject = new Subject<IExternalWrapper<IProfile>>();
         this.http.get('/api/profile/actors')
             .pipe(map((result: IProfile) => {
-                if(setupTempProfile) {
+                if (setupTempProfile) {
                     this.tempProfile = result;
                 }
                 return {
@@ -78,6 +81,18 @@ export class ProfileService {
                 subject.next(profileResult);
                 subject.complete();
             });
+        return subject;
+    }
+
+    getProfileStatus(): Observable<IExternalWrapper<IProfileStatus>> {
+        const subject = new Subject<IExternalWrapper<IProfileStatus>>();
+        setTimeout(() => {
+            subject.next({
+                statusCode: 501,
+                errors: ['Not implemented']
+            });
+            subject.complete();
+        }, 50);
         return subject;
     }
 }

@@ -6,4 +6,6 @@ export const ENVIRONMENT = {
 
     startLoadingTimeout: 5000,
     afterLoadingDelay: 500,
+
+    queueTimeout: 240,
 };

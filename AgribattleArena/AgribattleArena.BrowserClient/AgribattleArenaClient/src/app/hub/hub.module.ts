@@ -8,12 +8,15 @@ import { StartPageComponent } from './start-page.component';
 import { HubResolver } from './hub.resolver';
 import { WrappersModule } from '../share/wrappers/wrappers.module';
 import { BattleHubService } from '../share/battle-hub.service';
+import { QueueService } from '../share/queue.service';
+import { StartGameComponent } from './start-game/start-game.component';
 
 @NgModule({
   declarations: [
       HubComponent,
       SideBarComponent,
-      StartPageComponent
+      StartPageComponent,
+      StartGameComponent
   ],
   imports: [
       CommonModule,
@@ -21,7 +24,8 @@ import { BattleHubService } from '../share/battle-hub.service';
       WrappersModule
   ],
   providers: [
-      HubResolver
+      HubResolver,
+      QueueService
   ],
   bootstrap: [
   ]

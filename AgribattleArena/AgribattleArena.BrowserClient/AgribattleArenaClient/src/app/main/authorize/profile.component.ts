@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AuthService } from '../../share';
+import { AuthService } from '../../share/authorization.service';
 import { LoadingService } from 'src/app/loading';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';

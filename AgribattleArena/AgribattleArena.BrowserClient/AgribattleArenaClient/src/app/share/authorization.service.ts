@@ -4,13 +4,14 @@ import { Subject, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
+import { ProfileService } from './profile.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private profileService: ProfileService) { }
 
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
@@ -51,6 +52,7 @@ export class AuthService {
                 if (loginResult.statusCode === 200) {
                     this.http.get('/api/profile')
                         .pipe(map((result: IProfile) => {
+                            this.profileService.tempProfile = result;
                             return {
                                 statusCode: 200,
                                 resObject: result

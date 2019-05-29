@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TOASTR_TOKEN, JQ_TOKEN, FocusRemoverDirective } from '../common';
-import { AuthService } from '../share';
+import { AuthService } from '../share/authorization.service';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './main.component';
 import { mainRoutes } from './main.routes';

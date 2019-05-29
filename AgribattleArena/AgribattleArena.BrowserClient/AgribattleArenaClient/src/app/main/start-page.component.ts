@@ -1,23 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthorizeSwitchEnum, LoginComponent } from './authorize';
 import { IProfile } from '../share/models';
 import { MainComponent } from './main.component';
 import { IParentActionComponent } from '../common/interfaces/parent-action-component.interface';
 import { ParentEventEmitterHelper } from '../common/helpers/parent-event-emitter.helper';
+import { ProfileService } from '../share/profile.service';
 
 @Component({
     selector: 'app-start',
     templateUrl: './start-page.component.html',
     styleUrls: ['./main.component.css']
 })
-export class StartPageComponent implements IParentActionComponent {
+export class StartPageComponent implements OnInit, IParentActionComponent {
     private authorizeSwitchEnum = AuthorizeSwitchEnum;
     public authorizeSwitch: AuthorizeSwitchEnum;
-    private profile: IProfile;
+    profile: IProfile;
 
-    constructor(mainComponent: MainComponent) {
-        ParentEventEmitterHelper.subscribe(mainComponent.loginAction, this);
-        this.authorizeSwitch = AuthorizeSwitchEnum.Login;
+    constructor(private profileService: ProfileService) { }
+
+    ngOnInit() {
+        if (this.profileService.tempProfile) {
+            this.login(this.profileService.tempProfile);
+        } else {
+            this.authorizeSwitch = AuthorizeSwitchEnum.Login;
+        }
     }
 
     goToRegister() {
