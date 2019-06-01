@@ -5,7 +5,7 @@ import { LoadingService } from '../loading';
 import { ProfileService } from '../share/profile.service';
 import { Subscription, of, Subject } from 'rxjs';
 import { IExternalWrapper, IProfile } from '../share/models';
-import { ENVIRONMENT } from '../environment';
+import { ENVIRONMENT, STRINGS } from '../environment';
 
 @Injectable()
 export class HubResolver implements Resolve<any> {
@@ -23,7 +23,7 @@ export class HubResolver implements Resolve<any> {
                 }))
             .pipe(map((resObject: IExternalWrapper<IProfile>) => {
                 if (!resObject.resObject) {
-                    this.loadingService.loadingChangeMessage('Authorization failed. Returning to the main page...');
+                    this.loadingService.loadingChangeMessage(STRINGS.authorizationFailed);
                     this.router.navigate(['/']);
                 }
                 return resObject.resObject;

@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 import { ProfileService } from './profile.service';
+import { STRINGS } from '../environment';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +21,7 @@ export class AuthService {
                 errorMessage = ErrorHandleHelper.getBadRequestError(errorResult.error);
                 break;
             case 401:
-                errorMessage = 'Incorrect login or password';
+                errorMessage = STRINGS.incorrectLogin;
                 break;
             case 404:
                 errorMessage = ErrorHandleHelper.getUnauthorizedError(errorResult.error);

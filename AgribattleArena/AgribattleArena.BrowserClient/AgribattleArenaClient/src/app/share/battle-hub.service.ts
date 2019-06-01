@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { IExternalWrapper } from './models';
+import { STRINGS } from '../environment';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class BattleHubService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);
@@ -26,7 +27,7 @@ export class BattleHubService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);
@@ -38,7 +39,7 @@ export class BattleHubService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);

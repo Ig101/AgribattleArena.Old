@@ -3,27 +3,33 @@ import { IExternalWrapper } from './models';
 import { Subject, Observable, of } from 'rxjs';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingService } from '../loading';
+import { ENVIRONMENT, STRINGS } from '../environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class QueueService {
 
-    inQueue = false;
+    inQueue = true;
     timePassed: number;
 
-    constructor() { }
+    constructor(private loadingService: LoadingService) { }
 
     private timerTick() {
         if (this.inQueue) {
-            this.timePassed++;
+            this.timePassed += 1000;
+            if (this.timePassed >= ENVIRONMENT.queueTimeout) {
+                this.dequeue();
+                this.loadingService.loadingError(STRINGS.queueTimeout, 0.5);
+            }
             setTimeout(() => this.timerTick(), 1000);
         }
     }
 
     private setQueue(inQueue: boolean) {
         if (inQueue) {
-            this.timePassed = -1;
+            this.timePassed = -1000;
             this.timerTick();
         }
         this.inQueue = inQueue;
@@ -46,12 +52,12 @@ export class QueueService {
     }
 
     enqueue(): Observable<IExternalWrapper<any>> {
+        this.setQueue(true);
         const subject = new Subject<IExternalWrapper<any>>();
         setTimeout(() => {
-            this.setQueue(true);
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);
@@ -59,12 +65,12 @@ export class QueueService {
     }
 
     dequeue(): Observable<IExternalWrapper<any>> {
+        this.setQueue(false);
         const subject = new Subject<IExternalWrapper<any>>();
         setTimeout(() => {
-            this.setQueue(false);
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);

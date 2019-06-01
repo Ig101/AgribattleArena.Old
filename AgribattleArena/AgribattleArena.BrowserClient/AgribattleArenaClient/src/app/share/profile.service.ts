@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { catchError, map } from 'rxjs/operators';
 import { getParseErrors } from '@angular/compiler';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
+import { STRINGS } from '../environment';
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +38,7 @@ export class ProfileService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);
@@ -89,7 +90,7 @@ export class ProfileService {
         setTimeout(() => {
             subject.next({
                 statusCode: 501,
-                errors: ['Not implemented']
+                errors: [STRINGS.notImplemented]
             });
             subject.complete();
         }, 50);

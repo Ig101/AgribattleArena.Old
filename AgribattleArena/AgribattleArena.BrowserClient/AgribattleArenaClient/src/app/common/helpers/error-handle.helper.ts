@@ -1,4 +1,5 @@
 import { ValidationErrors } from '@angular/forms';
+import { STRINGS } from 'src/app/environment';
 
 export class ErrorHandleHelper {
 
@@ -6,15 +7,15 @@ export class ErrorHandleHelper {
         if (error) {
             return Object.values(error)[0] as string;
         } else {
-            return 'Wrong input.';
+            return STRINGS.badRequest;
         }
     }
 
     static getInternalServerError(error: ValidationErrors) {
-        return 'Server error. Try again later.';
+        return STRINGS.serverError;
     }
 
     static getUnauthorizedError(error: ValidationErrors) {
-        return 'Unauthorized. Return to the login page.';
+        return STRINGS.unathorized;
     }
 }
