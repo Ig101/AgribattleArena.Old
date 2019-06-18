@@ -1,2 +1,7 @@
-
-    <app-button-wrapper-noform (clickEmitter)="playButtonPress()" buttonType="submit" [buttonLabel]="queueService.inQueue?'Cancel':'Play'" buttonValidate="false" buttonClass="main-page-whole-button" divClass="h-100"></app-button-wrapper-noform>
+<button (click)="playButtonPress()" type="submit" appFocusRemover class="btn arena-button main-page-whole-button" [disabled]="processingQueueRequest">
+    <div [hidden]="!queueService.inQueue" >
+        <div class="main-page-whole-button-time-text">{{queueService.timePassed | date: 'm:ss'}}</div>
+        Cancel
+    </div>
+    <div [hidden]="queueService.inQueue">Play</div>
+</button>

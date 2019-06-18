@@ -29,11 +29,11 @@ export class QueueService {
     }
 
     private setQueue(inQueue: boolean) {
-        if (inQueue) {
+        this.inQueue = inQueue;
+        if (this.inQueue) {
             this.timePassed = -1000;
             this.timerTick();
         }
-        this.inQueue = inQueue;
     }
 
     private returnOldValue() {
@@ -67,7 +67,7 @@ export class QueueService {
                 errors: [STRINGS.notImplemented]
             });
             subject.complete();
-        }, 50);
+        }, 10000);
         return subject;
     }
 
@@ -81,7 +81,7 @@ export class QueueService {
                 errors: [STRINGS.notImplemented]
             });
             subject.complete();
-        }, 50);
+        }, 10000);
         return subject;
     }
 }

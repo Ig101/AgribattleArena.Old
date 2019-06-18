@@ -12,6 +12,8 @@ import { IExternalWrapper } from 'src/app/share/models';
 })
 export class PlayComponent {
 
+    private processingQueueRequest = false;
+
     constructor(private profileService: ProfileService, private loadingService: LoadingService, private router: Router,
                 private queueService: QueueService) {
 
@@ -19,14 +21,14 @@ export class PlayComponent {
 
     queueErrorHandler(response: IExternalWrapper<any>, loadingService: LoadingService) {
         if (response.statusCode !== 200) {
-            console.log(response.errors);
             loadingService.loadingError(response.errors[0], 0.5);
         }
+        this.processingQueueRequest = false;
     }
 
     playButtonPress() {
         // this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
-        // this.loadingService.loadingError('Not implemented', 0.5);
+        this.processingQueueRequest = true;
         if (this.queueService.inQueue) {
             this.queueService.dequeue().subscribe((result) => this.queueErrorHandler(result, this.loadingService));
         } else {
