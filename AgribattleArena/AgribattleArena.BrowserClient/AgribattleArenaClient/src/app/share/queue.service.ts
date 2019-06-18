@@ -12,6 +12,7 @@ import { ENVIRONMENT, STRINGS } from '../environment';
 export class QueueService {
 
     inQueue = false;
+    processingQueueRequest = false;
     private inQueueServerSide = false;
     timePassed: number;
 
@@ -58,6 +59,7 @@ export class QueueService {
     }
 
     enqueue(): Observable<IExternalWrapper<any>> {
+        this.processingQueueRequest = true;
         this.setQueue(true);
         const subject = new Subject<IExternalWrapper<any>>();
         setTimeout(() => {
@@ -67,6 +69,7 @@ export class QueueService {
                 errors: [STRINGS.notImplemented]
             });
             subject.complete();
+            this.processingQueueRequest = false;
         }, 10000);
         return subject;
     }

@@ -12,9 +12,7 @@ import { IExternalWrapper } from 'src/app/share/models';
 })
 export class PlayComponent {
 
-    private processingQueueRequest = false;
-
-    constructor(private profileService: ProfileService, private loadingService: LoadingService, private router: Router,
+    constructor(private loadingService: LoadingService, private router: Router,
                 private queueService: QueueService) {
 
     }
@@ -23,12 +21,10 @@ export class PlayComponent {
         if (response.statusCode !== 200) {
             loadingService.loadingError(response.errors[0], 0.5);
         }
-        this.processingQueueRequest = false;
     }
 
     playButtonPress() {
         // this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
-        this.processingQueueRequest = true;
         if (this.queueService.inQueue) {
             this.queueService.dequeue().subscribe((result) => this.queueResponseHandler(result, this.loadingService));
         } else {
