@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../share/authorization.service';
 import { LoadingService } from 'src/app/loading';
-import { Router } from '@angular/router';
-import { FormGroup } from '@angular/forms';
 import { IProfile, IExternalWrapper } from 'src/app/share/models';
 import { checkServiceResponseError, getServiceResponseErrorContent, IRouteLink } from 'src/app/common';
 import { ENVIRONMENT } from 'src/app/environment';
@@ -12,24 +10,14 @@ import { ENVIRONMENT } from 'src/app/environment';
     templateUrl: './profile.component.html',
     styleUrls: ['../main.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
 
     @Input() profile: IProfile;
 
     @Output() logOutEmitter = new EventEmitter();
 
-    private profileForm: FormGroup;
+    constructor(private authService: AuthService, private loadingService: LoadingService) {
 
-    constructor(private authService: AuthService, private loadingService: LoadingService, private router: Router) {
-
-    }
-
-    ngOnInit() {
-        this.profileForm = new FormGroup({ });
-    }
-
-    playButtonPress() {
-        this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
     }
 
     logOutButtonPress() {

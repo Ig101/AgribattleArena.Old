@@ -5,6 +5,7 @@ import { MainComponent } from './main.component';
 import { IParentActionComponent } from '../common/interfaces/parent-action-component.interface';
 import { ParentEventEmitterHelper } from '../common/helpers/parent-event-emitter.helper';
 import { ProfileService } from '../share/profile.service';
+import { LoadingService } from '../loading';
 
 @Component({
     selector: 'app-start',
@@ -16,7 +17,7 @@ export class StartPageComponent implements OnInit, IParentActionComponent {
     public authorizeSwitch: AuthorizeSwitchEnum;
     profile: IProfile;
 
-    constructor(private profileService: ProfileService) { }
+    constructor(private profileService: ProfileService, private loadingService: LoadingService) { }
 
     ngOnInit() {
         if (this.profileService.tempProfile) {
@@ -39,7 +40,7 @@ export class StartPageComponent implements OnInit, IParentActionComponent {
     }
 
     goToForgotPassword() {
-        alert('Coming soon');
+        this.loadingService.loadingError('Not implemented. Coming soon', 0.5);
     }
 
     login(profile: IProfile) {

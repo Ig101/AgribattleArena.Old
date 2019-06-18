@@ -1,8 +1,8 @@
-<div class="h-100" style="display: flex; flex-direction: column" [formGroup]="profileForm">
+<div class="h-100" style="display: flex; flex-direction: column">
     <div class="row row-nomargin">
         <img src="/assets/images/main/crusader.png" class="arena-profile-image"/>
         <div class="arena-profile-name">{{profile.userName}}</div>
     </div>
-    <app-button-wrapper (clickEmitter)="playButtonPress()" [parentForm]="profileForm" buttonType="submit" buttonLabel="Play" buttonValidate="false" buttonClass="main-page-whole-button" divClass="h-100" class="main-page-whole-button-flex"></app-button-wrapper>
-    <app-button-wrapper (clickEmitter)="logOutButtonPress()" [parentForm]="profileForm" buttonType="button" buttonLabel="Logout" buttonClass="main-page-back-button"></app-button-wrapper>
+    <app-play class="main-page-whole-button-flex"></app-play>
+    <app-button-wrapper-noform (clickEmitter)="logOutButtonPress()" buttonType="button" buttonLabel="Logout" buttonClass="main-page-back-button"></app-button-wrapper-noform>
 </div>

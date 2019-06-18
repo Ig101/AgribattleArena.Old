@@ -51,7 +51,7 @@ export class AuthService {
             .pipe(catchError(this.errorHandler))
             .subscribe((loginResult: IExternalWrapper<any>) => {
                 if (loginResult.statusCode === 200) {
-                    this.http.get('/api/profile')
+                    this.http.get('/api/profile/actors')
                         .pipe(map((result: IProfile) => {
                             this.profileService.tempProfile = result;
                             return {

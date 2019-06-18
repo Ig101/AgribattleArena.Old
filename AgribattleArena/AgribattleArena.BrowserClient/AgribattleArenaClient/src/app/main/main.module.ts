@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileService } from '../share/profile.service';
 import { MainResolver } from './main.resolver';
+import { PlayComponent } from './authorize/play/play.component';
 
 // tslint:disable-next-line: no-string-literal
 const toastr = window['toastr'];
@@ -25,6 +26,7 @@ const jQuery = window['$'];
     ProfileComponent,
     StartPageComponent,
     ForgotPasswordComponent,
+    PlayComponent,
     FocusRemoverDirective
   ],
   imports: [

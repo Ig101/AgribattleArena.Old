@@ -33,4 +33,5 @@ export const STRINGS = {
     letterDigitsError: 'should contain only letters (A-z) and digits.',
     firstLetterError: 'should start with letter (A-z).',
     confirmPasswordError: 'should be the same as password.',
+    queueUnexpectedError: 'Server error occured on matchmaking. Try again later.'
 };

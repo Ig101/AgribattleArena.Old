@@ -13,7 +13,7 @@ export class MainResolver implements Resolve<any> {
 
     }
     resolve() {
-        return this.profileService.getProfile(true)
+        return this.profileService.getFullProfile(true)
             .pipe(
                 timeout(ENVIRONMENT.startLoadingTimeout),
                 catchError(error => {

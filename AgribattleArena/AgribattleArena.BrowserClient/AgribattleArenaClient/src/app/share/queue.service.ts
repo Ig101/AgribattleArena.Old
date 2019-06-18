@@ -11,7 +11,8 @@ import { ENVIRONMENT, STRINGS } from '../environment';
 })
 export class QueueService {
 
-    inQueue = true;
+    inQueue = false;
+    private inQueueServerSide = false;
     timePassed: number;
 
     constructor(private loadingService: LoadingService) { }
@@ -35,16 +36,21 @@ export class QueueService {
         this.inQueue = inQueue;
     }
 
+    private returnOldValue() {
+        this.setQueue(this.inQueueServerSide);
+    }
+
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
         switch (errorResult.status) {
             case 404:
-                errorMessage = ErrorHandleHelper.getUnauthorizedError(errorResult.error);
+                errorMessage = STRINGS.queueUnexpectedError;
                 break;
             default:
-                errorMessage = ErrorHandleHelper.getInternalServerError(errorResult.error);
+                errorMessage = STRINGS.queueUnexpectedError;
                 break;
         }
+        this.returnOldValue();
         return of({
             statusCode: errorResult.status,
             errors: [errorMessage]
@@ -55,6 +61,7 @@ export class QueueService {
         this.setQueue(true);
         const subject = new Subject<IExternalWrapper<any>>();
         setTimeout(() => {
+            this.returnOldValue();
             subject.next({
                 statusCode: 501,
                 errors: [STRINGS.notImplemented]
@@ -68,6 +75,7 @@ export class QueueService {
         this.setQueue(false);
         const subject = new Subject<IExternalWrapper<any>>();
         setTimeout(() => {
+            this.returnOldValue();
             subject.next({
                 statusCode: 501,
                 errors: [STRINGS.notImplemented]
