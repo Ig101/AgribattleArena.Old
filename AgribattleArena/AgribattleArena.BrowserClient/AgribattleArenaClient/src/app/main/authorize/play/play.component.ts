@@ -19,7 +19,7 @@ export class PlayComponent {
 
     }
 
-    queueErrorHandler(response: IExternalWrapper<any>, loadingService: LoadingService) {
+    queueResponseHandler(response: IExternalWrapper<any>, loadingService: LoadingService) {
         if (response.statusCode !== 200) {
             loadingService.loadingError(response.errors[0], 0.5);
         }
@@ -30,9 +30,9 @@ export class PlayComponent {
         // this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
         this.processingQueueRequest = true;
         if (this.queueService.inQueue) {
-            this.queueService.dequeue().subscribe((result) => this.queueErrorHandler(result, this.loadingService));
+            this.queueService.dequeue().subscribe((result) => this.queueResponseHandler(result, this.loadingService));
         } else {
-            this.queueService.enqueue().subscribe((result) => this.queueErrorHandler(result, this.loadingService));
+            this.queueService.enqueue().subscribe((result) => this.queueResponseHandler(result, this.loadingService));
         }
     }
 }
