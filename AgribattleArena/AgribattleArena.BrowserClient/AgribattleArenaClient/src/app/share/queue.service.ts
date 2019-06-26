@@ -1,10 +1,12 @@
 import { Injectable, OnInit } from '@angular/core';
 import { IExternalWrapper } from './models';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, Subscription } from 'rxjs';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { LoadingService } from '../loading';
 import { ENVIRONMENT, STRINGS } from '../environment';
+import { map, catchError } from 'rxjs/operators';
+import { BattleHubService } from './battle-hub.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,10 +18,10 @@ export class QueueService {
     private inQueueServerSide = false;
     timePassed: number;
 
-    constructor(private loadingService: LoadingService) { }
+    constructor(private loadingService: LoadingService, private http: HttpClient, private battleHub: BattleHubService) { }
 
     private timerTick() {
-        if (this.inQueue) {
+        if (this.inQueueServerSide || this.inQueue) {
             this.timePassed += 1000;
             if (this.timePassed >= ENVIRONMENT.queueTimeout) {
                 this.dequeue();
@@ -38,20 +40,17 @@ export class QueueService {
     }
 
     private returnOldValue() {
-        this.setQueue(this.inQueueServerSide);
+        this.inQueue = this.inQueueServerSide;
     }
 
-    private errorHandler(errorResult: HttpErrorResponse) {
+    private errorHandler(errorResult: HttpErrorResponse, queueService: QueueService) {
         let errorMessage: string;
         switch (errorResult.status) {
-            case 404:
-                errorMessage = STRINGS.queueUnexpectedError;
-                break;
             default:
                 errorMessage = STRINGS.queueUnexpectedError;
                 break;
         }
-        this.returnOldValue();
+        queueService.returnOldValue();
         return of({
             statusCode: errorResult.status,
             errors: [errorMessage]
@@ -62,29 +61,39 @@ export class QueueService {
         this.processingQueueRequest = true;
         this.setQueue(true);
         const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
-            this.returnOldValue();
-            subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
-            subject.complete();
-            this.processingQueueRequest = false;
-        }, 10000);
+        this.battleHub.connect().subscribe((hubResult: IExternalWrapper<any>) => {
+            if (hubResult.statusCode === 200) {
+                this.http.post('/api/queue', {mode: 'main_duel'})
+                .pipe(map((result: any) => {
+                    return {
+                        statusCode: 200,
+                        resObject: result
+                    } as IExternalWrapper<any>;
+                }))
+                .pipe(catchError((error) => this.errorHandler(error, this)))
+                .subscribe((queueResult: IExternalWrapper<any>) => {
+                    if (queueResult.statusCode === 200) {
+                        this.inQueueServerSide = true;
+                    } else {
+                        this.battleHub.disconnect();
+                    }
+                    subject.next(queueResult);
+                    this.processingQueueRequest = false;
+                    subject.complete();
+                });
+            } else {
+                this.returnOldValue();
+                subject.next(hubResult);
+                this.processingQueueRequest = false;
+                subject.complete();
+            }
+        });
         return subject;
     }
 
-    dequeue(): Observable<IExternalWrapper<any>> {
+    dequeue(): any {
         this.setQueue(false);
-        const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
-            this.returnOldValue();
-            subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
-            subject.complete();
-        }, 10000);
-        return subject;
+        this.inQueueServerSide = false;
+        this.battleHub.disconnect();
     }
 }

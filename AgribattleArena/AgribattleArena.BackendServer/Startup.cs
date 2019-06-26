@@ -63,6 +63,11 @@ namespace AgribattleArena.BackendServer
                 services.Configure<MvcOptions>(o =>
                 o.Filters.Add(new RequireHttpsAttribute()));
             services.Configure<ConstantsConfig>(Configuration.GetSection("Constants"));
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost:4200").AllowCredentials();
+                }));
             //DbContexts
             services.AddDbContext<NativesContext>(o => o.UseMySql(Configuration["ConnectionStrings:NativesDB"]));
             services.AddDbContext<ProfilesContext>(o => o.UseMySql(Configuration["ConnectionStrings:ProfilesDB"]));
@@ -152,10 +157,12 @@ namespace AgribattleArena.BackendServer
             }
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseCors("CorsPolicy");
             app.UseSignalR(configure =>
             {
-                configure.MapHub<BattleHub>("/battle");
+                configure.MapHub<BattleHub>("/hubs/battle");
             });
+
 
             services.GetRequiredService<IStoredInfoServiceGenerator>().SetupNew(services);
             CreateAdminUserIsNotExists(services.GetRequiredService<UserManager<DBProvider.Contexts.ProfileEntities.Profile>>(),

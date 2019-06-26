@@ -26,7 +26,7 @@ export class PlayComponent {
     playButtonPress() {
         // this.loadingService.loadingStart('Loading...', 1, {route: '/hub', router: this.router} as IRouteLink);
         if (this.queueService.inQueue) {
-            this.queueService.dequeue().subscribe((result) => this.queueResponseHandler(result, this.loadingService));
+            this.queueService.dequeue();
         } else {
             this.queueService.enqueue().subscribe((result) => this.queueResponseHandler(result, this.loadingService));
         }

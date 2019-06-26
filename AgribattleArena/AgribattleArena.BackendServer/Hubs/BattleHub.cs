@@ -14,10 +14,12 @@ namespace AgribattleArena.BackendServer.Hubs
     public class BattleHub : Hub
     {
         IBattleService _battleService;
+        ILogger<BattleHub> _logger;
 
         public BattleHub(IBattleService battleService, ILogger<BattleHub> logger)
         {
             _battleService = battleService;
+            _logger = logger;
         }
 
         public override Task OnConnectedAsync()

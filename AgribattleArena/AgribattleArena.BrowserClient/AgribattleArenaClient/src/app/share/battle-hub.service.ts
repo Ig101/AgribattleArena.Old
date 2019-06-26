@@ -1,48 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { IExternalWrapper } from './models';
-import { STRINGS } from '../environment';
+import { STRINGS, ENVIRONMENT } from '../environment';
+import * as signalR from '@aspnet/signalr';
+import { HubComponent } from '../hub/hub.component';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BattleHubService {
 
-    constructor() { }
+    constructor() {
+        this.hubConnection = new signalR.HubConnectionBuilder()
+        .withUrl(ENVIRONMENT.hubConnectionEndpoint)
+        .build();
+     }
 
-    connect(): Observable<IExternalWrapper<Subscription>> {
+    private hubConnection: signalR.HubConnection;
+
+    connect(): Observable<IExternalWrapper<any>> {
         const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
+        this.hubConnection
+        .start()
+        .then(() => {
             subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
+                statusCode: 200
+            } as IExternalWrapper<Subscription>);
             subject.complete();
-        }, 50);
+        })
+        .catch(() => {
+            subject.next({
+                statusCode: 500,
+                errors: [STRINGS.hubUnexpectedError]
+            } as IExternalWrapper<Subscription>);
+            subject.complete();
+        });
         return subject;
     }
 
-    subscribe(): Observable<IExternalWrapper<Subscription>> {
-        const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
-            subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
-            subject.complete();
-        }, 50);
-        return subject;
+    disconnect(): any {
+        this.hubConnection.stop();
     }
 
-    disconnect(): Observable<IExternalWrapper<any>> {
-        const subject = new Subject<IExternalWrapper<any>>();
-        setTimeout(() => {
-            subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
-            subject.complete();
-        }, 50);
-        return subject;
+    addNewListener(methodName: string, listener: (...args: any[]) => void) {
+        this.hubConnection.on(methodName, listener);
     }
 }

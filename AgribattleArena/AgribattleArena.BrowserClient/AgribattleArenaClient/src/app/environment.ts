@@ -8,6 +8,8 @@ export const ENVIRONMENT = {
     afterLoadingDelay: 500,
 
     queueTimeout: 240000,
+
+    hubConnectionEndpoint: 'https://localhost:8443/hubs/battle',
 };
 
 export const STRINGS = {
@@ -33,5 +35,6 @@ export const STRINGS = {
     letterDigitsError: 'should contain only letters (A-z) and digits.',
     firstLetterError: 'should start with letter (A-z).',
     confirmPasswordError: 'should be the same as password.',
-    queueUnexpectedError: 'Server error occured on matchmaking. Try again later.'
+    queueUnexpectedError: 'Server error occured on matchmaking. Try again later.',
+    hubUnexpectedError: 'Server error occured on hub connection. Try again later.'
 };
