@@ -6,15 +6,17 @@ import { catchError, map } from 'rxjs/operators';
 import { getParseErrors } from '@angular/compiler';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 import { STRINGS } from '../environment';
+import { Store } from '@ngrx/store';
+import * as stateStore from './storage/reducers';
+import * as profileAction from './storage/actions/profile';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProfileService {
 
-    tempProfile: IProfile;
-
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private store: Store<stateStore.State>) {
+    }
 
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
@@ -33,7 +35,6 @@ export class ProfileService {
     }
 
     isAuthenticated(): Observable<IExternalWrapper<boolean>> {
-        console.log(false);
         const subject = new Subject<IExternalWrapper<boolean>>();
         setTimeout(() => {
             subject.next({
@@ -45,55 +46,83 @@ export class ProfileService {
         return subject;
     }
 
-    getProfile(setupTempProfile: boolean): Observable<IExternalWrapper<IProfile>> {
+    private getProfileRequest(subject: Subject<IExternalWrapper<IProfile>>) {
+        this.http.get('/api/profile/actors')
+        .pipe(map((result: IProfile) => {
+            return {
+                statusCode: 200,
+                resObject: result
+            } as IExternalWrapper<IProfile>;
+        }))
+        .pipe(catchError(this.errorHandler))
+        .subscribe((profileResult: IExternalWrapper<IProfile>) => {
+            this.store.dispatch(new profileAction.Change(profileResult.resObject));
+            subject.next(profileResult);
+            subject.complete();
+        });
+    }
+
+    updateProfile(): Observable<IExternalWrapper<IProfile>> {
         const subject = new Subject<IExternalWrapper<IProfile>>();
-        this.http.get('/api/profile')
-            .pipe(map((result: IProfile) => {
-                if (setupTempProfile) {
-                    this.tempProfile = result;
-                }
-                return {
-                    statusCode: 200,
-                    resObject: result
-                } as IExternalWrapper<IProfile>;
-            }))
-            .pipe(catchError(this.errorHandler))
-            .subscribe((profileResult: IExternalWrapper<IProfile>) => {
-                subject.next(profileResult);
-                subject.complete();
-            });
+        this.getProfileRequest(subject);
         return subject;
     }
 
-    getFullProfile(setupTempProfile: boolean): Observable<IExternalWrapper<IProfile>> {
+    getProfile(): Observable<IExternalWrapper<IProfile>> {
         const subject = new Subject<IExternalWrapper<IProfile>>();
-        this.http.get('/api/profile/actors')
-            .pipe(map((result: IProfile) => {
-                if (setupTempProfile) {
-                    this.tempProfile = result;
-                }
-                return {
-                    statusCode: 200,
-                    resObject: result
-                } as IExternalWrapper<IProfile>;
+        this.store.select(stateStore.getProfile)
+            .pipe(catchError(() => {
+                this.getProfileRequest(subject);
+                return of(null);
             }))
-            .pipe(catchError(this.errorHandler))
-            .subscribe((profileResult: IExternalWrapper<IProfile>) => {
-                subject.next(profileResult);
+            .subscribe((profile) => {
+            if (profile != null) {
+                subject.next({
+                    statusCode: 200,
+                    resObject: profile});
                 subject.complete();
-            });
+            }
+        });
+        return subject;
+    }
+
+    private getProfileStatusRequest(subject: Subject<IExternalWrapper<IProfileStatus>>) {
+        this.http.get('/api/profile/actors')
+        .pipe(map((result: IProfileStatus) => {
+            return {
+                statusCode: 200,
+                resObject: result
+            } as IExternalWrapper<IProfileStatus>;
+        }))
+        .pipe(catchError(this.errorHandler))
+        .subscribe((profileResult: IExternalWrapper<IProfileStatus>) => {
+            this.store.dispatch(new profileAction.ChangeStatus(profileResult.resObject));
+            subject.next(profileResult);
+            subject.complete();
+        });
+    }
+
+    updateProfileStatus(): Observable<IExternalWrapper<IProfileStatus>> {
+        const subject = new Subject<IExternalWrapper<IProfileStatus>>();
+        this.getProfileStatusRequest(subject);
         return subject;
     }
 
     getProfileStatus(): Observable<IExternalWrapper<IProfileStatus>> {
         const subject = new Subject<IExternalWrapper<IProfileStatus>>();
-        setTimeout(() => {
-            subject.next({
-                statusCode: 501,
-                errors: [STRINGS.notImplemented]
-            });
-            subject.complete();
-        }, 50);
+        this.store.select(stateStore.getProfileStatus)
+        .pipe(catchError(() => {
+            this.getProfileStatusRequest(subject);
+            return of(null);
+        }))
+        .subscribe((profileStatus) => {
+            if (profileStatus != null) {
+                subject.next({
+                    statusCode: 200,
+                    resObject: profileStatus});
+                subject.complete();
+            }
+        });
         return subject;
     }
 }

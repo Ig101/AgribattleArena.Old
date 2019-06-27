@@ -4,3 +4,5 @@ export * from './external-wrapper.model';
 export * from './profile.model';
 export * from './profile-actor.model';
 export * from './profile-status.model';
+export * from './profile-battle-status.model';
+export * from './profile-queue-status.model';

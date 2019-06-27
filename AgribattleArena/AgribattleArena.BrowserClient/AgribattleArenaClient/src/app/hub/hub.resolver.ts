@@ -13,7 +13,7 @@ export class HubResolver implements Resolve<any> {
 
     }
     resolve() {
-        return this.profileService.getFullProfile(true)
+        return this.profileService.getProfile()
             .pipe(
                 timeout(ENVIRONMENT.startLoadingTimeout),
                 catchError(error => {

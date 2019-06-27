@@ -7,6 +7,8 @@ import { LoadingService, LoadingComponent } from './loading';
 import { ProfileService } from './share/profile.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BattleHubService } from './share/battle-hub.service';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './share/storage/reducers';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { BattleHubService } from './share/battle-hub.service';
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(reducers, { metaReducers })
   ],
   providers: [
     LoadingService,

@@ -6,6 +6,10 @@ import { IParentActionComponent } from '../common/interfaces/parent-action-compo
 import { ParentEventEmitterHelper } from '../common/helpers/parent-event-emitter.helper';
 import { ProfileService } from '../share/profile.service';
 import { LoadingService } from '../loading';
+import { Store } from '@ngrx/store';
+import * as stateStore from '../share/storage/reducers';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
     selector: 'app-start',
@@ -17,14 +21,19 @@ export class StartPageComponent implements OnInit, IParentActionComponent {
     public authorizeSwitch: AuthorizeSwitchEnum;
     profile: IProfile;
 
-    constructor(private profileService: ProfileService, private loadingService: LoadingService) { }
+    constructor(private loadingService: LoadingService, private store: Store<stateStore.State>) { }
 
     ngOnInit() {
-        if (this.profileService.tempProfile) {
-            this.login(this.profileService.tempProfile);
-        } else {
-            this.authorizeSwitch = AuthorizeSwitchEnum.Login;
-        }
+        this.authorizeSwitch = AuthorizeSwitchEnum.Login;
+        this.store.select(stateStore.getProfile)
+        .pipe(catchError(() => {
+            return of(null);
+        }))
+        .subscribe((profile => {
+            if (profile) {
+                this.login(profile);
+            }
+        }));
     }
 
     goToRegister() {

@@ -6,13 +6,16 @@ import { catchError, map } from 'rxjs/operators';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
 import { ProfileService } from './profile.service';
 import { STRINGS } from '../environment';
+import { Store } from '@ngrx/store';
+import * as stateStore from './storage/reducers';
+import * as profileAction from './storage/actions/profile';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    constructor(private http: HttpClient, private profileService: ProfileService) { }
+    constructor(private http: HttpClient, private store: Store<stateStore.State>) { }
 
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
@@ -53,7 +56,6 @@ export class AuthService {
                 if (loginResult.statusCode === 200) {
                     this.http.get('/api/profile/actors')
                         .pipe(map((result: IProfile) => {
-                            this.profileService.tempProfile = result;
                             return {
                                 statusCode: 200,
                                 resObject: result
@@ -61,6 +63,7 @@ export class AuthService {
                         }))
                         .pipe(catchError(this.errorHandler))
                         .subscribe((profileResult: IExternalWrapper<IProfile>) => {
+                            this.store.dispatch(new profileAction.Change(profileResult.resObject));
                             subject.next(profileResult);
                             subject.complete();
                     });
