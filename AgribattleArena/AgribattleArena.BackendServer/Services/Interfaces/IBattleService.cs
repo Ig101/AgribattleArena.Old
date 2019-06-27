@@ -14,7 +14,7 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
         bool Dequeue(string profileId);
         ProfileBattleInfoDto GetProfileBattleStatus(string profileId);
 
-        void QueueProcessing(int time);
+        Task QueueProcessing(int time);
         void EngineTimeProcessing(int time);
     }
 }

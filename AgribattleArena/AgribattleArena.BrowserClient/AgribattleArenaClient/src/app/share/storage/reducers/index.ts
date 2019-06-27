@@ -19,7 +19,7 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
     };
 }
 
-export const metaReducers: MetaReducer<State>[] = [];
+export const metaReducers: MetaReducer<State>[] = [logger];
 
 export const getProfileState = createFeatureSelector<IProfileState>('profile');
 

@@ -79,7 +79,7 @@ namespace AgribattleArena.BackendServer.Services
         }
 
         #region Queue
-        public void QueueProcessing(int time)
+        public async Task QueueProcessing(int time)
         {
             foreach(var queue in _queues.Values)
             {
@@ -119,7 +119,7 @@ namespace AgribattleArena.BackendServer.Services
                         queue.Queue.Remove(profile);
                     }
                     _logger.LogInformation("Start new Scene");
-                    StartNewBattle(queue.Mode, complect);
+                    await StartNewBattle(queue.Mode, complect);
                 }
             }
         }
@@ -180,9 +180,9 @@ namespace AgribattleArena.BackendServer.Services
 
         }
 
-        void StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles)
+        async Task StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles)
         {
-
+            await _battleHub.Clients.Users(profiles.Select(x => x.ProfileId).ToList()).SendAsync("BattleStart");
         }
 
         ProfileEngineInfoDto IsUserInBattle(string profileId)
