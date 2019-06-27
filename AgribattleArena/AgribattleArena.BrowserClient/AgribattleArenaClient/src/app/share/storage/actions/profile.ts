@@ -3,6 +3,7 @@ import { IProfile, IProfileStatus } from '../../models';
 
 export const CHANGE_PROFILE = '[Profile] Change profile';
 export const CHANGE_PROFILE_STATUS = '[Profile] Change profile status';
+export const CHANGE_AUTHORIZED_STATE = '[Profile] Change authorized state';
 
 export class Change implements Action {
     readonly type = CHANGE_PROFILE;
@@ -20,4 +21,12 @@ export class ChangeStatus implements Action {
     }
 }
 
-export type Action = Change | ChangeStatus;
+export class ChangeAuthorized implements Action {
+    readonly type = CHANGE_AUTHORIZED_STATE;
+
+    constructor(public payload: boolean) {
+
+    }
+}
+
+export type Action = Change | ChangeStatus | ChangeAuthorized;

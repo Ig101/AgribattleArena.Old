@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { catchError, map } from 'rxjs/operators';
 import { getParseErrors } from '@angular/compiler';
 import { ErrorHandleHelper } from '../common/helpers/error-handle.helper';
-import { STRINGS } from '../environment';
+import { STRINGS, ENVIRONMENT } from '../environment';
 import { Store } from '@ngrx/store';
 import * as stateStore from './storage/reducers';
 import * as profileAction from './storage/actions/profile';
@@ -70,17 +70,30 @@ export class ProfileService {
 
     getProfile(): Observable<IExternalWrapper<IProfile>> {
         const subject = new Subject<IExternalWrapper<IProfile>>();
-        this.store.select(stateStore.getProfile)
-            .pipe(catchError(() => {
-                this.getProfileRequest(subject);
-                return of(null);
-            }))
-            .subscribe((profile) => {
-            if (profile != null) {
+        this.store.select(stateStore.getAuthorized)
+        .pipe(catchError(() => {
+            return of(true);
+        }))
+        .subscribe((authorized: boolean) => {
+            if (authorized) {
+                this.store.select(stateStore.getProfile)
+                    .pipe(catchError(() => {
+                        this.getProfileRequest(subject);
+                        return of(null);
+                    }))
+                    .subscribe((profile) => {
+                    if (profile != null) {
+                        subject.next({
+                            statusCode: 200,
+                            resObject: profile});
+                        subject.complete();
+                    }
+                });
+            } else {
                 subject.next({
-                    statusCode: 200,
-                    resObject: profile});
-                subject.complete();
+                    statusCode: 404,
+                    errors: [STRINGS.unathorized]
+                });
             }
         });
         return subject;
@@ -110,17 +123,30 @@ export class ProfileService {
 
     getProfileStatus(): Observable<IExternalWrapper<IProfileStatus>> {
         const subject = new Subject<IExternalWrapper<IProfileStatus>>();
-        this.store.select(stateStore.getProfileStatus)
+        this.store.select(stateStore.getAuthorized)
         .pipe(catchError(() => {
-            this.getProfileStatusRequest(subject);
-            return of(null);
+            return of(true);
         }))
-        .subscribe((profileStatus) => {
-            if (profileStatus != null) {
+        .subscribe((authorized: boolean) => {
+            if (authorized) {
+                this.store.select(stateStore.getProfileStatus)
+                .pipe(catchError(() => {
+                    this.getProfileStatusRequest(subject);
+                    return of(null);
+                }))
+                .subscribe((profileStatus) => {
+                    if (profileStatus != null) {
+                        subject.next({
+                            statusCode: 200,
+                            resObject: profileStatus});
+                        subject.complete();
+                    }
+                });
+            } else {
                 subject.next({
-                    statusCode: 200,
-                    resObject: profileStatus});
-                subject.complete();
+                    statusCode: 404,
+                    errors: [STRINGS.unathorized]
+                });
             }
         });
         return subject;

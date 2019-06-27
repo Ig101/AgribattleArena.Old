@@ -32,3 +32,8 @@ export const getProfileStatus = createSelector(
     getProfileState,
     profileReducer.getProfileStatus
 );
+
+export const getAuthorized = createSelector(
+    getProfileState,
+    profileReducer.getAuthorized
+);

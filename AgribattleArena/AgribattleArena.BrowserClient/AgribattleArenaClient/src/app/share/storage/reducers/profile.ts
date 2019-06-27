@@ -1,9 +1,11 @@
 import { IProfileState } from '../../models/profile-state.model';
 import * as profileAction from '../actions/profile';
+import { stat } from 'fs';
 
 export const initialState: IProfileState = {
     profile: null,
-    profileStatus: null
+    profileStatus: null,
+    authorized: true
 };
 
 export function reducer(state = initialState, action: profileAction.Action) {
@@ -12,15 +14,23 @@ export function reducer(state = initialState, action: profileAction.Action) {
         case profileAction.CHANGE_PROFILE:
             return {
                 ...state,
-                profile: action.payload
+                profile: action.payload,
+                authorized: action.payload !== undefined
             };
         case profileAction.CHANGE_PROFILE_STATUS:
             return {
                 ...state,
-                profileStatus: action.payload
+                profileStatus: action.payload,
+                authorized: action.payload !== undefined
+            };
+        case profileAction.CHANGE_AUTHORIZED_STATE:
+            return {
+                ...state,
+                authorized: action.payload
             };
     }
 }
 
 export const getProfile = (state: IProfileState) => state.profile;
 export const getProfileStatus = (state: IProfileState) => state.profileStatus;
+export const getAuthorized = (state: IProfileState) => state.authorized;

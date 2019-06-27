@@ -104,6 +104,9 @@ export class AuthService {
             }))
             .pipe(catchError(this.errorHandler))
             .subscribe((logoutResult: IExternalWrapper<any>) => {
+                if (logoutResult.statusCode === 200) {
+                    this.store.dispatch(new profileAction.ChangeAuthorized(false));
+                }
                 subject.next(logoutResult);
             });
         return subject;

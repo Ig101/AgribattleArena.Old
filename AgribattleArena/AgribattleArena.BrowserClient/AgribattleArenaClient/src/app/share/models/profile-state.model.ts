@@ -4,4 +4,5 @@ import { IProfileStatus } from './profile-status.model';
 export interface IProfileState {
     profile: IProfile;
     profileStatus: IProfileStatus;
+    authorized: boolean;
 }
