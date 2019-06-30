@@ -1,9 +1,9 @@
 import { ProfileStatusEnum } from './enums/profile-status.enum';
-import { IProfileBattleStatus } from './profile-battle-status.model';
 import { IProfileQueueStatus } from './profile-queue-status.model';
+import { ISynchronizer } from './synchronization/synchronizer.model';
 
 export interface IProfileStatus {
     status: ProfileStatusEnum;
-    battleInfo: IProfileBattleStatus;
+    battleInfo: ISynchronizer;
     queueInfo: IProfileQueueStatus;
 }

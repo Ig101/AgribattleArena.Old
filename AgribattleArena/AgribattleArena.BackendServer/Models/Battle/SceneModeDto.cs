@@ -1,4 +1,5 @@
 ﻿using AgribattleArena.BackendServer.Helpers;
+using AgribattleArena.Engine.ForExternalUse;
 using AgribattleArena.Engine.ForExternalUse.Generation;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace AgribattleArena.BackendServer.Models.Battle
     {
         public int MaxPlayers { get; set; }
         public ISceneGenerator Generator { get; set; }
+        public IVarManager VarManager { get; set; }
         public ProcessBattleResult BattleResultProcessor { get; set; }
     }
 }

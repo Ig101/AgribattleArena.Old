@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AgribattleArena.BackendServer.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AgribattleArena.BackendServer.Models.Battle;
+using AgribattleArena.BackendServer.Models.Battle.Synchronization;
 
 namespace AgribattleArena.BackendServer
 {
@@ -150,6 +152,9 @@ namespace AgribattleArena.BackendServer
 
                 cfg.CreateMap<string, DBProvider.Contexts.StoreEntities.Skill>()
                     .ConstructUsing(c => new DBProvider.Contexts.StoreEntities.Skill() { Native = c });
+
+                //Battle
+                cfg.CreateMap<Engine.ForExternalUse.Synchronization.ISyncEventArgs, SynchronizerDto>();
             });
             if (env.IsDevelopment())
             {

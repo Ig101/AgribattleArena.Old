@@ -15,6 +15,10 @@ using AgribattleArena.Engine.ForExternalUse;
 using AgribattleArena.BackendServer.Models.Enum;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using AgribattleArena.DBProvider.Contexts.ProfileEntities;
+using AgribattleArena.Engine.ForExternalUse.Generation.ObjectInterfaces;
+using AgribattleArena.Engine.ForExternalUse.Synchronization;
+using AgribattleArena.BackendServer.Models.Battle.Synchronization;
 
 namespace AgribattleArena.BackendServer.Services
 {
@@ -23,20 +27,28 @@ namespace AgribattleArena.BackendServer.Services
         IServiceScopeFactory _serviceScopeFactory;
         IHubContext<BattleHub> _battleHub;
         ILogger<BattleService> _logger;
+        IProfilesService _profilesService;
 
         Dictionary<string, SceneModeQueueDto> _queues;
         INativeManager _nativeManager;
         ConstantsConfig _constants;
+        List<IScene> _scenes;
+        Random _random;
+        long _sceneEnumerator;
 
         public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub,
-            IOptions<ConstantsConfig> constants, ILogger<BattleService> logger)
+            IOptions<ConstantsConfig> constants, ILogger<BattleService> logger, Random random, IProfilesService profilesService)
         {
+            _random = random;
             _constants = constants.Value;
             _serviceScopeFactory = serviceScopeFactory;
             _battleHub = battleHub;
             _queues = BattleHelper.GetNewModeQueue();
             _nativeManager = SetupNativeManager();
             _logger = logger;
+            _scenes = new List<IScene>();
+            _sceneEnumerator = 0;
+            _profilesService = profilesService;
         }
 
         public INativeManager SetupNativeManager()
@@ -173,20 +185,55 @@ namespace AgribattleArena.BackendServer.Services
             return null;
         }
         #endregion
-
+        
         #region Engine
+        void SynchronizationInfoEventHandler(object sender, ISyncEventArgs e)
+        {
+            _battleHub.Clients.Users(e.Scene.PlayerIds.ToList()).SendAsync("Battle" + e.Action == null ? "Info" : e.Action.ToString(),
+                AutoMapper.Mapper.Map<SynchronizerDto>(e));
+            if(e.Action == Engine.Helpers.Action.EndGame)
+            {
+                _scenes.Remove(e.Scene);
+                //TODO Rewards
+            }
+            //TODO SynchronizationDtos
+        }
+
         public void EngineTimeProcessing(int seconds)
         {
-
+            foreach(var scene in _scenes)
+            {
+                scene.UpdateTime(seconds);
+            }
         }
 
         async Task StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles)
         {
-            await _battleHub.Clients.Users(profiles.Select(x => x.ProfileId).ToList()).SendAsync("BattleStart");
+            List<string> profileIds = profiles.Select(x => x.ProfileId).ToList();
+            await _battleHub.Clients.Users(profileIds).SendAsync("BattlePrepare");
+            long tempSceneId = _sceneEnumerator;
+            _sceneEnumerator++;
+            if (_sceneEnumerator == long.MaxValue) _sceneEnumerator = 0;
+            List<IPlayer> players = new List<IPlayer>(profiles.Count);
+            foreach(string id in profileIds)
+            {
+                Profile profile = await _profilesService.GetProfileWithInfo(id);
+                players.Add(EngineHelper.CreatePlayerForGeneration(id, null, profile.Actors.Select(
+                    x => EngineHelper.CreateActorForGeneration(x.Id, x.ActorNative, x.AttackingSkillNative, x.Strength, x.Willpower, x.Constitution, x.Speed,
+                    x.Skills.Select(k => k.Native), x.ActionPointsIncome, null))));
+            }
+            _scenes.Add(EngineHelper.CreateNewScene(tempSceneId, players, mode.Generator, _nativeManager, mode.VarManager, _random.Next(), SynchronizationInfoEventHandler));
         }
 
-        ProfileEngineInfoDto IsUserInBattle(string profileId)
+        SynchronizerDto IsUserInBattle(string profileId)
         {
+            foreach(var scene in _scenes)
+            {
+                if (scene.PlayerIds.Contains(profileId))
+                {
+                    return BattleHelper.GetFullSynchronizationData(scene);
+                }
+            }
             return null;
         }
         #endregion

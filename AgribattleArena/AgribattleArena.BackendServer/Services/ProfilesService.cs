@@ -53,6 +53,15 @@ namespace AgribattleArena.BackendServer.Services
             return profile;
         }
 
+        public async Task<Profile> GetProfileWithInfo(string userId)
+        {
+            Profile profile = await _context.Users
+                .Include(x => x.Actors)
+                .ThenInclude(x => x.Skills)
+                .FirstOrDefaultAsync(x => x.UserName == userId);
+            return profile;
+        }
+
         public ActorDto GetActor(Profile profile, long actorId)
         {
             return AutoMapper.Mapper.Map<ActorDto>(profile.Actors?.Find(x => x.Id == actorId && x.DeletedDate==null));

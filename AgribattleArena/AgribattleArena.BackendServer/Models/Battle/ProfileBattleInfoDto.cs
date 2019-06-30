@@ -1,4 +1,5 @@
-﻿using AgribattleArena.BackendServer.Models.Enum;
+﻿using AgribattleArena.BackendServer.Models.Battle.Synchronization;
+using AgribattleArena.BackendServer.Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,7 @@ namespace AgribattleArena.BackendServer.Models.Battle
     {
         
         public ProfileBattleStatus Status { get; set; }
-        public ProfileEngineInfoDto BattleInfo { get; set; }
+        public SynchronizerDto BattleInfo { get; set; }
         public ProfileQueueInfoDto QueueInfo { get; set; }
     }
 }

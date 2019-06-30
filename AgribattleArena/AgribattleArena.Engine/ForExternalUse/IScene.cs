@@ -15,6 +15,7 @@ namespace AgribattleArena.Engine.ForExternalUse
 
         ISynchronizer GetFullSynchronizationData();
 
+        void UpdateTime(float time);
         bool ActorMove(int actorId, int targetX, int targetY);
         bool ActorCast(int actorId, int skillId, int targetX, int targetY);
         bool ActorAttack(int actorId, int targetX, int targetY);

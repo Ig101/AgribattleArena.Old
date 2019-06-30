@@ -10,9 +10,9 @@ namespace AgribattleArena.Engine.Helpers
 {
     public static class GeneratorHelper
     {
-        public static Player ConvertExternalPlayerFromGeneration (ISceneForSceneGenerator scene, ForExternalUse.Generation.ObjectInterfaces.IPlayer player)
+        public static Player ConvertExternalPlayerFromGeneration (ISceneForSceneGenerator scene, ForExternalUse.Generation.ObjectInterfaces.IPlayer player, int? team)
         {
-            return scene.CreatePlayer(player.Id, player.Team);
+            return scene.CreatePlayer(player.Id, team);
         }
 
         public static Actor ConvertExternalActorFromGeneration (ISceneForSceneGenerator scene, Player player, Tile target,

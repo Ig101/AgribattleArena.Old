@@ -52,7 +52,7 @@ namespace AgribattleArena.Engine.SceneGenerators
             {
                 if (tempPlayers[i].KeyActorsGen.Count > 5)
                     throw new ArgumentException("Actors count should be less than 5. Thrown on player " + tempPlayers[i].Id, "players.keyActors");
-                Player tempScenePlayer = GeneratorHelper.ConvertExternalPlayerFromGeneration(scene, tempPlayers[i]);
+                Player tempScenePlayer = GeneratorHelper.ConvertExternalPlayerFromGeneration(scene, tempPlayers[i],i);
                 for(int j = 0; j<tempPlayers[i].KeyActorsGen.Count;j++)
                 {
                     tempScenePlayer.KeyActors.Add(GeneratorHelper.ConvertExternalActorFromGeneration(scene, tempScenePlayer,

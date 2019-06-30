@@ -15,6 +15,7 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
         Task<bool> IsAdmin(ClaimsPrincipal user);
         Task<Profile> GetProfile(ClaimsPrincipal user);
         Task<Profile> GetProfileWithInfo(ClaimsPrincipal user);
+        Task<Profile> GetProfileWithInfo(string userId);
         Task<ActorDto> GetActor(ClaimsPrincipal user, long actorId);
         Task<bool> DeleteActor(ClaimsPrincipal user, long actorId);
         Task<ActorDto> AddActor(ClaimsPrincipal user, ActorDto actor);

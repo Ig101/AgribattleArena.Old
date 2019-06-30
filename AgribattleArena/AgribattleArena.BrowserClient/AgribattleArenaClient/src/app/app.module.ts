@@ -24,7 +24,7 @@ import { reducers, metaReducers } from './share/storage/reducers';
   providers: [
     LoadingService,
     ProfileService,
-    BattleHubService
+    BattleHubService,
   ],
   bootstrap: [
     AppComponent
