@@ -69,7 +69,7 @@ namespace AgribattleArena.Engine
         public INativeManager NativeManager { get { return nativeManager; } }
 
         public int Version { get { return version; } }
-        public IEnumerable<string> PlayerIds { get { return players.Select(x => x.Id); } }
+        public IEnumerable<ForExternalUse.IPlayerShort> ShortPlayers { get { return players; } }
         public float RemainedTurnTime { get { return remainedTurnTime; } }
         public TileObject TempTileObject { get { return tempTileObject; } }
         public long Id { get { return id; } }

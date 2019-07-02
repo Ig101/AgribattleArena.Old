@@ -11,7 +11,7 @@ namespace AgribattleArena.Engine.ForExternalUse
         string EnemyActorsPrefix { get; }
         int Version { get; }
         bool IsActive { get; }
-        IEnumerable<string> PlayerIds { get; }
+        IEnumerable<IPlayerShort> ShortPlayers { get; }
 
         ISynchronizer GetFullSynchronizationData();
 

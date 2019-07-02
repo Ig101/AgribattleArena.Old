@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AgribattleArena.Engine
 {
-    public class Player: IPlayerParentRef
+    public class Player: IPlayerParentRef, ForExternalUse.IPlayerShort
     {
         ISceneParentRef parent;
 

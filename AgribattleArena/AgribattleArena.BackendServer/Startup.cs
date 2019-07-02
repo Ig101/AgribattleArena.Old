@@ -152,9 +152,7 @@ namespace AgribattleArena.BackendServer
 
                 cfg.CreateMap<string, DBProvider.Contexts.StoreEntities.Skill>()
                     .ConstructUsing(c => new DBProvider.Contexts.StoreEntities.Skill() { Native = c });
-
-                //Battle
-                cfg.CreateMap<Engine.ForExternalUse.Synchronization.ISyncEventArgs, SynchronizerDto>();
+                cfg.CreateMap<Engine.Helpers.TagSynergy, Models.Natives.TagSynergyDto>();
             });
             if (env.IsDevelopment())
             {

@@ -189,14 +189,16 @@ namespace AgribattleArena.BackendServer.Services
         #region Engine
         void SynchronizationInfoEventHandler(object sender, ISyncEventArgs e)
         {
-            _battleHub.Clients.Users(e.Scene.PlayerIds.ToList()).SendAsync("Battle" + e.Action == null ? "Info" : e.Action.ToString(),
-                AutoMapper.Mapper.Map<SynchronizerDto>(e));
+            string actionName = "Battle" + e.Action == null ? "Info" : e.Action.ToString();
+            foreach (IPlayerShort player in e.Scene.ShortPlayers)
+            {
+                _battleHub.Clients.User(player.Id)?.SendAsync(actionName, BattleHelper.MapSynchronizer(e, player));
+            }
             if(e.Action == Engine.Helpers.Action.EndGame)
             {
                 _scenes.Remove(e.Scene);
                 //TODO Rewards
             }
-            //TODO SynchronizationDtos
         }
 
         public void EngineTimeProcessing(int seconds)
@@ -229,9 +231,9 @@ namespace AgribattleArena.BackendServer.Services
         {
             foreach(var scene in _scenes)
             {
-                if (scene.PlayerIds.Contains(profileId))
+                if (scene.ShortPlayers.FirstOrDefault(x => x.Id == profileId) != null)
                 {
-                    return BattleHelper.GetFullSynchronizationData(scene);
+                    return BattleHelper.GetFullSynchronizationData(scene, profileId);
                 }
             }
             return null;
