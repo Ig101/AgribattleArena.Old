@@ -16,9 +16,9 @@ namespace AgribattleArena.DBProvider.Contexts.NativeEntities
         public string Name { get; set; }
         public List<Tag> Tags { get; set; }
         public bool Eternal { get; set; }
-        public bool Repeatable { get; set; }
+        public int Repeatable { get; set; }
         public bool SummarizeLength { get; set; }
-        public float? Duration { get; set; }
+        public int? Duration { get; set; }
         public float Mod { get; set; }
 
         [InverseProperty("BuffAction")]

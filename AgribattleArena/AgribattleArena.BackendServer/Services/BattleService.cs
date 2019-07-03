@@ -51,15 +51,13 @@ namespace AgribattleArena.BackendServer.Services
 
         public INativeManager SetupNativeManager()
         {
-            INativeManager manager = EngineHelper.CreateNativeManager();
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var scopedNativesService =
                     scope.ServiceProvider
                         .GetRequiredService<INativesRepository>();
-                //TODO NativeService
+                return scopedNativesService.CreateBackendNativesManager();
             }
-            return manager;
         }
 
         public ProfileBattleInfoDto GetProfileBattleStatus(string profileId)

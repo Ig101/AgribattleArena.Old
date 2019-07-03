@@ -16,7 +16,7 @@ namespace AgribattleArena.DBProvider.Contexts.NativeEntities
         public string Name { get; set; }
         public List<Tag> Tags { get; set; }
         public float Z { get; set; }
-        public float Duration { get; set; }
+        public float? Duration { get; set; }
         public float Mod { get; set; }
 
         [InverseProperty("EffectAction")]

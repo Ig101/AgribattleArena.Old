@@ -129,6 +129,7 @@ namespace AgribattleArena.BackendServer
                 });
                 cfg.CreateMap<string, DBProvider.Contexts.ProfileEntities.Skill>()
                     .ConvertUsing(c => new DBProvider.Contexts.ProfileEntities.Skill() { Native = c });
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.RevelationLevel, Models.Profile.RevelationLevelDto>();
 
                 //Store
                 cfg.CreateMap<DBProvider.Contexts.StoreEntities.Offer, Models.Store.OfferDto>();

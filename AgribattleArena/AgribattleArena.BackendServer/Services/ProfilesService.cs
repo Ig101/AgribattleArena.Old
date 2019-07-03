@@ -31,6 +31,11 @@ namespace AgribattleArena.BackendServer.Services
             _constants = constants.Value;
         }
 
+        public List<RevelationLevelDto> GetRevelationLevelsList()
+        {
+            return AutoMapper.Mapper.Map<List<RevelationLevelDto>>(_context.RevelationLevel.ToList());
+        }
+
         public int GetRevelationLevel(int revelations)
         {
             return _context.RevelationLevel
