@@ -45,14 +45,7 @@ namespace AgribattleArena.Engine.NativeManagers
         public void AddBuffNative(string id, string[] tags, bool eternal, int repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
             IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions)
         {
-            AddBuffNative(id, id, tags, eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
-                    actions, appliers, onPurgeActions);
-        }
-
-        public void AddBuffNative(string id, string idForFront, string[] tags, bool eternal, int repeatable, bool summarizeLength, int? defaultDuration, float defaultMod,
-            IEnumerable<string> actions, IEnumerable<string> appliers, IEnumerable<string> onPurgeActions)
-        {
-            buffNatives.Add(id, new BuffNative(id, idForFront, InternTags(tags), eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
+            buffNatives.Add(id, new BuffNative(id, InternTags(tags), eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
                     actions, appliers, onPurgeActions));
         }
 
@@ -65,13 +58,7 @@ namespace AgribattleArena.Engine.NativeManagers
         public void AddEffectNative(string id, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions,
             IEnumerable<string> onDeathActions)
         {
-            AddEffectNative(id, id, tags, defaultZ, defaultDuration, defaultMod, actions, onDeathActions);
-        }
-
-        public void AddEffectNative(string id, string idForFront, string[] tags, float defaultZ, float? defaultDuration, float defaultMod, IEnumerable<string> actions,
-            IEnumerable<string> onDeathActions)
-        {
-            effectNatives.Add(id, new SpecEffectNative(id, idForFront, InternTags(tags), defaultZ, defaultDuration, defaultMod, actions, onDeathActions));
+            effectNatives.Add(id, new SpecEffectNative(id, InternTags(tags), defaultZ, defaultDuration, defaultMod, actions, onDeathActions));
         }
 
         public void AddRoleModelNative(string id, int defaultStrength, int defaultWillpower, int defaultConstitution, int defaultSpeed, 
@@ -83,25 +70,13 @@ namespace AgribattleArena.Engine.NativeManagers
 
         public void AddSkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
         {
-            AddSkillNative(id, id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actions);
+            skillNatives.Add(id, new SkillNative(id, InternTags(tags), defaultRange, defaultCost, defaultCd, defaultMod, actions));
         }
 
-        public void AddSkillNative(string id, string idForFront, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actions)
-        {
-            skillNatives.Add(id, new SkillNative(id, idForFront, InternTags(tags), defaultRange, defaultCost, defaultCd, defaultMod, actions));
-        }
-
-        public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions, 
+        public void AddTileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions,
             IEnumerable<string> onStepActions)
         {
-            AddTileNative(id, id, tags, flat, defaultHeight, unbearable, defaultMod, actions, onStepActions);
-        }
-
-
-        public void AddTileNative(string id, string idForFront, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<string> actions,
-            IEnumerable<string> onStepActions)
-        {
-            tileNatives.Add(id, new TileNative(id, idForFront, InternTags(tags), flat, defaultHeight, unbearable, defaultMod, actions, onStepActions));
+            tileNatives.Add(id, new TileNative(id, InternTags(tags), flat, defaultHeight, unbearable, defaultMod, actions, onStepActions));
         }
 
         public ActorNative GetActorNative(string id)

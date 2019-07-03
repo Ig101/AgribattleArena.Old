@@ -9,15 +9,13 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
     {
         public int Id { get; }
         public string NativeId { get; }
-        public string SecretNativeId { get; }
         public float Mod { get; }
         public float? Duration { get; }
 
         public Buff(Objects.Immaterial.Buffs.Buff buff)
         {
             this.Id = buff.Id;
-            this.NativeId = buff.Native.IdForFront;
-            this.SecretNativeId = buff.Native.Id;
+            this.NativeId = buff.Native.Id;
             this.Mod = buff.Mod;
             this.Duration = buff.Duration;
         }

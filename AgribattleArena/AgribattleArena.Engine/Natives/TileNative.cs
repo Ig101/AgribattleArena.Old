@@ -15,9 +15,9 @@ namespace AgribattleArena.Engine.Natives
         public TileActions.OnStepAction OnStepAction { get; }
         public float DefaultMod { get; }
 
-        public TileNative(string id, string idForFront, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, 
+        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, 
             IEnumerable<string> actionNames, IEnumerable<string> onStepActionNames)
-            :this(id, idForFront, tags, flat, defaultHeight, unbearable, defaultMod, 
+            :this(id, tags, flat, defaultHeight, unbearable, defaultMod, 
                  actionNames.Select(actionName => (TileActions.Action)Delegate.CreateDelegate(typeof(TileActions.Action), 
                      typeof(TileActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))),
                  onStepActionNames.Select(onStepActionName => (TileActions.OnStepAction)Delegate.CreateDelegate(typeof(TileActions.OnStepAction),
@@ -26,9 +26,9 @@ namespace AgribattleArena.Engine.Natives
 
         }
 
-        public TileNative(string id, string idForFront, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<TileActions.Action> actions,
+        public TileNative(string id, string[] tags, bool flat, int defaultHeight, bool unbearable, float defaultMod, IEnumerable<TileActions.Action> actions,
             IEnumerable<TileActions.OnStepAction> onStepActions)
-            :base(id, idForFront, tags)
+            :base(id, tags)
         {
             this.Flat = flat;
             this.DefaultHeight = defaultHeight;

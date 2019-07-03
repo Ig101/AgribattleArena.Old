@@ -15,6 +15,5 @@ namespace AgribattleArena.Engine.ForExternalUse.Synchronization.ObjectInterfaces
         float? Duration { get; }
         float Mod { get; }
         string NativeId { get; }
-        string SecretNativeId { get; }
     }
 }

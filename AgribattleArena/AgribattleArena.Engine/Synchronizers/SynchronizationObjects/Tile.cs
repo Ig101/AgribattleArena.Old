@@ -13,7 +13,6 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public int? TempActorId { get; }
         public float Height { get; }
         public string NativeId { get; }
-        public string SecretNativeId { get; }
 
         public Tile(Objects.Tile tile)
         {
@@ -22,7 +21,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
             this.OwnerId = tile.Owner?.Id;
             this.TempActorId = tile.TempObject?.Id;
             this.Height = tile.Height;
-            this.NativeId = tile.Native.IdForFront;
+            this.NativeId = tile.Native.Id;
         }
     }
 }

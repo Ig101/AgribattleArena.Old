@@ -27,7 +27,6 @@ namespace AgribattleArena.BackendServer.Services
         IServiceScopeFactory _serviceScopeFactory;
         IHubContext<BattleHub> _battleHub;
         ILogger<BattleService> _logger;
-        IProfilesService _profilesService;
 
         Dictionary<string, SceneModeQueueDto> _queues;
         INativeManager _nativeManager;
@@ -37,7 +36,7 @@ namespace AgribattleArena.BackendServer.Services
         long _sceneEnumerator;
 
         public BattleService (IServiceScopeFactory serviceScopeFactory, IHubContext<BattleHub> battleHub,
-            IOptions<ConstantsConfig> constants, ILogger<BattleService> logger, Random random, IProfilesService profilesService)
+            IOptions<ConstantsConfig> constants, ILogger<BattleService> logger, Random random)
         {
             _random = random;
             _constants = constants.Value;
@@ -48,7 +47,6 @@ namespace AgribattleArena.BackendServer.Services
             _logger = logger;
             _scenes = new List<IScene>();
             _sceneEnumerator = 0;
-            _profilesService = profilesService;
         }
 
         public INativeManager SetupNativeManager()
@@ -56,7 +54,7 @@ namespace AgribattleArena.BackendServer.Services
             INativeManager manager = EngineHelper.CreateNativeManager();
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var scopedProcessingService =
+                var scopedNativesService =
                     scope.ServiceProvider
                         .GetRequiredService<INativesRepository>();
                 //TODO NativeService
@@ -124,14 +122,20 @@ namespace AgribattleArena.BackendServer.Services
                     }
                     profile.Time += time;
                 }
-                foreach(List<ProfileQueueDto> complect in complectedActors)
+                using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    foreach(ProfileQueueDto profile in complect)
+                    var scopedProfilesService =
+                        scope.ServiceProvider
+                            .GetRequiredService<IProfilesService>();
+                    foreach (List<ProfileQueueDto> complect in complectedActors)
                     {
-                        queue.Queue.Remove(profile);
+                        foreach(ProfileQueueDto profile in complect)
+                        {
+                            queue.Queue.Remove(profile);
+                        }
+                        _logger.LogInformation("Start new Scene");
+                        await StartNewBattle(queue.Mode, complect, scopedProfilesService);
                     }
-                    _logger.LogInformation("Start new Scene");
-                    await StartNewBattle(queue.Mode, complect);
                 }
             }
         }
@@ -189,11 +193,9 @@ namespace AgribattleArena.BackendServer.Services
         #region Engine
         void SynchronizationInfoEventHandler(object sender, ISyncEventArgs e)
         {
-            string actionName = "Battle" + e.Action == null ? "Info" : e.Action.ToString();
-            foreach (IPlayerShort player in e.Scene.ShortPlayers)
-            {
-                _battleHub.Clients.User(player.Id)?.SendAsync(actionName, BattleHelper.MapSynchronizer(e, player));
-            }
+            string actionName = BattleHelper.GetBattleActionMethodName(e.Action);
+            var synchronizer = BattleHelper.MapSynchronizer(e);
+            _battleHub.Clients.Users(e.Scene.ShortPlayers.Select(x => x.Id).ToList())?.SendAsync(actionName, synchronizer);
             if(e.Action == Engine.Helpers.Action.EndGame)
             {
                 _scenes.Remove(e.Scene);
@@ -209,7 +211,7 @@ namespace AgribattleArena.BackendServer.Services
             }
         }
 
-        async Task StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles)
+        async Task StartNewBattle(SceneModeDto mode, List<ProfileQueueDto> profiles, IProfilesService profilesService)
         {
             List<string> profileIds = profiles.Select(x => x.ProfileId).ToList();
             await _battleHub.Clients.Users(profileIds).SendAsync("BattlePrepare");
@@ -219,7 +221,7 @@ namespace AgribattleArena.BackendServer.Services
             List<IPlayer> players = new List<IPlayer>(profiles.Count);
             foreach(string id in profileIds)
             {
-                Profile profile = await _profilesService.GetProfileWithInfo(id);
+                Profile profile = await profilesService.GetProfileWithInfo(id);
                 players.Add(EngineHelper.CreatePlayerForGeneration(id, null, profile.Actors.Select(
                     x => EngineHelper.CreateActorForGeneration(x.Id, x.ActorNative, x.AttackingSkillNative, x.Strength, x.Willpower, x.Constitution, x.Speed,
                     x.Skills.Select(k => k.Native), x.ActionPointsIncome, null))));
@@ -233,7 +235,7 @@ namespace AgribattleArena.BackendServer.Services
             {
                 if (scene.ShortPlayers.FirstOrDefault(x => x.Id == profileId) != null)
                 {
-                    return BattleHelper.GetFullSynchronizationData(scene, profileId);
+                    return BattleHelper.GetFullSynchronizationData(scene);
                 }
             }
             return null;

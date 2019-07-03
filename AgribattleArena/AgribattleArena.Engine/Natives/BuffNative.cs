@@ -17,9 +17,9 @@ namespace AgribattleArena.Engine.Natives
         public float? DefaultDuration { get; }
         public float DefaultMod { get; }
 
-        public BuffNative(string id, string idForFront, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, 
+        public BuffNative(string id, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, IEnumerable<string> actionNames, 
             IEnumerable<string> applierNames, IEnumerable<string> onPurgeActionNames)
-            :this(id, idForFront, tags, eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
+            :this(id, tags, eternal, repeatable, summarizeLength, defaultDuration, defaultMod,
                  actionNames.Select(actionName => (BuffActions.Action)Delegate.CreateDelegate(typeof(BuffActions.Action), 
                      typeof(BuffActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))),
                  applierNames.Select(applierName => (BuffActions.Applier)Delegate.CreateDelegate(typeof(BuffActions.Applier), 
@@ -30,9 +30,9 @@ namespace AgribattleArena.Engine.Natives
 
         }
 
-        public BuffNative(string id, string idForFront, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, 
+        public BuffNative(string id, string[] tags, bool eternal, int repeatable, bool summarizeLength, float? defaultDuration, float defaultMod, 
             IEnumerable<BuffActions.Action> actions, IEnumerable<BuffActions.Applier> appliers, IEnumerable<BuffActions.OnPurgeAction> onPurgeActions)
-            :base(id, idForFront, tags)
+            :base(id, tags)
         {
             this.Eternal = eternal;
             this.Repeatable = repeatable < 1 ? 1 : repeatable;

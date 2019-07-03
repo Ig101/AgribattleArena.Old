@@ -25,7 +25,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public ActiveDecoration (Objects.ActiveDecoration decoration)
         {
             this.Id = decoration.Id;
-            this.NativeId = decoration.Native.IdForFront;
+            this.NativeId = decoration.Native.Id;
             this.Mod = decoration.Mod;
             this.InitiativePosition = decoration.InitiativePosition;
             this.Health = decoration.DamageModel.Health;

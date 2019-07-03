@@ -14,15 +14,15 @@ namespace AgribattleArena.Engine.Natives
         public float DefaultMod { get; }
         public SkillActions.Action Action { get; }
 
-        public SkillNative(string id, string idForFront, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actionNames)
-            :this(id, idForFront, tags, defaultRange, defaultCost, defaultCd, defaultMod, actionNames.Select(actionName => 
+        public SkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<string> actionNames)
+            :this(id, tags, defaultRange, defaultCost, defaultCd, defaultMod, actionNames.Select(actionName => 
             (SkillActions.Action)Delegate.CreateDelegate(typeof(SkillActions.Action), typeof(SkillActions).GetMethod(actionName, BindingFlags.Public | BindingFlags.Static))))
         {
 
         }
 
-        public SkillNative(string id, string idForFront, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<SkillActions.Action> actions)
-            :base(id, idForFront, tags)
+        public SkillNative(string id, string[] tags, int defaultRange, int defaultCost, float defaultCd, float defaultMod, IEnumerable<SkillActions.Action> actions)
+            :base(id, tags)
         {
             this.DefaultRange = defaultRange;
             this.DefaultCost = defaultCost;

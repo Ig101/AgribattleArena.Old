@@ -31,14 +31,13 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        static bool ComparePlayerTeams(ISynchronizer oldSynchronizer, string ownerId, IPlayerShort tempPlayer)
+        public static string GetBattleActionMethodName(Engine.Helpers.Action action)
         {
-            return tempPlayer.Team != null && oldSynchronizer.Players.FirstOrDefault(k => k.Id == ownerId).Team == tempPlayer.Team;
+            return "Battle" + action == null? "Info" : action.ToString();
         }
 
-        static ActorDto MapActor(ISynchronizer oldSynchronizer, Engine.ForExternalUse.Synchronization.ObjectInterfaces.IActor actor, IPlayerShort tempPlayer)
+        static ActorDto MapActor(Engine.ForExternalUse.Synchronization.ObjectInterfaces.IActor actor)
         {
-            bool owner = ComparePlayerTeams(oldSynchronizer, actor.OwnerId, tempPlayer);
             return new ActorDto()
             {
                 ActionPoints = actor.ActionPoints,
@@ -50,7 +49,7 @@ namespace AgribattleArena.BackendServer.Helpers
                     Cost = actor.AttackingSkill.Cost,
                     Id = actor.AttackingSkill.Id,
                     Mod = actor.AttackingSkill.Mod,
-                    NativeId = owner ? actor.AttackingSkill.SecretNativeId : actor.AttackingSkill.NativeId,
+                    NativeId = actor.AttackingSkill.NativeId,
                     PreparationTime = actor.AttackingSkill.PreparationTime,
                     Range = actor.AttackingSkill.Range
                 },
@@ -61,7 +60,7 @@ namespace AgribattleArena.BackendServer.Helpers
                     Duration = k.Duration,
                     Id = k.Id,
                     Mod = k.Mod,
-                    NativeId = owner ? k.SecretNativeId : k.NativeId
+                    NativeId = k.NativeId
                 }),
                 Constitution = actor.Constitution,
                 NativeId = actor.NativeId,
@@ -80,7 +79,7 @@ namespace AgribattleArena.BackendServer.Helpers
                     Cost = k.Cost,
                     Id = k.Id,
                     Mod = k.Mod,
-                    NativeId = owner ? k.SecretNativeId : k.NativeId,
+                    NativeId = k.NativeId,
                     PreparationTime = k.PreparationTime,
                     Range = k.Range
                 }),
@@ -93,7 +92,7 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        static ActiveDecorationDto MapDecoration (ISynchronizer oldSynchronizer, Engine.ForExternalUse.Synchronization.ObjectInterfaces.IActiveDecoration decoration, IPlayerShort tempPlayer)
+        static ActiveDecorationDto MapDecoration (Engine.ForExternalUse.Synchronization.ObjectInterfaces.IActiveDecoration decoration)
         {
             return new ActiveDecorationDto()
             {
@@ -112,16 +111,15 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        static SpecEffectDto MapEffect (ISynchronizer oldSynchronizer, Engine.ForExternalUse.Synchronization.ObjectInterfaces.ISpecEffect effect, IPlayerShort tempPlayer)
+        static SpecEffectDto MapEffect (Engine.ForExternalUse.Synchronization.ObjectInterfaces.ISpecEffect effect)
         {
-            bool owner = ComparePlayerTeams(oldSynchronizer, effect.OwnerId, tempPlayer);
             return new SpecEffectDto()
             {
                 Duration = effect.Duration,
                 Id = effect.Id,
                 IsAlive = effect.IsAlive,
                 Mod = effect.Mod,
-                NativeId = owner ? effect.SecretNativeId : effect.NativeId,
+                NativeId = effect.NativeId,
                 OwnerId = effect.OwnerId,
                 X = effect.X,
                 Y = effect.Y,
@@ -129,13 +127,12 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        static TileDto MapTile(ISynchronizer oldSynchronizer, Engine.ForExternalUse.Synchronization.ObjectInterfaces.ITile tile, IPlayerShort tempPlayer)
+        static TileDto MapTile(Engine.ForExternalUse.Synchronization.ObjectInterfaces.ITile tile)
         {
-            bool owner = ComparePlayerTeams(oldSynchronizer, tile.OwnerId, tempPlayer);
             return new TileDto()
             {
                 Height = tile.Height,
-                NativeId = owner ? tile.SecretNativeId : tile.NativeId,
+                NativeId = tile.NativeId,
                 OwnerId = tile.OwnerId,
                 TempActorId = tile.TempActorId,
                 X = tile.X,
@@ -143,17 +140,17 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        static SynchronizerDto MapSynchronizer(ISynchronizer oldSynchronizer, IPlayerShort tempPlayer)
+        static SynchronizerDto MapSynchronizer(ISynchronizer oldSynchronizer)
         {
             var tileSet = oldSynchronizer.TileSet;
             return new SynchronizerDto()
             {
-                ChangedActors = oldSynchronizer.ChangedActors.Select(x => MapActor(oldSynchronizer, x, tempPlayer)),
-                DeletedActors = oldSynchronizer.DeletedActors.Select(x => MapActor(oldSynchronizer, x, tempPlayer)),
-                ChangedDecorations = oldSynchronizer.ChangedDecorations.Select(x => MapDecoration(oldSynchronizer, x, tempPlayer)),
-                DeletedDecorations = oldSynchronizer.DeletedDecorations.Select(x => MapDecoration(oldSynchronizer, x, tempPlayer)),
-                ChangedEffects = oldSynchronizer.ChangedEffects.Select(x => MapEffect(oldSynchronizer, x, tempPlayer)),
-                DeletedEffects = oldSynchronizer.DeletedEffects.Select(x => MapEffect(oldSynchronizer, x, tempPlayer)),
+                ChangedActors = oldSynchronizer.ChangedActors.Select(x => MapActor(x)),
+                DeletedActors = oldSynchronizer.DeletedActors.Select(x => MapActor(x)),
+                ChangedDecorations = oldSynchronizer.ChangedDecorations.Select(x => MapDecoration(x)),
+                DeletedDecorations = oldSynchronizer.DeletedDecorations.Select(x => MapDecoration(x)),
+                ChangedEffects = oldSynchronizer.ChangedEffects.Select(x => MapEffect(x)),
+                DeletedEffects = oldSynchronizer.DeletedEffects.Select(x => MapEffect(x)),
                 Players = oldSynchronizer.Players.Select(x => new PlayerDto()
                 {
                     Id = x.Id,
@@ -162,17 +159,17 @@ namespace AgribattleArena.BackendServer.Helpers
                     Team = x.Team,
                     TurnsSkipped = x.TurnsSkipped
                 }),
-                ChangedTiles = oldSynchronizer.ChangedTiles.Select(x => MapTile(oldSynchronizer, x, tempPlayer)),
-                TempActor = oldSynchronizer.TempActor == null ? null : MapActor(oldSynchronizer, oldSynchronizer.TempActor, tempPlayer),
-                TempDecoration = oldSynchronizer.TempDecoration == null ? null : MapDecoration(oldSynchronizer, oldSynchronizer.TempDecoration, tempPlayer),
+                ChangedTiles = oldSynchronizer.ChangedTiles.Select(x => MapTile(x)),
+                TempActor = oldSynchronizer.TempActor == null ? null : MapActor(oldSynchronizer.TempActor),
+                TempDecoration = oldSynchronizer.TempDecoration == null ? null : MapDecoration(oldSynchronizer.TempDecoration),
                 TilesetHeight = tileSet.GetLength(1),
                 TilesetWidth = tileSet.GetLength(0)
             };
         }
 
-        public static SynchronizerDto MapSynchronizer(ISyncEventArgs syncEventArgs, IPlayerShort tempPlayer)
+        public static SynchronizerDto MapSynchronizer(ISyncEventArgs syncEventArgs)
         {
-            var synchronizer = MapSynchronizer(syncEventArgs.SyncInfo, tempPlayer);
+            var synchronizer = MapSynchronizer(syncEventArgs.SyncInfo);
             synchronizer.Action = syncEventArgs.Action;
             synchronizer.TargetX = syncEventArgs.TargetX;
             synchronizer.TargetY = syncEventArgs.TargetY;
@@ -182,27 +179,17 @@ namespace AgribattleArena.BackendServer.Helpers
             return synchronizer;
         }
 
-        public static SynchronizerDto MapSynchronizer(ISyncEventArgs syncEventArgs, string tempPlayer)
+        public static SynchronizerDto MapSynchronizer(ISynchronizer oldSynchronizer, IScene scene)
         {
-            return MapSynchronizer(syncEventArgs, syncEventArgs.Scene.ShortPlayers.FirstOrDefault(x => x.Id == tempPlayer));
-        }
-
-        public static SynchronizerDto MapSynchronizer(ISynchronizer oldSynchronizer, IScene scene, IPlayerShort tempPlayer)
-        {
-            var synchronizer = MapSynchronizer(oldSynchronizer, tempPlayer);
+            var synchronizer = MapSynchronizer(oldSynchronizer);
             synchronizer.Version = scene.Version;
             return synchronizer;
         }
 
-        public static SynchronizerDto MapSynchronizer(ISynchronizer oldSynchronizer, IScene scene, string tempPlayer)
-        {
-            return MapSynchronizer(oldSynchronizer, scene.ShortPlayers.FirstOrDefault(x => x.Id == tempPlayer));
-        }
-
-        public static SynchronizerDto GetFullSynchronizationData (IScene scene, string tempPlayer)
+        public static SynchronizerDto GetFullSynchronizationData (IScene scene)
         {
             var synchronizer = scene.GetFullSynchronizationData();
-            return MapSynchronizer(synchronizer, scene, tempPlayer);
+            return MapSynchronizer(synchronizer, scene);
         }
     }
 }

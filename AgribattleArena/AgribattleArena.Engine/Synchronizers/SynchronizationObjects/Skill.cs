@@ -10,7 +10,6 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public int Id { get; }
         public int Range { get; }
         public string NativeId { get; }
-        public string SecretNativeId { get; }
         public float Cd { get; }
         public float Mod { get; }
         public int Cost { get; }
@@ -20,8 +19,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         {
             this.Id = skill.Id;
             this.Range = skill.Range;
-            this.NativeId = skill.Native.IdForFront;
-            this.SecretNativeId = skill.Native.Id;
+            this.NativeId = skill.Native.Id;
             this.Cd = skill.Cd;
             this.Mod = skill.Mod;
             this.Cost = skill.Cost;

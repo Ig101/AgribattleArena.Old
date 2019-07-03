@@ -16,7 +16,6 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
         public float? Duration { get; }
         public float Mod { get; }
         public string NativeId { get; }
-        public string SecretNativeId { get; }
 
         public SpecEffect(Objects.SpecEffect specEffect)
         {
@@ -28,8 +27,7 @@ namespace AgribattleArena.Engine.Synchronizers.SynchronizationObjects
             this.Z = specEffect.Z;
             this.Duration = specEffect.Duration;
             this.Mod = specEffect.Mod;
-            this.NativeId = specEffect.Native.IdForFront;
-            this.SecretNativeId = specEffect.Native.Id;
+            this.NativeId = specEffect.Native.Id;
         }
     }
 }
