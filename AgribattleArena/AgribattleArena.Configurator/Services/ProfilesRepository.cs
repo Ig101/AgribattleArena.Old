@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.Configurator.Services
 {
-    class ProfilesRepository
+    class ProfilesRepository: IRepository<RevelationLevelDto>
     {
         ProfilesContext _context;
 
@@ -18,7 +18,7 @@ namespace AgribattleArena.Configurator.Services
             _context = context;
         }
 
-        public async Task<Response> AddRevelationLevel(RevelationLevelDto level)
+        public async Task<Response> Add(RevelationLevelDto level)
         {
             if (_context.RevelationLevel.Where(x => x.Level == level.Level).Count() == 0)
             {
@@ -29,7 +29,7 @@ namespace AgribattleArena.Configurator.Services
             return Response.NoChanges;
         }
 
-        public async Task<Response> ChangeRevelationLevel(RevelationLevelDto level)
+        public async Task<Response> Update(RevelationLevelDto level)
         {
             IEnumerable<RevelationLevel> levelsToChange;
             if ((levelsToChange = _context.RevelationLevel.Where(x => x.Level == level.Level)).Count() > 0)
@@ -44,10 +44,10 @@ namespace AgribattleArena.Configurator.Services
             return Response.NoChanges;
         }
 
-        public async Task<Response> RemoveRevelationLevel(int level)
+        public async Task<Response> Delete(RevelationLevelDto level)
         {
             IEnumerable<RevelationLevel> levelsToDelete;
-            if ((levelsToDelete = _context.RevelationLevel.Where(x => x.Level == level)).Count() > 0)
+            if ((levelsToDelete = _context.RevelationLevel.Where(x => x.Level == level.Level)).Count() > 0)
             {
                 _context.RevelationLevel.RemoveRange(levelsToDelete);
                 await _context.SaveChangesAsync();

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace AgribattleArena.Configurator
 {
@@ -52,7 +53,7 @@ namespace AgribattleArena.Configurator
                     new NativesRepository(new NativesContext(_nativesOptions.Options)),
                     new StoreRepository(new StoreContext(_storeOptions.Options))
                     );
-                processor.Process(document).Wait();
+                Task.WaitAll(processor.Process(document).ToArray());
             }
             Console.WriteLine("Completed");
             Console.ReadLine();

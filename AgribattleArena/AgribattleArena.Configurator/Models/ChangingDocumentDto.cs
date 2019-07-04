@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgribattleArena.Configurator.Models.Natives;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,5 +9,6 @@ namespace AgribattleArena.Configurator.Models
     {
         public IEnumerable<StoreActorDto> StoreActors { get; set; }
         public IEnumerable<RevelationLevelDto> RevelationLevels { get; set; }
+        public BackendNativesDto BackendNatives { get; set; }
     }
 }

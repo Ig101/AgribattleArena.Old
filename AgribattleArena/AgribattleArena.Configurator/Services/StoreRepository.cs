@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AgribattleArena.Configurator.Services
 {
-    class StoreRepository
+    class StoreRepository: IRepository<StoreActorDto>
     {
         StoreContext _context;
 
@@ -18,7 +18,7 @@ namespace AgribattleArena.Configurator.Services
             _context = context;
         }
 
-        public async Task<Response> AddActor(StoreActorDto actor)
+        public async Task<Response> Add(StoreActorDto actor)
         {
             if (_context.Actor.Where(x => x.Name == actor.Name).Count() == 0)
             {
@@ -46,7 +46,7 @@ namespace AgribattleArena.Configurator.Services
             return Response.NoChanges;
         }
 
-        public async Task<Response> ChangeActor(StoreActorDto actor)
+        public async Task<Response> Update(StoreActorDto actor)
         {
             IEnumerable<Actor> actorsToChange;
             if ((actorsToChange = _context.Actor.Where(x => x.Name == actor.Name)).Count() > 0)
@@ -70,11 +70,11 @@ namespace AgribattleArena.Configurator.Services
             return Response.NoChanges;
         }
 
-        public async Task<Response> RemoveActor(string actorName)
+        public async Task<Response> Delete(StoreActorDto actor)
         {
-            if (actorName == null) return Response.Error;
+            if (actor == null) return Response.Error;
             IEnumerable<Actor> actorsToDelete;
-            if ((actorsToDelete = _context.Actor.Where(x => x.Name == actorName)).Count() > 0)
+            if ((actorsToDelete = _context.Actor.Where(x => x.Name == actor.Name)).Count() > 0)
             {
                 _context.Actor.RemoveRange(actorsToDelete);
                 await _context.SaveChangesAsync();
