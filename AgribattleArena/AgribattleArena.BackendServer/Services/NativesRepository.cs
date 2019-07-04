@@ -8,8 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AgribattleArena.Engine.ForExternalUse;
 using AgribattleArena.Engine.ForExternalUse.EngineHelper;
-using AgribattleArena.BackendServer.Models.Natives.Frontend;
 using Microsoft.EntityFrameworkCore;
+using Frontend = AgribattleArena.BackendServer.Models.Natives.Frontend;
 
 namespace AgribattleArena.BackendServer.Services
 {
@@ -99,12 +99,23 @@ namespace AgribattleArena.BackendServer.Services
             return nativeManager;
         }
 
-        public async Task<NativesDto> GetFrontendNatives()
+        public async Task<Frontend.NativesDto> GetFrontendNatives()
         {
-            //TODO
-            return new NativesDto()
+            //TODO From context
+            var actors = new List<Frontend.ActorDto>();
+            var decorations = new List<Frontend.DecorationDto>();
+            var effects = new List<Frontend.SpecEffectDto>();
+            var skills = new List<Frontend.SkillDto>();
+            var buffs = new List<Frontend.BuffDto>();
+            var tiles = new List<Frontend.TileDto>();
+            return new Frontend.NativesDto()
             {
-
+                Actors = actors,
+                Decorations = decorations,
+                SpecEffects = effects,
+                Skills = skills,
+                Buffs = buffs,
+                Tiles = tiles
             };
         }
     }
