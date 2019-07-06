@@ -14,16 +14,145 @@
 
     ],
     "Buffs": [
-
+      {
+        "DocumentAction": "Create",
+        "Name": "tile_increase_spell_damage",
+        "Tags": [
+          "tile",
+          "positive"
+        ],
+        "Eternal": true,
+        "Repeatable": 1,
+        "SummarizeLength": false,
+        "Duration": 1,
+        "Mod": 1,
+        "Action": [],
+        "BuffApplier": [
+          "IncreaseSpellDamage"
+        ],
+        "OnPurgeAction": []
+      },
+      {
+        "DocumentAction": "Create",
+        "Name": "tile_reduce_pure_resistance",
+        "Tags": [
+          "tile",
+          "pure",
+          "negative"
+        ],
+        "Eternal": true,
+        "Repeatable": 1,
+        "SummarizeLength": false,
+        "Duration": 1,
+        "Mod": 1,
+        "Action": [],
+        "BuffApplier": [
+          "ChangePureResistance"
+        ],
+        "OnPurgeAction": []
+      }
     ],
     "SpecEffects": [
 
     ],
     "Tiles": [
-
+      {
+        "DocumentAction": "Create",
+        "Name": "tile_grass",
+        "Tags": [ ],
+        "Flat": false,
+        "DefaultHeight": 0,
+        "Unbearable": false,
+        "Mod": 1,
+        "Action": [ ],
+        "OnStepAction": [ ]
+      },
+      {
+        "DocumentAction": "Create",
+        "Name": "tile_pure",
+        "Tags": [
+          "pure",
+          "effect"
+        ],
+        "Flat": false,
+        "DefaultHeight": 0,
+        "Unbearable": false,
+        "Mod": 0.5,
+        "Action": [ ],
+        "OnStepAction": [
+          "IncreaseSpellDamage",
+          "ReducePureResistance"
+        ]
+      }
     ],
     "Skills": [
-
+      {
+        "DocumentAction": "Create",
+        "Name": "staff_hit",
+        "Tags": [
+          "target",
+          "crush",
+          "melee"
+        ],
+        "Range": 1,
+        "Cost": 1,
+        "Cd": 0,
+        "Mod": 20,
+        "Action": [
+          "TargetDamage"
+        ]
+      },
+      {
+        "DocumentAction": "Create",
+        "Name": "magic_arrow",
+        "Tags": [
+          "target",
+          "magic",
+          "pure",
+          "range"
+        ],
+        "Range": 4,
+        "Cost": 2,
+        "Cd": 0,
+        "Mod": 30,
+        "Action": [
+          "TargetDamage"
+        ]
+      },
+      {
+        "DocumentAction": "Create",
+        "Name": "circle_of_power",
+        "Tags": [
+          "self",
+          "magic",
+          "pure",
+          "tile"
+        ],
+        "Range": 0,
+        "Cost": 1,
+        "Cd": 4,
+        "Mod": 1,
+        "Action": [
+          "CreatePureLand"
+        ]
+      },
+      {
+        "DocumentAction": "Create",
+        "Name": "magic_explosion",
+        "Tags": [
+          "area",
+          "magic",
+          "pure",
+          "range"
+        ],
+        "Range": 4,
+        "Cost": 4,
+        "Cd": 2,
+        "Mod": 50,
+        "Action": [
+          "SmallAoeDamage"
+        ]
+      }
     ],
     "RoleModels": [
 

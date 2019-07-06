@@ -88,7 +88,7 @@ namespace AgribattleArena.Configurator
                     new NativesRepository(new NativesContext(_nativesOptions.Options)),
                     new StoreRepository(new StoreContext(_storeOptions.Options))
                     );
-                Task.WaitAll(processor.Process(document).ToArray());
+                processor.Process(document).Wait();
             }
             Console.WriteLine("Completed");
             Console.ReadLine();

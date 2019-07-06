@@ -1,10 +1,10 @@
 ﻿{
   "StoreActors": [
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "warrior",
       "ActorNative": "keyActor_warrior",
-      "AttackingSkillNative": "swordHit",
+      "AttackingSkillNative": "sword_hit",
       "Skills": [],
       "Strength": 20,
       "Willpower": 0,
@@ -14,10 +14,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "spearthrower",
       "ActorNative": "keyActor_spearthrower",
-      "AttackingSkillNative": "spearthrow",
+      "AttackingSkillNative": "spear_throw",
       "Skills": [],
       "Strength": 20,
       "Willpower": 0,
@@ -27,11 +27,11 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "sorcerer",
       "ActorNative": "keyActor_sorcerer",
-      "AttackingSkillNative": "staffHit",
-      "Skills": [ "magic_arrow", "sircle_of_power", "magic_explosion" ],
+      "AttackingSkillNative": "staff_hit",
+      "Skills": [ "magic_arrow", "circle_of_power", "magic_explosion" ],
       "Strength": 5,
       "Willpower": 20,
       "Constitution": 7,
@@ -40,10 +40,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "pyromancer",
       "ActorNative": "keyActor_pyromancerr",
-      "AttackingSkillNative": "staffHit",
+      "AttackingSkillNative": "staff_hit",
       "Skills": [ "fireball", "fire_fury", "apocalypse" ],
       "Strength": 5,
       "Willpower": 18,
@@ -53,10 +53,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "cleric",
       "ActorNative": "keyActor_cleric",
-      "AttackingSkillNative": "holyMaceHit",
+      "AttackingSkillNative": "holy_mace_hit",
       "Skills": [ "heal", "blessing", "resurrection" ],
       "Strength": 8,
       "Willpower": 15,
@@ -66,10 +66,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "swampcaller",
       "ActorNative": "keyActor_swampcaller",
-      "AttackingSkillNative": "staffHit",
+      "AttackingSkillNative": "staff_hit",
       "Skills": [ "poison_arrow", "summon_swamp", "swamp_call" ],
       "Strength": 5,
       "Willpower": 15,
@@ -79,10 +79,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "architect",
       "ActorNative": "keyActor_architect",
-      "AttackingSkillNative": "bladeHit",
+      "AttackingSkillNative": "blade_hit",
       "Skills": [ "rise_wall", "move_wall", "wall_explosion" ],
       "Strength": 10,
       "Willpower": 15,
@@ -92,10 +92,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "warden",
       "ActorNative": "keyActor_warden",
-      "AttackingSkillNative": "bladeHit",
+      "AttackingSkillNative": "blade_hit",
       "Skills": [ "summon_prison", "imprisonment" ],
       "Strength": 15,
       "Willpower": 5,
@@ -105,10 +105,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "destructor",
       "ActorNative": "keyActor_destructor",
-      "AttackingSkillNative": "bladeHit",
+      "AttackingSkillNative": "blade_hit",
       "Skills": [ "stun", "dispel", "mind_explosion" ],
       "Strength": 10,
       "Willpower": 10,
@@ -118,10 +118,10 @@
       "Cost": 100
     },
     {
-      "DocumentAction": "Create",
+      "DocumentAction": "Update",
       "Name": "assassin",
       "ActorNative": "keyActor_assassin",
-      "AttackingSkillNative": "daggerHit",
+      "AttackingSkillNative": "dagger_hit",
       "Skills": [ "ambush", "to_shadow" ],
       "Strength": 10,
       "Willpower": 8,
