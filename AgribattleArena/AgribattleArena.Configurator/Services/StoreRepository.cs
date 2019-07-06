@@ -1,6 +1,7 @@
 ﻿using AgribattleArena.Configurator.Models;
 using AgribattleArena.DBProvider.Contexts;
 using AgribattleArena.DBProvider.Contexts.StoreEntities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace AgribattleArena.Configurator.Services
         public async Task<Response> Update(StoreActorDto actor)
         {
             IEnumerable<Actor> actorsToChange;
-            if ((actorsToChange = _context.Actor.Where(x => x.Name == actor.Name)).Count() > 0)
+            if ((actorsToChange = _context.Actor.Where(x => x.Name == actor.Name).Include(x => x.Skills).Include(x => x.Offers)).Count() > 0)
             {
                 var actorToChange = actorsToChange.First();
                 if (actor.ActionPointsIncome != null) actorToChange.ActionPointsIncome = actor.ActionPointsIncome.Value;
@@ -74,7 +75,7 @@ namespace AgribattleArena.Configurator.Services
         {
             if (actor == null) return Response.Error;
             IEnumerable<Actor> actorsToDelete;
-            if ((actorsToDelete = _context.Actor.Where(x => x.Name == actor.Name)).Count() > 0)
+            if ((actorsToDelete = _context.Actor.Where(x => x.Name == actor.Name).Include(x => x.Skills).Include(x => x.Offers)).Count() > 0)
             {
                 _context.Actor.RemoveRange(actorsToDelete);
                 await _context.SaveChangesAsync();

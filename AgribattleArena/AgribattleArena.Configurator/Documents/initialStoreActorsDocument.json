@@ -1,7 +1,7 @@
 ﻿{
   "StoreActors": [
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "warrior",
       "ActorNative": "keyActor_warrior",
       "AttackingSkillNative": "swordHit",
@@ -14,7 +14,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "spearthrower",
       "ActorNative": "keyActor_spearthrower",
       "AttackingSkillNative": "spearthrow",
@@ -27,7 +27,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "sorcerer",
       "ActorNative": "keyActor_sorcerer",
       "AttackingSkillNative": "staffHit",
@@ -40,7 +40,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "pyromancer",
       "ActorNative": "keyActor_pyromancerr",
       "AttackingSkillNative": "staffHit",
@@ -53,7 +53,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "cleric",
       "ActorNative": "keyActor_cleric",
       "AttackingSkillNative": "holyMaceHit",
@@ -66,7 +66,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "swampcaller",
       "ActorNative": "keyActor_swampcaller",
       "AttackingSkillNative": "staffHit",
@@ -79,7 +79,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "architect",
       "ActorNative": "keyActor_architect",
       "AttackingSkillNative": "bladeHit",
@@ -92,7 +92,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "warden",
       "ActorNative": "keyActor_warden",
       "AttackingSkillNative": "bladeHit",
@@ -105,7 +105,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "destructor",
       "ActorNative": "keyActor_destructor",
       "AttackingSkillNative": "bladeHit",
@@ -118,7 +118,7 @@
       "Cost": 100
     },
     {
-      "Action": "Create",
+      "DocumentAction": "Create",
       "Name": "assassin",
       "ActorNative": "keyActor_assassin",
       "AttackingSkillNative": "daggerHit",

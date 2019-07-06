@@ -17,6 +17,8 @@ namespace AgribattleArena.DBProvider.Contexts
         public DbSet<SpecEffect> SpecEffect { get; set; }
         public DbSet<Tile> Tile { get; set; }
         public DbSet<SceneAction> Action { get; set; }
+        public DbSet<Tag> Tag { get; set; }
+        public DbSet<TagSynergy> TagSynergy { get; set; }
 
         public NativesContext(DbContextOptions<NativesContext> options)
             : base(options)

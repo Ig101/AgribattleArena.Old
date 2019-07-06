@@ -15,22 +15,22 @@ namespace AgribattleArena.DBProvider.Contexts.NativeEntities
         [MaxLength(15)]
         public string Name { get; set; }
 
-        public int DecorationId { get; set; }
+        public int? DecorationId { get; set; }
         [ForeignKey("DecorationId")]
         public Decoration Decoration { get; set; }
-        public int ActorId { get; set; }
+        public int? ActorId { get; set; }
         [ForeignKey("ActorId")]    
         public Actor Actor { get; set; }
-        public int SpecEffectId { get; set; }
+        public int? SpecEffectId { get; set; }
         [ForeignKey("SpecEffectId")]
         public SpecEffect SpecEffect { get; set; }
-        public int BuffId { get; set; }
+        public int? BuffId { get; set; }
         [ForeignKey("BuffId")]
         public Buff Buff { get; set; }
-        public int TileId { get; set; }
+        public int? TileId { get; set; }
         [ForeignKey("TileId")]
         public Tile Tile { get; set; }
-        public int SkillId { get; set; }
+        public int? SkillId { get; set; }
         [ForeignKey("SkillId")]
         public Skill Skill { get; set; }
     }

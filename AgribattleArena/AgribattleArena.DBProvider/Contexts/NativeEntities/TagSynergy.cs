@@ -18,10 +18,10 @@ namespace AgribattleArena.DBProvider.Contexts.NativeEntities
         public string TargetTag { get; set; }
         public float Mod { get; set; }
 
-        public int RoleModelId { get; set; }
+        public int? RoleModelId { get; set; }
         [ForeignKey("RoleModelId")]
         public RoleModel RoleModel { get; set; }
-        public int DecorationId { get; set; }
+        public int? DecorationId { get; set; }
         [ForeignKey("DecorationId")]
         public Decoration Decoration { get; set; }
     }

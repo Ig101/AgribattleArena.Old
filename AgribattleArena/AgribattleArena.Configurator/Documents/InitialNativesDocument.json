@@ -1,0 +1,32 @@
+{
+  "BackendNatives": {
+    "Actors": [
+      {
+        "DocumentAction": "Create",
+        "Name": "keyActor_sorcerer",
+        "Tags": [
+          "organic",
+          "intelligent"
+        ]
+      }
+    ],
+    "Decorations": [
+
+    ],
+    "Buffs": [
+
+    ],
+    "SpecEffects": [
+
+    ],
+    "Tiles": [
+
+    ],
+    "Skills": [
+
+    ],
+    "RoleModels": [
+
+    ]
+  }
+}

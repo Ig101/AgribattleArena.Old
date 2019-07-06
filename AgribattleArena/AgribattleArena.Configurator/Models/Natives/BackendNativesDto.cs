@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AgribattleArena.Configurator.Models.Natives
 {
-    class BackendNativesDto: ActionObject
+    class BackendNativesDto
     {
         public IEnumerable<BackendActorDto> Actors { get; set; }
         public IEnumerable<BackendBuffDto> Buffs { get; set; }

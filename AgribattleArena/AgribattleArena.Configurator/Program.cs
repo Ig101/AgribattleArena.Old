@@ -1,4 +1,5 @@
 ﻿using AgribattleArena.Configurator.Models;
+using AgribattleArena.Configurator.Models.Natives;
 using AgribattleArena.Configurator.Services;
 using AgribattleArena.DBProvider.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace AgribattleArena.Configurator
         static void Main(string[] args)
         { 
             //Temporary parameter for tests
-            args = new string[] { "--update", "Documents/InitialRevelationLevelDocument.json" };
+            args = new string[] { "--update", "Documents/InitialNativesDocument.json" };
             //
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -38,6 +39,40 @@ namespace AgribattleArena.Configurator
                 cfg.CreateMap<string, DBProvider.Contexts.StoreEntities.Skill>()
                     .ConstructUsing(c => new DBProvider.Contexts.StoreEntities.Skill() { Native = c });
                 cfg.CreateMap<StoreActorDto, DBProvider.Contexts.StoreEntities.Actor>();
+                cfg.CreateMap<TagSynergyDto, DBProvider.Contexts.NativeEntities.TagSynergy>();
+                cfg.CreateMap<string, DBProvider.Contexts.NativeEntities.Tag>()
+                    .ConstructUsing(c => new DBProvider.Contexts.NativeEntities.Tag() { Name = c });
+                cfg.CreateMap<string, DBProvider.Contexts.NativeEntities.SceneAction>()
+                    .ConstructUsing(c => new DBProvider.Contexts.NativeEntities.SceneAction() { Name = c });
+                cfg.CreateMap<BackendActorDto, DBProvider.Contexts.NativeEntities.Actor>();
+                cfg.CreateMap<BackendBuffDto, DBProvider.Contexts.NativeEntities.Buff>()
+                    .AfterMap((origin, mapped) =>
+                    {
+                        if (origin.Mod == null) mapped.Mod = 1;
+                    });
+                cfg.CreateMap<BackendDecorationDto, DBProvider.Contexts.NativeEntities.Decoration>()
+                    .AfterMap((origin, mapped) =>
+                    {
+                        if (origin.Mod == null) mapped.Mod = 1;
+                    });
+                cfg.CreateMap<BackendRoleModelDto, DBProvider.Contexts.NativeEntities.RoleModel>()
+                    .ForMember(d => d.AttackingSkill, o => o.Ignore())
+                    .ForMember(d => d.RoleModelSkills, o => o.Ignore());
+                cfg.CreateMap<BackendSkillDto, DBProvider.Contexts.NativeEntities.Skill>()
+                    .AfterMap((origin,mapped) =>
+                    {
+                        if (origin.Mod == null) mapped.Mod = 1;
+                    });
+                cfg.CreateMap<BackendSpecEffectDto, DBProvider.Contexts.NativeEntities.SpecEffect>()
+                    .AfterMap((origin, mapped) =>
+                    {
+                        if (origin.Mod == null) mapped.Mod = 1;
+                    });
+                cfg.CreateMap<BackendTileDto, DBProvider.Contexts.NativeEntities.Tile>()
+                    .AfterMap((origin, mapped) =>
+                    {
+                        if (origin.Mod == null) mapped.Mod = 1;
+                    });
             });
 
             if (args.Length>1 && args[0] == "--update" && File.Exists(args[1]))
