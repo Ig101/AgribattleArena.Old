@@ -95,6 +95,8 @@ namespace AgribattleArena.BackendServer
 
             services.AddHostedService<HostedBattleService>();
             services.AddSingleton<IBattleService, BattleService>();
+
+            services.AddSingleton<IGameService, GameService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -165,6 +167,7 @@ namespace AgribattleArena.BackendServer
             app.UseSignalR(configure =>
             {
                 configure.MapHub<BattleHub>("/hubs/battle");
+                configure.MapHub<GameHub>("/hubs/game");
             });
 
 

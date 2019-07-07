@@ -36,5 +36,6 @@ export const STRINGS = {
     firstLetterError: 'should start with letter (A-z).',
     confirmPasswordError: 'should be the same as password.',
     queueUnexpectedError: 'Server error occured on matchmaking. Try again later.',
-    hubUnexpectedError: 'Server error occured on hub connection. Try again later.'
+    hubUnexpectedError: 'Server error occured on hub connection. Try again later.',
+    hubDoubleConnectionError: 'You are already connected.'
 };
