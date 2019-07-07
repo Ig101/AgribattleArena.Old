@@ -37,5 +37,15 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
             manager.Attack.Add(new TagSynergy("test_self_tag", "test_target_tag", buff.Mod));
             manager.Armor.Add(new TagSynergy("test_target_tag", buff.Mod));
         }
+
+        public static void AddSpellDamage(IBuffManagerParentRef manager, Buff buff)
+        {
+            manager.SkillPower += buff.Mod;
+        }
+
+        public static void ReducePureResistance(IBuffManagerParentRef manager, Buff buff)
+        {
+            manager.Armor.Add(new TagSynergy("pure", 1 + buff.Mod));
+        }
     }
 }

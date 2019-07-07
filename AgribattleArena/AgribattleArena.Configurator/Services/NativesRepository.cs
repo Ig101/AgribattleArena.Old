@@ -493,7 +493,7 @@ namespace AgribattleArena.Configurator.Services
                     if (entity.BuffApplier != null)
                     {
                         _context.Action.RemoveRange(entityToChange.BuffApplier);
-                        entityToChange.OnPurgeAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.BuffApplier);
+                        entityToChange.BuffApplier = AutoMapper.Mapper.Map<List<SceneAction>>(entity.BuffApplier);
                     }
                     if (entity.Duration != null) entityToChange.Duration = entity.Duration.Value;
                     if (entity.Eternal != null) entityToChange.Eternal = entity.Eternal.Value;

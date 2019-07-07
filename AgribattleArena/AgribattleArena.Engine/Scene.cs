@@ -181,7 +181,7 @@ namespace AgribattleArena.Engine
             return effect;
         }
 
-        public Tile ChangeTile(string nativeName, int x, int y, int? height, Player owner)
+        public Tile ChangeTile(string nativeName, int x, int y, float? height, IPlayerParentRef owner)
         {
             if (tiles[x][y] == null) return null;
             Tile tile = tiles[x][y];
@@ -467,7 +467,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorMove(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId && IsActive)
+            if (tempTileObject.Id == actorId && IsActive && targetX >=0 && targetY >= 0 && targetX < tiles.Length && targetY < tiles[0].Length)
             {
                 lock (m_lock)
                 {
@@ -500,7 +500,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorCast(int actorId, int skillId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId && IsActive)
+            if (tempTileObject.Id == actorId && IsActive && targetX >= 0 && targetY >= 0 && targetX < tiles.Length && targetY < tiles[0].Length)
             {
                 lock (m_lock)
                 {
@@ -533,7 +533,7 @@ namespace AgribattleArena.Engine
 
         public bool ActorAttack(int actorId, int targetX, int targetY)
         {
-            if (tempTileObject.Id == actorId && IsActive)
+            if (tempTileObject.Id == actorId && IsActive && targetX >= 0 && targetY >= 0 && targetX < tiles.Length && targetY < tiles[0].Length)
             {
                 lock (m_lock)
                 {

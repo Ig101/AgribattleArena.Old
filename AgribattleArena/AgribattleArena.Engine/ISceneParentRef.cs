@@ -31,7 +31,7 @@ namespace AgribattleArena.Engine
         Actor CreateActor(Player owner, long? externalId, string nativeName, RoleModelNative roleModel, Tile target, float? z);
         ActiveDecoration CreateDecoration(Player owner, string nativeName, Tile target, float? z, int? health, TagSynergy[] armor, float? mod);
         SpecEffect CreateEffect(Player owner, string nativeName, Tile target, float? z, float? duration, float? mod);
-        Tile ChangeTile(string nativeName, int x, int y, int? height, Player initiator);
+        Tile ChangeTile(string nativeName, int x, int y, float? height, IPlayerParentRef initiator);
         List<Actor> GetPlayerActors(Player player);
         Actor ResurrectActor(Actor actor, Tile target, int health);
     }

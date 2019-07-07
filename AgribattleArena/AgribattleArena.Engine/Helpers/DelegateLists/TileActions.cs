@@ -1,4 +1,5 @@
 ﻿using AgribattleArena.Engine.Objects;
+using System.Linq;
 
 namespace AgribattleArena.Engine.Helpers.DelegateLists
 {
@@ -20,6 +21,36 @@ namespace AgribattleArena.Engine.Helpers.DelegateLists
                 {
                     tile.TempObject.Damage(tile.Native.DefaultMod * time, tile.Native.Tags);
                 }
+            }
+        }
+
+        public static void PurgeTileEffects(ISceneParentRef parent, Tile tile)
+        {
+            if(tile.TempObject != null && tile.TempObject is Actor)
+            {
+                var actor = (Actor)tile.TempObject;
+                actor.BuffManager.RemoveBuffsByTagsCondition(x =>
+                {
+                    return x.Contains("tile");
+                });
+            }
+        }
+
+        public static void AddSpellDamageTile(ISceneParentRef parent, Tile tile)
+        {
+            if (tile.TempObject != null && tile.TempObject is Actor)
+            {
+                var actor = (Actor)tile.TempObject;
+                actor.BuffManager.AddBuff("tile_increase_spell_damage", tile.Native.DefaultMod, null);
+            }
+        }
+
+        public static void ReducePureResistanceTile(ISceneParentRef parent, Tile tile)
+        {
+            if (tile.TempObject != null && tile.TempObject is Actor)
+            {
+                var actor = (Actor)tile.TempObject;
+                actor.BuffManager.AddBuff("tile_reduce_pure_resistance", tile.Native.DefaultMod, null);
             }
         }
     }

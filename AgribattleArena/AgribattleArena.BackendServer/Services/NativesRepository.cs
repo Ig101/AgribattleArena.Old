@@ -39,6 +39,7 @@ namespace AgribattleArena.BackendServer.Services
                 .ToList();
             var actors = _context.Actor
                 .Include(x => x.Tags)
+                .Include(x => x.Armor)
                 .ToList();
             var roleModels = _context.RoleModel
                 .Include(x => x.AttackingSkill)
@@ -56,6 +57,7 @@ namespace AgribattleArena.BackendServer.Services
                 .Include(x => x.Action)
                 .Include(x => x.Tags);
             var tiles = _context.Tile
+                .Include(x => x.Action)
                 .Include(x => x.OnStepAction)
                 .Include(x => x.Tags);
             foreach(var skill in skills)

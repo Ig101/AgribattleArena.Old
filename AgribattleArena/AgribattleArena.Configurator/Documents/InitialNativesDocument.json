@@ -24,7 +24,7 @@
         "Eternal": true,
         "Repeatable": 1,
         "SummarizeLength": false,
-        "Duration": 1,
+        "Duration": null,
         "Mod": 1,
         "Action": [],
         "BuffApplier": [
@@ -43,11 +43,11 @@
         "Eternal": true,
         "Repeatable": 1,
         "SummarizeLength": false,
-        "Duration": 1,
+        "Duration": null,
         "Mod": 1,
         "Action": [],
         "BuffApplier": [
-          "ChangePureResistance"
+          "ReducePureResistance"
         ],
         "OnPurgeAction": []
       }
@@ -68,7 +68,7 @@
         "OnStepAction": [ ]
       },
       {
-        "DocumentAction": "Update",
+        "DocumentAction": "Create",
         "Name": "tile_pure",
         "Tags": [
           "pure",
@@ -133,7 +133,7 @@
         "Cd": 4,
         "Mod": 1,
         "Action": [
-          "CreatePureLand"
+          "MakePureLandOnSelf"
         ]
       },
       {

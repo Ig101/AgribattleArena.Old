@@ -39,6 +39,7 @@ namespace AgribattleArena.Engine.Natives
                 this.Action += action;
             }
             this.OnStepAction = null;
+            this.OnStepAction += TileActions.PurgeTileEffects;
             foreach (TileActions.OnStepAction action in onStepActions)
             {
                 this.OnStepAction += action;
