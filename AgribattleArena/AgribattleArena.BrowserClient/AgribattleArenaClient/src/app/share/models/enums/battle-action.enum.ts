@@ -8,5 +8,6 @@ export enum BattleActionEnum {
     EndGame,
     SkipTurn,
     StartGame,
-    NoActorsDraw
+    NoActorsDraw,
+    Info
 }

@@ -9,7 +9,6 @@ namespace AgribattleArena.BackendServer.Models.Battle.Synchronization
     public class SynchronizerDto
     {
         public int Version { get; set; }
-        public Engine.Helpers.Action? Action { get; set; }
         public int? ActorId { get; set; }
         public int? SkillActionId { get; set; }
         public int? TargetX { get; set; }

@@ -4,6 +4,7 @@ import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { HubComponent } from '../hub/hub.component';
+import { BattleActionEnum } from './models/enums/battle-action.enum';
 
 @Injectable({
     providedIn: 'root'
@@ -48,6 +49,6 @@ export class BattleHubService {
     }
 
     addBattleListeners() {
-        this.addNewListener('BattleStartGame', (synchronizer: ISynchronizer) => console.log(synchronizer));
+        this.addNewListener('Battle' + BattleActionEnum.StartGame.toString(), (synchronizer: ISynchronizer) => console.log(synchronizer));
     }
 }

@@ -170,7 +170,6 @@ namespace AgribattleArena.BackendServer.Helpers
         public static SynchronizerDto MapSynchronizer(ISyncEventArgs syncEventArgs)
         {
             var synchronizer = MapSynchronizer(syncEventArgs.SyncInfo);
-            synchronizer.Action = syncEventArgs.Action;
             synchronizer.TargetX = syncEventArgs.TargetX;
             synchronizer.TargetY = syncEventArgs.TargetY;
             synchronizer.SkillActionId = syncEventArgs.SkillActionId;

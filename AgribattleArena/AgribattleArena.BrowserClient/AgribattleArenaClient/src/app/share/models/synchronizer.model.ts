@@ -1,9 +1,7 @@
-import { BattleActionEnum } from './enums/battle-action.enum';
 import { IBattleActor, IBattleDecoration, IBattlePlayer, IBattleSpecEffect, IBattleTile } from './synchronization/battle-objects';
 
 export interface ISynchronizer {
     version: number;
-    action: BattleActionEnum;
     actorId?: number;
     skillActionId?: number;
     targetX?: number;
