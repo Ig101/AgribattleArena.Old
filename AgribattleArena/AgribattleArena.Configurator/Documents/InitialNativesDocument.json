@@ -68,7 +68,7 @@
         "OnStepAction": [ ]
       },
       {
-        "DocumentAction": "Create",
+        "DocumentAction": "Update",
         "Name": "tile_pure",
         "Tags": [
           "pure",

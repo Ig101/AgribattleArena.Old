@@ -387,7 +387,7 @@ namespace AgribattleArena.Configurator.Services
                     if (entity.OnDeathAction != null)
                     {
                         _context.Action.RemoveRange(entityToChange.OnDeathAction);
-                        entityToChange.OnDeathAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.Action);
+                        entityToChange.OnDeathAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.OnDeathAction);
                     }
                     if (entity.Duration != null) entityToChange.Duration = entity.Duration.Value;
                     if (entity.Mod != null) entityToChange.Mod = entity.Mod.Value;
@@ -454,7 +454,7 @@ namespace AgribattleArena.Configurator.Services
                     if (entity.OnStepAction != null)
                     {
                         _context.Action.RemoveRange(entityToChange.OnStepAction);
-                        entityToChange.OnStepAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.Action);
+                        entityToChange.OnStepAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.OnStepAction);
                     }
                     if (entity.DefaultHeight != null) entityToChange.DefaultHeight = entity.DefaultHeight.Value;
                     if (entity.Flat != null) entityToChange.Flat = entity.Flat.Value;
@@ -488,7 +488,7 @@ namespace AgribattleArena.Configurator.Services
                     if (entity.OnPurgeAction != null)
                     {
                         _context.Action.RemoveRange(entityToChange.OnPurgeAction);
-                        entityToChange.OnPurgeAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.Action);
+                        entityToChange.OnPurgeAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.OnPurgeAction);
                     }
                     if (entity.BuffApplier != null)
                     {
@@ -528,7 +528,7 @@ namespace AgribattleArena.Configurator.Services
                     if (entity.OnDeathAction != null)
                     {
                         _context.Action.RemoveRange(entityToChange.OnDeathAction);
-                        entityToChange.OnDeathAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.Action);
+                        entityToChange.OnDeathAction = AutoMapper.Mapper.Map<List<SceneAction>>(entity.OnDeathAction);
                     }
                     if (entity.Z != null) entityToChange.Z = entity.Z.Value;
                     if (entity.Health != null) entityToChange.Health = entity.Health.Value;
