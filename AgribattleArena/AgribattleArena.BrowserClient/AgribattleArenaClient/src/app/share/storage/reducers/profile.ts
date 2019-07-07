@@ -31,6 +31,6 @@ export function reducer(state = initialState, action: profileAction.Action) {
     }
 }
 
-export const getProfile = (state: IProfileState) => state.profile;
-export const getProfileStatus = (state: IProfileState) => state.profileStatus;
+export const getProfile = (state: IProfileState) => state.authorized ? state.profile : null;
+export const getProfileStatus = (state: IProfileState) => state.authorized ? state.profileStatus : null;
 export const getAuthorized = (state: IProfileState) => state.authorized;

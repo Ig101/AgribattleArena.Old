@@ -13,7 +13,7 @@ export class BattleHubService {
 
     constructor() {
         this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(ENVIRONMENT.hubConnectionEndpoint)
+        .withUrl(ENVIRONMENT.battleHubConnectionEndpoint)
         .build();
      }
 
@@ -26,7 +26,7 @@ export class BattleHubService {
         .then(() => {
             subject.next({
                 statusCode: 200
-            } as IExternalWrapper<Subscription>);
+            } as IExternalWrapper<any>);
             this.addBattleListeners();
             subject.complete();
         })
@@ -34,7 +34,7 @@ export class BattleHubService {
             subject.next({
                 statusCode: 500,
                 errors: [STRINGS.hubUnexpectedError]
-            } as IExternalWrapper<Subscription>);
+            } as IExternalWrapper<any>);
             subject.complete();
         });
         return subject;

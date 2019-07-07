@@ -12,9 +12,13 @@ import { BattleHubService } from '../share/battle-hub.service';
 })
 export class MainComponent implements AfterViewInit {
 
-    constructor(private loadingService: LoadingService, private battleHubService: BattleHubService) { }
+    constructor(private loadingService: LoadingService, private activatedRoute: ActivatedRoute) { }
 
     ngAfterViewInit() {
-        setTimeout(() => this.loadingService.loadingEnd(), ENVIRONMENT.afterLoadingDelay);
+        const error = this.activatedRoute.snapshot.data.error;
+        console.log(error);
+        setTimeout(() => {
+            error ? this.loadingService.loadingEnd(this.loadingService.tempVersion, error) : this.loadingService.loadingEnd();
+        }, ENVIRONMENT.afterLoadingDelay);
     }
 }

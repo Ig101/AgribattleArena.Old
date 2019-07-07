@@ -30,6 +30,8 @@ export class StartPageComponent implements OnInit, IParentActionComponent {
             return of(null);
         }))
         .subscribe((profile => {
+            console.log('tempProfile');
+            console.log(profile);
             if (profile) {
                 this.login(profile);
             }

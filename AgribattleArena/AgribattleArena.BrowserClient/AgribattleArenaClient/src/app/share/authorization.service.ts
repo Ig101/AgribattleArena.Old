@@ -9,13 +9,14 @@ import { STRINGS } from '../environment';
 import { Store } from '@ngrx/store';
 import * as stateStore from './storage/reducers';
 import * as profileAction from './storage/actions/profile';
+import { GameHubService } from './game-hub.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
-    constructor(private http: HttpClient, private store: Store<stateStore.State>) { }
+    constructor(private http: HttpClient, private store: Store<stateStore.State>, private gameHubService: GameHubService) { }
 
     private errorHandler(errorResult: HttpErrorResponse) {
         let errorMessage: string;
@@ -54,18 +55,26 @@ export class AuthService {
             .pipe(catchError(this.errorHandler))
             .subscribe((loginResult: IExternalWrapper<any>) => {
                 if (loginResult.statusCode === 200) {
-                    this.http.get('/api/profile/actors')
-                        .pipe(map((result: IProfile) => {
-                            return {
-                                statusCode: 200,
-                                resObject: result
-                            } as IExternalWrapper<IProfile>;
-                        }))
-                        .pipe(catchError(this.errorHandler))
-                        .subscribe((profileResult: IExternalWrapper<IProfile>) => {
-                            this.store.dispatch(new profileAction.Change(profileResult.resObject));
-                            subject.next(profileResult);
+                    this.gameHubService.connect().subscribe((hubResult: IExternalWrapper<any>) => {
+                        if (hubResult.statusCode === 200) {
+                            this.http.get('/api/profile/actors')
+                                .pipe(map((result: IProfile) => {
+                                    return {
+                                        statusCode: 200,
+                                        resObject: result
+                                    } as IExternalWrapper<IProfile>;
+                                }))
+                                .pipe(catchError(this.errorHandler))
+                                .subscribe((profileResult: IExternalWrapper<IProfile>) => {
+                                    this.store.dispatch(new profileAction.Change(profileResult.resObject));
+                                    subject.next(profileResult);
+                                    subject.complete();
+                            });
+                        } else {
+                            this.store.dispatch(new profileAction.ChangeAuthorized(false));
+                            subject.next(hubResult);
                             subject.complete();
+                        }
                     });
                 } else {
                     subject.next(loginResult);
@@ -104,7 +113,9 @@ export class AuthService {
             }))
             .pipe(catchError(this.errorHandler))
             .subscribe((logoutResult: IExternalWrapper<any>) => {
+                console.log(logoutResult);
                 if (logoutResult.statusCode === 200) {
+                    this.gameHubService.disconnect();
                     this.store.dispatch(new profileAction.ChangeAuthorized(false));
                 }
                 subject.next(logoutResult);

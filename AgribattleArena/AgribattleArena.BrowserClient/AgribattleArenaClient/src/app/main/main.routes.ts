@@ -8,5 +8,5 @@ const mainChildRoutes: Routes = [
 ];
 
 export const mainRoutes: Routes = [
-    {path: '', component: MainComponent, resolve: {profile: MainResolver}, children: mainChildRoutes},
+    {path: '', component: MainComponent, resolve: {error: MainResolver}, children: mainChildRoutes},
 ];
