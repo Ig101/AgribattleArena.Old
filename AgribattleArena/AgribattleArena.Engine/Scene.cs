@@ -163,6 +163,7 @@ namespace AgribattleArena.Engine
             if (target.TempObject != null) return null;
             Actor actor = new Actor(this, owner, externalId, target, z, nativeManager.GetActorNative(nativeName), roleModel);
             actors.Add(actor);
+            target.ChangeTempObject(actor, true);
             return actor;
         }
 
@@ -171,6 +172,7 @@ namespace AgribattleArena.Engine
             if (target.TempObject != null) return null;
             ActiveDecoration decoration = new ActiveDecoration(this, owner, target, z, health, armor, nativeManager.GetDecorationNative(nativeName), mod);
             decorations.Add(decoration);
+            target.ChangeTempObject(decoration, true);
             return decoration;
         }
 

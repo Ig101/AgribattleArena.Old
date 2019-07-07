@@ -26,7 +26,6 @@ namespace AgribattleArena.Engine.Objects.Abstract
         {
             this.native = native;
             this.tempTile = tempTile;
-            this.tempTile.ChangeTempObject(this, true);
             this.damageModel = damageModel;
             this.initiativePosition += (parent.GetNextRandom() / 10000f);
             this.affected = true;
