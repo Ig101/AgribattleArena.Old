@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Observable, Subject } from 'rxjs';
-import { IExternalWrapper } from './models';
+import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { HubComponent } from '../hub/hub.component';
@@ -26,6 +26,7 @@ export class BattleHubService {
             subject.next({
                 statusCode: 200
             } as IExternalWrapper<Subscription>);
+            this.addBattleListeners();
             subject.complete();
         })
         .catch(() => {
@@ -44,5 +45,9 @@ export class BattleHubService {
 
     addNewListener(methodName: string, listener: (...args: any[]) => void) {
         this.hubConnection.on(methodName, listener);
+    }
+
+    addBattleListeners() {
+        this.addNewListener('BattleStartGame', (synchronizer: ISynchronizer) => console.log(synchronizer));
     }
 }

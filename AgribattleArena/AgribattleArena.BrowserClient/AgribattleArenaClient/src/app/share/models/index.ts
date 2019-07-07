@@ -4,5 +4,5 @@ export * from './external-wrapper.model';
 export * from './profile.model';
 export * from './profile-actor.model';
 export * from './profile-status.model';
-export * from './synchronization/synchronizer.model';
+export * from './synchronizer.model';
 export * from './profile-queue-status.model';
