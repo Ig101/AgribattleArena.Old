@@ -238,6 +238,18 @@ namespace AgribattleArena.BackendServer.Services
             }
             return null;
         }
+
+        public IScene GetUserScene(string profileId)
+        {
+            foreach (var scene in _scenes)
+            {
+                if (scene.ShortPlayers.FirstOrDefault(x => x.Id == profileId) != null)
+                {
+                    return scene;
+                }
+            }
+            return null;
+        }
         #endregion
     }
 }

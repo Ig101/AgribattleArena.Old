@@ -122,6 +122,11 @@ namespace AgribattleArena.Engine
             this.enemyActorsPrefix = prefix;
         }
 
+        public IEnumerable<int> GetPlayerActors(string playerId)
+        {
+            return actors.FindAll(x => x.Owner != null && x.Owner.Id == playerId).Select(x => x.Id);
+        }
+
         #region Creation
         public Actor ResurrectActor(Actor actor, Tile target, int health)
         {

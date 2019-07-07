@@ -1,4 +1,5 @@
 ﻿using AgribattleArena.BackendServer.Models.Battle;
+using AgribattleArena.Engine.ForExternalUse;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace AgribattleArena.BackendServer.Services.Interfaces
 
         Task QueueProcessing(int time);
         void EngineTimeProcessing(int time);
+
+        IScene GetUserScene(string profileId);
     }
 }
