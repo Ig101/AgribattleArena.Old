@@ -28,7 +28,7 @@
         "Mod": 1,
         "Action": [],
         "BuffApplier": [
-          "IncreaseSpellDamage"
+          "AddSpellDamage"
         ],
         "OnPurgeAction": []
       },
@@ -80,8 +80,8 @@
         "Mod": 0.5,
         "Action": [ ],
         "OnStepAction": [
-          "IncreaseSpellDamage",
-          "ReducePureResistance"
+          "AddSpellDamageTile",
+          "ReducePureResistanceTile"
         ]
       }
     ],
@@ -99,7 +99,7 @@
         "Cd": 0,
         "Mod": 20,
         "Action": [
-          "TargetDamage"
+          "DoDamageAttack"
         ]
       },
       {
@@ -116,7 +116,7 @@
         "Cd": 0,
         "Mod": 30,
         "Action": [
-          "TargetDamage"
+          "DoDamageSkill"
         ]
       },
       {
@@ -150,7 +150,7 @@
         "Cd": 2,
         "Mod": 50,
         "Action": [
-          "SmallAoeDamage"
+          "DoSmallAoeDamageSkill"
         ]
       }
     ],
