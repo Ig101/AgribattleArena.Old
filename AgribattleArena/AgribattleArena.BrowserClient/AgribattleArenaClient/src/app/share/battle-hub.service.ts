@@ -49,6 +49,8 @@ export class BattleHubService {
     }
 
     addBattleListeners() {
+        // TODO
+        this.addNewListener('BattleSynchronizationError', () => console.log('SynchronizationError'));
         this.addNewListener('Battle' + BattleActionEnum.StartGame.toString(), (synchronizer: ISynchronizer) => console.log(synchronizer));
     }
 }
