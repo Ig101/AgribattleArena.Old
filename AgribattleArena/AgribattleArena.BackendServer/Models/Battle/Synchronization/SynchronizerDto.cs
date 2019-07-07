@@ -13,6 +13,7 @@ namespace AgribattleArena.BackendServer.Models.Battle.Synchronization
         public int? SkillActionId { get; set; }
         public int? TargetX { get; set; }
         public int? TargetY { get; set; }
+        public float TurnTime { get; set; }
         public ActorDto TempActor { get; set; }
         public ActiveDecorationDto TempDecoration { get; set; }
         public IEnumerable<PlayerDto> Players { get; set; }

@@ -39,7 +39,6 @@ namespace AgribattleArena.Engine.Objects
 
         public override bool StartTurn()
         {
-            Parent.DecorationCast(this);
             return true;
         }
 

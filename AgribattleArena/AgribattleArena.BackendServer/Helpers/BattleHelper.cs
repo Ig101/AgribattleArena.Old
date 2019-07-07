@@ -31,9 +31,9 @@ namespace AgribattleArena.BackendServer.Helpers
             };
         }
 
-        public static string GetBattleActionMethodName(Engine.Helpers.Action action)
+        public static string GetBattleActionMethodName(Engine.Helpers.Action? action)
         {
-            return "Battle" + action == null? "Info" : action.ToString();
+            return "Battle" + (action == null? "Info" : action.ToString());
         }
 
         static ActorDto MapActor(Engine.ForExternalUse.Synchronization.ObjectInterfaces.IActor actor)
@@ -175,6 +175,7 @@ namespace AgribattleArena.BackendServer.Helpers
             synchronizer.SkillActionId = syncEventArgs.SkillActionId;
             synchronizer.ActorId = syncEventArgs.ActorId;
             synchronizer.Version = syncEventArgs.Version;
+            synchronizer.TurnTime = syncEventArgs.Scene.RemainedTurnTime;
             return synchronizer;
         }
 
@@ -182,6 +183,7 @@ namespace AgribattleArena.BackendServer.Helpers
         {
             var synchronizer = MapSynchronizer(oldSynchronizer);
             synchronizer.Version = scene.Version;
+            synchronizer.TurnTime = scene.RemainedTurnTime;
             return synchronizer;
         }
 

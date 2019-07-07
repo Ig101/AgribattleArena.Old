@@ -13,6 +13,7 @@ namespace AgribattleArena.Engine.ForExternalUse
         bool IsActive { get; }
         IEnumerable<IPlayerShort> ShortPlayers { get; }
         IEnumerable<int> GetPlayerActors(string playerId);
+        float RemainedTurnTime { get; }
 
         ISynchronizer GetFullSynchronizationData();
 

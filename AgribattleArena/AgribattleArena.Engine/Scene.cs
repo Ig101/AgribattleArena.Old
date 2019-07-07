@@ -320,14 +320,15 @@ namespace AgribattleArena.Engine
                     TileObject previousTempTileObject = this.tempTileObject;
                     this.tempTileObject = newObject;
                     Update(minInitiativePosition);
-                    if (AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null))
-                    {
-                        turnStarted = this.tempTileObject.StartTurn();
-                    }
-                    else
-                    {
+                    turnStarted = this.tempTileObject.StartTurn();
+                    if (!AfterUpdateSynchronization(Helpers.Action.EndTurn, previousTempTileObject, null, null, null))
+                    { 
                         turnStarted = true;
                         isActive = false;
+                    }
+                    else if(this.tempTileObject is ActiveDecoration)
+                    {
+                        DecorationCast((ActiveDecoration)this.tempTileObject);
                     }
                 }
                 else

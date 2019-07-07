@@ -22,9 +22,12 @@ namespace AgribattleArena.Engine.Helpers
                 new RoleModelNative(scene.NativeManager, null, actor.Strength, actor.Willpower, actor.Constitution, actor.Speed,
                 actor.ActionPointsIncome, actor.AttackingSkillName, actor.SkillNames.ToArray()),
                 target, z);
-            foreach (string buffName in actor.StartBuffs)
+            if (actor.StartBuffs != null)
             {
-                newActor.BuffManager.AddBuff(new Buff(newActor.BuffManager, scene.NativeManager.GetBuffNative(buffName),null,null));
+                foreach (string buffName in actor.StartBuffs)
+                {
+                    newActor.BuffManager.AddBuff(new Buff(newActor.BuffManager, scene.NativeManager.GetBuffNative(buffName), null, null));
+                }
             }
             return newActor;
         }

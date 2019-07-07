@@ -8,6 +8,7 @@ export interface ISynchronizer {
     targetY?: number;
     tilesetWidth: number;
     tilesetHeight: number;
+    turnTime: number;
     tempActor?: IBattleActor;
     tempDecoration?: IBattleDecoration;
     players: IBattlePlayer[];

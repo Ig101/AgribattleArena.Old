@@ -63,7 +63,7 @@ namespace AgribattleArena.BackendServer.Services
             Profile profile = await _context.Users
                 .Include(x => x.Actors)
                 .ThenInclude(x => x.Skills)
-                .FirstOrDefaultAsync(x => x.UserName == userId);
+                .FirstOrDefaultAsync(x => x.Id == userId);
             return profile;
         }
 
