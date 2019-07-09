@@ -14,7 +14,6 @@ export const ENVIRONMENT = {
 };
 
 export const STRINGS = {
-    // ExternalResponseError
     queueTimeout: 'Reached queue timeout. Exiting queue.',
     notImplemented: 'Not implemented.',
     serverError: 'Server error. Try again later.',
@@ -23,7 +22,6 @@ export const STRINGS = {
     incorrectLogin: 'Incorrect login or password',
     authorizationFailed: 'Authorization failed. Returning to the main page...',
     unexpectedError: 'Unexpected error.',
-    // ValidationError
     oneUppercaseError: 'should have at least one uppercase letter (A-Z).',
     oneSpecialError: 'should have at least one symbol from $,@,!,%,*,?,&.',
     oneLowercaseError: 'should have at least one lowercase letter (a-z).',

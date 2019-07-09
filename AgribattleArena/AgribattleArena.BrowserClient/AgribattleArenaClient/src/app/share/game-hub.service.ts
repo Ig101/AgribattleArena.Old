@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription, Observable, Subject, never } from 'rxjs';
 import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { LoadingService } from '../loading';
 import { QueueService } from './queue.service';
+
+export type GameHubReturnMethod = never;
 
 @Injectable({
     providedIn: 'root'
@@ -58,7 +60,7 @@ export class GameHubService {
         this.hubConnection.stop();
     }
 
-    addNewListener(methodName: string, listener: (...args: any[]) => void) {
+    addNewListener(methodName: GameHubReturnMethod, listener: (...args: any[]) => void) {
         this.hubConnection.on(methodName, listener);
     }
 }
