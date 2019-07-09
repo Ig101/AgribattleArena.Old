@@ -1,6 +1,6 @@
 import { BattlePlayerStatusEnum } from '../enums/battle-player-status.enum';
 
-export interface IBattlePlayer {
+export interface ISyncPlayer {
     id: string;
     team?: number;
     keyActorsSync: number[];

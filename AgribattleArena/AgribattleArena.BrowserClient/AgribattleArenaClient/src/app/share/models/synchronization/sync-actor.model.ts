@@ -1,19 +1,18 @@
-import { IBattleSkill } from './battle-skill.model';
-import { IBattleBuff } from './battle-buff.model';
+import { ISyncSkill, ISyncBuff } from '.';
 import { ITagSynergy } from '../tag-synergy.model';
 
-export interface IBattleActor {
+export interface ISyncActor {
     id: number;
     externalId?: number;
     nativeId: string;
-    attackingSkill: IBattleSkill;
+    attackingSkill: ISyncSkill;
     strength: number;
     willpower: number;
     constitution: number;
     speed: number;
-    skills: IBattleSkill[];
+    skills: ISyncSkill[];
     actionPointsIncome: number;
-    buffs: IBattleBuff[];
+    buffs: ISyncBuff[];
     initiativePosition: number;
     health: number;
     ownerId?: string;

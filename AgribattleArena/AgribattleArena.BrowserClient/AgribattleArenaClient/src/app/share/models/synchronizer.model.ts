@@ -1,4 +1,4 @@
-import { IBattleActor, IBattleDecoration, IBattlePlayer, IBattleSpecEffect, IBattleTile } from './synchronization/battle-objects';
+import { ISyncActor, ISyncDecoration, ISyncPlayer, ISyncSpecEffect, ISyncTile } from './synchronization';
 
 export interface ISynchronizer {
     version: number;
@@ -9,14 +9,14 @@ export interface ISynchronizer {
     tilesetWidth: number;
     tilesetHeight: number;
     turnTime: number;
-    tempActor?: IBattleActor;
-    tempDecoration?: IBattleDecoration;
-    players: IBattlePlayer[];
-    changedActors: IBattleActor[];
-    changedDecorations: IBattleDecoration[];
-    changedEffects: IBattleSpecEffect[];
-    deletedActors: IBattleActor[];
-    deletedDecoration: IBattleDecoration[];
-    deletedEffects: IBattleSpecEffect[];
-    changedTiles: IBattleTile[];
+    tempActor?: ISyncActor;
+    tempDecoration?: ISyncDecoration;
+    players: ISyncPlayer[];
+    changedActors: ISyncActor[];
+    changedDecorations: ISyncDecoration[];
+    changedEffects: ISyncSpecEffect[];
+    deletedActors: ISyncActor[];
+    deletedDecoration: ISyncDecoration[];
+    deletedEffects: ISyncSpecEffect[];
+    changedTiles: ISyncTile[];
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
@@ -88,6 +88,15 @@ export class BattleHubService {
         this.hubConnection.invoke('OrderWait', actorId).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 
+    // TODO
+    private prepareListener() {
+        console.log('BattlePrepare');
+    }
+
+    private syncErrorListener() {
+        console.log('SynchronizationError');
+    }
+
     private startGameListener(synchronizer: ISynchronizer) {
         console.log({action: 'StartGame', sync: synchronizer});
     }
@@ -129,17 +138,17 @@ export class BattleHubService {
     }
 
     private  addBattleListeners() {
-        this.addNewListener('BattlePrepare', () => console.log('BattlePrepare'));
-        this.addNewListener('BattleSynchronizationError', () => console.log('SynchronizationError'));
-        this.addNewListener('BattleStartGame', (synchronizer: ISynchronizer) => this.startGameListener(synchronizer));
-        this.addNewListener('BattleMove', (synchronizer: ISynchronizer) => this.moveListener(synchronizer));
-        this.addNewListener('BattleAttack', (synchronizer: ISynchronizer) => this.attackListener(synchronizer));
-        this.addNewListener('BattleCast', (synchronizer: ISynchronizer) => this.castListener(synchronizer));
-        this.addNewListener('BattleWait', (synchronizer: ISynchronizer) => this.waitListener(synchronizer));
-        this.addNewListener('BattleDecoration', (synchronizer: ISynchronizer) => this.decorationListener(synchronizer));
-        this.addNewListener('BattleEndTurn', (synchronizer: ISynchronizer) => this.endTurnListener(synchronizer));
-        this.addNewListener('BattleEndGame', (synchronizer: ISynchronizer) => this.endGameListener(synchronizer));
-        this.addNewListener('BattleSkipTurn', (synchronizer: ISynchronizer) => this.skipTurnListener(synchronizer));
-        this.addNewListener('BattleNoActorsDraw', (synchronizer: ISynchronizer) => this.noActorsDrawListener(synchronizer));
+        this.addNewListener(BATTLE_PREPARE, () => this.prepareListener());
+        this.addNewListener(BATTLE_SYNC_ERROR, () => this.syncErrorListener());
+        this.addNewListener(BATTLE_START_GAME, (synchronizer: ISynchronizer) => this.startGameListener(synchronizer));
+        this.addNewListener(BATTLE_MOVE, (synchronizer: ISynchronizer) => this.moveListener(synchronizer));
+        this.addNewListener(BATTLE_ATTACK, (synchronizer: ISynchronizer) => this.attackListener(synchronizer));
+        this.addNewListener(BATTLE_CAST, (synchronizer: ISynchronizer) => this.castListener(synchronizer));
+        this.addNewListener(BATTLE_WAIT, (synchronizer: ISynchronizer) => this.waitListener(synchronizer));
+        this.addNewListener(BATTLE_DECORATION, (synchronizer: ISynchronizer) => this.decorationListener(synchronizer));
+        this.addNewListener(BATTLE_END_TURN, (synchronizer: ISynchronizer) => this.endTurnListener(synchronizer));
+        this.addNewListener(BATTLE_END_GAME, (synchronizer: ISynchronizer) => this.endGameListener(synchronizer));
+        this.addNewListener(BATTLE_SKIP_TURN, (synchronizer: ISynchronizer) => this.skipTurnListener(synchronizer));
+        this.addNewListener(BATTLE_NO_ACTORS_DRAW, (synchronizer: ISynchronizer) => this.noActorsDrawListener(synchronizer));
     }
 }

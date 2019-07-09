@@ -1,4 +1,4 @@
-export interface IBattleSpecEffect {
+export interface ISyncSpecEffect {
         id: number;
         ownerId?: string;
         isAlive: boolean;

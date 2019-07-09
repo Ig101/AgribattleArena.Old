@@ -1,4 +1,4 @@
-export interface IBattleSkill {
+export interface ISyncSkill {
         id: number;
         range: number;
         nativeId: string;
