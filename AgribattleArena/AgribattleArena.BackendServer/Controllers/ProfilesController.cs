@@ -30,16 +30,18 @@ namespace AgribattleArena.BackendServer.Controllers
         [HttpGet(Name = "GetProfile")]
         public async Task<IActionResult> GetProfile()
         {
-            var user = (await _profilesService.GetProfile(User));
+            var user = (await _profilesService.GetProfileWithInfo(User));
+            user.Actors.RemoveAll(x => x.DeletedDate != null);
             if (user != null)
             {
-                var profile = AutoMapper.Mapper.Map<ProfileInfoDto>(user);
+                ProfileDto profile = AutoMapper.Mapper.Map<ProfileDto>(user);
                 profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
                 return Ok(profile);
             }
             return NotFound();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "GetExternalProfile")]
         public async Task<IActionResult> GetExternalProfile(string id)
         {
@@ -72,20 +74,6 @@ namespace AgribattleArena.BackendServer.Controllers
             var userId = _profilesService.GetUserID(User);
             var info = _battleService.GetProfileBattleStatus(userId);
             return Ok(info);
-        }
-
-        [HttpGet("actors", Name = "GetProfileWithInfo")]
-        public async Task<IActionResult> GetProfileWithActors()
-        {
-            var user = (await _profilesService.GetProfileWithInfo(User));
-            user.Actors.RemoveAll(x => x.DeletedDate != null);
-            if (user != null)
-            {
-                ProfileDto profile = AutoMapper.Mapper.Map<ProfileDto>(user);
-                profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
-                return Ok(profile);
-            }
-            return NotFound();
         }
 
         [HttpGet("actors/{id}", Name = "GetProfileActor")]

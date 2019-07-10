@@ -9,6 +9,7 @@ import { STRINGS, ENVIRONMENT } from '../environment';
 import { Store } from '@ngrx/store';
 import * as stateStore from './storage/reducers';
 import * as profileAction from './storage/actions/profile';
+import { IExternalProfile } from './models/external-profile.model';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +48,7 @@ export class ProfileService {
     }
 
     private getProfileRequest(subject: Subject<IExternalWrapper<IProfile>>) {
-        this.http.get('/api/profile/actors')
+        this.http.get('/api/profile')
         .pipe(map((result: IProfile) => {
             return {
                 statusCode: 200,
@@ -99,8 +100,25 @@ export class ProfileService {
         return subject;
     }
 
+    getExternalProfile(id: string): Observable<IExternalWrapper<IExternalProfile>> {
+        const subject = new Subject<IExternalWrapper<IExternalProfile>>();
+        this.http.get('/api/profile/' + id)
+            .pipe(map((result: IExternalProfile) => {
+                return {
+                    statusCode: 200,
+                    resObject: result
+                } as IExternalWrapper<IExternalProfile>;
+            }))
+            .pipe(catchError(this.errorHandler))
+            .subscribe((result: IExternalWrapper<any>) => {
+                subject.next(result);
+                subject.complete();
+            });
+        return subject;
+    }
+
     private getProfileStatusRequest(subject: Subject<IExternalWrapper<IProfileStatus>>) {
-        this.http.get('/api/profile/actors')
+        this.http.get('/api/profile')
         .pipe(map((result: IProfileStatus) => {
             return {
                 statusCode: 200,

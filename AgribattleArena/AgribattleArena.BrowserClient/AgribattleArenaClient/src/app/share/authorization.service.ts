@@ -57,7 +57,7 @@ export class AuthService {
                 if (loginResult.statusCode === 200) {
                     this.gameHubService.connect().subscribe((hubResult: IExternalWrapper<any>) => {
                         if (hubResult.statusCode === 200) {
-                            this.http.get('/api/profile/actors')
+                            this.http.get('/api/profile')
                                 .pipe(map((result: IProfile) => {
                                     return {
                                         statusCode: 200,
@@ -113,7 +113,6 @@ export class AuthService {
             }))
             .pipe(catchError(this.errorHandler))
             .subscribe((logoutResult: IExternalWrapper<any>) => {
-                console.log(logoutResult);
                 if (logoutResult.statusCode === 200) {
                     this.gameHubService.disconnect();
                     this.store.dispatch(new profileAction.ChangeAuthorized(false));

@@ -5,6 +5,7 @@ import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { LoadingService } from '../loading';
 import { QueueService } from './queue.service';
+import { emit } from 'cluster';
 
 export const BATTLE_PREPARE = 'BattlePrepare';
 export const BATTLE_SYNC_ERROR = 'BattleSynchronizationError';
@@ -30,10 +31,14 @@ export type BattleHubSendMethod = never;
 })
 export class BattleHubService {
 
+    battlePrepareEmitter = new EventEmitter();
+    syncErrorEmitter = new EventEmitter();
+
     constructor(private loagingService: LoadingService) {
         this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(ENVIRONMENT.battleHubConnectionEndpoint)
         .build();
+        this.addBattleListeners();
      }
 
     private hubConnection: signalR.HubConnection;
@@ -46,7 +51,6 @@ export class BattleHubService {
             subject.next({
                 statusCode: 200
             } as IExternalWrapper<any>);
-            this.addBattleListeners();
             subject.complete();
         })
         .catch(() => {
@@ -88,13 +92,14 @@ export class BattleHubService {
         this.hubConnection.invoke('OrderWait', actorId).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 
-    // TODO
     private prepareListener() {
         console.log('BattlePrepare');
+        this.battlePrepareEmitter.emit();
     }
 
     private syncErrorListener() {
         console.log('SynchronizationError');
+        this.syncErrorEmitter.emit();
     }
 
     private startGameListener(synchronizer: ISynchronizer) {
