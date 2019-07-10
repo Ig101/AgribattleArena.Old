@@ -107,9 +107,11 @@ namespace AgribattleArena.BackendServer
             {
                 //Profile
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileDto>()
-                    .ForMember(d => d.RevelationLevel, o => o.UseDestinationValue());
+                    .ForMember(d => d.RevelationLevel, o => o.Ignore());
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileInfoDto>()
-                    .ForMember(d => d.RevelationLevel, o => o.UseDestinationValue());
+                    .ForMember(d => d.RevelationLevel, o => o.Ignore());
+                cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileExternalInfoDto>()
+                    .ForMember(d => d.RevelationLevel, o => o.Ignore());
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Profile, Models.Profile.ProfileCredentialsDto>();
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Actor, Models.Profile.ActorDto>();
                 cfg.CreateMap<DBProvider.Contexts.ProfileEntities.Skill, string>()

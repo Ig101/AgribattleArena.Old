@@ -3,8 +3,10 @@ import { IBattleActor } from '.';
 
 export interface IBattlePlayer {
     id: string;
+    userName: string;
+    revelationLevel: number;
     team?: number;
-    keyActorsSync: IBattleActor[];
+    keyActors: IBattleActor[];
     turnsSkipped: number;
     status: BattlePlayerStatusEnum;
 }

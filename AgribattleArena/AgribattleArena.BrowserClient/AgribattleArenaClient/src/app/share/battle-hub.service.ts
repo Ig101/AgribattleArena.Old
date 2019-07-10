@@ -68,23 +68,23 @@ export class BattleHubService {
         this.loagingService.loadingError(STRINGS.hubUnexpectedError, errorScreenOpaque);
     }
 
-    addNewListener(methodName: BattleHubReturnMethod, listener: (...args: any[]) => void) {
+    addNewListener(methodName: BattleHubReturnMethod, listener: (synchronizer: ISynchronizer) => void) {
         this.hubConnection.on(methodName, listener);
     }
 
-    OrderAttack(actorId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
+    orderAttack(actorId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
         this.hubConnection.invoke('OrderAttack', actorId, targetX, targetY).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 
-    OrderMove(actorId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
+    orderMove(actorId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
         this.hubConnection.invoke('OrderMove', actorId, targetX, targetY).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 
-    OrderCast(actorId: number, skillId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
+    orderCast(actorId: number, skillId: number, targetX: number, targetY: number, errorScreenOpaque: number = 0.5) {
         this.hubConnection.invoke('OrderCast', actorId, skillId, targetX, targetY).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 
-    OrderWait(actorId: number, errorScreenOpaque: number = 0.5) {
+    orderWait(actorId: number, errorScreenOpaque: number = 0.5) {
         this.hubConnection.invoke('OrderWait', actorId).catch(err => this.catchHubError(err, errorScreenOpaque));
     }
 

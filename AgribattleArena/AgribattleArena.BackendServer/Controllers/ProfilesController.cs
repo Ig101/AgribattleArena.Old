@@ -33,7 +33,21 @@ namespace AgribattleArena.BackendServer.Controllers
             var user = (await _profilesService.GetProfile(User));
             if (user != null)
             {
-                ProfileInfoDto profile = AutoMapper.Mapper.Map<ProfileInfoDto>(user);
+                var profile = AutoMapper.Mapper.Map<ProfileInfoDto>(user);
+                profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
+                return Ok(profile);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("{id}", Name = "GetExternalProfile")]
+        public async Task<IActionResult> GetExternalProfile(string id)
+        {
+            var user = (await _profilesService.GetProfileWithInfo(id));
+            user.Actors.RemoveAll(x => x.DeletedDate != null);
+            if (user != null)
+            {
+                var profile = AutoMapper.Mapper.Map<ProfileExternalInfoDto>(user);
                 profile.RevelationLevel = _profilesService.GetRevelationLevel(user.Revelations);
                 return Ok(profile);
             }
@@ -46,7 +60,7 @@ namespace AgribattleArena.BackendServer.Controllers
             var user = (await _profilesService.GetProfile(User));
             if (user != null)
             {
-                ProfileCredentialsDto profile = AutoMapper.Mapper.Map<ProfileCredentialsDto>(user);
+                var profile = AutoMapper.Mapper.Map<ProfileCredentialsDto>(user);
                 return Ok(profile);
             }
             return NotFound();
