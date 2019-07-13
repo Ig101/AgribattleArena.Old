@@ -33,28 +33,36 @@ export type OnChangeArg = (scene: BattleScene, element: BattleActor | BattleDeco
 export function changeActorDefault(scene: BattleScene, element: BattleActor | BattleDecoration | BattleSpecEffect | BattleTile,
                                    result: ISyncActor | ISyncDecoration | ISyncSpecEffect | ISyncTile) {
     if (element instanceof BattleActor) {
-
+        const actor = element as BattleActor;
+        const newActor = result as ISyncActor;
+        actor.synchronize(newActor, scene.natives);
     }
 }
 
 export function changeDecorationDefault(scene: BattleScene, element: BattleActor | BattleDecoration | BattleSpecEffect | BattleTile,
                                         result: ISyncActor | ISyncDecoration | ISyncSpecEffect | ISyncTile) {
     if (element instanceof BattleDecoration) {
-
+        const decoration = element as BattleDecoration;
+        const newDecoration = result as ISyncDecoration;
+        decoration.synchronize(newDecoration, scene.natives);
     }
 }
 
 export function changeSpecEffectDefault(scene: BattleScene, element: BattleActor | BattleDecoration | BattleSpecEffect | BattleTile,
                                         result: ISyncActor | ISyncDecoration | ISyncSpecEffect | ISyncTile) {
     if (element instanceof BattleSpecEffect) {
-
+        const effect = element as BattleSpecEffect;
+        const newEffect = result as ISyncSpecEffect;
+        effect.synchronize(newEffect, scene.natives);
     }
 }
 
 export function changeTileDefault(scene: BattleScene, element: BattleActor | BattleDecoration | BattleSpecEffect | BattleTile,
                                   result: ISyncActor | ISyncDecoration | ISyncSpecEffect | ISyncTile) {
     if (element instanceof BattleTile) {
-
+        const tile = element as BattleTile;
+        const newTile = result as ISyncTile;
+        tile.synchronize(newTile, scene.natives);
     }
 }
 
@@ -64,14 +72,14 @@ export type OnCreateArg = (scene: BattleScene, element: ISyncActor | ISyncDecora
 export function newActorDefault(scene: BattleScene, element: ISyncActor | ISyncDecoration | ISyncSpecEffect,
                                 type: typeof BattleDecoration | typeof BattleActor | typeof BattleSpecEffect) {
     if (type === BattleActor) {
-
+        scene.actors.push(new BattleActor(element as ISyncActor, scene.natives, scene));
     }
 }
 
 export function newDecorationDefault(scene: BattleScene, element: ISyncActor | ISyncDecoration | ISyncSpecEffect,
                                      type: typeof BattleDecoration | typeof BattleActor | typeof BattleSpecEffect) {
     if (type === BattleDecoration) {
-
+        scene.decorations.push(new BattleDecoration(element as ISyncDecoration, scene.natives, scene));
     }
 }
 
@@ -79,7 +87,7 @@ export function newDecorationDefault(scene: BattleScene, element: ISyncActor | I
 export function newSpecEffectDefault(scene: BattleScene, element: ISyncActor | ISyncDecoration | ISyncSpecEffect,
                                      type: typeof BattleDecoration | typeof BattleActor | typeof BattleSpecEffect) {
     if (type === BattleSpecEffect) {
-
+        scene.specEffects.push(new BattleSpecEffect(element as ISyncSpecEffect, scene.natives, scene));
     }
 }
 
