@@ -1,17 +1,22 @@
 import { BattlePlayer, BattleActor, BattleDecoration, BattleSpecEffect, BattleTile } from './objects';
-import { INativesStore } from '../share/models/natives-store.model';
 import { ISynchronizer } from '../share/models';
 import { BattleEvent } from './battle-event';
 import { IEventActionSignature } from './event-models/event-action-signature.model';
 import { BattleChangeInstructionAction } from '../share/models/enums/battle-change-instruction-action.enum';
 import { ENVIRONMENT } from '../environment';
 import { IExternalProfile } from '../share/models/external-profile.model';
+import { IEventChangeToken } from './event-models/event-change-token';
+import { ISyncActor, ISyncDecoration, ISyncSpecEffect, ISyncTile } from '../share/models/synchronization';
+import { OnChangeArg, OnRemoveArg, OnCreateArg } from './delegates/synchronization-args';
+import { INativesStoreMapped } from '../share/models/natives-store-mapped.model';
 
 export class BattleScene {
-    version: number;
     pause: boolean;
     tempPlayer: BattlePlayer;
     result?: boolean;
+
+    version: number;
+    timeUntilEndOfTurn: number;
 
     events: BattleEvent[];
     tempEvent?: BattleEvent;
@@ -22,14 +27,282 @@ export class BattleScene {
     decorations: BattleDecoration[];
     specEffects: BattleSpecEffect[];
     tiles: BattleTile[];
+    tilesetWidth: number;
+    tilesetHeight: number;
 
     private syncTimer: NodeJS.Timer;
 
-    constructor(private natives: INativesStore, sync: ISynchronizer, profiles: IExternalProfile[]) {
+    fullSynchronizationWithoutPlayers(sync: ISynchronizer) {
+        this.version = sync.version;
+        if (Math.abs(this.timeUntilEndOfTurn - sync.turnTime) > 2000 || this.tempActor.id !== sync.tempActor.id) {
+            this.timeUntilEndOfTurn = sync.turnTime * 1000;
+        }
+        this.tilesetWidth = sync.tilesetWidth;
+        this.tilesetHeight = sync.tilesetHeight;
+        this.tiles = [];
+        for (const i in sync.changedTiles) {
+            if (sync.changedTiles.hasOwnProperty(i)) {
+                this.tiles.push(new BattleTile(sync.changedTiles[i], this.natives, this));
+            }
+        }
+        this.actors = [];
+        for (const i in sync.changedActors) {
+            if (sync.changedActors.hasOwnProperty(i)) {
+                this.actors.push(new BattleActor(sync.changedActors[i], this.natives, this));
+            }
+        }
+        this.decorations = [];
+        for (const i in sync.changedDecorations) {
+            if (sync.changedDecorations.hasOwnProperty(i)) {
+                this.decorations.push(new BattleDecoration(sync.changedDecorations[i], this.natives, this));
+            }
+        }
+        this.specEffects = [];
+        for (const i in sync.changedEffects) {
+            if (sync.changedEffects.hasOwnProperty(i)) {
+                this.specEffects.push(new BattleSpecEffect(sync.changedEffects[i], this.natives, this));
+            }
+        }
+        if (sync.tempActor) {
+            this.tempActor = this.actors.find(x => x.id === sync.tempActor.id);
+        } else {
+            this.tempActor = this.decorations.find(x => x.id === sync.tempDecoration.id);
+        }
+    }
+
+    constructor(public natives: INativesStoreMapped, sync: ISynchronizer, profiles: IExternalProfile[]) {
         this.events = [];
         this.pause = true;
         this.result = null;
+        this.fullSynchronizationWithoutPlayers(sync);
+        this.players = [];
+        for (const i in sync.players) {
+            if (sync.players.hasOwnProperty(i)) {
+                this.players.push(new BattlePlayer(sync.players[i], profiles, this));
+            }
+        }
         this.syncTimer = setInterval (this.update, ENVIRONMENT.battleUpdateDelay, ENVIRONMENT.battleUpdateDelay);
+    }
+
+    fullSynchronization(sync: ISynchronizer) {
+        this.fullSynchronizationWithoutPlayers(sync);
+        for (const i in sync.players) {
+            if (sync.players.hasOwnProperty(i)) {
+                this.players.find(x => x.id === sync.players[i].id).synchronize(sync.players[i]);
+            }
+        }
+    }
+
+    changeActor(actor: ISyncActor,
+                args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempActor = this.actors.find(x => x.id === actor.id);
+        if (tempActor) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, tempActor, actor);
+                }
+            }
+        } else {
+            for (const i in createArgs) {
+                if (createArgs.hasOwnProperty(i)) {
+                    createArgs[i](this, actor, BattleActor);
+                }
+            }
+        }
+    }
+
+    removeActor(actor: ISyncActor,
+                args: OnRemoveArg[]) {
+        const index = this.actors.findIndex(x => x.id === actor.id);
+        if (index >= 0) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, index, BattleActor);
+                }
+            }
+        }
+    }
+    changeDecoration(decoration: ISyncDecoration,
+                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempDecoration = this.decorations.find(x => x.id === decoration.id);
+        if (tempDecoration) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, tempDecoration, decoration);
+                }
+            }
+        } else {
+            for (const i in createArgs) {
+                if (createArgs.hasOwnProperty(i)) {
+                    createArgs[i](this, decoration, BattleDecoration);
+                }
+            }
+        }
+    }
+
+    removeDecoration(decoration: ISyncDecoration,
+                     args: OnRemoveArg[]) {
+        const index = this.decorations.findIndex(x => x.id === decoration.id);
+        if (index >= 0) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, index, BattleDecoration);
+                }
+            }
+        }
+    }
+
+    changeSpecEffect(specEffect: ISyncSpecEffect,
+                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempSpecEffect = this.specEffects.find(x => x.id === specEffect.id);
+        if (tempSpecEffect) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, tempSpecEffect, specEffect);
+                }
+            }
+        } else {
+            for (const i in createArgs) {
+                if (createArgs.hasOwnProperty(i)) {
+                    createArgs[i](this, specEffect, BattleSpecEffect);
+                }
+            }
+        }
+    }
+
+    removeSpecEffect(specEffect: ISyncSpecEffect,
+                     args: OnRemoveArg[]) {
+        const index = this.specEffects.findIndex(x => x.id === specEffect.id);
+        if (index >= 0) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, index, BattleSpecEffect);
+                }
+            }
+        }
+    }
+
+    changeTile(tile: ISyncTile,
+               args: OnChangeArg[]) {
+        const tempTile = this.tiles.find(x => x.x === tile.x && x.y === tile.y);
+        if (tempTile) {
+            for (const i in args) {
+                if (args.hasOwnProperty(i)) {
+                    args[i](this, tempTile, tile);
+                }
+            }
+        }
+    }
+
+    synchronize(sync: ISynchronizer, token: IEventChangeToken) {
+        this.version = sync.version;
+        if (token.changeAll) {
+            for (const i in sync.changedTiles) {
+                if (sync.changedTiles.hasOwnProperty(i)) {
+                    this.changeTile(sync.changedTiles[i], token.args);
+                }
+            }
+            for (const i in sync.changedActors) {
+                if (sync.changedActors.hasOwnProperty(i)) {
+                    this.changeActor(sync.changedActors[i], token.args, token.onCreateArgs);
+                }
+            }
+            for (const i in sync.changedDecorations) {
+                if (sync.changedDecorations.hasOwnProperty(i)) {
+                    this.changeDecoration(sync.changedDecorations[i], token.args, token.onCreateArgs);
+                }
+            }
+            for (const i in sync.changedEffects) {
+                if (sync.changedEffects.hasOwnProperty(i)) {
+                    this.changeSpecEffect(sync.changedEffects[i], token.args, token.onCreateArgs);
+                }
+            }
+            for (const i in sync.deletedActors) {
+                if (sync.deletedActors.hasOwnProperty(i)) {
+                    this.removeActor(sync.changedActors[i], token.onRemoveArgs);
+                }
+            }
+            for (const i in sync.deletedDecorations) {
+                if (sync.deletedDecorations.hasOwnProperty(i)) {
+                    this.removeDecoration(sync.deletedDecorations[i], token.onRemoveArgs);
+                }
+            }
+            for (const i in sync.deletedEffects) {
+                if (sync.deletedEffects.hasOwnProperty(i)) {
+                    this.removeSpecEffect(sync.deletedEffects[i], token.onRemoveArgs);
+                }
+            }
+            if (Math.abs(this.timeUntilEndOfTurn - sync.turnTime) > 2000 || this.tempActor.id !== sync.tempActor.id) {
+                this.timeUntilEndOfTurn = sync.turnTime * 1000;
+            }
+            if (sync.tempActor) {
+                this.tempActor = this.actors.find(x => x.id === sync.tempActor.id);
+            } else {
+                this.tempActor = this.decorations.find(x => x.id === sync.tempDecoration.id);
+            }
+            for (const i in sync.players) {
+                if (sync.players.hasOwnProperty(i)) {
+                    this.players.find(x => x.id === sync.players[i].id).synchronize(sync.players[i]);
+                }
+            }
+        } else {
+            switch (token.objectToChange.constructor) {
+                case BattleActor:
+                    const actorToChange = token.objectToChange as BattleActor;
+                    let syncActor = sync.deletedActors.find(x => x.id === actorToChange.id);
+                    if (syncActor) {
+                        this.removeActor(syncActor, token.onRemoveArgs);
+                        sync.deletedActors.splice(sync.deletedActors.indexOf(syncActor), 1);
+                        return;
+                    }
+                    syncActor = sync.changedActors.find(x => x.id === actorToChange.id);
+                    if (syncActor) {
+                        this.changeActor(syncActor, token.args, token.onCreateArgs);
+                        sync.changedActors.splice(sync.changedActors.indexOf(syncActor), 1);
+                        return;
+                    }
+                    break;
+                case BattleDecoration:
+                    const decorationToChange = token.objectToChange as BattleDecoration;
+                    let syncDecoration = sync.deletedDecorations.find(x => x.id === decorationToChange.id);
+                    if (syncDecoration) {
+                        this.removeDecoration(syncDecoration, token.onRemoveArgs);
+                        sync.deletedDecorations.splice(sync.deletedDecorations.indexOf(syncDecoration), 1);
+                        return;
+                    }
+                    syncDecoration = sync.changedDecorations.find(x => x.id === decorationToChange.id);
+                    if (syncDecoration) {
+                        this.changeDecoration(syncDecoration, token.args, token.onCreateArgs);
+                        sync.changedDecorations.splice(sync.changedDecorations.indexOf(syncDecoration), 1);
+                        return;
+                    }
+                    break;
+                case BattleTile:
+                    const tileToChange = token.objectToChange as BattleTile;
+                    const syncTile = sync.changedTiles.find(x => x.x === tileToChange.x && x.y === tileToChange.y);
+                    if (syncTile) {
+                        this.changeTile(syncTile, token.args);
+                        sync.changedTiles.splice(sync.changedTiles.indexOf(syncTile), 1);
+                        return;
+                    }
+                    break;
+                case BattleSpecEffect:
+                    const effectToChange = token.objectToChange as BattleSpecEffect;
+                    let syncEffect = sync.deletedEffects.find(x => x.id === effectToChange.id);
+                    if (syncEffect) {
+                        this.removeSpecEffect(syncEffect, token.onRemoveArgs);
+                        sync.deletedEffects.splice(sync.deletedEffects.indexOf(syncEffect), 1);
+                        return;
+                    }
+                    syncEffect = sync.changedEffects.find(x => x.id === effectToChange.id);
+                    if (syncEffect) {
+                        this.changeSpecEffect(syncEffect, token.args, token.onCreateArgs);
+                        sync.changedEffects.splice(sync.changedEffects.indexOf(syncEffect), 1);
+                        return;
+                    }
+                    break;
+            }
+        }
     }
 
     private startNewEvent() {
@@ -87,6 +360,22 @@ export class BattleScene {
             if (this.tempEvent === null && this.events.length > 0) {
                 this.startNewEvent();
             }
+            this.timeUntilEndOfTurn -= milliseconds;
+            this.tiles.forEach(tile => {
+                tile.update(milliseconds);
+            });
+            this.actors.forEach(actor => {
+                actor.update(milliseconds);
+            });
+            this.decorations.forEach(decoration => {
+                decoration.update(milliseconds);
+            });
+            this.specEffects.forEach(effect => {
+                effect.update(milliseconds);
+            });
+            this.players.forEach(player => {
+                player.update(milliseconds);
+            });
         }
     }
 

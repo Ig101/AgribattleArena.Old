@@ -1,8 +1,7 @@
 import { ISkillNative } from 'src/app/share/models/natives';
 import { BattleActor } from './battle-actor';
 import { ISyncSkill } from 'src/app/share/models/synchronization';
-import { BattleScene } from '../battle-scene';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleSkill {
     id: number;
@@ -13,7 +12,7 @@ export class BattleSkill {
     cost: number;
     preparationTime: number;
 
-    synchronize(sync: ISyncSkill, natives: INativesStore) {
+    synchronize(sync: ISyncSkill, natives: INativesStoreMapped) {
         this.range = sync.range;
         if (!this.native || this.native.id !== sync.nativeId) {
             this.native = natives.skills.find(x => x.id === sync.nativeId);
@@ -24,8 +23,12 @@ export class BattleSkill {
         this.preparationTime = sync.preparationTime;
     }
 
-    constructor(sync: ISyncSkill, natives: INativesStore, public parent: BattleActor) {
+    constructor(sync: ISyncSkill, natives: INativesStoreMapped, public parent: BattleActor) {
         this.id = sync.id;
         this.synchronize(sync, natives);
+    }
+
+    update(milliseconds: number) {
+
     }
 }

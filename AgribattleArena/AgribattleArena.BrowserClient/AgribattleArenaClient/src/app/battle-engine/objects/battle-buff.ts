@@ -1,8 +1,7 @@
 import { IBuffNative } from 'src/app/share/models/natives';
 import { BattleActor } from './battle-actor';
 import { ISyncBuff } from 'src/app/share/models/synchronization';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
-import { BattleScene } from '../battle-scene';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleBuff {
     id: number;
@@ -10,7 +9,7 @@ export class BattleBuff {
     mod: number;
     duration?: number;
 
-    synchronize(sync: ISyncBuff, natives: INativesStore) {
+    synchronize(sync: ISyncBuff, natives: INativesStoreMapped) {
         if (!this.native || this.native.id !== sync.nativeId) {
             this.native = natives.buffs.find(x => x.id === sync.nativeId);
         }
@@ -18,8 +17,12 @@ export class BattleBuff {
         this.duration = sync.duration;
     }
 
-    constructor(sync: ISyncBuff, natives: INativesStore, public parent: BattleActor) {
+    constructor(sync: ISyncBuff, natives: INativesStoreMapped, public parent: BattleActor) {
         this.id = sync.id;
         this.synchronize(sync, natives);
+    }
+
+    update(milliseconds: number) {
+
     }
 }

@@ -2,7 +2,6 @@ import { BattlePlayerStatusEnum } from 'src/app/share/models/enums/battle-player
 import { BattleActor } from '.';
 import { BattleScene } from '../battle-scene';
 import { ISyncPlayer } from 'src/app/share/models/synchronization';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
 import { IExternalProfile } from 'src/app/share/models/external-profile.model';
 
 export class BattlePlayer {
@@ -36,5 +35,9 @@ export class BattlePlayer {
         const tempProfile = profiles.find(x => x.id === this.id);
         this.userName = tempProfile.userName;
         this.revelationLevel = tempProfile.revelationLevel;
+    }
+
+    update(milliseconds: number) {
+
     }
 }

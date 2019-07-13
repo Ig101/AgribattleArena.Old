@@ -16,6 +16,10 @@ export const ENVIRONMENT = {
 };
 
 export const STRINGS = {
+    loading: 'Loading...',
+    battleContentLoading: 'Loading content...',
+    unexpectedErrorLoading: 'Unexpected error. Loading main page...',
+    //
     queueTimeout: 'Reached queue timeout. Exiting queue.',
     notImplemented: 'Not implemented.',
     serverError: 'Server error. Try again later.',

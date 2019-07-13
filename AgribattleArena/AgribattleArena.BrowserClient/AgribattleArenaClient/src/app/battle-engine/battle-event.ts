@@ -5,6 +5,9 @@ import { IEventActionSignature } from './event-models/event-action-signature.mod
 import { ISynchronizer } from 'src/app/share/models';
 import { IEventChangeToken } from './event-models/event-change-token';
 import { Subject, Observable } from 'rxjs';
+import { changeActorDefault, changeDecorationDefault, changeSpecEffectDefault, changeTileDefault, killActorDefault,
+    killDecorationDefault, killSpecEffectDefault, newActorDefault, newDecorationDefault,
+    newSpecEffectDefault } from './delegates/synchronization-args';
 
 export class BattleEvent {
     actionSignature: IEventActionSignature;
@@ -56,6 +59,9 @@ export class BattleEvent {
         }
         this.result = sync;
         this.version = sync.version;
+        if (this.scene.tempEvent === this) {
+            this.processTokens();
+        }
     }
 
     pushToken(token: IEventChangeToken): boolean {
@@ -65,6 +71,7 @@ export class BattleEvent {
 
     private processToken(token: IEventChangeToken) {
         // TODO
+        this.scene.synchronize(this.result, token);
     }
 
     processTokens(): boolean {
@@ -84,7 +91,10 @@ export class BattleEvent {
     completeAction(): boolean {
         this.readyToEnd = true;
         return this.pushToken({
-            changeAll: true
+            changeAll: true,
+            args: [changeActorDefault, changeDecorationDefault, changeSpecEffectDefault, changeTileDefault],
+            onRemoveArgs: [killActorDefault, killDecorationDefault, killSpecEffectDefault],
+            onCreateArgs: [newActorDefault, newDecorationDefault, newSpecEffectDefault]
         });
     }
 }

@@ -1,10 +1,11 @@
 import { ITileNative } from 'src/app/share/models/natives';
 import { BattleScene } from '../battle-scene';
 import { ISyncTile } from 'src/app/share/models/synchronization';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
+
 import { BattlePlayer } from './battle-player';
 import { BattleDecoration } from './battle-decoration';
 import { BattleActor } from './battle-actor';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleTile {
     x: number;
@@ -14,7 +15,7 @@ export class BattleTile {
     native: ITileNative;
     owner?: BattlePlayer;
 
-    synchronize(sync: ISyncTile, natives: INativesStore) {
+    synchronize(sync: ISyncTile, natives: INativesStoreMapped) {
         if (!this.native || this.native.id !== sync.nativeId) {
             this.native = natives.tiles.find(x => x.id === sync.nativeId);
         }
@@ -34,9 +35,13 @@ export class BattleTile {
         this.height = sync.height;
     }
 
-    constructor(sync: ISyncTile, natives: INativesStore, public parent: BattleScene) {
+    constructor(sync: ISyncTile, natives: INativesStoreMapped, public parent: BattleScene) {
         this.x = sync.x;
         this.y = sync.y;
         this.synchronize(sync, natives);
+    }
+
+    update(milliseconds: number) {
+
     }
 }

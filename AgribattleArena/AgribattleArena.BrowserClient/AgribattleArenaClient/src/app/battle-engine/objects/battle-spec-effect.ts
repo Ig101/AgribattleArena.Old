@@ -1,8 +1,8 @@
 import { ISpecEffectNative } from 'src/app/share/models/natives';
 import { BattleScene } from '../battle-scene';
 import { ISyncSpecEffect } from 'src/app/share/models/synchronization';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
 import { BattlePlayer } from './battle-player';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleSpecEffect {
     id: number;
@@ -15,7 +15,7 @@ export class BattleSpecEffect {
     mod: number;
     native: ISpecEffectNative;
 
-    synchronize(sync: ISyncSpecEffect, natives: INativesStore) {
+    synchronize(sync: ISyncSpecEffect, natives: INativesStoreMapped) {
         if (!this.native || this.native.id !== sync.nativeId) {
             this.native = natives.specEffects.find(x => x.id === sync.nativeId);
         }
@@ -32,8 +32,12 @@ export class BattleSpecEffect {
         this.mod = sync.mod;
     }
 
-    constructor(sync: ISyncSpecEffect, natives: INativesStore, public parent: BattleScene) {
+    constructor(sync: ISyncSpecEffect, natives: INativesStoreMapped, public parent: BattleScene) {
         this.id = sync.id;
         this.synchronize(sync, natives);
+    }
+
+    update(milliseconds: number) {
+
     }
 }

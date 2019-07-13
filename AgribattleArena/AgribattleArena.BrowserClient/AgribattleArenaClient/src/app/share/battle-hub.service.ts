@@ -4,6 +4,7 @@ import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { LoadingService } from '../loading';
+import { Router } from '@angular/router';
 
 export const BATTLE_PREPARE = 'BattlePrepare';
 export const BATTLE_SYNC_ERROR = 'BattleSynchronizationError';
@@ -29,10 +30,7 @@ export type BattleHubSendMethod = never;
 })
 export class BattleHubService {
 
-    battlePrepareEmitter = new EventEmitter();
-    syncErrorEmitter = new EventEmitter();
-
-    constructor(private loagingService: LoadingService) {
+    constructor(private loagingService: LoadingService, private router: Router) {
         this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(ENVIRONMENT.battleHubConnectionEndpoint)
         .build();
@@ -91,13 +89,15 @@ export class BattleHubService {
     }
 
     private prepareListener() {
+        this.loagingService.loadingStart(STRINGS.loading, 1, {
+            route: '/battle',
+            router: this.router
+        });
         console.log('BattlePrepare');
-        this.battlePrepareEmitter.emit();
     }
 
     private syncErrorListener() {
         console.log('SynchronizationError');
-        this.syncErrorEmitter.emit();
     }
 
     private startGameListener(synchronizer: ISynchronizer) {

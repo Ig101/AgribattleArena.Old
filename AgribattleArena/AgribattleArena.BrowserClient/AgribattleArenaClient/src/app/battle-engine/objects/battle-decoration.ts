@@ -2,9 +2,9 @@ import { ITagSynergy } from '../../share/models/tag-synergy.model';
 import { IDecorationNative } from 'src/app/share/models/natives';
 import { BattleScene } from '../battle-scene';
 import { ISyncDecoration } from 'src/app/share/models/synchronization';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
 import { BattleTile } from './battle-tile';
 import { BattlePlayer } from './battle-player';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleDecoration {
         id: number;
@@ -21,7 +21,7 @@ export class BattleDecoration {
         maxHealth: number;
         armor: ITagSynergy[];
 
-        synchronize(sync: ISyncDecoration, natives: INativesStore) {
+        synchronize(sync: ISyncDecoration, natives: INativesStoreMapped) {
                 if (!this.native || this.native.id !== sync.nativeId) {
                         this.native = natives.decorations.find(x => x.id === sync.nativeId);
                 }
@@ -44,12 +44,17 @@ export class BattleDecoration {
                 this.armor = sync.armor;
         }
 
-        constructor(sync: ISyncDecoration, natives: INativesStore, public parent: BattleScene) {
+        constructor(sync: ISyncDecoration, natives: INativesStoreMapped, public parent: BattleScene) {
                 this.id = sync.id;
                 this.synchronize(sync, natives);
+                this.tempTile.tempActor = this;
         }
 
         async cast() {
                 // TODO
+        }
+
+        update(milliseconds: number) {
+
         }
 }

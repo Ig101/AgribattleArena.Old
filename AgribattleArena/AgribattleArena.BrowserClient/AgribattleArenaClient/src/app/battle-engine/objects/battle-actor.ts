@@ -4,9 +4,9 @@ import { IActorNative } from 'src/app/share/models/natives';
 import { BattleScene } from '../battle-scene';
 import { ISyncActor } from 'src/app/share/models/synchronization';
 import { BattleTile } from './battle-tile';
-import { INativesStore } from 'src/app/share/models/natives-store.model';
 import { BattleChangeInstructionAction } from 'src/app/share/models/enums/battle-change-instruction-action.enum';
 import { BattlePlayer } from './battle-player';
+import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
 
 export class BattleActor {
     id: number;
@@ -36,7 +36,7 @@ export class BattleActor {
     armor: ITagSynergy[];
     attackModifiers: ITagSynergy[];
 
-    synchronize(sync: ISyncActor, natives: INativesStore) {
+    synchronize(sync: ISyncActor, natives: INativesStoreMapped) {
         if (!this.skills) {
             this.skills = [];
         }
@@ -109,10 +109,11 @@ export class BattleActor {
         this.attackModifiers = sync.attackModifiers;
     }
 
-    constructor(sync: ISyncActor, natives: INativesStore, public parent: BattleScene) {
+    constructor(sync: ISyncActor, natives: INativesStoreMapped, public parent: BattleScene) {
         this.id = sync.id;
         this.externalId = sync.externalId;
         this.synchronize(sync, natives);
+        this.tempTile.tempActor = this;
     }
 
     async attack(targetX: number, targetY: number) {
@@ -168,5 +169,9 @@ export class BattleActor {
             actor: this
         });
         return true;
+    }
+
+    update(milliseconds: number) {
+
     }
 }

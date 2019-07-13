@@ -12,6 +12,7 @@ import * as profileAction from './storage/actions/profile';
 import { IExternalProfile } from './models/external-profile.model';
 import { INativesStore } from './models/natives-store.model';
 import { IRevelationLevel } from './models/revelation-level.model';
+import { INativesStoreMapped } from './models/natives-store-mapped.model';
 
 @Injectable({
     providedIn: 'root'
@@ -34,8 +35,8 @@ export class CatalogService {
         });
     }
 
-    getNatives(): Observable<IExternalWrapper<INativesStore>> {
-        const subject = new Subject<IExternalWrapper<INativesStore>>();
+    getNatives(): Observable<IExternalWrapper<INativesStoreMapped>> {
+        const subject = new Subject<IExternalWrapper<INativesStoreMapped>>();
         this.http.get('/api/catalogs/frontendNatives')
             .pipe(map((result: INativesStore) => {
                 return {
@@ -45,6 +46,7 @@ export class CatalogService {
             }))
             .pipe(catchError(this.errorHandler))
             .subscribe((result: IExternalWrapper<INativesStore>) => {
+                // TODO Map
                 subject.next(result);
                 subject.complete();
             });

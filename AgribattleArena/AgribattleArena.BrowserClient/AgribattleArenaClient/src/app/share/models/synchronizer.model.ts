@@ -16,7 +16,7 @@ export interface ISynchronizer {
     changedDecorations: ISyncDecoration[];
     changedEffects: ISyncSpecEffect[];
     deletedActors: ISyncActor[];
-    deletedDecoration: ISyncDecoration[];
+    deletedDecorations: ISyncDecoration[];
     deletedEffects: ISyncSpecEffect[];
     changedTiles: ISyncTile[];
 }

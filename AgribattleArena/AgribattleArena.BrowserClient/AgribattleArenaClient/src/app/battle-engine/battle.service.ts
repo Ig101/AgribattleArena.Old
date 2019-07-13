@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BattleHubService, BATTLE_START_GAME, BATTLE_END_GAME, BATTLE_ATTACK, BATTLE_END_TURN, BATTLE_WAIT,
     BATTLE_CAST, BATTLE_MOVE, BATTLE_SKIP_TURN, BATTLE_DECORATION, BATTLE_NO_ACTORS_DRAW,
-    BattleHubReturnMethod } from '../share/battle-hub.service';
+    BATTLE_SYNC_ERROR} from '../share/battle-hub.service';
 import { ISynchronizer, IExternalWrapper, IProfileStatus } from '../share/models';
 import { ProfileService } from '../share/profile.service';
 import { ENVIRONMENT, STRINGS } from '../environment';
@@ -11,6 +11,8 @@ import { BattleScene } from './battle-scene';
 import { LoadingService } from '../loading';
 import { CatalogService } from '../share/catalog-service';
 import { IExternalProfile } from '../share/models/external-profile.model';
+import { ProfileStatusEnum } from '../share/models/enums/profile-status.enum';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,8 @@ export class BattleService {
     scene?: BattleScene;
 
     constructor(private loadingService: LoadingService, private battleHubService: BattleHubService,
-                private profileService: ProfileService, private catalogService: CatalogService) {
+                private profileService: ProfileService, private catalogService: CatalogService,
+                private router: Router) {
         battleHubService.addNewListener(BATTLE_START_GAME, (synchronizer: ISynchronizer) => this.setupBattle(synchronizer));
         battleHubService.addNewListener(BATTLE_END_GAME, (synchronizer: ISynchronizer) =>
             this.processIncomingMessage(synchronizer, BattleChangeInstructionAction.EndGame));
@@ -39,6 +42,7 @@ export class BattleService {
             this.processIncomingMessage(synchronizer, BattleChangeInstructionAction.Decoration));
         battleHubService.addNewListener(BATTLE_NO_ACTORS_DRAW, (synchronizer: ISynchronizer) =>
             this.processIncomingMessage(synchronizer, BattleChangeInstructionAction.NoActorsDraw));
+        battleHubService.addNewListener(BATTLE_SYNC_ERROR, () => this.syncWithFullSynchronization());
     }
 
     private removeScene() {
@@ -49,11 +53,20 @@ export class BattleService {
     }
 
     syncWithFullSynchronization() {
-        this.loadingService.loadingStart('Synchronization...', 1);
+        const version = this.loadingService.loadingStart('Synchronization...', 1);
         this.scene.pause = true;
         this.scene.events = [];
         this.scene.tempEvent = null;
         this.profileService.getProfileStatus().subscribe((result: IExternalWrapper<IProfileStatus>) => {
+            if (result.statusCode === 200) {
+                if (result.resObject.status === ProfileStatusEnum.Battle) {
+                    this.scene.fullSynchronization(result.resObject.battleInfo);
+                    this.loadingService.loadingEnd(version);
+                    return;
+                }
+            }
+            this.loadingService.loadingChangeMessage(STRINGS.unexpectedErrorLoading);
+            this.router.navigate(['/']);
         });
     }
 
