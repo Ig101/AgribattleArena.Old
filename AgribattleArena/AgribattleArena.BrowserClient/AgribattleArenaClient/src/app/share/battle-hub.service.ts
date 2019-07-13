@@ -4,8 +4,6 @@ import { IExternalWrapper, ISynchronizer } from './models';
 import { STRINGS, ENVIRONMENT } from '../environment';
 import * as signalR from '@aspnet/signalr';
 import { LoadingService } from '../loading';
-import { QueueService } from './queue.service';
-import { emit } from 'cluster';
 
 export const BATTLE_PREPARE = 'BattlePrepare';
 export const BATTLE_SYNC_ERROR = 'BattleSynchronizationError';

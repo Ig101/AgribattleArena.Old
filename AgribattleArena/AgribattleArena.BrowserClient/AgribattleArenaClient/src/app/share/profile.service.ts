@@ -118,7 +118,7 @@ export class ProfileService {
     }
 
     private getProfileStatusRequest(subject: Subject<IExternalWrapper<IProfileStatus>>) {
-        this.http.get('/api/profile')
+        this.http.get('/api/profile/status')
         .pipe(map((result: IProfileStatus) => {
             return {
                 statusCode: 200,

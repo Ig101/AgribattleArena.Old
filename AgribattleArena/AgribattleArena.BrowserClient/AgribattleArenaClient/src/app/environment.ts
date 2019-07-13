@@ -9,6 +9,8 @@ export const ENVIRONMENT = {
 
     queueTimeout: 240000,
 
+    battleUpdateDelay: 66,
+
     battleHubConnectionEndpoint: 'https://localhost:8443/hubs/battle',
     gameHubConnectionEndpoint: 'https://localhost:8443/hubs/game',
 };
