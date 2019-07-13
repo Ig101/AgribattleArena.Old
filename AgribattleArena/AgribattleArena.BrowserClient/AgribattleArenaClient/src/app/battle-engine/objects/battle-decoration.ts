@@ -50,7 +50,7 @@ export class BattleDecoration {
                 this.tempTile.tempActor = this;
         }
 
-        async cast() {
+        cast() {
                 // TODO
         }
 

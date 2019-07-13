@@ -246,16 +246,15 @@ export class BattleScene {
                 }
             }
         } else {
-            switch (token.objectToChange.constructor) {
+            switch (token.objectToChange.type) {
                 case BattleActor:
-                    const actorToChange = token.objectToChange as BattleActor;
-                    let syncActor = sync.deletedActors.find(x => x.id === actorToChange.id);
+                    let syncActor = sync.deletedActors.find(x => x.id === token.objectToChange.id);
                     if (syncActor) {
                         this.removeActor(syncActor, token.onRemoveArgs);
                         sync.deletedActors.splice(sync.deletedActors.indexOf(syncActor), 1);
                         return;
                     }
-                    syncActor = sync.changedActors.find(x => x.id === actorToChange.id);
+                    syncActor = sync.changedActors.find(x => x.id === token.objectToChange.id);
                     if (syncActor) {
                         this.changeActor(syncActor, token.args, token.onCreateArgs);
                         sync.changedActors.splice(sync.changedActors.indexOf(syncActor), 1);
@@ -263,14 +262,13 @@ export class BattleScene {
                     }
                     break;
                 case BattleDecoration:
-                    const decorationToChange = token.objectToChange as BattleDecoration;
-                    let syncDecoration = sync.deletedDecorations.find(x => x.id === decorationToChange.id);
+                    let syncDecoration = sync.deletedDecorations.find(x => x.id === token.objectToChange.id);
                     if (syncDecoration) {
                         this.removeDecoration(syncDecoration, token.onRemoveArgs);
                         sync.deletedDecorations.splice(sync.deletedDecorations.indexOf(syncDecoration), 1);
                         return;
                     }
-                    syncDecoration = sync.changedDecorations.find(x => x.id === decorationToChange.id);
+                    syncDecoration = sync.changedDecorations.find(x => x.id === token.objectToChange.id);
                     if (syncDecoration) {
                         this.changeDecoration(syncDecoration, token.args, token.onCreateArgs);
                         sync.changedDecorations.splice(sync.changedDecorations.indexOf(syncDecoration), 1);
@@ -278,8 +276,7 @@ export class BattleScene {
                     }
                     break;
                 case BattleTile:
-                    const tileToChange = token.objectToChange as BattleTile;
-                    const syncTile = sync.changedTiles.find(x => x.x === tileToChange.x && x.y === tileToChange.y);
+                    const syncTile = sync.changedTiles.find(x => x.x === token.objectToChange.x && x.y === token.objectToChange.y);
                     if (syncTile) {
                         this.changeTile(syncTile, token.args);
                         sync.changedTiles.splice(sync.changedTiles.indexOf(syncTile), 1);
@@ -287,14 +284,13 @@ export class BattleScene {
                     }
                     break;
                 case BattleSpecEffect:
-                    const effectToChange = token.objectToChange as BattleSpecEffect;
-                    let syncEffect = sync.deletedEffects.find(x => x.id === effectToChange.id);
+                    let syncEffect = sync.deletedEffects.find(x => x.id === token.objectToChange.id);
                     if (syncEffect) {
                         this.removeSpecEffect(syncEffect, token.onRemoveArgs);
                         sync.deletedEffects.splice(sync.deletedEffects.indexOf(syncEffect), 1);
                         return;
                     }
-                    syncEffect = sync.changedEffects.find(x => x.id === effectToChange.id);
+                    syncEffect = sync.changedEffects.find(x => x.id === token.objectToChange.id);
                     if (syncEffect) {
                         this.changeSpecEffect(syncEffect, token.args, token.onCreateArgs);
                         sync.changedEffects.splice(sync.changedEffects.indexOf(syncEffect), 1);
@@ -347,11 +343,11 @@ export class BattleScene {
         }
     }
 
-    private async endTurn() {
+    private endTurn() {
         // TODO
     }
 
-    private async endGame() {
+    private endGame() {
         // TODO
     }
 

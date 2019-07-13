@@ -116,19 +116,19 @@ export class BattleActor {
         this.tempTile.tempActor = this;
     }
 
-    async attack(targetX: number, targetY: number) {
+    attack(targetX: number, targetY: number) {
         // TODO
     }
 
-    async move(targetX: number, targetY: number) {
+    move(targetX: number, targetY: number) {
         // TODO
     }
 
-    async cast(skill: BattleSkill, targetX: number, targetY: number) {
+    cast(skill: BattleSkill, targetX: number, targetY: number) {
         // TODO
     }
 
-    async wait() {
+    wait() {
         // TODO
     }
 
