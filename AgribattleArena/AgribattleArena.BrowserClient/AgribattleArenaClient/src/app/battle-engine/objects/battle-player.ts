@@ -15,10 +15,23 @@ export class BattlePlayer {
     status: BattlePlayerStatusEnum;
 
     synchronize(sync: ISyncPlayer) {
-
+        this.team = sync.team;
+        if (!this.keyActors) {
+            this.keyActors = [];
+            for (const i in sync.keyActorsSync) {
+                if (sync.keyActorsSync.hasOwnProperty(i)) {
+                    if (!this.keyActors.find(x => x.id === sync.keyActorsSync[i])) {
+                        this.keyActors.push(this.parent.actors.find(x => x.id === sync.keyActorsSync[i]));
+                    }
+                }
+            }
+        }
+        this.turnsSkipped = sync.turnsSkipped;
+        this.status = sync.status;
     }
 
     constructor(sync: ISyncPlayer, profiles: IExternalProfile[], public parent: BattleScene) {
+        this.id = sync.id;
         this.synchronize(sync);
         const tempProfile = profiles.find(x => x.id === this.id);
         this.userName = tempProfile.userName;

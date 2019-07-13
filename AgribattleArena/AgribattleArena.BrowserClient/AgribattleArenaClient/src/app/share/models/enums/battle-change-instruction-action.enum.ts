@@ -8,6 +8,5 @@ export enum BattleChangeInstructionAction {
     SkipTurn,
     Decoration,
     NoActorsDraw,
-    Synchronization,
     StartGame
 }

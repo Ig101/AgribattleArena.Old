@@ -110,7 +110,7 @@ export class ProfileService {
                 } as IExternalWrapper<IExternalProfile>;
             }))
             .pipe(catchError(this.errorHandler))
-            .subscribe((result: IExternalWrapper<any>) => {
+            .subscribe((result: IExternalWrapper<IExternalProfile>) => {
                 subject.next(result);
                 subject.complete();
             });

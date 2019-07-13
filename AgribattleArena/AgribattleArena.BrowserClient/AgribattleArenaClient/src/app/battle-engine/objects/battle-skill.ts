@@ -14,10 +14,18 @@ export class BattleSkill {
     preparationTime: number;
 
     synchronize(sync: ISyncSkill, natives: INativesStore) {
-
+        this.range = sync.range;
+        if (!this.native || this.native.id !== sync.nativeId) {
+            this.native = natives.skills.find(x => x.id === sync.nativeId);
+        }
+        this.cd = sync.cd;
+        this.mod = sync.mod;
+        this.cost = sync.cost;
+        this.preparationTime = sync.preparationTime;
     }
 
-    constructor(sync: ISyncSkill, natives: INativesStore, public parent: BattleScene) {
+    constructor(sync: ISyncSkill, natives: INativesStore, public parent: BattleActor) {
+        this.id = sync.id;
         this.synchronize(sync, natives);
     }
 }

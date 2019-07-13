@@ -11,10 +11,15 @@ export class BattleBuff {
     duration?: number;
 
     synchronize(sync: ISyncBuff, natives: INativesStore) {
-
+        if (!this.native || this.native.id !== sync.nativeId) {
+            this.native = natives.buffs.find(x => x.id === sync.nativeId);
+        }
+        this.mod = sync.mod;
+        this.duration = sync.duration;
     }
 
-    constructor(sync: ISyncBuff, natives: INativesStore, public parent: BattleScene) {
+    constructor(sync: ISyncBuff, natives: INativesStore, public parent: BattleActor) {
+        this.id = sync.id;
         this.synchronize(sync, natives);
     }
 }
