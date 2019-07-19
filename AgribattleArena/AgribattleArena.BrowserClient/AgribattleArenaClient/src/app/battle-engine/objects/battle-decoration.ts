@@ -5,8 +5,9 @@ import { ISyncDecoration } from 'src/app/share/models/synchronization';
 import { BattleTile } from './battle-tile';
 import { BattlePlayer } from './battle-player';
 import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
+import { BattleVisualObject } from './battle-visual-object';
 
-export class BattleDecoration {
+export class BattleDecoration extends BattleVisualObject {
         id: number;
         native: IDecorationNative;
         mod: number;
@@ -45,6 +46,7 @@ export class BattleDecoration {
         }
 
         constructor(sync: ISyncDecoration, natives: INativesStoreMapped, public parent: BattleScene) {
+                super();
                 this.id = sync.id;
                 this.synchronize(sync, natives);
                 this.tempTile.tempActor = this;
@@ -55,6 +57,6 @@ export class BattleDecoration {
         }
 
         update(milliseconds: number) {
-
+                super.update(milliseconds);
         }
 }

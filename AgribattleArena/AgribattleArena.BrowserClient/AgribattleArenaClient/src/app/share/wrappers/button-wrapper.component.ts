@@ -28,14 +28,15 @@ export class ButtonWrapperComponent {
     buttonPress() {
         if (this.buttonValidate && this.parentForm.invalid) {
             let error: string = null;
-            // tslint:disable-next-line: forin
             for (const field in this.parentForm.controls) {
-                const control = this.parentForm.get(field) as FormControlWrapper;
-                if (control.errors && error === null) {
-                    error = control.name + ' ' + Object.values(control.errors)[0];
-                }
-                if (control.removeOnClick) {
-                    control.setValue('');
+                    if (this.parentForm.controls.hasOwnProperty(field)) {
+                    const control = this.parentForm.get(field) as FormControlWrapper;
+                    if (control.errors && error === null) {
+                        error = control.name + ' ' + Object.values(control.errors)[0];
+                    }
+                    if (control.removeOnClick) {
+                        control.setValue('');
+                    }
                 }
             }
             this.loadingService.loadingError(error, ENVIRONMENT.defaultLoadingOpacity);
@@ -46,11 +47,12 @@ export class ButtonWrapperComponent {
 
     validateAll() {
         if (this.buttonValidate) {
-            // tslint:disable-next-line: forin
             for (const field in this.parentForm.controls) {
-                const control = this.parentForm.get(field);
-                control.markAsDirty();
-                control.markAsTouched();
+                if (this.parentForm.controls.hasOwnProperty(field)) {
+                    const control = this.parentForm.get(field);
+                    control.markAsDirty();
+                    control.markAsTouched();
+                }
             }
         }
     }

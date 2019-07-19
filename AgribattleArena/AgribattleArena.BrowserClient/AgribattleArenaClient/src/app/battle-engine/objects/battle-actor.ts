@@ -7,8 +7,9 @@ import { BattleTile } from './battle-tile';
 import { BattleChangeInstructionAction } from 'src/app/share/models/enums/battle-change-instruction-action.enum';
 import { BattlePlayer } from './battle-player';
 import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
+import { BattleVisualObject } from './battle-visual-object';
 
-export class BattleActor {
+export class BattleActor extends BattleVisualObject {
     id: number;
     externalId?: number;
     native: IActorNative;
@@ -56,35 +57,33 @@ export class BattleActor {
         this.willpower = sync.willpower;
         this.constitution = sync.constitution;
         this.speed = sync.speed;
-        for (const i in sync.skills) {
-            if (sync.skills.hasOwnProperty(i)) {
-                const skill = this.skills.find(x => x.id === sync.skills[i].id);
-                if (skill) {
-                    skill.synchronize(sync.skills[i], natives);
-                } else {
-                    this.skills.push(new BattleSkill(sync.skills[i], natives, this));
-                }
+        for (const syncSkill of sync.skills) {
+            const skill = this.skills.find(x => x.id === syncSkill.id);
+            if (skill) {
+                skill.synchronize(syncSkill, natives);
+            } else {
+                this.skills.push(new BattleSkill(syncSkill, natives, this));
             }
         }
-        for (const i in this.skills) {
-            if (this.skills.hasOwnProperty(i) && !sync.skills.find(x => x.id === this.skills[i].id)) {
-                this.skills[i] = null;
+        for (let i = 0; i < this.skills.length; i++) {
+            if (!sync.skills.find(x => x.id === this.skills[i].id)) {
+                this.skills.splice(i, 1);
+                i--;
             }
         }
         this.actionPointsIncome = sync.actionPointsIncome;
-        for (const i in sync.buffs) {
-            if (sync.buffs.hasOwnProperty(i)) {
-                const buff = this.buffs.find(x => x.id === sync.buffs[i].id);
-                if (buff) {
-                    buff.synchronize(sync.buffs[i], natives);
-                } else {
-                    this.buffs.push(new BattleBuff(sync.buffs[i], natives, this));
-                }
+        for (const syncBuff of sync.buffs) {
+            const buff = this.buffs.find(x => x.id === syncBuff.id);
+            if (buff) {
+                buff.synchronize(syncBuff, natives);
+            } else {
+                this.buffs.push(new BattleBuff(syncBuff, natives, this));
             }
         }
-        for (const i in this.buffs) {
-            if (this.buffs.hasOwnProperty(i) && !sync.buffs.find(x => x.id === this.buffs[i].id)) {
-                this.buffs[i] = null;
+        for (let i = 0; i < this.buffs.length; i++) {
+            if (!sync.buffs.find(x => x.id === this.buffs[i].id)) {
+                this.buffs.splice(i, 1);
+                i--;
             }
         }
         this.initiativePosition = sync.initiativePosition;
@@ -110,6 +109,7 @@ export class BattleActor {
     }
 
     constructor(sync: ISyncActor, natives: INativesStoreMapped, public parent: BattleScene) {
+        super();
         this.id = sync.id;
         this.externalId = sync.externalId;
         this.synchronize(sync, natives);
@@ -172,6 +172,6 @@ export class BattleActor {
     }
 
     update(milliseconds: number) {
-
+        super.update(milliseconds);
     }
 }

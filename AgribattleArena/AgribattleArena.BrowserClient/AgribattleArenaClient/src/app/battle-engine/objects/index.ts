@@ -5,3 +5,4 @@ export * from './battle-player';
 export * from './battle-skill';
 export * from './battle-spec-effect';
 export * from './battle-tile';
+export * from './battle-visual-object';

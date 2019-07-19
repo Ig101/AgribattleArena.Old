@@ -3,8 +3,11 @@ import { BattleScene } from '../battle-scene';
 import { ISyncSpecEffect } from 'src/app/share/models/synchronization';
 import { BattlePlayer } from './battle-player';
 import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';
+import { Sprite } from '../sprite';
+import { BattleVisualObject } from './battle-visual-object';
 
-export class BattleSpecEffect {
+export class BattleSpecEffect extends BattleVisualObject {
+
     id: number;
     owner?: BattlePlayer;
     isAlive: boolean;
@@ -33,11 +36,12 @@ export class BattleSpecEffect {
     }
 
     constructor(sync: ISyncSpecEffect, natives: INativesStoreMapped, public parent: BattleScene) {
+        super();
         this.id = sync.id;
         this.synchronize(sync, natives);
     }
 
     update(milliseconds: number) {
-
+        super.update(milliseconds);
     }
 }

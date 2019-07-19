@@ -17,11 +17,9 @@ export class BattlePlayer {
         this.team = sync.team;
         if (!this.keyActors) {
             this.keyActors = [];
-            for (const i in sync.keyActorsSync) {
-                if (sync.keyActorsSync.hasOwnProperty(i)) {
-                    if (!this.keyActors.find(x => x.id === sync.keyActorsSync[i])) {
-                        this.keyActors.push(this.parent.actors.find(x => x.id === sync.keyActorsSync[i]));
-                    }
+            for (const actor of sync.keyActorsSync) {
+                if (!this.keyActors.find(x => x.id === actor)) {
+                    this.keyActors.push(this.parent.actors.find(x => x.id === actor));
                 }
             }
         }

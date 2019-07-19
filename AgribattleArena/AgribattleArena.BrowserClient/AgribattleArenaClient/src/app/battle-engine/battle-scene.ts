@@ -1,4 +1,4 @@
-import { BattlePlayer, BattleActor, BattleDecoration, BattleSpecEffect, BattleTile } from './objects';
+import { BattlePlayer, BattleActor, BattleDecoration, BattleSpecEffect, BattleTile, BattleVisualObject } from './objects';
 import { ISynchronizer } from '../share/models';
 import { BattleEvent } from './battle-event';
 import { IEventActionSignature } from './event-models/event-action-signature.model';
@@ -27,6 +27,7 @@ export class BattleScene {
     decorations: BattleDecoration[];
     specEffects: BattleSpecEffect[];
     tiles: BattleTile[];
+    visualObjects: BattleVisualObject[];
     tilesetWidth: number;
     tilesetHeight: number;
 
@@ -40,28 +41,20 @@ export class BattleScene {
         this.tilesetWidth = sync.tilesetWidth;
         this.tilesetHeight = sync.tilesetHeight;
         this.tiles = [];
-        for (const i in sync.changedTiles) {
-            if (sync.changedTiles.hasOwnProperty(i)) {
-                this.tiles.push(new BattleTile(sync.changedTiles[i], this.natives, this));
-            }
+        for (const tile of sync.changedTiles) {
+                this.tiles.push(new BattleTile(tile, this.natives, this));
         }
         this.actors = [];
-        for (const i in sync.changedActors) {
-            if (sync.changedActors.hasOwnProperty(i)) {
-                this.actors.push(new BattleActor(sync.changedActors[i], this.natives, this));
-            }
+        for (const actor of sync.changedActors) {
+            this.actors.push(new BattleActor(actor, this.natives, this));
         }
         this.decorations = [];
-        for (const i in sync.changedDecorations) {
-            if (sync.changedDecorations.hasOwnProperty(i)) {
-                this.decorations.push(new BattleDecoration(sync.changedDecorations[i], this.natives, this));
-            }
+        for (const decoration of sync.changedDecorations) {
+            this.decorations.push(new BattleDecoration(decoration, this.natives, this));
         }
         this.specEffects = [];
-        for (const i in sync.changedEffects) {
-            if (sync.changedEffects.hasOwnProperty(i)) {
-                this.specEffects.push(new BattleSpecEffect(sync.changedEffects[i], this.natives, this));
-            }
+        for (const specEffect of sync.changedEffects) {
+            this.specEffects.push(new BattleSpecEffect(specEffect, this.natives, this));
         }
         if (sync.tempActor) {
             this.tempActor = this.actors.find(x => x.id === sync.tempActor.id);
@@ -72,24 +65,21 @@ export class BattleScene {
 
     constructor(public natives: INativesStoreMapped, sync: ISynchronizer, profiles: IExternalProfile[]) {
         this.events = [];
+        this.visualObjects = [];
         this.pause = true;
         this.result = null;
         this.fullSynchronizationWithoutPlayers(sync);
         this.players = [];
-        for (const i in sync.players) {
-            if (sync.players.hasOwnProperty(i)) {
-                this.players.push(new BattlePlayer(sync.players[i], profiles, this));
-            }
+        for (const player of sync.players) {
+            this.players.push(new BattlePlayer(player, profiles, this));
         }
         this.syncTimer = setInterval (this.update, ENVIRONMENT.battleUpdateDelay, ENVIRONMENT.battleUpdateDelay);
     }
 
     fullSynchronization(sync: ISynchronizer) {
         this.fullSynchronizationWithoutPlayers(sync);
-        for (const i in sync.players) {
-            if (sync.players.hasOwnProperty(i)) {
-                this.players.find(x => x.id === sync.players[i].id).synchronize(sync.players[i]);
-            }
+        for (const player of sync.players) {
+            this.players.find(x => x.id === player.id).synchronize(player);
         }
     }
 
@@ -97,16 +87,12 @@ export class BattleScene {
                 args: OnChangeArg[], createArgs: OnCreateArg[]) {
         const tempActor = this.actors.find(x => x.id === actor.id);
         if (tempActor) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, tempActor, actor);
-                }
+            for (const arg of args) {
+                arg(this, tempActor, actor);
             }
         } else {
-            for (const i in createArgs) {
-                if (createArgs.hasOwnProperty(i)) {
-                    createArgs[i](this, actor, BattleActor);
-                }
+            for (const arg of createArgs) {
+                arg(this, actor, BattleActor);
             }
         }
     }
@@ -115,10 +101,8 @@ export class BattleScene {
                 args: OnRemoveArg[]) {
         const index = this.actors.findIndex(x => x.id === actor.id);
         if (index >= 0) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, index, BattleActor);
-                }
+            for (const arg of args) {
+                arg(this, index, BattleActor);
             }
         }
     }
@@ -126,16 +110,12 @@ export class BattleScene {
                      args: OnChangeArg[], createArgs: OnCreateArg[]) {
         const tempDecoration = this.decorations.find(x => x.id === decoration.id);
         if (tempDecoration) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, tempDecoration, decoration);
-                }
+            for (const arg of args) {
+                    arg(this, tempDecoration, decoration);
             }
         } else {
-            for (const i in createArgs) {
-                if (createArgs.hasOwnProperty(i)) {
-                    createArgs[i](this, decoration, BattleDecoration);
-                }
+            for (const arg of createArgs) {
+                arg(this, decoration, BattleDecoration);
             }
         }
     }
@@ -144,10 +124,8 @@ export class BattleScene {
                      args: OnRemoveArg[]) {
         const index = this.decorations.findIndex(x => x.id === decoration.id);
         if (index >= 0) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, index, BattleDecoration);
-                }
+            for (const arg of args) {
+                arg(this, index, BattleDecoration);
             }
         }
     }
@@ -156,16 +134,12 @@ export class BattleScene {
                      args: OnChangeArg[], createArgs: OnCreateArg[]) {
         const tempSpecEffect = this.specEffects.find(x => x.id === specEffect.id);
         if (tempSpecEffect) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, tempSpecEffect, specEffect);
-                }
+            for (const arg of args) {
+                arg(this, tempSpecEffect, specEffect);
             }
         } else {
-            for (const i in createArgs) {
-                if (createArgs.hasOwnProperty(i)) {
-                    createArgs[i](this, specEffect, BattleSpecEffect);
-                }
+            for (const arg of createArgs) {
+                arg(this, specEffect, BattleSpecEffect);
             }
         }
     }
@@ -174,10 +148,8 @@ export class BattleScene {
                      args: OnRemoveArg[]) {
         const index = this.specEffects.findIndex(x => x.id === specEffect.id);
         if (index >= 0) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, index, BattleSpecEffect);
-                }
+            for (const arg of args) {
+                    arg(this, index, BattleSpecEffect);
             }
         }
     }
@@ -186,10 +158,8 @@ export class BattleScene {
                args: OnChangeArg[]) {
         const tempTile = this.tiles.find(x => x.x === tile.x && x.y === tile.y);
         if (tempTile) {
-            for (const i in args) {
-                if (args.hasOwnProperty(i)) {
-                    args[i](this, tempTile, tile);
-                }
+            for (const arg of args) {
+                arg(this, tempTile, tile);
             }
         }
     }
@@ -197,40 +167,26 @@ export class BattleScene {
     synchronize(sync: ISynchronizer, token: IEventChangeToken) {
         this.version = sync.version;
         if (token.changeAll) {
-            for (const i in sync.changedTiles) {
-                if (sync.changedTiles.hasOwnProperty(i)) {
-                    this.changeTile(sync.changedTiles[i], token.args);
-                }
+            for (const tile of sync.changedTiles) {
+                this.changeTile(tile, token.args);
             }
-            for (const i in sync.changedActors) {
-                if (sync.changedActors.hasOwnProperty(i)) {
-                    this.changeActor(sync.changedActors[i], token.args, token.onCreateArgs);
-                }
+            for (const actor of sync.changedActors) {
+                this.changeActor(actor, token.args, token.onCreateArgs);
             }
-            for (const i in sync.changedDecorations) {
-                if (sync.changedDecorations.hasOwnProperty(i)) {
-                    this.changeDecoration(sync.changedDecorations[i], token.args, token.onCreateArgs);
-                }
+            for (const decoration of sync.changedDecorations) {
+                this.changeDecoration(decoration, token.args, token.onCreateArgs);
             }
-            for (const i in sync.changedEffects) {
-                if (sync.changedEffects.hasOwnProperty(i)) {
-                    this.changeSpecEffect(sync.changedEffects[i], token.args, token.onCreateArgs);
-                }
+            for (const effect of sync.changedEffects) {
+                this.changeSpecEffect(effect, token.args, token.onCreateArgs);
             }
-            for (const i in sync.deletedActors) {
-                if (sync.deletedActors.hasOwnProperty(i)) {
-                    this.removeActor(sync.changedActors[i], token.onRemoveArgs);
-                }
+            for (const actor of sync.deletedActors) {
+                this.removeActor(actor, token.onRemoveArgs);
             }
-            for (const i in sync.deletedDecorations) {
-                if (sync.deletedDecorations.hasOwnProperty(i)) {
-                    this.removeDecoration(sync.deletedDecorations[i], token.onRemoveArgs);
-                }
+            for (const decoration of sync.deletedDecorations) {
+                this.removeDecoration(decoration, token.onRemoveArgs);
             }
-            for (const i in sync.deletedEffects) {
-                if (sync.deletedEffects.hasOwnProperty(i)) {
-                    this.removeSpecEffect(sync.deletedEffects[i], token.onRemoveArgs);
-                }
+            for (const effect of sync.deletedEffects) {
+                this.removeSpecEffect(effect, token.onRemoveArgs);
             }
             if (Math.abs(this.timeUntilEndOfTurn - sync.turnTime) > 2000 || this.tempActor.id !== sync.tempActor.id) {
                 this.timeUntilEndOfTurn = sync.turnTime * 1000;
@@ -240,10 +196,8 @@ export class BattleScene {
             } else {
                 this.tempActor = this.decorations.find(x => x.id === sync.tempDecoration.id);
             }
-            for (const i in sync.players) {
-                if (sync.players.hasOwnProperty(i)) {
-                    this.players.find(x => x.id === sync.players[i].id).synchronize(sync.players[i]);
-                }
+            for (const player of sync.players) {
+                this.players.find(x => x.id === player.id).synchronize(player);
             }
         } else {
             switch (token.objectToChange.type) {
@@ -357,21 +311,24 @@ export class BattleScene {
                 this.startNewEvent();
             }
             this.timeUntilEndOfTurn -= milliseconds;
-            this.tiles.forEach(tile => {
+            for (const visualObject of this.visualObjects) {
+                visualObject.update(milliseconds);
+            }
+            for (const tile of this.tiles) {
                 tile.update(milliseconds);
-            });
-            this.actors.forEach(actor => {
-                actor.update(milliseconds);
-            });
-            this.decorations.forEach(decoration => {
+            }
+            for (const decoration of this.decorations) {
                 decoration.update(milliseconds);
-            });
-            this.specEffects.forEach(effect => {
-                effect.update(milliseconds);
-            });
-            this.players.forEach(player => {
+            }
+            for (const actor of this.actors) {
+                actor.update(milliseconds);
+            }
+            for (const specEffect of this.specEffects) {
+                specEffect.update(milliseconds);
+            }
+            for (const player of this.players) {
                 player.update(milliseconds);
-            });
+            }
         }
     }
 
