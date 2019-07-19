@@ -10,9 +10,9 @@ import { changeActorDefault, changeDecorationDefault, changeSpecEffectDefault, c
     newSpecEffectDefault } from './delegates/synchronization-args';
 
 export class BattleEvent {
-    actionSignature: IEventActionSignature;
+    actionSignature?: IEventActionSignature;
     version?: number;
-    private result: ISynchronizer;
+    private result?: ISynchronizer;
 
     private tokens: IEventChangeToken[];
 
@@ -22,8 +22,13 @@ export class BattleEvent {
     constructor(private scene: BattleScene, signature?: IEventActionSignature) {
         this.processor = new Subject();
         this.readyToEnd = false;
+        this.result = null;
+        this.tokens = [];
+        this.version = null;
         if (signature) {
             this.uploadSignature(signature);
+        } else {
+            this.actionSignature = null;
         }
     }
 
@@ -70,7 +75,6 @@ export class BattleEvent {
     }
 
     private processToken(token: IEventChangeToken) {
-        // TODO
         this.scene.synchronize(this.result, token);
     }
 
@@ -79,13 +83,13 @@ export class BattleEvent {
             while (this.tokens.length > 0) {
                 this.processToken(this.tokens.shift());
             }
-            if (this.readyToEnd) {
-                this.processor.next();
-                this.processor.complete();
-            }
+        }
+        if (this.readyToEnd && this.tokens.length <= 0) {
+            this.processor.next();
+            this.processor.complete();
             return true;
         }
-        return false;
+        return this.result !== null;
     }
 
     completeAction(): boolean {
@@ -96,5 +100,10 @@ export class BattleEvent {
             onRemoveArgs: [killActorDefault, killDecorationDefault, killSpecEffectDefault],
             onCreateArgs: [newActorDefault, newDecorationDefault, newSpecEffectDefault]
         });
+    }
+
+    completeActionNoChanges(): boolean {
+        this.readyToEnd = true;
+        return this.processTokens();
     }
 }

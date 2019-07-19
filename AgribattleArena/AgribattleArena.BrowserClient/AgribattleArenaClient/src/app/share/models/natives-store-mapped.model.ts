@@ -1,6 +1,8 @@
-import { IActorNative, IDecorationNative, ISpecEffectNative, ISkillNative, IBuffNative, ITileNative } from './natives/mapped';
+import { IActorNative, IDecorationNative, ISpecEffectNative, ISkillNative, IBuffNative, ITileNative,
+    ISpriteNative } from './natives/mapped';
 
 export interface INativesStoreMapped {
+    sprites: ISpriteNative[];
     actors: IActorNative[];
     decorations: IDecorationNative[];
     specEffects: ISpecEffectNative[];
