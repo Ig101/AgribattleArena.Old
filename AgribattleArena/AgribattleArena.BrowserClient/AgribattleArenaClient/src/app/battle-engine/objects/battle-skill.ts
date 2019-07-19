@@ -1,4 +1,4 @@
-import { ISkillNative } from 'src/app/share/models/natives';
+import { ISkillNative } from 'src/app/share/models/natives/mapped';
 import { BattleActor } from './battle-actor';
 import { ISyncSkill } from 'src/app/share/models/synchronization';
 import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';

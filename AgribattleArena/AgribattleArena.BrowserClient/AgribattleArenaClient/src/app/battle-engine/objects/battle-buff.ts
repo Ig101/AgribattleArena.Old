@@ -1,4 +1,4 @@
-import { IBuffNative } from 'src/app/share/models/natives';
+import { IBuffNative } from 'src/app/share/models/natives/mapped';
 import { BattleActor } from './battle-actor';
 import { ISyncBuff } from 'src/app/share/models/synchronization';
 import { INativesStoreMapped } from 'src/app/share/models/natives-store-mapped.model';

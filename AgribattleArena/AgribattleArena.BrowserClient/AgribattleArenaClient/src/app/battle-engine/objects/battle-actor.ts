@@ -1,6 +1,6 @@
 import { ITagSynergy } from 'src/app/share/models/tag-synergy.model';
 import { BattleSkill, BattleBuff } from '.';
-import { IActorNative } from 'src/app/share/models/natives';
+import { IActorNative } from 'src/app/share/models/natives/mapped';
 import { BattleScene } from '../battle-scene';
 import { ISyncActor } from 'src/app/share/models/synchronization';
 import { BattleTile } from './battle-tile';

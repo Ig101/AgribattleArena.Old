@@ -1,4 +1,4 @@
-import { ITileNative } from 'src/app/share/models/natives';
+import { ITileNative } from 'src/app/share/models/natives/mapped';
 import { BattleScene } from '../battle-scene';
 import { ISyncTile } from 'src/app/share/models/synchronization';
 

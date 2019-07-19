@@ -1,4 +1,4 @@
-import { ISpecEffectNative } from 'src/app/share/models/natives';
+import { ISpecEffectNative } from 'src/app/share/models/natives/mapped';
 import { BattleScene } from '../battle-scene';
 import { ISyncSpecEffect } from 'src/app/share/models/synchronization';
 import { BattlePlayer } from './battle-player';
