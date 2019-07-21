@@ -94,7 +94,7 @@ export class BattleActor extends BattleVisualObject {
         }
         this.isAlive = sync.isAlive;
         if (!this.tempTile || this.x !== sync.x || this.y !== sync.y) {
-            this.tempTile = this.parent.tiles.find(x => x.x === sync.x && x.y === sync.y);
+            this.tempTile = this.parent.tiles[sync.x][sync.y];
         }
         this.x = sync.x;
         this.y = sync.y;

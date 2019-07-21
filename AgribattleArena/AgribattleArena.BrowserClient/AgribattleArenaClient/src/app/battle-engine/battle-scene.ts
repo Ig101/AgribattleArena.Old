@@ -24,7 +24,7 @@ export class BattleScene {
     actors: BattleActor[];
     decorations: BattleDecoration[];
     specEffects: BattleSpecEffect[];
-    tiles: BattleTile[];
+    tiles: BattleTile[][];
     visualObjects: BattleVisualObject[];
     tilesetWidth: number;
     tilesetHeight: number;
@@ -41,9 +41,8 @@ export class BattleScene {
         }
         this.tilesetWidth = sync.tilesetWidth;
         this.tilesetHeight = sync.tilesetHeight;
-        this.tiles = [];
         for (const tile of sync.changedTiles) {
-                this.tiles.push(new BattleTile(tile, this.natives, this));
+                this.tiles[tile.x][tile.y] = new BattleTile(tile, this.natives, this);
         }
         this.actors = [];
         for (const actor of sync.changedActors) {
@@ -250,7 +249,7 @@ export class BattleScene {
 
     changeTile(tile: ISyncTile,
                args: OnChangeArg[]) {
-        const tempTile = this.tiles.find(x => x.x === tile.x && x.y === tile.y);
+        const tempTile = this.tiles[tile.x][tile.y];
         if (tempTile) {
             for (const arg of args) {
                 arg(this, tempTile, tile);
@@ -273,8 +272,10 @@ export class BattleScene {
             for (const visualObject of this.visualObjects) {
                 visualObject.update(milliseconds);
             }
-            for (const tile of this.tiles) {
-                tile.update(milliseconds);
+            for (const tileArr of this.tiles) {
+                for (const tile of tileArr) {
+                    tile.update(milliseconds);
+                }
             }
             for (const decoration of this.decorations) {
                 decoration.update(milliseconds);
