@@ -58,13 +58,13 @@ export class BattleEvent {
         this.actionSignature = signature;
     }
 
-    uploadSynchronizer(sync: ISynchronizer, action: BattleChangeInstructionAction) {
+    uploadSynchronizer(sync: ISynchronizer, action: BattleChangeInstructionAction, tempEvent: boolean) {
         if (!this.actionSignature) {
             this.uploadSignature(this.getSignatureFromSynchronizer(sync, action));
         }
         this.result = sync;
         this.version = sync.version;
-        if (this.scene.tempEvent === this) {
+        if (tempEvent) {
             this.processTokens();
         }
     }

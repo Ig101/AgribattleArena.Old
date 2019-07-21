@@ -55,8 +55,7 @@ export class BattleService {
     syncWithFullSynchronization() {
         const version = this.loadingService.loadingStart('Synchronization...', 1);
         this.scene.pause = true;
-        this.scene.events = [];
-        this.scene.tempEvent = null;
+        this.scene.battleEventsManager.clearQueue();
         this.profileService.getProfileStatus().subscribe((result: IExternalWrapper<IProfileStatus>) => {
             if (result.statusCode === 200) {
                 if (result.resObject.status === ProfileStatusEnum.Battle) {
@@ -70,36 +69,59 @@ export class BattleService {
         });
     }
 
-    orderMove(targetActor: BattleActor, targetX: number, targetY: number): boolean {
-        if (targetActor.orderMove(targetX, targetY)) {
-            this.battleHubService.orderMove(targetActor.id, targetX, targetY, 0.5);
-            return true;
+    orderAttack(targetActor: BattleActor, targetX: number, targetY: number): boolean {
+        if (!targetActor.checkAttackAvailability(targetX, targetY)) {
+            return false;
         }
-        return false;
+        this.scene.battleEventsManager.addEventBySignature({
+            action: BattleChangeInstructionAction.Attack,
+            actor: targetActor,
+            x: targetX,
+            y: targetY
+        });
+        this.battleHubService.orderAttack(targetActor.id, targetX, targetY, 0.5);
+        return true;
     }
 
-    orderAttack(targetActor: BattleActor, targetX: number, targetY: number): boolean {
-        if (targetActor.orderAttack(targetX, targetY)) {
-            this.battleHubService.orderAttack(targetActor.id, targetX, targetY, 0.5);
-            return true;
+    orderMove(targetActor: BattleActor, targetX: number, targetY: number): boolean {
+        if (!targetActor.checkMoveAvailability(targetX, targetY)) {
+            return false;
         }
-        return false;
+        this.scene.battleEventsManager.addEventBySignature({
+            action: BattleChangeInstructionAction.Move,
+            actor: targetActor,
+            x: targetX,
+            y: targetY
+        });
+        this.battleHubService.orderMove(targetActor.id, targetX, targetY, 0.5);
+        return true;
     }
 
     orderCast(targetActor: BattleActor, targetSkill: BattleSkill, targetX: number, targetY: number): boolean {
-        if (targetActor.orderCast(targetSkill, targetX, targetY)) {
-            this.battleHubService.orderCast(targetActor.id, targetSkill.id, targetX, targetY, 0.5);
-            return true;
+        if (!targetActor.checkCastAvailability(targetSkill, targetX, targetY)) {
+            return false;
         }
-        return false;
+        this.scene.battleEventsManager.addEventBySignature({
+            action: BattleChangeInstructionAction.Attack,
+            actor: targetActor,
+            x: targetX,
+            y: targetY,
+            skill: targetSkill
+        });
+        this.battleHubService.orderCast(targetActor.id, targetSkill.id, targetX, targetY, 0.5);
+        return true;
     }
 
     orderWait(targetActor: BattleActor): boolean {
-        if (targetActor.orderWait()) {
-            this.battleHubService.orderWait(targetActor.id, 0.5);
-            return true;
+        if (!targetActor.checkActionAvailability()) {
+            return false;
         }
-        return false;
+        this.scene.battleEventsManager.addEventBySignature({
+            action: BattleChangeInstructionAction.Attack,
+            actor: targetActor
+        });
+        this.battleHubService.orderWait(targetActor.id, 0.5);
+        return true;
     }
 
     private async setupBattleAsync(sync: ISynchronizer): Promise<IExternalWrapper<ISynchronizer>> {
@@ -129,7 +151,7 @@ export class BattleService {
     setupBattle(sync: ISynchronizer) {
         this.setupBattleAsync(sync).then((result: IExternalWrapper<ISynchronizer>) => {
             if (result.statusCode === 200) {
-                this.scene.addEventBySynchronizer(result.resObject, BattleChangeInstructionAction.StartGame);
+                this.scene.battleEventsManager.addEventBySynchronizer(result.resObject, BattleChangeInstructionAction.StartGame);
             } else {
                 this.loadingService.loadingEnd(this.loadingService.tempVersion, result.errors[0]);
             }
@@ -142,7 +164,7 @@ export class BattleService {
 
     private processIncomingMessage(sync: ISynchronizer, action: BattleChangeInstructionAction) {
         if (this.scene) {
-            this.scene.addEventBySynchronizer(sync, action);
+            this.scene.battleEventsManager.addEventBySynchronizer(sync, action);
         }
     }
 }

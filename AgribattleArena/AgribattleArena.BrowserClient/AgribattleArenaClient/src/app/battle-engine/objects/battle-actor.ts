@@ -132,46 +132,23 @@ export class BattleActor extends BattleVisualObject {
         // TODO
     }
 
-    orderAttack(targetX: number, targetY: number): boolean {
-        this.parent.addEventBySignature({
-            action: BattleChangeInstructionAction.Attack,
-            actor: this,
-            x: targetX,
-            y: targetY
-        });
-        return true;
-    }
-
-    orderMove(targetX: number, targetY: number): boolean {
-        this.parent.addEventBySignature({
-            action: BattleChangeInstructionAction.Move,
-            actor: this,
-            x: targetX,
-            y: targetY
-        });
-        return true;
-    }
-
-    orderCast(targetSkill: BattleSkill, targetX: number, targetY: number) {
-        this.parent.addEventBySignature({
-            action: BattleChangeInstructionAction.Attack,
-            actor: this,
-            x: targetX,
-            y: targetY,
-            skill: targetSkill
-        });
-        return true;
-    }
-
-    orderWait() {
-        this.parent.addEventBySignature({
-            action: BattleChangeInstructionAction.Attack,
-            actor: this
-        });
-        return true;
-    }
-
     update(milliseconds: number) {
         super.update(milliseconds);
+    }
+
+    checkActionAvailability(): boolean {
+        return true;
+    }
+
+    checkAttackAvailability(targetX: number, targetY: number): boolean {
+        return true;
+    }
+
+    checkMoveAvailability(targetX: number, targetY: number): boolean {
+        return true;
+    }
+
+    checkCastAvailability(targetSkill: BattleSkill, targetX: number, targetY: number): boolean {
+        return true;
     }
 }

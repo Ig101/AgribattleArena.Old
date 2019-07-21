@@ -9,6 +9,7 @@ import { IEventChangeToken } from './event-models/event-change-token';
 import { ISyncActor, ISyncDecoration, ISyncSpecEffect, ISyncTile } from '../share/models/synchronization';
 import { OnChangeArg, OnRemoveArg, OnCreateArg } from './delegates/synchronization-args';
 import { INativesStoreMapped } from '../share/models/natives-store-mapped.model';
+import { BattleEventsManager } from './battle-events-manager';
 
 export class BattleScene {
     pause: boolean;
@@ -17,9 +18,6 @@ export class BattleScene {
 
     version: number;
     timeUntilEndOfTurn: number;
-
-    events: BattleEvent[];
-    tempEvent?: BattleEvent;
 
     tempActor: BattleDecoration | BattleActor;
     players: BattlePlayer[];
@@ -31,7 +29,10 @@ export class BattleScene {
     tilesetWidth: number;
     tilesetHeight: number;
 
-    private syncTimer: NodeJS.Timer;
+    battleEventsManager: BattleEventsManager;
+
+    private lastTimestamp: number;
+    private disposed: boolean;
 
     fullSynchronizationWithoutPlayers(sync: ISynchronizer) {
         this.version = sync.version;
@@ -64,103 +65,24 @@ export class BattleScene {
     }
 
     constructor(public natives: INativesStoreMapped, sync: ISynchronizer, profiles: IExternalProfile[]) {
-        this.events = [];
         this.visualObjects = [];
         this.pause = true;
         this.result = null;
+        this.disposed = false;
+        this.lastTimestamp = -1;
         this.fullSynchronizationWithoutPlayers(sync);
         this.players = [];
         for (const player of sync.players) {
             this.players.push(new BattlePlayer(player, profiles, this));
         }
-        this.syncTimer = setInterval (this.update, ENVIRONMENT.battleUpdateDelay, ENVIRONMENT.battleUpdateDelay);
+        this.battleEventsManager = new BattleEventsManager(this);
+        window.requestAnimationFrame(this.loop);
     }
 
     fullSynchronization(sync: ISynchronizer) {
         this.fullSynchronizationWithoutPlayers(sync);
         for (const player of sync.players) {
             this.players.find(x => x.id === player.id).synchronize(player);
-        }
-    }
-
-    changeActor(actor: ISyncActor,
-                args: OnChangeArg[], createArgs: OnCreateArg[]) {
-        const tempActor = this.actors.find(x => x.id === actor.id);
-        if (tempActor) {
-            for (const arg of args) {
-                arg(this, tempActor, actor);
-            }
-        } else {
-            for (const arg of createArgs) {
-                arg(this, actor, BattleActor);
-            }
-        }
-    }
-
-    removeActor(actor: ISyncActor,
-                args: OnRemoveArg[]) {
-        const index = this.actors.findIndex(x => x.id === actor.id);
-        if (index >= 0) {
-            for (const arg of args) {
-                arg(this, index, BattleActor);
-            }
-        }
-    }
-    changeDecoration(decoration: ISyncDecoration,
-                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
-        const tempDecoration = this.decorations.find(x => x.id === decoration.id);
-        if (tempDecoration) {
-            for (const arg of args) {
-                    arg(this, tempDecoration, decoration);
-            }
-        } else {
-            for (const arg of createArgs) {
-                arg(this, decoration, BattleDecoration);
-            }
-        }
-    }
-
-    removeDecoration(decoration: ISyncDecoration,
-                     args: OnRemoveArg[]) {
-        const index = this.decorations.findIndex(x => x.id === decoration.id);
-        if (index >= 0) {
-            for (const arg of args) {
-                arg(this, index, BattleDecoration);
-            }
-        }
-    }
-
-    changeSpecEffect(specEffect: ISyncSpecEffect,
-                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
-        const tempSpecEffect = this.specEffects.find(x => x.id === specEffect.id);
-        if (tempSpecEffect) {
-            for (const arg of args) {
-                arg(this, tempSpecEffect, specEffect);
-            }
-        } else {
-            for (const arg of createArgs) {
-                arg(this, specEffect, BattleSpecEffect);
-            }
-        }
-    }
-
-    removeSpecEffect(specEffect: ISyncSpecEffect,
-                     args: OnRemoveArg[]) {
-        const index = this.specEffects.findIndex(x => x.id === specEffect.id);
-        if (index >= 0) {
-            for (const arg of args) {
-                    arg(this, index, BattleSpecEffect);
-            }
-        }
-    }
-
-    changeTile(tile: ISyncTile,
-               args: OnChangeArg[]) {
-        const tempTile = this.tiles.find(x => x.x === tile.x && x.y === tile.y);
-        if (tempTile) {
-            for (const arg of args) {
-                arg(this, tempTile, tile);
-            }
         }
     }
 
@@ -255,61 +177,98 @@ export class BattleScene {
         }
     }
 
-    private startNewEvent() {
-        do {
-            this.tempEvent = this.events.shift();
-        } while (this.tempEvent.version <= this.version);
-        if (this.tempEvent) {
-            this.version = this.tempEvent.version;
-            this.tempEvent.processor.subscribe(() => this.onEventEnd());
-            const signature = this.tempEvent.actionSignature;
-            switch (signature.action) {
-                case BattleChangeInstructionAction.Move:
-                    (signature.actor as BattleActor).move(signature.x, signature.y);
-                    break;
-                case BattleChangeInstructionAction.Attack:
-                    (signature.actor as BattleActor).attack(signature.x, signature.y);
-                    break;
-                case BattleChangeInstructionAction.Cast:
-                    (signature.actor as BattleActor).cast(signature.skill, signature.x, signature.y);
-                    break;
-                case BattleChangeInstructionAction.Decoration:
-                    (signature.actor as BattleDecoration).cast();
-                    break;
-                case BattleChangeInstructionAction.Wait:
-                    (signature.actor as BattleActor).wait();
-                    break;
-                case BattleChangeInstructionAction.EndTurn:
-                    this.endTurn();
-                    break;
-                case BattleChangeInstructionAction.EndGame:
-                    this.endGame();
-                    break;
+    changeActor(actor: ISyncActor,
+                args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempActor = this.actors.find(x => x.id === actor.id);
+        if (tempActor) {
+            for (const arg of args) {
+                arg(this, tempActor, actor);
+            }
+        } else {
+            for (const arg of createArgs) {
+                arg(this, actor, BattleActor);
             }
         }
     }
 
-    private onEventEnd() {
-        this.tempEvent.processor.unsubscribe();
-        this.tempEvent = null;
-        if (this.events.length > 0) {
-            this.startNewEvent();
+    removeActor(actor: ISyncActor,
+                args: OnRemoveArg[]) {
+        const index = this.actors.findIndex(x => x.id === actor.id);
+        if (index >= 0) {
+            for (const arg of args) {
+                arg(this, index, BattleActor);
+            }
+        }
+    }
+    changeDecoration(decoration: ISyncDecoration,
+                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempDecoration = this.decorations.find(x => x.id === decoration.id);
+        if (tempDecoration) {
+            for (const arg of args) {
+                    arg(this, tempDecoration, decoration);
+            }
+        } else {
+            for (const arg of createArgs) {
+                arg(this, decoration, BattleDecoration);
+            }
         }
     }
 
-    private endTurn() {
+    removeDecoration(decoration: ISyncDecoration,
+                     args: OnRemoveArg[]) {
+        const index = this.decorations.findIndex(x => x.id === decoration.id);
+        if (index >= 0) {
+            for (const arg of args) {
+                arg(this, index, BattleDecoration);
+            }
+        }
+    }
+
+    changeSpecEffect(specEffect: ISyncSpecEffect,
+                     args: OnChangeArg[], createArgs: OnCreateArg[]) {
+        const tempSpecEffect = this.specEffects.find(x => x.id === specEffect.id);
+        if (tempSpecEffect) {
+            for (const arg of args) {
+                arg(this, tempSpecEffect, specEffect);
+            }
+        } else {
+            for (const arg of createArgs) {
+                arg(this, specEffect, BattleSpecEffect);
+            }
+        }
+    }
+
+    removeSpecEffect(specEffect: ISyncSpecEffect,
+                     args: OnRemoveArg[]) {
+        const index = this.specEffects.findIndex(x => x.id === specEffect.id);
+        if (index >= 0) {
+            for (const arg of args) {
+                    arg(this, index, BattleSpecEffect);
+            }
+        }
+    }
+
+    changeTile(tile: ISyncTile,
+               args: OnChangeArg[]) {
+        const tempTile = this.tiles.find(x => x.x === tile.x && x.y === tile.y);
+        if (tempTile) {
+            for (const arg of args) {
+                arg(this, tempTile, tile);
+            }
+        }
+    }
+
+    endTurn() {
         // TODO
     }
 
-    private endGame() {
+    endGame() {
         // TODO
     }
 
     private update(milliseconds: number) {
         if (!this.pause) {
-            if (this.tempEvent === null && this.events.length > 0) {
-                this.startNewEvent();
-            }
+            this.battleEventsManager.startNewEventIfTempIsNull();
             this.timeUntilEndOfTurn -= milliseconds;
             for (const visualObject of this.visualObjects) {
                 visualObject.update(milliseconds);
@@ -332,56 +291,22 @@ export class BattleScene {
         }
     }
 
-    addEventBySignature(signature: IEventActionSignature) {
-        this.events.push(new BattleEvent(this, signature));
-        if (!this.pause && this.tempEvent === null) {
-            this.startNewEvent();
-        }
+    private draw() {
+
     }
 
-    private checkEvent(tempEvent: BattleEvent, sync: ISynchronizer, action: BattleChangeInstructionAction, index?: number): boolean {
-        if (tempEvent.version) {
-            if (tempEvent.version > sync.version) {
-                if (index) {
-                    const event = new BattleEvent(this);
-                    event.uploadSynchronizer(sync, action);
-                    this.events.splice(index, 0, event);
-                }
-                return false;
-            } else if (tempEvent.version === sync.version) {
-                return false;
-            }
-        } else if (tempEvent.actionSignature.action === action &&
-            ((tempEvent.actionSignature.actor === null && sync.actorId === null) ||
-            tempEvent.actionSignature.actor.id === sync.actorId) &&
-            tempEvent.actionSignature.x === sync.targetX &&
-            tempEvent.actionSignature.y === sync.targetY &&
-            ((tempEvent.actionSignature.skill === null && sync.skillActionId === null) ||
-            tempEvent.actionSignature.skill.id === sync.skillActionId)) {
-                tempEvent.uploadSynchronizer(sync, action);
-                return false;
+    private loop(timestamp: number) {
+        if (!this.pause && this.lastTimestamp >= 0) {
+            this.update(timestamp - this.lastTimestamp);
         }
-        return true;
-    }
-
-    addEventBySynchronizer(sync: ISynchronizer, action: BattleChangeInstructionAction) {
-        for (const i in this.events) {
-            if (!this.checkEvent(this.events[i], sync, action, this.events.indexOf(this.events[i]))) {
-                return;
-            }
-        }
-        if (this.tempEvent != null && !this.checkEvent(this.tempEvent, sync, action)) {
-            return;
-        }
-        const event = new BattleEvent(this);
-        event.uploadSynchronizer(sync, action);
-        this.events.push(event);
-        if (!this.pause && this.tempEvent === null) {
-            this.startNewEvent();
+        this.draw();
+        this.lastTimestamp = timestamp;
+        if (!this.disposed) {
+            window.requestAnimationFrame(this.loop);
         }
     }
 
     dispose() {
-        clearInterval(this.syncTimer);
+        this.disposed = true;
     }
 }
